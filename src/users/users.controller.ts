@@ -13,6 +13,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Serialize } from './../interceptors/serialize.interceptor';
 import { UserDto } from './dto/user.dto';
+import { FindUserDto } from './dto/find-user.dto';
 
 @ApiTags('User')
 @Serialize(UserDto)
@@ -31,8 +32,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param() params: FindUserDto) {
+    return this.usersService.findOne(params.id);
   }
 
   @Patch(':id')
