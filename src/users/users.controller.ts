@@ -11,8 +11,11 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Serialize } from './../interceptors/serialize.interceptor';
+import { UserDto } from './dto/user.dto';
 
 @ApiTags('User')
+@Serialize(UserDto)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
