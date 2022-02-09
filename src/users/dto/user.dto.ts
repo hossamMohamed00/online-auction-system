@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { ExposeId } from './../../helpers/expose-id.decorator';
+import { ExposeId } from '../../decorators/expose-id.decorator';
 
 /**
  * User dto - Describe what user data to be sent over the network

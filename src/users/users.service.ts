@@ -43,8 +43,8 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(_id: string, updateUserDto: UpdateUserDto) {
+    return this.usersModel.findByIdAndUpdate(_id, updateUserDto, { new: true });
   }
 
   remove(id: number) {

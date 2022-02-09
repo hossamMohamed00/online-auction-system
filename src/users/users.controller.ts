@@ -37,8 +37,8 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@Param() params: FindUserDto, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(params.id, updateUserDto);
   }
 
   @Delete(':id')
