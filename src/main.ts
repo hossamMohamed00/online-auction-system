@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
   DocumentBuilder,
@@ -29,6 +30,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('/api-docs', app, document);
 
-  await app.listen(3000);
+  //? Use ConfigService to load the env files
+  const configService = app.get(ConfigService);
+
+  await app.listen(configService.get('PORT', 3000));
 }
 bootstrap();

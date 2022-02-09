@@ -2,12 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
-import config from './config/keys';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseConfigService } from './config/mongoose.config';
 
 @Module({
-  imports: [UsersModule, MongooseModule.forRoot(config.mongoURI)],
+  imports: [
+    ConfigModule.forRoot({ envFilePath: '.development.env', isGlobal: true }),
+    MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
+    UsersModule
+  ],
   controllers: [AppController],
   providers: [AppService]
 })
