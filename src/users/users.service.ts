@@ -43,11 +43,31 @@ export class UsersService {
     return user;
   }
 
-  update(_id: string, updateUserDto: UpdateUserDto) {
-    return this.usersModel.findByIdAndUpdate(_id, updateUserDto, { new: true });
+  /**
+   * Update user details
+   * @param _id - User id
+   * @param updateUserDto - Dto for user's properties to be updated
+   * @returns updated user instance
+   */
+  async update(_id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.usersModel.findByIdAndUpdate(_id, updateUserDto, {
+      new: true
+    });
+
+    if (!user) throw new NotFoundException('User not found ❌');
+
+    return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  /**
+   * Remove user by id
+   * @param _id - User id
+   * @returns Deleted user instance
+   */
+  async remove(_id: string) {
+    const user = await this.usersModel.findByIdAndRemove(_id);
+    if (!user) throw new NotFoundException('User not found ❌');
+
+    return user;
   }
 }
