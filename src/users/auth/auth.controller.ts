@@ -11,7 +11,7 @@ import {
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto, RegisterUserDto } from '../dto';
 import { AuthService } from './auth.service';
-import { GetCurrentUser } from 'src/common/decorators';
+import { GetCurrentUser as GetCurrentUserData, GetRefreshToken } from 'src/common/decorators';
 import { AccessTokenAuthGuard, RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
 
@@ -65,7 +65,7 @@ export class AuthController {
   @UseGuards(AccessTokenAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@GetCurrentUser('_id') userId: string) {
+  logout(@GetCurrentUserData('_id') userId: string) {
     return this.authService.logout(userId);
   }
 
@@ -73,8 +73,8 @@ export class AuthController {
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   refreshToken(
-    @GetCurrentUser('_id') userId: string,
-    @GetCurrentUser('refreshToken') refreshToken: string
+    @GetCurrentUserData('_id') userId: string,
+    @GetRefreshToken() refreshToken: string
   ) {
     return this.authService.refreshToken(userId, refreshToken);
   }

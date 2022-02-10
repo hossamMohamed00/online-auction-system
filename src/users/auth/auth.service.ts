@@ -53,6 +53,8 @@ export class AuthService {
     const isMatch = await compare(password, user.password);
     if (!isMatch) throw new NotFoundException('User not found ❌');
 
+    console.log(isMatch);
+
     //? Issue tokens, save refresh_token in db and save user
     const tokens = await this.getTokensAndSaveUser(user);
 
