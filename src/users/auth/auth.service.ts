@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User, UserDocument } from '../entities/user.schema';
 import { UsersService } from '../users.service';
 import { JwtPayload } from './types/jwt-payload.type';
 import { compare, hash } from 'bcryptjs';
-import { RegisterUserDto } from '../dto';
+import { LoginDto, RegisterUserDto } from '../dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
@@ -46,17 +46,31 @@ export class AuthService {
 
   /**
    * Validate user credentials
-   * @param email User email
-   * @param password User password
-   * @returns user instance if found || null if not found
+   * @param loginDto {email, password}: LoginDto
+   * @returns Tokens object contains access_token and refresh_token
    */
-  async validateUser(email: string, password: string): Promise<User> {
-    const user: User = await this.usersService.findByEmail(email);
+  async login({ email, password }: LoginDto): Promise<Tokens> {
+    //* Find the user
+    const user: UserDocument = await this.usersService.findByEmail(email);
+    if (!user) throw new NotFoundException('User not found ❌');
+
     //? Check if the password matches or not
     const isMatch = await compare(password, user.password);
-    if (!isMatch) return null;
+    if (!isMatch) throw new NotFoundException('User not found ❌');
 
-    return user;
+    //? Issue jwt tokens
+    const tokens = await this.getJWTTokens({
+      sub: user._id,
+      email: user.email
+    });
+
+    //? Save the refreshToken in the db
+    await this.updateRefreshToken(user, tokens.refreshToken);
+
+    //* Save the user instance
+    await user.save();
+
+    return tokens;
   }
 
   /**

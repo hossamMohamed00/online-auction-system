@@ -7,10 +7,9 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { RegisterUserDto } from '../dto';
+import { LoginDto, RegisterUserDto } from '../dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Tokens } from './types';
 
 @Controller('auth')
@@ -18,17 +17,20 @@ import { Tokens } from './types';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  /**
+   * Register a new user
+   * @param registerUserDto :RegisterUserDto
+   * @returns Tokens object containing access_token and refresh_token
+   */
   @Post('/register')
   register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
     return this.authService.register(registerUserDto);
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiBody({})
-  async login(@Request() req) {
-    const access_token = await this.authService.getJWTTokens(req.user._doc);
-    return access_token;
+  async login(@Body() loginDto: LoginDto): Promise<Tokens> {
+    return this.authService.login(loginDto);
   }
 
   @UseGuards(JwtAuthGuard)
