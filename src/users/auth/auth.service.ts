@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User, UserDocument } from '../entities/user.schema';
 import { UsersService } from '../users.service';
@@ -55,12 +59,33 @@ export class AuthService {
     return tokens;
   }
 
+  /**
+   * Logout user
+   * @param _id - User id
+   */
   async logout(_id: string) {
+    /*
+   ? Find the user and set the refresh_token to null
+   */
     await this.usersModel.findByIdAndUpdate(
       _id,
       { refreshToken: null },
       { new: true }
     );
+  }
+
+  async refreshToken(_id: string, refreshToken: string): Promise<Tokens> {
+    const user = await this.usersService.findById(_id);
+
+    if (!user) throw new ForbiddenException('Access Denied ❌');
+
+    const isMatch = await compare(refreshToken, user.refreshToken);
+    if (!isMatch) throw new ForbiddenException('Access Denied ❌');
+
+    //? Issue tokens, save refresh_token in db and save user
+    const tokens = await this.getTokensAndSaveUser(user);
+
+    return tokens;
   }
 
   /* Utility functions */
