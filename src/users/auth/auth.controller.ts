@@ -5,14 +5,13 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   Request,
   UseGuards
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { Request as HttpRequest } from 'express';
 import { LoginUserDto, RegisterUserDto } from '../dto';
 import { AuthService } from './auth.service';
+import { GetCurrentUser } from 'src/common/decorators';
 import { AccessTokenAuthGuard, RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
 
@@ -66,18 +65,17 @@ export class AuthController {
   @UseGuards(AccessTokenAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@Req() req: HttpRequest) {
-    const user = req.user;
-    return this.authService.logout(user['_id']);
+  logout(@GetCurrentUser('_id') userId: string) {
+    return this.authService.logout(userId);
   }
 
   @UseGuards(RefreshTokenAuthGuard)
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
-  refreshToken(@Req() req: HttpRequest) {
-    const user = req.user;
-    console.log(user);
-
-    return this.authService.refreshToken(user['sub'], user['refreshToken']);
+  refreshToken(
+    @GetCurrentUser('_id') userId: string,
+    @GetCurrentUser('refreshToken') refreshToken: string
+  ) {
+    return this.authService.refreshToken(userId, refreshToken);
   }
 }
