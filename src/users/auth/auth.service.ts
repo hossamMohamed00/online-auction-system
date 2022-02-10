@@ -25,7 +25,7 @@ export class AuthService {
    * @param user
    * @returns Object contains access_token
    */
-  async login(user: UserDocument) {
+  async createJWTToken(user: UserDocument) {
     const payload: JwtPayload = { sub: user._id, email: user.email };
 
     return {

@@ -13,10 +13,7 @@ export class AuthController {
   @Post('login')
   @ApiBody({})
   async login(@Request() req) {
-    console.log(req.user._doc);
-    const access_token = await this.authService.login(req.user._doc);
-    console.log('Token', access_token);
-
+    const access_token = await this.authService.createJWTToken(req.user._doc);
     return access_token;
   }
 
