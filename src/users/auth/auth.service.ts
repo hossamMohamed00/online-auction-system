@@ -4,7 +4,7 @@ import { User, UserDocument } from '../entities/user.schema';
 import { UsersService } from '../users.service';
 import { JwtPayload } from './types/jwt-payload.type';
 import { compare, hash } from 'bcryptjs';
-import { LoginDto, RegisterUserDto } from '../dto';
+import { LoginUserDto, RegisterUserDto } from '../dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
@@ -40,7 +40,7 @@ export class AuthService {
    * @param loginDto {email, password}: LoginDto
    * @returns Tokens object contains access_token and refresh_token
    */
-  async login({ email, password }: LoginDto): Promise<Tokens> {
+  async login({ email, password }: LoginUserDto): Promise<Tokens> {
     //* Find the user
     const user: UserDocument = await this.usersService.findByEmail(email);
     if (!user) throw new NotFoundException('User not found ❌');
