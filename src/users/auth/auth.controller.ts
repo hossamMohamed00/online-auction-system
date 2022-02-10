@@ -2,14 +2,18 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
+  Req,
   Request,
   UseGuards
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { Request as HttpRequest } from 'express';
 import { LoginUserDto, RegisterUserDto } from '../dto';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AccessTokenAuthGuard, RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
 
 /**
@@ -25,7 +29,8 @@ export class AuthController {
    * @param registerUserDto :RegisterUserDto
    * @returns Tokens object containing access_token and refresh_token
    */
-  @Post('/register')
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
   register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
     return this.authService.register(registerUserDto);
   }
@@ -37,14 +42,37 @@ export class AuthController {
    */
   @Post('login')
   @ApiBody({})
+  @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginUserDto): Promise<Tokens> {
     return this.authService.login(loginDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  /**
+   * Get the current logged in user data
+   * @param req
+   * @returns
+   */
+  @UseGuards(AccessTokenAuthGuard)
   @Get('profile')
   @ApiHeader({ name: 'Authorization' })
+  @HttpCode(HttpStatus.OK)
   getProfile(@Request() req) {
     return req.user;
   }
+
+  /**
+   * Logout user
+   */
+  @UseGuards(AccessTokenAuthGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@Req() req: HttpRequest) {
+    const user = req.user;
+    return this.authService.logout(user['_id']);
+  }
+
+  @UseGuards(RefreshTokenAuthGuard)
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  refreshToken() {}
 }

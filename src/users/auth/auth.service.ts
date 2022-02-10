@@ -55,6 +55,16 @@ export class AuthService {
     return tokens;
   }
 
+  async logout(_id: string) {
+    await this.usersModel.findByIdAndUpdate(
+      _id,
+      { refreshToken: null },
+      { new: true }
+    );
+  }
+
+  /* Utility functions */
+
   /**
    * Issue new jwt token contains some user info for access_token and refresh_token
    * @param Object contains userId (sub) and email

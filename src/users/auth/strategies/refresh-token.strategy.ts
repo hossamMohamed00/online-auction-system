@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from '../types';
 
 @Injectable()
@@ -11,10 +10,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
   'jwt-refresh'
 ) {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly usersService: UsersService
-  ) {
+  constructor(private readonly configService: ConfigService) {
     //? Setup JWT Options
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
