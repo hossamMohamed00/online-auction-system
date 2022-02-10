@@ -8,5 +8,5 @@ export const GetRefreshToken = createParamDecorator(
     const refreshToken = req.get('authorization').replace('Bearer', '').trim();
 
     return refreshToken;
-  }
+  },
 );

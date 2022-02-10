@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User, UserDocument } from '../entities/user.schema';
@@ -20,7 +20,7 @@ export class AuthService {
     @InjectModel(User.name) private readonly usersModel: Model<UserDocument>,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -72,10 +72,16 @@ export class AuthService {
     await this.usersModel.findByIdAndUpdate(
       _id,
       { refreshToken: null },
-      { new: true }
+      { new: true },
     );
   }
 
+  /**
+   * Issue new tokens if the given refresh-token is valid
+   * @param _id - User id
+   * @param refreshToken - Given refresh-token
+   * @returns Tokens object contains access_token and refresh_token
+   */
   async refreshToken(_id: string, refreshToken: string): Promise<Tokens> {
     const user = await this.usersService.findById(_id);
 
@@ -105,12 +111,12 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get('ACCESS_TOKEN_SECRET'),
-        expiresIn: '50m'
+        expiresIn: '50m',
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get('REFRESH_TOKEN_SECRET'),
-        expiresIn: '7d'
-      })
+        expiresIn: '7d',
+      }),
     ]);
 
     return { accessToken, refreshToken };
@@ -139,7 +145,7 @@ export class AuthService {
     //? Issue jwt tokens
     const tokens = await this.getJWTTokens({
       sub: user._id,
-      email: user.email
+      email: user.email,
     });
 
     //? Save the refreshToken in the db

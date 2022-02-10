@@ -25,13 +25,12 @@ export const UserSchema = SchemaFactory.createForClass(User);
  ? Add pre save hook to hash user password
  */
 UserSchema.pre<UserDocument>('save', async function (next) {
-  const user: UserDocument = this;
   //* check the password if it is modified
-  if (!user.isModified('password')) {
+  if (!this.isModified('password')) {
     return next();
   }
 
   //* Hashing the password
-  user.password = await hash(user.password, 12);
+  this.password = await hash(this.password, 12);
   next();
 });

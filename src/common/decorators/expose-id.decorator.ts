@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ExposeOptions, Transform, TransformFnParams } from 'class-transformer';
 
 export const ExposeId =
-  (options?: ExposeOptions) =>
-  // tslint:disable-next-line: ban-types
+  (_options?: ExposeOptions) =>
+  // eslint-disable-next-line @typescript-eslint/ban-types
   (target: Object, propertyKey: string) => {
     Transform((params: TransformFnParams) => params.obj[propertyKey])(
       target,
-      propertyKey
+      propertyKey,
     );
   };

@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RegisterUserDto, UpdateUserDto } from './dto';
+import { UpdateUserDto } from './dto';
 import { User, UserDocument } from './entities/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private readonly usersModel: Model<UserDocument>
+    @InjectModel(User.name) private readonly usersModel: Model<UserDocument>,
   ) {}
 
   /**
@@ -25,7 +25,7 @@ export class UsersService {
    * @returns User instance if found, NotFoundException thrown otherwise.
    */
   async findById(_id: string) {
-    const user = await this.usersModel.findOne({}).exec();
+    const user = await this.usersModel.findById(_id).exec();
     if (!user) throw new NotFoundException('User not found ❌');
     return user;
   }
@@ -49,7 +49,7 @@ export class UsersService {
    */
   async update(_id: string, updateUserDto: UpdateUserDto) {
     const user = await this.usersModel.findByIdAndUpdate(_id, updateUserDto, {
-      new: true
+      new: true,
     });
 
     if (!user) throw new NotFoundException('User not found ❌');

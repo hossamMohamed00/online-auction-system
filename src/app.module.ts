@@ -11,9 +11,9 @@ import { AuthModule } from './users/auth/auth.module';
     ConfigModule.forRoot({ envFilePath: '.development.env', isGlobal: true }),
     MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
     UsersModule,
-    AuthModule
+    AuthModule,
   ],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule {
   //? Configure the application middleware

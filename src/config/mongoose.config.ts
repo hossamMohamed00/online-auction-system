@@ -1,6 +1,6 @@
 import {
   MongooseModuleOptions,
-  MongooseOptionsFactory
+  MongooseOptionsFactory,
 } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -11,7 +11,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
 
   createMongooseOptions(): MongooseModuleOptions {
     return {
-      uri: this.configService.get('DATABASE_CONNECTION_STRING')
+      uri: this.configService.get('DATABASE_CONNECTION_STRING'),
     };
   }
 }

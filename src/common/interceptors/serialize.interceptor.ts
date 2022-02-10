@@ -2,13 +2,14 @@ import {
   CallHandler,
   ExecutionContext,
   NestInterceptor,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { map, Observable } from 'rxjs';
 
 //? Define interface to ensure that the type of the incoming dto is  class
 interface ClassConstructor {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   new (...args: any[]): {};
 }
 
@@ -25,14 +26,14 @@ export class serializeInterceptor implements NestInterceptor {
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>
+    next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map((outgoingData: any) => {
         return plainToInstance(this.dto, outgoingData, {
-          excludeExtraneousValues: true
+          excludeExtraneousValues: true,
         });
-      })
+      }),
     );
   }
 }

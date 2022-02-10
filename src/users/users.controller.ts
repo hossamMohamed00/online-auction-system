@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../common/interceptors/serialize.interceptor';
-import { FindUserDto, RegisterUserDto, UpdateUserDto, UserDto } from './dto';
+import { FindUserDto, UpdateUserDto, UserDto } from './dto';
 
 @ApiTags('User')
 @Serialize(UserDto)

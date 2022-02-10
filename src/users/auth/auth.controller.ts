@@ -6,12 +6,15 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto, RegisterUserDto } from '../dto';
 import { AuthService } from './auth.service';
-import { GetCurrentUser as GetCurrentUserData, GetRefreshToken } from 'src/common/decorators';
+import {
+  GetCurrentUser as GetCurrentUserData,
+  GetRefreshToken,
+} from 'src/common/decorators';
 import { AccessTokenAuthGuard, RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
 
@@ -69,12 +72,15 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
+  /*
+  ?  Issue new tokens if the given refresh-token is valid
+  */
   @UseGuards(RefreshTokenAuthGuard)
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   refreshToken(
     @GetCurrentUserData('_id') userId: string,
-    @GetRefreshToken() refreshToken: string
+    @GetRefreshToken() refreshToken: string,
   ) {
     return this.authService.refreshToken(userId, refreshToken);
   }

@@ -9,13 +9,13 @@ import { JwtPayload } from '../types';
 export class AccessTokenStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
   ) {
     //? Setup JWT Options
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('ACCESS_TOKEN_SECRET')
+      secretOrKey: configService.get('ACCESS_TOKEN_SECRET'),
     });
   }
 

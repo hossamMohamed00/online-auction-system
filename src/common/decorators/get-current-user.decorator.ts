@@ -10,5 +10,5 @@ export const GetCurrentUser = createParamDecorator(
     if (!data) return user; // ***Check Rt Strategy***
 
     return user[data]; //* like user['_id']
-  }
+  },
 );

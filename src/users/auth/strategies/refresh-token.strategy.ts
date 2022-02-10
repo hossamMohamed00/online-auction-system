@@ -10,17 +10,17 @@ import { JwtPayload } from '../types';
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh'
+  'jwt-refresh',
 ) {
   constructor(
     private readonly configService: ConfigService,
-    private usersService: UsersService
+    private usersService: UsersService,
   ) {
     //? Setup JWT Options
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('REFRESH_TOKEN_SECRET')
+      secretOrKey: configService.get('REFRESH_TOKEN_SECRET'),
     });
   }
 
