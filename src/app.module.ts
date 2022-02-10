@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import * as Joi from 'joi';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
@@ -10,7 +11,19 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.development.env', isGlobal: true }),
+    ConfigModule.forRoot({
+      envFilePath: '.development.env',
+      isGlobal: true,
+      validationSchema: Joi.object({
+        APP_NAME: Joi.string(),
+        PORT: Joi.number(),
+        DATABASE_CONNECTION_STRING: Joi.string().required(),
+        ACCESS_TOKEN_SECRET: Joi.string().required(),
+        ACCESS_TOKEN_EXPIRATION: Joi.string().required(),
+        REFRESH_TOKEN_SECRET: Joi.string().required(),
+        REFRESH_TOKEN_EXPIRATION: Joi.string().required(),
+      }),
+    }),
     MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
     UsersModule,
     AuthModule,
