@@ -14,8 +14,9 @@ import { AuthService } from './auth.service';
 import {
   GetCurrentUser as GetCurrentUserData,
   GetRefreshToken,
+  IsPublicRoute,
 } from 'src/common/decorators';
-import { AccessTokenAuthGuard, RefreshTokenAuthGuard } from './guards';
+import { RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
 
 /**
@@ -31,8 +32,9 @@ export class AuthController {
    * @param registerUserDto :RegisterUserDto
    * @returns Tokens object containing access_token and refresh_token
    */
-  @Post('register')
+  @IsPublicRoute()
   @HttpCode(HttpStatus.CREATED)
+  @Post('register')
   register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
     return this.authService.register(registerUserDto);
   }
@@ -42,9 +44,10 @@ export class AuthController {
    * @param loginDto :LoginDto
    * @returns Tokens object containing access_token and refresh_token
    */
-  @Post('login')
+  @IsPublicRoute()
   @ApiBody({})
   @HttpCode(HttpStatus.OK)
+  @Post('login')
   async login(@Body() loginDto: LoginUserDto): Promise<Tokens> {
     return this.authService.login(loginDto);
   }
@@ -54,10 +57,9 @@ export class AuthController {
    * @param req
    * @returns
    */
-  @UseGuards(AccessTokenAuthGuard)
-  @Get('profile')
   @ApiHeader({ name: 'Authorization' })
   @HttpCode(HttpStatus.OK)
+  @Get('profile')
   getProfile(@Request() req) {
     return req.user;
   }
@@ -65,9 +67,8 @@ export class AuthController {
   /**
    * Logout user
    */
-  @UseGuards(AccessTokenAuthGuard)
-  @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @Post('logout')
   logout(@GetCurrentUserData('_id') userId: string) {
     return this.authService.logout(userId);
   }
@@ -75,9 +76,11 @@ export class AuthController {
   /*
   ?  Issue new tokens if the given refresh-token is valid
   */
-  @UseGuards(RefreshTokenAuthGuard)
-  @Post('refresh-token')
+  @IsPublicRoute() //* Bypass AccessTokenAuthGuard
+  @UseGuards(RefreshTokenAuthGuard) //* Ensure that the refresh token is exists
   @HttpCode(HttpStatus.OK)
+  @ApiHeader({ name: 'authorization', description: 'Refresh Token' })
+  @Post('refresh-token')
   refreshToken(
     @GetCurrentUserData('_id') userId: string,
     @GetRefreshToken() refreshToken: string,

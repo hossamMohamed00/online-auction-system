@@ -11,7 +11,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //? Setup validation pipes
+  //? Setup Global validation pipes
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   //? Setup Swagger here
@@ -32,7 +32,6 @@ async function bootstrap() {
 
   //? Use ConfigService to load the env files
   const configService = app.get(ConfigService);
-
   await app.listen(configService.get('PORT', 3000));
 }
 bootstrap();

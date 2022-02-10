@@ -1,7 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserDocument } from 'src/users/entities/user.schema';
 import { UsersService } from 'src/users/users.service';
@@ -29,8 +28,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
    * @param payload :JwtPayload
    * @returns user instance
    */
-  async validate(req: Request, { sub }: JwtPayload): Promise<UserDocument> {
-    const user: UserDocument = await this.usersService.findById(sub);
+  async validate(payload: JwtPayload): Promise<UserDocument> {
+    const user: UserDocument = await this.usersService.findById(payload.sub);
     if (!user) throw new ForbiddenException('Access Denied ❌');
 
     return user;

@@ -53,8 +53,6 @@ export class AuthService {
     const isMatch = await compare(password, user.password);
     if (!isMatch) throw new NotFoundException('User not found ❌');
 
-    console.log(isMatch);
-
     //? Issue tokens, save refresh_token in db and save user
     const tokens = await this.getTokensAndSaveUser(user);
 
@@ -85,7 +83,8 @@ export class AuthService {
   async refreshToken(_id: string, refreshToken: string): Promise<Tokens> {
     const user = await this.usersService.findById(_id);
 
-    if (!user) throw new ForbiddenException('Access Denied ❌');
+    if (!user || !user.refreshToken)
+      throw new ForbiddenException('Access Denied ❌');
 
     const isMatch = await compare(refreshToken, user.refreshToken);
     if (!isMatch) throw new ForbiddenException('Access Denied ❌');
