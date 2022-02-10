@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { LoginUserDto, RegisterUserDto } from '../dto';
+import { LoginUserDto, RegisterUserDto, UserDto } from '../dto';
 import { AuthService } from './auth.service';
 import {
   GetCurrentUser as GetCurrentUserData,
@@ -18,6 +18,7 @@ import {
 } from 'src/common/decorators';
 import { RefreshTokenAuthGuard } from './guards';
 import { Tokens } from './types';
+import { Serialize } from 'src/common/interceptors';
 
 /**
  * These endpoints responsible for user authentication
@@ -59,6 +60,7 @@ export class AuthController {
    */
   @ApiHeader({ name: 'Authorization' })
   @HttpCode(HttpStatus.OK)
+  @Serialize(UserDto)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
