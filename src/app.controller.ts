@@ -1,17 +1,24 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiBody } from '@nestjs/swagger';
-import { Serialize } from './interceptors/serialize.interceptor';
-import { LocalAuthGuard } from './users/auth/strategies/local-auth.guard';
-import { UserDto } from './users/dto/user.dto';
+import { ApiBody, ApiHeader } from '@nestjs/swagger';
+import { AuthService } from './users/auth/auth.service';
+import { JwtAuthGuard } from './users/auth/strategies/guards/jwt-auth.guard';
+import { LocalAuthGuard } from './users/auth/strategies/guards/local-auth.guard';
 
 @Controller()
-@Serialize(UserDto)
 export class AppController {
+  constructor(private authService: AuthService) {}
+
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   @ApiBody({})
   async login(@Request() req) {
-    return req.user._doc;
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  @ApiHeader({ name: 'Authorization' })
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
