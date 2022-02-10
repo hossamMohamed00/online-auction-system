@@ -26,19 +26,10 @@ export class AuthService {
    */
   async register(registerUserDto: RegisterUserDto): Promise<Tokens> {
     //? Create new user instance
-    const createdUser = new this.usersModel(registerUserDto);
+    const createdUser: UserDocument = new this.usersModel(registerUserDto);
 
-    //? Issue jwt tokens
-    const tokens = await this.getJWTTokens({
-      sub: createdUser._id,
-      email: createdUser.email
-    });
-
-    //? Save the refreshToken in the db
-    await this.updateRefreshToken(createdUser, tokens.refreshToken);
-
-    //* Save the user instance
-    await createdUser.save();
+    //? Issue tokens, save refresh_token in db and save user
+    const tokens = await this.getTokensAndSaveUser(createdUser);
 
     //* Return the tokens to the user
     return tokens;
@@ -58,17 +49,8 @@ export class AuthService {
     const isMatch = await compare(password, user.password);
     if (!isMatch) throw new NotFoundException('User not found ❌');
 
-    //? Issue jwt tokens
-    const tokens = await this.getJWTTokens({
-      sub: user._id,
-      email: user.email
-    });
-
-    //? Save the refreshToken in the db
-    await this.updateRefreshToken(user, tokens.refreshToken);
-
-    //* Save the user instance
-    await user.save();
+    //? Issue tokens, save refresh_token in db and save user
+    const tokens = await this.getTokensAndSaveUser(user);
 
     return tokens;
   }
@@ -109,5 +91,26 @@ export class AuthService {
    */
   async hashData(data: string) {
     return hash(data, 12);
+  }
+
+  /**
+   * Issue new tokens and save refresh_token in db and save user instance
+   * @param user - User instance
+   * @returns Tokens object contains access_token and refresh_token
+   */
+  async getTokensAndSaveUser(user: UserDocument): Promise<Tokens> {
+    //? Issue jwt tokens
+    const tokens = await this.getJWTTokens({
+      sub: user._id,
+      email: user.email
+    });
+
+    //? Save the refreshToken in the db
+    await this.updateRefreshToken(user, tokens.refreshToken);
+
+    //* Save the user instance
+    await user.save();
+
+    return tokens;
   }
 }
