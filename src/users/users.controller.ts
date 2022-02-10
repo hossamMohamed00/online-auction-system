@@ -33,7 +33,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param() params: FindUserDto) {
-    return this.usersService.findOne(params.id);
+    return this.usersService.findById(params.id);
   }
 
   @Patch(':id')

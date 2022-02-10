@@ -37,8 +37,19 @@ export class UsersService {
    * @param _id
    * @returns User instance if found, NotFoundException thrown otherwise.
    */
-  async findOne(_id: string) {
-    const user = await this.usersModel.findById(_id).exec();
+  async findById(_id: string) {
+    const user = await this.usersModel.findOne({}).exec();
+    if (!user) throw new NotFoundException('User not found ❌');
+    return user;
+  }
+
+  /**
+   * Find user by email
+   * @param email
+   * @returns User instance if found, NotFoundException thrown otherwise.
+   */
+  async findByEmail(email: string) {
+    const user = await this.usersModel.findOne({ email }).exec();
     if (!user) throw new NotFoundException('User not found ❌');
     return user;
   }
