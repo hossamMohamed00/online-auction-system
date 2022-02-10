@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserDocument } from '../entities/user.schema';
+import { User, UserDocument } from '../entities/user.schema';
 import { UsersService } from '../users.service';
 import { JwtPayload } from './jwt-payload.interface';
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -11,13 +12,19 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findByEmail(email);
-    if (user && user.password === password) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
+  /**
+   * Validate user credentials
+   * @param email User email
+   * @param password User password
+   * @returns user instance if found || null if not found
+   */
+  async validateUser(email: string, password: string): Promise<User> {
+    const user: User = await this.usersService.findByEmail(email);
+    //? Check if the password matches or not
+    const isMatch = await compare(password, user.password);
+    if (!isMatch) return null;
+
+    return user;
   }
 
   /**
@@ -25,7 +32,7 @@ export class AuthService {
    * @param user
    * @returns Object contains access_token
    */
-  async createJWTToken(user: UserDocument) {
+  async createJWTToken(user: UserDocument): Promise<{ access_token: string }> {
     const payload: JwtPayload = { sub: user._id, email: user.email };
 
     return {
