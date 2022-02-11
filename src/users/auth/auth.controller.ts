@@ -12,7 +12,7 @@ import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto, RegisterUserDto, UserDto } from '../dto';
 import { AuthService } from './auth.service';
 import {
-  GetCurrentUser as GetCurrentUserData,
+  GetCurrentUserData,
   GetRefreshToken,
   IsPublicRoute,
 } from 'src/common/decorators';

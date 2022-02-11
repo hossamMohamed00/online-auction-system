@@ -7,6 +7,7 @@ import { MongooseConfigService } from './config/mongoose.config';
 import { AuthModule } from './users/auth/auth.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
+import { AuctionsModule } from './auctions/auctions.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
     MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
     UsersModule,
     AuthModule,
+    AuctionsModule,
   ],
   providers: [
     //? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
