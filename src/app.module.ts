@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import * as Joi from 'joi';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
@@ -29,7 +28,6 @@ import { APP_GUARD } from '@nestjs/core';
     AuthModule,
   ],
   providers: [
-    AppService,
     //? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
     {
       provide: APP_GUARD,
