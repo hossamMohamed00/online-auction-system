@@ -20,7 +20,7 @@ export class AuctionsService {
   async create(createAuctionDto: CreateAuctionDto, sellerId: string) {
     const createdAuction: AuctionDocument = new this.auctionModel({
       ...createAuctionDto,
-      sellerId,
+      seller: sellerId,
       endDat: null,
     });
 
@@ -34,7 +34,7 @@ export class AuctionsService {
    * @returns List of all existing auctions
    */
   findAll() {
-    return this.auctionModel.find({}).exec();
+    return this.auctionModel.find({}).populate('seller').exec();
   }
 
   /**

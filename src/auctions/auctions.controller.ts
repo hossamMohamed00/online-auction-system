@@ -7,11 +7,22 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { GetCurrentUserData, IsPublicRoute, Roles } from 'src/common/decorators';
+import {
+  GetCurrentUserData,
+  IsPublicRoute,
+  Roles,
+} from 'src/common/decorators';
+import { Serialize } from 'src/common/interceptors';
 import { Role } from 'src/users/enums';
 import { AuctionsService } from './auctions.service';
-import { AuctionId, CreateAuctionDto, UpdateAuctionDto } from './dto';
+import {
+  AuctionDto,
+  AuctionId,
+  CreateAuctionDto,
+  UpdateAuctionDto,
+} from './dto';
 
+@Serialize(AuctionDto)
 @Controller('auctions')
 export class AuctionsController {
   constructor(private readonly auctionsService: AuctionsService) {}

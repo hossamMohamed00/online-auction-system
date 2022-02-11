@@ -19,7 +19,7 @@ export class Auction {
   endDate: Date;
 
   @Prop({ type: SchemaTypes.ObjectId, required: true, ref: 'User' })
-  sellerId: Types.ObjectId;
+  seller: Types.ObjectId;
 
   @Prop({ enum: Status, default: Status.Pending })
   status: string;
