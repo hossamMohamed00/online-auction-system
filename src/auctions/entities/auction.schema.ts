@@ -1,5 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes, Types } from 'mongoose';
+import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
+
+import { User } from 'src/users/entities/user.schema';
 import { Status } from '../enums';
 
 export type AuctionDocument = Auction & Document;
@@ -18,11 +21,11 @@ export class Auction {
   @Prop({ default: null })
   endDate: Date;
 
-  @Prop({ type: SchemaTypes.ObjectId, required: true, ref: 'User' })
-  seller: Types.ObjectId;
-
   @Prop({ enum: Status, default: Status.Pending })
   status: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  seller: User;
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

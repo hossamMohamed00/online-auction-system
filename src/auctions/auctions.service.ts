@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { User } from 'src/users/entities/user.schema';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { UpdateAuctionDto } from './dto/update-auction.dto';
 import { Auction, AuctionDocument } from './entities/auction.schema';
@@ -17,16 +18,16 @@ export class AuctionsService {
    * @param createAuctionDto
    * @param sellerId - Seller who created the auction
    */
-  async create(createAuctionDto: CreateAuctionDto, sellerId: string) {
+  async create(createAuctionDto: CreateAuctionDto, seller: User) {
     const createdAuction: AuctionDocument = new this.auctionModel({
       ...createAuctionDto,
-      seller: sellerId,
       endDat: null,
+      seller,
     });
 
     await createdAuction.save();
 
-    return createAuctionDto;
+    return createdAuction;
   }
 
   /**
@@ -43,7 +44,11 @@ export class AuctionsService {
    * @returns Auction instance if found, NotFoundException thrown otherwise.
    */
   async findById(_id: string) {
-    const auction = await this.auctionModel.findById(_id);
+    const auction = await this.auctionModel
+      .findById(_id)
+      .populate('seller')
+      .exec();
+
     if (!auction) throw new NotFoundException('Auction not found ❌');
 
     return auction;

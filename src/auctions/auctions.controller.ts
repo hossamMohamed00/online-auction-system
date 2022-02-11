@@ -13,6 +13,7 @@ import {
   Roles,
 } from 'src/common/decorators';
 import { Serialize } from 'src/common/interceptors';
+import { User } from 'src/users/entities/user.schema';
 import { Role } from 'src/users/enums';
 import { AuctionsService } from './auctions.service';
 import {
@@ -31,9 +32,9 @@ export class AuctionsController {
   @Post()
   create(
     @Body() createAuctionDto: CreateAuctionDto,
-    @GetCurrentUserData('_id') userId: string,
+    @GetCurrentUserData() user: User,
   ) {
-    return this.auctionsService.create(createAuctionDto, userId);
+    return this.auctionsService.create(createAuctionDto, user);
   }
 
   @IsPublicRoute()
