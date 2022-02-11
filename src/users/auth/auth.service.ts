@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -29,6 +30,10 @@ export class AuthService {
    * @returns Tokens: Object of access_token and refresh_token
    */
   async register(registerUserDto: RegisterUserDto): Promise<Tokens> {
+    //* Ensure that the given email is not taken
+    const isTaken = await this.usersService.findByEmail(registerUserDto.email);
+    if (isTaken) throw new BadRequestException('Email already taken ❌👀');
+
     //? Create new user instance
     const createdUser: UserDocument = new this.usersModel(registerUserDto);
 
