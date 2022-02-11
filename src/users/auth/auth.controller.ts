@@ -16,7 +16,7 @@ import {
   GetRefreshToken,
   IsPublicRoute,
 } from 'src/common/decorators';
-import { RefreshTokenAuthGuard } from './guards';
+import { RefreshTokenAuthGuard } from '../../common/guards';
 import { Tokens } from './types';
 import { Serialize } from 'src/common/interceptors';
 

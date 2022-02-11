@@ -6,7 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseConfigService } from './config/mongoose.config';
 import { AuthModule } from './users/auth/auth.module';
-import { AccessTokenAuthGuard } from './users/auth/guards';
+import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -34,6 +34,11 @@ import { APP_GUARD } from '@nestjs/core';
     {
       provide: APP_GUARD,
       useClass: AccessTokenAuthGuard,
+    },
+    //? Enable HasRoleGuard on all routes to check whether the user has the required role to access the endpoint or not
+    {
+      provide: APP_GUARD,
+      useClass: HasRoleGuard,
     },
   ],
 })

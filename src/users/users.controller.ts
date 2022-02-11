@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../common/interceptors/serialize.interceptor';
 import { FindUserDto, UpdateUserDto, UserDto } from './dto';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from './enums';
 
 @ApiTags('User')
 @Serialize(UserDto)
@@ -20,11 +22,13 @@ export class UsersController {
     return this.usersService.findById(params.id);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   update(@Param() params: FindUserDto, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(params.id, updateUserDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param() params: FindUserDto) {
     return this.usersService.remove(params.id);

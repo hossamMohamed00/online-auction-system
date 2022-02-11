@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { hash } from 'bcryptjs';
+import { Role } from '../enums';
 
 export type UserDocument = User & Document;
 
@@ -17,6 +18,9 @@ export class User {
 
   @Prop({ required: false })
   refreshToken: string;
+
+  @Prop({ enum: Role, default: Role.Buyer })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
