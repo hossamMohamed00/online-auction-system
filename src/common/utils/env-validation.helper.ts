@@ -16,9 +16,12 @@ export function GetEnvValidationSchema() {
     ACCESS_TOKEN_EXPIRATION: Joi.string().required(),
     REFRESH_TOKEN_SECRET: Joi.string().required(),
     REFRESH_TOKEN_EXPIRATION: Joi.string().required(),
-    //? Auth related variables
+    //? Email related variables
     JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
     JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
     EMAIL_CONFIRMATION_URL: Joi.string().required(),
+    //? Auth Google related variables
+    GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
+    GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
   });
 }
