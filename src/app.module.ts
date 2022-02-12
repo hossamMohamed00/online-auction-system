@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
@@ -8,6 +8,7 @@ import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
 import { AuctionsModule } from './auctions/auctions.module';
 import { GetEnvValidationSchema } from './common/utils';
+import { LogsMiddleware } from './common/middlewares';
 
 @Module({
   imports: [
@@ -36,4 +37,7 @@ import { GetEnvValidationSchema } from './common/utils';
 })
 export class AppModule {
   //? Configure the application middleware
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogsMiddleware).forRoutes('*');
+  }
 }
