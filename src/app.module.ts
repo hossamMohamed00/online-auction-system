@@ -10,19 +10,17 @@ import { AppConfigModule } from './config/app/app.config.module';
 import { MongoConfigModule } from './config/database/mongo.config.module';
 import { MongoConfigService } from './config/database/mongo.config.service';
 import { AuthConfigModule } from './config/auth/auth.config.module';
+import { MongoDatabaseProviderModule } from './providers/database/mongo/mongo.module';
 
 @Module({
   imports: [
+    //? All environment variables Loader Modules.
     AppConfigModule,
     MongoConfigModule,
     AuthConfigModule,
-    MongooseModule.forRootAsync({
-      imports: [MongoConfigModule],
-      useFactory: (config: MongoConfigService) => ({
-        uri: config.connectionString,
-      }),
-      inject: [MongoConfigService],
-    }),
+    //? Setup Database
+    MongoDatabaseProviderModule,
+    //* Main Modules
     UsersModule,
     AuthModule,
     AuctionsModule,
