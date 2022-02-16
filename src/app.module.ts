@@ -1,23 +1,28 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseConfigService } from './config/mongoose.config';
 import { AuthModule } from './users/auth/auth.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
 import { AuctionsModule } from './auctions/auctions.module';
-import { GetEnvValidationSchema } from './common/utils';
 import { LogsMiddleware } from './common/middlewares';
+import { AppConfigModule } from './config/app/app.config.module';
+import { MongoConfigModule } from './config/database/mongo.config.module';
+import { MongoConfigService } from './config/database/mongo.config.service';
+import { AuthConfigModule } from './config/auth/auth.config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.development.env',
-      isGlobal: true,
-      validationSchema: GetEnvValidationSchema(),
+    AppConfigModule,
+    MongoConfigModule,
+    AuthConfigModule,
+    MongooseModule.forRootAsync({
+      imports: [MongoConfigModule],
+      useFactory: (config: MongoConfigService) => ({
+        uri: config.connectionString,
+      }),
+      inject: [MongoConfigService],
     }),
-    MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
     UsersModule,
     AuthModule,
     AuctionsModule,

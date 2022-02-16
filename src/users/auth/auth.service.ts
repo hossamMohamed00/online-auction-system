@@ -13,7 +13,7 @@ import { LoginUserDto, RegisterUserDto } from '../dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
-import { ConfigService } from '@nestjs/config';
+import { AuthConfigService } from 'src/config/auth/auth.config.service';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,7 @@ export class AuthService {
     @InjectModel(User.name) private readonly usersModel: Model<UserDocument>,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly authConfigService: AuthConfigService,
   ) {}
 
   /**
@@ -114,12 +114,13 @@ export class AuthService {
     //? Issue new accessToken, refreshToken
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(payload, {
-        secret: this.configService.get('ACCESS_TOKEN_SECRET'),
-        expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRATION'),
+        secret: this.authConfigService.accessTokenSecret,
+        expiresIn: this.authConfigService.accessTokenExpiration,
       }),
+
       this.jwtService.sign(payload, {
-        secret: this.configService.get('REFRESH_TOKEN_SECRET'),
-        expiresIn: this.configService.get('REFRESH_TOKEN_EXPIRATION'),
+        secret: this.authConfigService.refreshTokenSecret,
+        expiresIn: this.authConfigService.refreshTokenExpiration,
       }),
     ]);
 
