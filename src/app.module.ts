@@ -1,14 +1,12 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './users/auth/auth.module';
+import { UsersModule } from './models/users/users.module';
+import { AuthModule } from './models/auth/auth.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
-import { AuctionsModule } from './auctions/auctions.module';
+import { AuctionsModule } from './models/auction/auctions.module';
 import { LogsMiddleware } from './common/middlewares';
 import { AppConfigModule } from './config/app/app.config.module';
 import { MongoConfigModule } from './config/database/mongo.config.module';
-import { MongoConfigService } from './config/database/mongo.config.service';
 import { AuthConfigModule } from './config/auth/auth.config.module';
 import { MongoDatabaseProviderModule } from './providers/database/mongo/mongo.module';
 
