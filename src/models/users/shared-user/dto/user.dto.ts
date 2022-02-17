@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { ExposeObjectId } from '../../../common/decorators/mongo/expose-id.decorator';
+import { ExposeObjectId } from '../../../../common/decorators/mongo/expose-id.decorator';
 
 /**
  * User dto - Describe what user data to be sent over the network

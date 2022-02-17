@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/models/users/entities/user.schema';
+import { User } from '../users/shared-user/schema/user.schema';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto';
 import { Auction, AuctionDocument } from './entities/auction.schema';
 

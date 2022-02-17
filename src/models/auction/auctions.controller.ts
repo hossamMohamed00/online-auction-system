@@ -13,8 +13,8 @@ import {
   Roles,
 } from 'src/common/decorators';
 import { Serialize } from 'src/common/interceptors';
-import { User } from 'src/models/users/entities/user.schema';
-import { Role } from 'src/models/users/enums';
+import { Role } from '../users/shared-user/enums';
+import { User } from '../users/shared-user/schema/user.schema';
 import { AuctionsService } from './auctions.service';
 import {
   AuctionDto,

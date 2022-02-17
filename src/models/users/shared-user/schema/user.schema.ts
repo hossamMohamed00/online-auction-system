@@ -5,7 +5,7 @@ import { Role } from '../enums';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({ discriminatorKey: 'kind' })
 export class User {
   @Prop({ required: true, trim: true })
   name: string;
@@ -19,8 +19,8 @@ export class User {
   @Prop({ required: false })
   refreshToken: string;
 
-  @Prop({ enum: Role, default: Role.Buyer })
-  role: string;
+  @Prop({ enum: Object.values(Role), default: Role.Buyer })
+  role: Role;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

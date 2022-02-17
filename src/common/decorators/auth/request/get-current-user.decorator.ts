@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { UserDocument } from 'src/models/users/entities/user.schema';
+import { UserDocument } from 'src/models/users/shared-user/schema/user.schema';
 
 /*
  ? This is a param decorator that extract the user object and return it.

@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { Role } from '../../../../models/users/enums/index';
+import { Role } from 'src/models/users/shared-user/enums';
 
 /*
  ? This decorator will change the metadata to add given role to the route

@@ -1,5 +1,6 @@
+import { SchemaModule } from './models/users/shared-user/schema/schema.module';
+import { SellerModule } from './models/users/seller/seller.module';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './models/auth/auth.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { APP_GUARD } from '@nestjs/core';
@@ -9,9 +10,12 @@ import { AppConfigModule } from './config/app/app.config.module';
 import { MongoConfigModule } from './config/database/mongo.config.module';
 import { AuthConfigModule } from './config/auth/auth.config.module';
 import { MongoDatabaseProviderModule } from './providers/database/mongo/mongo.module';
+import { UsersModule } from './models/users/shared-user/users.module';
 
 @Module({
   imports: [
+    SchemaModule,
+    SellerModule,
     //? All environment variables Loader Modules.
     AppConfigModule,
     MongoConfigModule,

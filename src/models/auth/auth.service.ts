@@ -5,8 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User, UserDocument } from '../users/entities/user.schema';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/shared-user/users.service';
 import { JwtPayload } from './types/jwt-payload.type';
 import { compare, hash } from 'bcryptjs';
 import { LoginUserDto, RegisterUserDto } from '../auth/dto';
@@ -14,6 +13,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
+import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 
 @Injectable()
 export class AuthService {

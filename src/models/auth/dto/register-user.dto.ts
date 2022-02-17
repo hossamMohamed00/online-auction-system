@@ -6,7 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/models/users/enums';
+import { Role } from 'src/models/users/shared-user/enums';
 
 export class RegisterUserDto {
   @IsString()

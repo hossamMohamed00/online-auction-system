@@ -19,7 +19,7 @@ import {
 import { RefreshTokenAuthGuard } from '../../common/guards';
 import { Tokens } from './types';
 import { Serialize } from 'src/common/interceptors';
-import { UserDto } from '../users/dto';
+import { UserDto } from '../users/shared-user/dto';
 
 /**
  * These endpoints responsible for user authentication

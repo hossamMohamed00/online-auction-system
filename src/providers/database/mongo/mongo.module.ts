@@ -13,4 +13,6 @@ import { MongoConfigService } from 'src/config/database/mongo.config.service';
     }),
   ],
 })
+
+//* Used in app.module.ts to initialize the database
 export class MongoDatabaseProviderModule {}
