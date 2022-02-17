@@ -7,6 +7,16 @@ import {
   AdminSchema,
 } from 'src/models/users/admin/schema/admin.schema';
 import {
+  Buyer,
+  BuyerDocument,
+  BuyerSchema,
+} from 'src/models/users/buyer/schema/buyer.schema';
+import {
+  Employee,
+  EmployeeDocument,
+  EmployeeSchema,
+} from 'src/models/users/employee/schema/employee.schema';
+import {
   Seller,
   SellerDocument,
   SellerSchema,
@@ -21,10 +31,29 @@ export const adminModelProvider: Provider<Model<AdminDocument>> = {
     adminModel.discriminator<AdminDocument>(Admin.name, AdminSchema),
 };
 
+//? This will provide employee discriminator from user schema
+export const employeeModelProvider: Provider<Model<EmployeeDocument>> = {
+  provide: getModelToken(Employee.name),
+  inject: [getModelToken(User.name)],
+  useFactory: (employeeModel: Model<UserDocument>) =>
+    employeeModel.discriminator<EmployeeDocument>(
+      Employee.name,
+      EmployeeSchema,
+    ),
+};
+
 //? This will provide seller discriminator from user schema
 export const sellerModelProvider: Provider<Model<SellerDocument>> = {
   provide: getModelToken(Seller.name),
   inject: [getModelToken(User.name)],
   useFactory: (sellerModel: Model<UserDocument>) =>
     sellerModel.discriminator<SellerDocument>(Seller.name, SellerSchema),
+};
+
+//? This will provide buyer discriminator from user schema
+export const buyerModelProvider: Provider<Model<BuyerDocument>> = {
+  provide: getModelToken(Buyer.name),
+  inject: [getModelToken(User.name)],
+  useFactory: (buyerModel: Model<UserDocument>) =>
+    buyerModel.discriminator<BuyerDocument>(Buyer.name, BuyerSchema),
 };

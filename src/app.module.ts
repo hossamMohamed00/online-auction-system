@@ -12,12 +12,17 @@ import { AuthConfigModule } from './config/auth/auth.config.module';
 import { MongoDatabaseProviderModule } from './providers/database/mongo/mongo.module';
 import { UsersModule } from './models/users/shared-user/users.module';
 import { AdminModule } from './models/users/admin/admin.module';
+import { BuyerModule } from './models/users/buyer/buyer.module';
+import { EmployeeModule } from './models/users/employee/employee.module';
 
 @Module({
   imports: [
+    //? Load all user related modules
     SchemaModule,
     AdminModule,
+    EmployeeModule,
     SellerModule,
+    BuyerModule,
     //? All environment variables Loader Modules.
     AppConfigModule,
     MongoConfigModule,
