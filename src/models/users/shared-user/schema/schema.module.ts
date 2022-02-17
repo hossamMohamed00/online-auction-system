@@ -1,6 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { sellerModelProvider } from '../providers/discriminators/discriminator.provider';
+import {
+  adminModelProvider,
+  sellerModelProvider,
+} from '../providers/discriminators/discriminator.provider';
 import { User, UserSchema } from './user.schema';
 
 @Global()
@@ -14,9 +17,13 @@ import { User, UserSchema } from './user.schema';
       },
     ]),
   ],
-  providers: [sellerModelProvider], // Provide it so it is injectable by getModelToken(Seller.name)]
+  providers: [
+    adminModelProvider, // Provide it so it is injectable by getModelToken(Admin.name)]
+    sellerModelProvider, // Provide it so it is injectable by getModelToken(Seller.name)]
+  ],
   exports: [
     MongooseModule,
+    adminModelProvider, // Export it so it is injectable by getModelToken(Admin.name)],
     sellerModelProvider, // Export it so it is injectable by getModelToken(Seller.name)],
   ],
 })

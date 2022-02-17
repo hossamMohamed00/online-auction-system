@@ -2,7 +2,7 @@ import { SetMetadata } from '@nestjs/common';
 import { Role } from 'src/models/users/shared-user/enums';
 
 /*
- ? This decorator will change the metadata to add given role to the route
+ ? This will change the metadata to add given role to the route
  */
 
 export const ROLES_KEY = 'roles';

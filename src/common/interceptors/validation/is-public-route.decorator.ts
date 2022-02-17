@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
 
 /*
- ? This decorator will change the metadata to let the route public
+ ? This will change the metadata to let the route public
  */
 
 export const IS_PUBLIC_KEY = 'isPublic';

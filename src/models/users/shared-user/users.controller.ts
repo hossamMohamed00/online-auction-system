@@ -1,7 +1,7 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/common/decorators';
+import { IsPublicRoute, Roles } from 'src/common/decorators';
 import { Serialize } from 'src/common/interceptors';
 import { FindUserDto, UpdateUserDto, UserDto } from './dto';
 import { Role } from './enums';

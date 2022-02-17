@@ -11,10 +11,12 @@ import { MongoConfigModule } from './config/database/mongo.config.module';
 import { AuthConfigModule } from './config/auth/auth.config.module';
 import { MongoDatabaseProviderModule } from './providers/database/mongo/mongo.module';
 import { UsersModule } from './models/users/shared-user/users.module';
+import { AdminModule } from './models/users/admin/admin.module';
 
 @Module({
   imports: [
     SchemaModule,
+    AdminModule,
     SellerModule,
     //? All environment variables Loader Modules.
     AppConfigModule,
