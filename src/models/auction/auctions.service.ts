@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../users/shared-user/schema/user.schema';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto';
-import { Auction, AuctionDocument } from './entities/auction.schema';
+import { Auction, AuctionDocument } from './schema/auction.schema';
 
 @Injectable()
 export class AuctionsService {

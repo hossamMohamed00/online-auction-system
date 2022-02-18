@@ -73,6 +73,7 @@ export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
   removeEmployee(@Param() { id }: MongoObjectIdDto): Promise<EmployeeDocument> {
     return this.adminService.removeEmployee(id);
   }
+  
   /* Handle Category Functions */
   /**
    * Create a new category

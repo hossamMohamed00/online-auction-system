@@ -1,4 +1,4 @@
-export enum Status {
+export enum AuctionStatus {
   Pending = 'pending',
   Accepted = 'accepted',
   Denied = 'denied',

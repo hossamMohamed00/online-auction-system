@@ -85,7 +85,7 @@ export class AuthService {
    * @param refreshToken - Given refresh-token
    * @returns Tokens object contains access_token and refresh_token
    */
-  async refreshToken(_id: string, refreshToken: string): Promise<Tokens> {
+  async getNewRefreshToken(_id: string, refreshToken: string): Promise<Tokens> {
     const user = await this.usersService.findById(_id);
 
     if (!user || !user.refreshToken)
