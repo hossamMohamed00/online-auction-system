@@ -18,9 +18,10 @@ import {
 } from 'src/models/category/dto';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { CategoryBehaviors } from './interfaces/manage-categories.interface';
 @Roles(Role.Admin)
 @Controller('admin')
-export class AdminController {
+export class AdminController implements CategoryBehaviors {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
@@ -43,7 +44,7 @@ export class AdminController {
    */
   @Serialize(CategoryDto)
   @Post('category')
-  createCategory(@Body() body: CreateCategoryDto) {
+  addCategory(@Body() body: CreateCategoryDto) {
     return this.adminService.createCategory(body);
   }
 
@@ -64,7 +65,7 @@ export class AdminController {
    */
   @Serialize(CategoryDto)
   @Get('category')
-  listAllCategories(@Query('name') name: string) {
+  showAllCategories(@Query('name') name: string) {
     return this.adminService.listAllCategories(name);
   }
 
@@ -75,7 +76,7 @@ export class AdminController {
    */
   @Serialize(CategoryDto)
   @Patch('category/:id')
-  UpdateCategory(
+  updateCategory(
     @Param() { id }: MongoObjectIdDto,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
