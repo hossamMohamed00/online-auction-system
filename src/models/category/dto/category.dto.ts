@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { ExposeObjectId } from '../../../common/decorators/mongo/expose-id.decorator';
+import { ExposeObjectId } from 'src/common/decorators';
 
 /**
  * Category dto - Describe what category data to be sent over the network

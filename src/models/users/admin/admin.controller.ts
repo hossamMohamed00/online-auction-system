@@ -21,6 +21,7 @@ import { Serialize } from 'src/common/interceptors';
 import { CategoryBehaviors, EmployeeBehaviors } from './interfaces';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
+import { EmployeeDto } from '../employee/dto/employee.dto';
 @Roles(Role.Admin)
 @Controller('admin')
 export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
@@ -39,12 +40,15 @@ export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
   }
 
   /* Handle Employee Behaviors */
+  @Serialize(EmployeeDto)
   @Post('employee')
   addEmployee(
     @Body() createEmployeeDto: CreateEmployeeDto,
   ): Promise<EmployeeDocument> {
     return this.adminService.addEmployee(createEmployeeDto);
   }
+
+  @Serialize(EmployeeDto)
   @Delete('employee/:id')
   removeEmployee(@Param() { id }: MongoObjectIdDto): Promise<EmployeeDocument> {
     return this.adminService.removeEmployee(id);
