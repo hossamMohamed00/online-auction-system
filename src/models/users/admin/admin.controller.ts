@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { IsPublicRoute } from 'src/common/decorators';
+import { IsPublicRoute, Roles } from 'src/common/decorators';
 import { AdminService } from './admin.service';
+import { Role } from 'src/models/users/shared-user/enums';
 
+@Roles(Role.Admin)
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}

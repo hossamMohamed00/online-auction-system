@@ -12,16 +12,12 @@ import {
   IsPublicRoute,
   Roles,
 } from 'src/common/decorators';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
 import { Role } from '../users/shared-user/enums';
 import { User } from '../users/shared-user/schema/user.schema';
 import { AuctionsService } from './auctions.service';
-import {
-  AuctionDto,
-  IsAuctionId,
-  CreateAuctionDto,
-  UpdateAuctionDto,
-} from './dto';
+import { AuctionDto, CreateAuctionDto, UpdateAuctionDto } from './dto';
 
 @Serialize(AuctionDto)
 @Controller('auctions')
@@ -45,14 +41,14 @@ export class AuctionsController {
 
   @IsPublicRoute()
   @Get(':id')
-  findOne(@Param() { id }: IsAuctionId) {
+  findOne(@Param() { id }: MongoObjectIdDto) {
     return this.auctionsService.findById(id);
   }
 
   @Roles(Role.Admin)
   @Patch(':id')
   update(
-    @Param('id') { id }: IsAuctionId,
+    @Param() { id }: MongoObjectIdDto,
     @Body() updateAuctionDto: UpdateAuctionDto,
   ) {
     return this.auctionsService.update(id, updateAuctionDto);
@@ -60,7 +56,7 @@ export class AuctionsController {
 
   @Roles(Role.Admin)
   @Delete(':id')
-  remove(@Param('id') { id }: IsAuctionId) {
+  remove(@Param() { id }: MongoObjectIdDto) {
     return this.auctionsService.remove(id);
   }
 }
