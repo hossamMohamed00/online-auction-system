@@ -1,3 +1,5 @@
+import { CategoryModule } from './models/category/category.module';
+import { ItemModule } from './models/items/item.module';
 import { SchemaModule } from './models/users/shared-user/schema/schema.module';
 import { SellerModule } from './models/users/seller/seller.module';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
@@ -17,6 +19,8 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 
 @Module({
   imports: [
+    CategoryModule,
+    ItemModule,
     //? Load all user related modules
     SchemaModule,
     AdminModule,
