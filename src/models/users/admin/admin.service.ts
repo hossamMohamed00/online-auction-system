@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
+import { CreateEmployeeDto } from '../employee/dto';
+import { EmployeeService } from '../employee/employee.service';
+import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { Admin, AdminDocument } from './schema/admin.schema';
 
 @Injectable()
@@ -11,6 +15,7 @@ export class AdminService {
     @InjectModel(Admin.name)
     private readonly AdminModel: Model<AdminDocument>,
     private readonly categoryService: CategoryService,
+    private readonly employeeService: EmployeeService,
   ) {}
 
   async create(body: any) {
@@ -22,6 +27,26 @@ export class AdminService {
   async findAll() {
     const admins = await this.AdminModel.find().exec();
     return admins;
+  }
+
+  /* Handle Employee Functions */
+
+  /**
+   * Add new employee
+   * @param createEmployeeDto Emp data
+   * @returns employee instance
+   */
+  addEmployee(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDocument> {
+    return this.employeeService.create(createEmployeeDto);
+  }
+
+  /**
+   * Remove employee with id
+   * @param id Employee id
+   * @returns Deleted employee document
+   */
+  removeEmployee(id: string): Promise<EmployeeDocument> {
+    return this.employeeService.remove(id);
   }
 
   /* Handle Category Functions */

@@ -18,10 +18,12 @@ import {
 } from 'src/models/category/dto';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
-import { CategoryBehaviors } from './interfaces/manage-categories.interface';
+import { CategoryBehaviors, EmployeeBehaviors } from './interfaces';
+import { CreateEmployeeDto } from '../employee/dto';
+import { EmployeeDocument } from '../employee/schema/employee.schema';
 @Roles(Role.Admin)
 @Controller('admin')
-export class AdminController implements CategoryBehaviors {
+export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
@@ -36,6 +38,17 @@ export class AdminController implements CategoryBehaviors {
     return this.adminService.findAll();
   }
 
+  /* Handle Employee Behaviors */
+  @Post('employee')
+  addEmployee(
+    @Body() createEmployeeDto: CreateEmployeeDto,
+  ): Promise<EmployeeDocument> {
+    return this.adminService.addEmployee(createEmployeeDto);
+  }
+  @Delete('employee/:id')
+  removeEmployee(@Param() { id }: MongoObjectIdDto): Promise<EmployeeDocument> {
+    return this.adminService.removeEmployee(id);
+  }
   /* Handle Category Functions */
   /**
    * Create a new category

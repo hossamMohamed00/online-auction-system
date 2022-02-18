@@ -7,5 +7,6 @@ import { Module } from '@nestjs/common';
   imports: [],
   controllers: [EmployeeController],
   providers: [EmployeeService],
+  exports: [EmployeeService],
 })
 export class EmployeeModule {}
