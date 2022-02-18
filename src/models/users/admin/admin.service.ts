@@ -41,6 +41,13 @@ export class AdminService {
   }
 
   /**
+   * List all employees
+   */
+  listEmployee(): Promise<EmployeeDocument[]> {
+    return this.employeeService.listAll();
+  }
+
+  /**
    * Remove employee with id
    * @param id Employee id
    * @returns Deleted employee document

@@ -40,6 +40,11 @@ export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
   }
 
   /* Handle Employee Behaviors */
+  /**
+   * Add new employee
+   * @param createEmployeeDto
+   * @returns employee document
+   */
   @Serialize(EmployeeDto)
   @Post('employee')
   addEmployee(
@@ -48,6 +53,21 @@ export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
     return this.adminService.addEmployee(createEmployeeDto);
   }
 
+  /**
+   * List all employees
+   * @returns employee list
+   */
+  @Serialize(EmployeeDto)
+  @Get('employee')
+  listEmployees(): Promise<EmployeeDocument[]> {
+    return this.adminService.listEmployee();
+  }
+
+  /**
+   * Remove employee by id
+   * @param id: employee id
+   * @returns employee document
+   */
   @Serialize(EmployeeDto)
   @Delete('employee/:id')
   removeEmployee(@Param() { id }: MongoObjectIdDto): Promise<EmployeeDocument> {
