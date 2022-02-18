@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UpdateCategoryDto } from './dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category, CategoryDocument } from './schema/category.schema';
 
@@ -41,8 +42,42 @@ export class CategoryService {
   /**
    * List all categories
    */
-  async listAll() {
-    return this.categoryModel.find();
+  async listAll(name?: string) {
+    let categories = name
+      ? await this.categoryModel.find({ name: name.toLowerCase() })
+      : await this.categoryModel.find();
+
+    return categories;
+  }
+
+  /**
+   * Find a category by id
+   * @param categoryId
+   * @returns Category instance if found
+   */
+  async findOne(categoryId: string) {
+    const category = await this.categoryModel.findById(categoryId);
+    if (!category) throw new NotFoundException('Category not found ❌');
+
+    return category;
+  }
+
+  /**
+   * Update a category
+   * @param id  category id
+   * @param updateCategoryDto
+   * @returns the updated category instance
+   */
+  async update(categoryId: string, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoryModel.findByIdAndUpdate(
+      categoryId,
+      updateCategoryDto,
+      { new: true },
+    );
+
+    if (!category) throw new NotFoundException('Category not found ❌.');
+
+    return category;
   }
 
   /**
