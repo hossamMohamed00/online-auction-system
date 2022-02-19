@@ -32,10 +32,10 @@ export class Auction {
   @Prop({ min: 0, default: null })
   highestBidValue: number; // Current highest bid value
 
-  @Prop({ min: 0 })
+  @Prop({ required: true, min: 0 })
   minimumBidAllowed: number; // Minimum bid value allowed
 
-  @Prop()
+  @Prop({ required: true })
   startDate: Date;
 
   @Prop({ default: null })

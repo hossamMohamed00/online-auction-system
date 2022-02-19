@@ -10,7 +10,11 @@ import {
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
-import { AuctionDto } from 'src/models/auction/dto';
+import {
+  AuctionDto,
+  CreateAuctionDto,
+  UpdateAuctionDto,
+} from 'src/models/auction/dto';
 import { AuctionDocument } from 'src/models/auction/schema/auction.schema';
 import { Role } from '../shared-user/enums';
 import { AuctionsBehaviors } from './interfaces';
@@ -25,8 +29,11 @@ export class SellerController implements AuctionsBehaviors {
   /* Handle Auctions Functions */
   @Serialize(AuctionDto)
   @Post('auction')
-  addAuction() {
-    throw new Error('Method not implemented.');
+  addAuction(
+    @Body() createAuctionDto: CreateAuctionDto,
+    @GetCurrentUserData() seller: SellerDocument,
+  ) {
+    return this.sellerService.addAuction(createAuctionDto, seller);
   }
 
   @Serialize(AuctionDto)
@@ -39,7 +46,10 @@ export class SellerController implements AuctionsBehaviors {
 
   @Serialize(AuctionDto)
   @Patch('auction/:id')
-  editAuction() {
+  editAuction(
+    @Body() updateAuctionDto: UpdateAuctionDto,
+    @GetCurrentUserData() seller: SellerDocument,
+  ) {
     throw new Error('Method not implemented.');
   }
 

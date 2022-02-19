@@ -17,11 +17,8 @@ export class Item {
   @Prop({ trim: true })
   detailedDescription: string;
 
-  @Prop()
+  @Prop({ default: 'none' })
   brand?: string;
-
-  @Prop({ required: true, min: 0 })
-  cost: number;
 
   @Prop({ required: true, enum: ItemStatus })
   status: ItemStatus;

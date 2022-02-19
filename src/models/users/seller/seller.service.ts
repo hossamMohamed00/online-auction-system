@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { CreateAuctionDto } from 'src/models/auction/dto';
 import { AuctionDocument } from 'src/models/auction/schema/auction.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 
@@ -14,6 +15,16 @@ export class SellerService {
   ) {}
 
   /* Handle Auctions Functions logic*/
+
+  /**
+   * Add new auction to the given seller
+   * @param createAuctionDto - Auction data
+   * @param seller
+   */
+  addAuction(createAuctionDto: CreateAuctionDto, seller: SellerDocument) {
+    const auction = this.auctionsService.create(createAuctionDto, seller);
+    return auction;
+  }
 
   /**
    * List seller's auctions

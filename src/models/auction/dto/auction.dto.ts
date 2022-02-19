@@ -5,6 +5,7 @@ import { UserDto } from 'src/models/users/shared-user/dto';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { Item } from 'src/models/items/schema/item.schema';
 import { AuctionStatus } from '../enums';
+import { ItemDto } from 'src/models/items/dto';
 
 /**
  * Auction dto - Describe what auction data to be sent over the network
@@ -18,6 +19,10 @@ export class AuctionDto {
   title: string;
 
   @Expose()
+  @Transform(({ obj }) => {
+    //* Serialize  the item object to remove the sensitive data
+    return SerializeIt(ItemDto, obj.item);
+  })
   item: Item;
 
   @Expose()

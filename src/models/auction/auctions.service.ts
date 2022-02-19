@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ItemService } from '../items/item.service';
+import { Seller } from '../users/seller/schema/seller.schema';
 import { User } from '../users/shared-user/schema/user.schema';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto';
 import { Auction, AuctionDocument } from './schema/auction.schema';
@@ -10,6 +12,7 @@ export class AuctionsService {
   constructor(
     @InjectModel(Auction.name)
     private readonly auctionModel: Model<AuctionDocument>,
+    private readonly itemService: ItemService,
   ) {}
 
   /**
@@ -17,15 +20,21 @@ export class AuctionsService {
    * @param createAuctionDto
    * @param sellerId - Seller who created the auction
    */
-  async create(createAuctionDto: CreateAuctionDto, seller: User) {
+  async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
+    //* Get the item data
+    const { item: itemData, ...restAuctionData } = createAuctionDto;
+
+    //* Create new item with this data
+    const item = await this.itemService.create(itemData);
+
     const createdAuction: AuctionDocument = new this.auctionModel({
-      ...createAuctionDto,
-      endDat: null,
+      ...restAuctionData,
+      endDate: null,
+      chairCost: 0,
+      item,
       seller,
     });
-
     await createdAuction.save();
-
     return createdAuction;
   }
 
@@ -81,4 +90,16 @@ export class AuctionsService {
 
     return auction;
   }
+
+  /* Helper functions */
+
+  /**
+   * Calculate the minimum bid allowed for that auction
+   */
+  calculateMinimumBidAllowed() {}
+
+  /**
+   * Calculate the amount of money needed to join the auction
+   */
+  calculateChairCost() {}
 }

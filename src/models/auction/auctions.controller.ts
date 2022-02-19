@@ -14,6 +14,7 @@ import {
 } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { Seller } from '../users/seller/schema/seller.schema';
 import { Role } from '../users/shared-user/enums';
 import { User } from '../users/shared-user/schema/user.schema';
 import { AuctionsService } from './auctions.service';
@@ -28,9 +29,9 @@ export class AuctionsController {
   @Post()
   create(
     @Body() createAuctionDto: CreateAuctionDto,
-    @GetCurrentUserData() user: User,
+    @GetCurrentUserData() seller: Seller,
   ) {
-    return this.auctionsService.create(createAuctionDto, user);
+    return this.auctionsService.create(createAuctionDto, seller);
   }
 
   @IsPublicRoute()
