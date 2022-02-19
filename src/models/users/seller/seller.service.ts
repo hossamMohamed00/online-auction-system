@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { AuctionDocument } from 'src/models/auction/schema/auction.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 
 @Injectable()
@@ -13,6 +14,20 @@ export class SellerService {
   ) {}
 
   /* Handle Auctions Functions logic*/
+
+  /**
+   * List seller's auctions
+   */
+  async listAuctions(seller: SellerDocument): Promise<AuctionDocument[]> {
+    await seller.populate({
+      path: 'auctions',
+    });
+
+    // @ts-ignore: Unreachable code error
+    const auctions = seller.auctions;
+
+    return auctions;
+  }
 
   /**
    * Remove auction by id of specific seller

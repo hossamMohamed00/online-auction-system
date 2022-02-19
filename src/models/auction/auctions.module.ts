@@ -11,6 +11,7 @@ import { Auction, AuctionSchema } from './schema/auction.schema';
   controllers: [AuctionsController],
   providers: [AuctionsService],
   exports: [
+    AuctionsService,
     MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),
   ],
 })

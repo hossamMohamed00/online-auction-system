@@ -15,3 +15,13 @@ export class Seller {
 }
 
 export const SellerSchema = SchemaFactory.createForClass(Seller);
+
+/* ------------------------ */
+//? Setting up a virtual property for auctions
+//* ==> It's not actual data stored in database.
+//* ==> It's a relationship between entities.
+SellerSchema.virtual('auctions', {
+  ref: 'Auction',
+  localField: '_id',
+  foreignField: 'seller',
+});
