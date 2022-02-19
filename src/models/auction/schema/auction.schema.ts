@@ -23,10 +23,10 @@ export class Auction {
   @Prop({ required: true, min: 0 })
   initialPrice: number;
 
-  @Prop({ required: true, min: 0 })
+  @Prop({ required: true, min: 0, default: null })
   chairCost: number; // The cost of registering to bid.
 
-  @Prop({ min: 0 })
+  @Prop({ min: 0, default: 0 })
   numOfBids: number; // Current number of bids
 
   @Prop({ min: 0, default: null })
@@ -45,7 +45,7 @@ export class Auction {
   extensionTime: number; // The time (in seconds) by which the auction counter will be increased with each bid. This will be applicable only towards the end of the auction
 
   @Prop({ enum: AuctionStatus, default: AuctionStatus.Pending })
-  status: string;
+  status: AuctionStatus;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   seller: User;

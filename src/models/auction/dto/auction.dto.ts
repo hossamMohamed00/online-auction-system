@@ -3,6 +3,8 @@ import { ExposeObjectId } from '../../../common/decorators/mongo/expose-id.decor
 import { SerializeIt } from 'src/common/utils';
 import { UserDto } from 'src/models/users/shared-user/dto';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { Item } from 'src/models/items/schema/item.schema';
+import { AuctionStatus } from '../enums';
 
 /**
  * Auction dto - Describe what auction data to be sent over the network
@@ -13,10 +15,22 @@ export class AuctionDto {
   _id: string;
 
   @Expose()
-  product: string;
+  title: string;
+
+  @Expose()
+  item: Item;
 
   @Expose()
   initialPrice: number;
+
+  @Expose()
+  chairCost: number; // The cost of registering to bid.
+
+  @Expose()
+  numOfBids: number; // Current number of bids
+
+  @Expose()
+  highestBidValue: number; // Current highest bid value
 
   @Expose()
   startDate: Date;
@@ -25,7 +39,7 @@ export class AuctionDto {
   endDate: Date;
 
   @Expose()
-  status: string;
+  status: AuctionStatus;
 
   @Expose()
   @Transform(({ obj }) => {
