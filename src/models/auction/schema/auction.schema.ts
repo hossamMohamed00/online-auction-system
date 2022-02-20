@@ -17,6 +17,8 @@ export class Auction {
     required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: Item.name,
+    // The below option tells this plugin to always call `populate()` on `item`
+    autopopulate: true,
   })
   item: Item;
 
@@ -47,7 +49,11 @@ export class Auction {
   @Prop({ enum: AuctionStatus, default: AuctionStatus.Pending })
   status: AuctionStatus;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name, // The below option tells this plugin to always call `populate()` on `seller`
+    autopopulate: true,
+  })
   seller: User;
 }
 

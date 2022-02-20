@@ -8,7 +8,16 @@ import { ItemModule } from '../items/item.module';
 @Module({
   imports: [
     ItemModule,
-    MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),
+    MongooseModule.forFeatureAsync([
+      {
+        name: Auction.name,
+        useFactory: () => {
+          const schema = AuctionSchema;
+          schema.plugin(require('mongoose-autopopulate'));
+          return schema;
+        },
+      },
+    ]),
   ],
   controllers: [AuctionsController],
   providers: [AuctionsService],

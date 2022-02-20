@@ -34,8 +34,9 @@ export class SellerService {
       path: 'auctions',
     });
 
+    //TODO: Add auctions to seller object
     // @ts-ignore: Unreachable code error
-    const auctions = seller.auctions;
+    const auctions: AuctionDocument[] = seller.auctions;
 
     return auctions;
   }
