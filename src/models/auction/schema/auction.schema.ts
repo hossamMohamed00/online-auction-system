@@ -31,11 +31,21 @@ export class Auction {
   @Prop({ min: 0, default: 0 })
   numOfBids: number; // Current number of bids
 
+  /*
+  The minimum acceptable amount that is required for a bidder to place a Bid on an Item.
+  The Minimum Bid is calculated using the Bidding Increment Rules and the Current Bid.
+  For example, if the Current Bid is $100 and the Bid Increment is $10 at the $100 level,
+   then the Minimum Bid is $110.
+   The Minimum Bid is equal to the Starting Bid when the Bidding begins. Therefore, 
+   a Bidder is only required to bid the Starting Bid amount if he/she is the first bidder.
+  */
+  @Prop({ required: true, min: 0 })
+  minimumBidAllowed: number;
+
   @Prop({ min: 0, default: null })
   highestBidValue: number; // Current highest bid value
 
-  @Prop({ required: true, min: 0 })
-  minimumBidAllowed: number; // Minimum bid value allowed
+  // TODO - Add Buyer who has the highest bid value
 
   @Prop({ required: true })
   startDate: Date;

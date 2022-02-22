@@ -27,13 +27,22 @@ export class AuctionsService {
     //* Create new item with this data
     const item = await this.itemService.create(itemData);
 
+    //? Calc and get the Minimum Bid Allowed for that auction
+    const MinBidAllowed = this.calculateMinimumBidAllowed();
+
+    //? Calc tha chair cost value
+    const chairCostValue = this.calculateChairCost();
+
+    //* Create new auction document
     const createdAuction: AuctionDocument = new this.auctionModel({
       ...restAuctionData,
-      endDate: null,
-      chairCost: 0,
+      minimumBidAllowed: MinBidAllowed,
+      chairCost: chairCostValue,
       item,
       seller,
     });
+
+    //* Save the instance
     await createdAuction.save();
     return createdAuction;
   }
@@ -96,10 +105,14 @@ export class AuctionsService {
   /**
    * Calculate the minimum bid allowed for that auction
    */
-  calculateMinimumBidAllowed() {}
+  calculateMinimumBidAllowed() {
+    
+  }
 
   /**
    * Calculate the amount of money needed to join the auction
    */
-  calculateChairCost() {}
+  calculateChairCost() {
+    return 0;
+  }
 }
