@@ -10,7 +10,6 @@
 </p>
 
 <p align="center">A JavaScript library for building user interfaces.</p>
-	<p align="center">
 
 ## Description
 
