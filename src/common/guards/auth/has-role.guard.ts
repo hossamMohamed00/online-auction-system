@@ -35,7 +35,7 @@ export class HasRoleGuard implements CanActivate {
 
     //* Check if the user has the role required.
     // The some() method tests whether at least one element in the array passes the test implemented by the provided function
-    const hasRole: boolean = requiredRoles.some((role) => user.role === role);
+    const hasRole: boolean = requiredRoles.some(role => user.role === role);
 
     if (!hasRole)
       throw new ForbiddenException(

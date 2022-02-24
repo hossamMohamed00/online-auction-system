@@ -105,9 +105,7 @@ export class AuctionsService {
   /**
    * Calculate the minimum bid allowed for that auction
    */
-  calculateMinimumBidAllowed() {
-    
-  }
+  calculateMinimumBidAllowed() {}
 
   /**
    * Calculate the amount of money needed to join the auction

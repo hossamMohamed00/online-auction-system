@@ -5,7 +5,7 @@ export type BuyerDocument = Buyer & Document;
 
 /**
  * This schema contains only properties that is specific to the Buyer,
- *  as the rest of properties will be inherited from the shared-user 
+ *  as the rest of properties will be inherited from the shared-user
  */
 
 @Schema()
