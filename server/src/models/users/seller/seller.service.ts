@@ -8,47 +8,47 @@ import { Seller, SellerDocument } from './schema/seller.schema';
 
 @Injectable()
 export class SellerService {
-  constructor(
-    @InjectModel(Seller.name)
-    private readonly sellerModel: Model<SellerDocument>,
-    private readonly auctionsService: AuctionsService,
-  ) {}
+	constructor(
+		@InjectModel(Seller.name)
+		private readonly sellerModel: Model<SellerDocument>,
+		private readonly auctionsService: AuctionsService,
+	) {}
 
-  /* Handle Auctions Functions logic*/
+	/* Handle Auctions Functions logic*/
 
-  /**
-   * Add new auction to the given seller
-   * @param createAuctionDto - Auction data
-   * @param seller
-   */
-  addAuction(createAuctionDto: CreateAuctionDto, seller: SellerDocument) {
-    const auction = this.auctionsService.create(createAuctionDto, seller);
-    return auction;
-  }
+	/**
+	 * Add new auction to the given seller
+	 * @param createAuctionDto - Auction data
+	 * @param seller
+	 */
+	addAuction(createAuctionDto: CreateAuctionDto, seller: SellerDocument) {
+		const auction = this.auctionsService.create(createAuctionDto, seller);
+		return auction;
+	}
 
-  /**
-   * List seller's auctions
-   */
-  async listAuctions(seller: SellerDocument): Promise<AuctionDocument[]> {
-    await seller.populate({
-      path: 'auctions',
-    });
+	/**
+	 * List seller's auctions
+	 */
+	async listAuctions(seller: SellerDocument): Promise<AuctionDocument[]> {
+		await seller.populate({
+			path: 'auctions',
+		});
 
-    // @ts-ignore: Unreachable code error
-    const auctions: AuctionDocument[] = seller.auctions;
+		// @ts-ignore: Unreachable code error
+		const auctions: AuctionDocument[] = seller.auctions;
 
-    return auctions;
-  }
+		return auctions;
+	}
 
-  /**
-   * Remove auction by id of specific seller
-   * @param auctionId
-   * @param sellerId
-   * @returns deleted auction document
-   */
-  async removeAuction(auctionId: string, sellerId: string) {
-    // TODO - Ensure that the seller owns this auction
+	/**
+	 * Remove auction by id of specific seller
+	 * @param auctionId
+	 * @param sellerId
+	 * @returns deleted auction document
+	 */
+	async removeAuction(auctionId: string, sellerId: string) {
+		// TODO - Ensure that the seller owns this auction
 
-    return this.auctionsService.remove(auctionId);
-  }
+		return this.auctionsService.remove(auctionId);
+	}
 }

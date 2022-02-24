@@ -3,38 +3,36 @@ import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators';
 import { Serialize } from 'src/common/interceptors';
-import { UpdateUserDto, UserDto } from './dto';
+import { UserDto } from './dto';
 import { Role } from './enums';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { AuctionDto } from 'src/models/auction/dto';
 
 @ApiTags('User')
-@Serialize(UserDto)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+	constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
+	/**
+	 * List all system users
+	 * @returns List of all users
+	 */
+	@Roles(Role.Admin)
+	@Serialize(UserDto)
+	@Get()
+	findAll() {
+		return this.usersService.findAll();
+	}
 
-  @Get(':id')
-  findOne(@Param() { id }: MongoObjectIdDto) {
-    return this.usersService.findById(id);
-  }
-
-  @Roles(Role.Admin)
-  @Patch(':id')
-  update(
-    @Param() { id }: MongoObjectIdDto,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.usersService.update(id, updateUserDto);
-  }
-
-  @Roles(Role.Admin)
-  @Delete(':id')
-  remove(@Param() { id }: MongoObjectIdDto) {
-    return this.usersService.remove(id);
-  }
+	/**
+	 * List specific category auctions
+	 * @param category id
+	 * @returns List of category's auctions
+	 */
+	@Roles(Role.Admin, Role.Employee, Role.Seller, Role.Buyer)
+	@Serialize(AuctionDto)
+	@Get('category/:id/auctions')
+	getAuctionsOfCategory(@Param() { id }: MongoObjectIdDto) {
+		return this.usersService.getAuctionsOfCategory(id);
+	}
 }
