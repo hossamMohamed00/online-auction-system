@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Online Auction System, a website where users could exchange goods in auctions manner.
 
 ## Installation
 
@@ -33,6 +33,21 @@ $ npm install
 ```
 
 ## Running the app
+
+### Using Docker-Compose
+
+I assume you have installed Docker and it is running.
+
+See the [Docker website](http://www.docker.io/gettingstarted/#h_installation) for installation instructions.
+
+```bash
+# Just run the Docker-Compose up command
+docker-compose up --build
+```
+
+This will start the react app and nest app and also mongoDB.
+
+### Normal flow
 
 ```bash
 # development
