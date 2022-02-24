@@ -19,8 +19,6 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
@@ -33,21 +31,6 @@ $ npm install
 ```
 
 ## Running the app
-
-### Using Docker-Compose
-
-I assume you have installed Docker and it is running.
-
-See the [Docker website](http://www.docker.io/gettingstarted/#h_installation) for installation instructions.
-
-```bash
-# Just run the Docker-Compose up command
-docker-compose up --build
-```
-
-This will start the react app and nest app and also mongoDB.
-
-### Normal flow
 
 ```bash
 # development
