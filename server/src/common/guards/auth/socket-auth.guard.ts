@@ -14,9 +14,7 @@ export class SocketAuthGuard implements CanActivate {
 	//* Inject auth service
 	constructor(private readonly authService: AuthService) {}
 
-	canActivate(
-		context: ExecutionContext,
-	): boolean | Promise<boolean> | Observable<boolean> {
+	async canActivate(context: ExecutionContext): Promise<boolean> {
 		//* Get socket io client
 		const client = context.switchToWs().getClient();
 
@@ -28,8 +26,8 @@ export class SocketAuthGuard implements CanActivate {
 			.replace('Bearer', '')
 			.trim();
 
-		//TODO Get the user
-		const user = this.authService.getUserFromJWT(accessToken);
+		//* Get the user
+		const user = await this.authService.getUserFromJWT(accessToken);
 
 		//* Attach the user to the client object to be accessed via get user from socket decorator
 		client.user = user;

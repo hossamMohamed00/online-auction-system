@@ -166,7 +166,16 @@ export class AuthService {
 	 * Get the user who owns the access token
 	 * @param accessToken user access token
 	 */
-	async getUserFromJWT(accessToken: string) {
-		return { user: 'userData' };
+	async getUserFromJWT(accessToken: string): Promise<UserDocument> {
+		const payload: JwtPayload = await this.jwtService.verifyAsync(accessToken, {
+			secret: this.authConfigService.accessTokenSecret,
+		});
+		if (!payload) return null;
+
+		const user = await this.usersService.findById(payload.sub);
+
+		if (!user) return null;
+
+		return user;
 	}
 }

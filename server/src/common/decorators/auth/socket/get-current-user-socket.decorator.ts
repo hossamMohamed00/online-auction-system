@@ -9,6 +9,6 @@ export const GetCurrentUserFromSocket = createParamDecorator(
 		const client = context.switchToWs().getClient();
 
 		//* Get user from the client object (attached from socket auth guard )
-		console.log('user data is ', client.user);
+		return client.user;
 	},
 );
