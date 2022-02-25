@@ -21,7 +21,9 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 
 @Module({
 	imports: [
+		//? Import the chat module
 		ChatModule,
+		//? Import category and item modules
 		CategoryModule,
 		ItemModule,
 		//? Load all user related modules
@@ -42,7 +44,6 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 		AuctionsModule,
 	],
 	providers: [
-		ChatGateway,
 		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
 		{
 			provide: APP_GUARD,

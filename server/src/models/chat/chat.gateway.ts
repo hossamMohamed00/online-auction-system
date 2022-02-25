@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
 	MessageBody,
 	SubscribeMessage,
@@ -8,6 +9,9 @@ import {
 	OnGatewayInit,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { SocketAuthGuard } from 'src/common/guards';
+import { User } from '../users/shared-user/schema/user.schema';
+import { GetCurrentUserFromSocket } from './../../common/decorators/';
 
 /**
  * Its job is to receive and send messages.
@@ -20,22 +24,42 @@ export class ChatGateway
 	server: Server;
 
 	/**
-	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.
+	 * Run when the service initialises
 	 */
-	@SubscribeMessage('send_message')
-	handleEvent(@MessageBody() data: string) {
-		this.server.sockets.emit('receive_message', data);
+	afterInit(server: any) {
+		console.log('Socket.IO Initialized');
+
+		//* Add the request object to the socket to be accessed via context.switchToWs().getClient();
+		// server.on('connection', (socket, request) => {
+		// 	socket['request'] = request;
+		// });
 	}
 
+	/**
+	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.
+	 */
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('send_message')
+	listenForMessages(
+		@MessageBody() content: string,
+		@GetCurrentUserFromSocket() user: User,
+	) {
+		console.log({ user });
+
+		// this.server.sockets.emit('receive_message', content);
+	}
+
+	/**
+	 * Fires when the client be connected
+	 */
 	handleConnection(client: any, ...args: any[]) {
 		console.log('User connected');
 	}
 
+	/**
+	 * Fires when the client be disconnected
+	 */
 	handleDisconnect(client: any) {
 		console.log('User disconnected');
-	}
-
-	afterInit(server: any) {
-		console.log('Socket is live');
 	}
 }
