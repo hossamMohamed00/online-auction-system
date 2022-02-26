@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,6 +6,9 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './config/app/app.config.service';
 
 async function bootstrap() {
+	//* Create new logger
+	const logger: Logger = new Logger('main.ts');
+
 	//* Create new nest app
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
@@ -31,6 +34,8 @@ async function bootstrap() {
 
 	//? Get app config for cors settings and starting the app.
 	const appConfig: AppConfigService = app.get(AppConfigService);
-	await app.listen(appConfig.port);
+	await app.listen(appConfig.port, () =>
+		logger.log(`Server started on port ${appConfig.port} ⚡⚡`),
+	);
 }
 bootstrap();
