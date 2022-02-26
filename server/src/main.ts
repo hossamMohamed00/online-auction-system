@@ -6,7 +6,13 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './config/app/app.config.service';
 
 async function bootstrap() {
+	//* Create new nest app
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+	//? Enable Cross-origin resource sharing
+	app.enableCors({
+		origin: ['http://localhost:3000'], // This for react app
+	});
 
 	//* Setup Global validation pipes
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
