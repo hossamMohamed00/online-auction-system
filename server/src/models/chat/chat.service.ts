@@ -13,7 +13,7 @@ export class ChatService {
 	/**
 	 * @returns List of available chats
 	 */
-	async getChats(): Promise<Chat[]> {
+	async getAllChats(): Promise<Chat[]> {
 		return await this.chatModel.find();
 	}
 
@@ -21,8 +21,13 @@ export class ChatService {
 	 * Create new chat
 	 * @param chat - Chat instance
 	 */
-	async saveChat(chat: Chat): Promise<void> {
-		const createdChat = new this.chatModel(chat);
+	async saveChat({ message, sender, recipient }): Promise<Chat> {
+		const createdChat = new this.chatModel({
+			message,
+			sender,
+			recipient,
+		});
 		await createdChat.save();
+		return createdChat;
 	}
 }

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/models/auth/auth.service';
 
 /**
- * Extract the access token from the socket io client
+ * Extract the access-token from the socket io client
  * Search for the user
  * Attach the user object into the client object
  * always pass the request
@@ -27,7 +27,7 @@ export class SocketAuthGuard implements CanActivate {
 			.trim();
 
 		//* Get the user
-		const user = await this.authService.getUserFromJWT(accessToken);
+		const user = await this.authService.getUserFromJWT(accessToken); //* The user may be null (expired token)
 
 		//* Attach the user to the client object to be accessed via get user from socket decorator
 		client.user = user;

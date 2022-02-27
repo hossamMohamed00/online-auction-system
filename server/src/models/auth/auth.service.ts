@@ -2,6 +2,7 @@ import {
 	BadRequestException,
 	ForbiddenException,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -23,6 +24,8 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
 	) {}
+
+	private logger: Logger = new Logger('AuthService');
 
 	/**
 	 * Register new user
@@ -167,15 +170,32 @@ export class AuthService {
 	 * @param accessToken user access token
 	 */
 	async getUserFromJWT(accessToken: string): Promise<UserDocument> {
-		const payload: JwtPayload = await this.jwtService.verifyAsync(accessToken, {
-			secret: this.authConfigService.accessTokenSecret,
-		});
-		if (!payload) return null;
+		/*
+		 * First verify the token.
+		 * Then, search for the user
+		 * Finally, return the user
+		 */
+		try {
+			//* verify token
+			const payload: JwtPayload = await this.jwtService.verifyAsync(
+				accessToken,
+				{
+					// Attach access token secret
+					secret: this.authConfigService.accessTokenSecret,
+				},
+			);
+			if (!payload) return null;
 
-		const user = await this.usersService.findById(payload.sub);
+			//* Search for the user
+			const user = await this.usersService.findById(payload.sub);
+			if (!user) return null;
 
-		if (!user) return null;
-
-		return user;
+			//* Return the user
+			return user;
+		} catch (error) {
+			//* An error occurred
+			this.logger.log('Expired Token...❌');
+			return null;
+		}
 	}
 }

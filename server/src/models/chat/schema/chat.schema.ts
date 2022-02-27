@@ -13,6 +13,9 @@ export class Chat {
 
 	@Prop({ required: [true, 'Recipient is required'] })
 	recipient: string;
+
+	@Prop({ default: Date.now() })
+	createdAt: Date;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

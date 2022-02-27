@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, Logger, Inject } from '@nestjs/common';
 import {
 	MessageBody,
 	SubscribeMessage,
@@ -12,6 +12,8 @@ import { Server } from 'socket.io';
 import { SocketAuthGuard } from 'src/common/guards';
 import { User } from '../users/shared-user/schema/user.schema';
 import { GetCurrentUserFromSocket } from './../../common/decorators/';
+import { ChatService } from './chat.service';
+import { Chat } from './schema/chat.schema';
 
 /**
  * Its job is to receive and send messages.
@@ -20,46 +22,61 @@ import { GetCurrentUserFromSocket } from './../../common/decorators/';
 export class ChatGateway
 	implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
+	@Inject()
+	private chatService: ChatService;
+
+	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
 	server: Server;
+
+	//? Create logger instance
+	private logger: Logger = new Logger('ChatGateway');
+
+	//* Keep track of connections
+	private count: number = 0;
 
 	/**
 	 * Run when the service initialises
 	 */
 	afterInit(server: any) {
-		console.log('Socket.IO Initialized');
-
-		//* Add the request object to the socket to be accessed via context.switchToWs().getClient();
-		// server.on('connection', (socket, request) => {
-		// 	socket['request'] = request;
-		// });
-	}
-
-	/**
-	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.
-	 */
-	@UseGuards(SocketAuthGuard)
-	@SubscribeMessage('send_message')
-	listenForMessages(
-		@MessageBody() content: string,
-		@GetCurrentUserFromSocket() user: User,
-	) {
-		console.log({ user });
-
-		// this.server.sockets.emit('receive_message', content);
+		this.logger.log('MessageGateway initialized ⚡');
 	}
 
 	/**
 	 * Fires when the client be connected
 	 */
-	handleConnection(client: any, ...args: any[]) {
-		console.log('User connected');
+	async handleConnection(client: any, ...args: any[]) {
+		this.count++;
+		this.logger.log('New User Connected 👍🏻');
+		const messages: Chat[] = await this.chatService.getAllChats();
+		client.emit('all-messages-to-client', messages);
 	}
 
 	/**
 	 * Fires when the client be disconnected
 	 */
 	handleDisconnect(client: any) {
-		console.log('User disconnected');
+		this.count--;
+		this.logger.log('User Disconnected 👎🏻');
+	}
+
+	/*-------------------------------------------*/
+	/*
+	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.
+	 */
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('new-message-to-server')
+	async listenForMessages(
+		@MessageBody() data: { sender: string; message: string; recipient: string },
+		@GetCurrentUserFromSocket() user: User,
+	) {
+		const chatData = {
+			message: data.message,
+			sender: data.sender,
+			recipient: data.recipient,
+		};
+
+		const message: Chat = await this.chatService.saveChat(chatData);
+		this.server.emit('new-message-to-client', { message });
 	}
 }
