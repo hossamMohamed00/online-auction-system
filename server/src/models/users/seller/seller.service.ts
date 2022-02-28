@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { CreateAuctionDto } from 'src/models/auction/dto';
-import { AuctionDocument } from 'src/models/auction/schema/auction.schema';
+import {
+	Auction,
+	AuctionDocument,
+} from 'src/models/auction/schema/auction.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 
 @Injectable()
@@ -21,7 +24,10 @@ export class SellerService {
 	 * @param createAuctionDto - Auction data
 	 * @param seller
 	 */
-	addAuction(createAuctionDto: CreateAuctionDto, seller: SellerDocument) {
+	async addAuction(
+		createAuctionDto: CreateAuctionDto,
+		seller: SellerDocument,
+	): Promise<Auction> {
 		const auction = this.auctionsService.create(createAuctionDto, seller);
 		return auction;
 	}
@@ -29,15 +35,24 @@ export class SellerService {
 	/**
 	 * List seller's auctions
 	 */
-	async listAuctions(seller: SellerDocument): Promise<AuctionDocument[]> {
+	async listAuctions(seller: SellerDocument): Promise<Auction[]> {
+		/*
+		 * Populate 'auctions' property to the seller
+		 */
 		await seller.populate({
 			path: 'auctions',
 		});
 
+		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = seller.auctions;
 
 		return auctions;
+	}
+
+	//TODO: Update auction data
+	async editAuction(): Promise<Auction> {
+		throw new Error('Not Implemented yet');
 	}
 
 	/**
@@ -46,7 +61,7 @@ export class SellerService {
 	 * @param sellerId
 	 * @returns deleted auction document
 	 */
-	async removeAuction(auctionId: string, sellerId: string) {
+	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		// TODO - Ensure that the seller owns this auction
 
 		return this.auctionsService.remove(auctionId);

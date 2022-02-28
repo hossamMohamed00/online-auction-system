@@ -65,6 +65,7 @@ export class CategoryService {
 			path: 'auctions',
 		});
 
+		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = category.auctions;
 

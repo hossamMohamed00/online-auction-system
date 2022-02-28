@@ -16,7 +16,7 @@ import {
 	CreateAuctionDto,
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
-import { AuctionDocument } from 'src/models/auction/schema/auction.schema';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Role } from '../shared-user/enums';
 import { AuctionsBehaviors } from './interfaces';
 import { SellerDocument } from './schema/seller.schema';
@@ -29,12 +29,13 @@ export class SellerController implements AuctionsBehaviors {
 	constructor(private readonly sellerService: SellerService) {}
 
 	/* Handle Auctions Functions */
+
 	@Serialize(AuctionDto)
 	@Post('auction')
 	addAuction(
 		@Body() createAuctionDto: CreateAuctionDto,
 		@GetCurrentUserData() seller: SellerDocument,
-	) {
+	): Promise<Auction> {
 		return this.sellerService.addAuction(createAuctionDto, seller);
 	}
 
@@ -42,7 +43,7 @@ export class SellerController implements AuctionsBehaviors {
 	@Get('auction')
 	listAuctions(
 		@GetCurrentUserData() seller: SellerDocument, // Get the current logged in seller
-	): Promise<AuctionDocument[]> {
+	): Promise<Auction[]> {
 		return this.sellerService.listAuctions(seller);
 	}
 
@@ -51,8 +52,8 @@ export class SellerController implements AuctionsBehaviors {
 	editAuction(
 		@Body() updateAuctionDto: UpdateAuctionDto,
 		@GetCurrentUserData() seller: SellerDocument,
-	) {
-		throw new Error('Method not implemented.');
+	): Promise<Auction> {
+		return this.sellerService.editAuction();
 	}
 
 	@Serialize(AuctionDto)
@@ -60,7 +61,7 @@ export class SellerController implements AuctionsBehaviors {
 	removeAuction(
 		@Param() { id }: MongoObjectIdDto, // auction id
 		@GetCurrentUserData('_id') sellerId: string,
-	) {
+	): Promise<Auction> {
 		return this.sellerService.removeAuction(id, sellerId);
 	}
 }
