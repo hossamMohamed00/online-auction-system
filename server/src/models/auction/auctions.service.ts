@@ -103,12 +103,12 @@ export class AuctionsService {
 	/* Helper functions */
 
 	/**
-	 * Calculate the minimum bid allowed for that auction
+	//TODO Calculate the minimum bid allowed for that auction
 	 */
 	calculateMinimumBidAllowed() {}
 
 	/**
-	 * Calculate the amount of money needed to join the auction
+	 //TODO Calculate the amount of money needed to join the auction
 	 */
 	calculateChairCost() {
 		return 0;

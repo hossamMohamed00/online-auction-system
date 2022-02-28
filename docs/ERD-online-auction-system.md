@@ -6,17 +6,17 @@ We'll use a basic client/server architecture, where a single server is deployed 
 
 ## Storage
 
-We'll use a NoSql database to fast retrieval of data.  
+We'll use a NoSql database to fast retrieval of data.
 Data will be stored on the server on a separate, backed up volume for resilience. There will be no replication or sharding of data at this early stage.
 
 ### Schema:
 
 We'll need at least the following entities to implement the service:
 
-1. [User](#user)  
-   1.1. [Admin](#admin)  
-   1.2. [Employee](#employee)  
-   1.3. [Seller](#seller)  
+1. [User](#user)
+   1.1. [Admin](#admin)
+   1.2. [Employee](#employee)
+   1.3. [Seller](#seller)
    1.4. [Buyer/Bidder](#buyer)
 2. [Category](#category)
 3. [Item](#item)
@@ -77,19 +77,18 @@ We'll need at least the following entities to implement the service:
 | ----------------- | :---------: |
 | \_id              |  ObjectId   |
 | item              |    Item     |
-| initialPrice      |   number    |
+| basePrice         |   number    |
 | startDate         |    Date     |
 | endDate           |    Date     |
 | chairCost         |   number    |
-| numOfBids         |   number    |
 | minimumBidAllowed |   number    |
-| highestBidValue   |   number    |
+| currentBid        |   number    |
+| numOfBids         |   number    |
 | extensionTime     |   number    |
-| seller            |   Seller    |
-| winningBidder            | Buyer |
 | status            | Status enum |
-| category              | Category |
-
+| winningBidder     |    Buyer    |
+| seller            |   Seller    |
+| category          |  Category   |
 
 ## Server
 
@@ -102,7 +101,7 @@ A simple HTTP server is responsible for authentication, serving stored data, and
 ### Auth
 
 For v1, a simple JWT-based auth mechanism is to be used, with passwords
-hashed and stored in the database.  
+hashed and stored in the database.
 OAuth is to be added later for Google + Facebook and maybe others (Github?).
 
 ### API
@@ -110,10 +109,10 @@ OAuth is to be added later for Google + Facebook and maybe others (Github?).
 The following is the basic required endpoints for the application:
 
 1. [Authentication](#auth)
-2. [Users](#users)  
-   2.1. [Admin](#admin)  
-   2.2. [Employee](#employee)  
-   2.3. [Seller](#seller)  
+2. [Users](#users)
+   2.1. [Admin](#admin)
+   2.2. [Employee](#employee)
+   2.3. [Seller](#seller)
    2.4. [Buyer](#buyer)
 
 ### **Authentication**:
@@ -266,8 +265,8 @@ The Current Bid, sometimes referred to as **High Bid**, is the amount at which t
 
 ### Bid Increment
 
-The Bid Increment, or minimum raise, is minimum acceptable amount that the Current Bid must be raised by the next bidder as dictated by the system wide [Bidding Increment Rules.](#bidding-increment-rules)  
-In general, the `Current Bid + Bid Increment = Minimum Bid`.  
+The Bid Increment, or minimum raise, is minimum acceptable amount that the Current Bid must be raised by the next bidder as dictated by the system wide [Bidding Increment Rules.](#bidding-increment-rules)
+In general, the `Current Bid + Bid Increment = Minimum Bid`.
 However, when there are **no bids** on an item, the `Minimum Bid` is equal to the `Opening Bid` (i.e. there is no _Bid Increment_).
 
 Bid increments are always based on the current bid. Therefore, the bid increment may be different if the current bid is $10 versus when it is $250.
@@ -276,7 +275,7 @@ For example, if Bidder A holds the Current Bid at $130 and the bid increment at 
 
 ### Minimum Bid
 
-The minimum acceptable amount that is required for a [bidder](#bidder) to place a [Bid](#bid) on an Item. The **Minimum Bid** is calculated using the [Bidding Increment Rules](#bidding-increment-rules) and the [Current Bid](#current-bid).  
+The minimum acceptable amount that is required for a [bidder](#bidder) to place a [Bid](#bid) on an Item. The **Minimum Bid** is calculated using the [Bidding Increment Rules](#bidding-increment-rules) and the [Current Bid](#current-bid).
 For example, if the **Current Bid** is $100 and the **Bid Increment** is $10 at the $100 level, then the **Minimum Bid** is $110.
 
 **Notes**:

@@ -19,18 +19,18 @@ export class CreateAuctionDto {
 
 	@IsNotEmpty()
 	@Type(() => CreateItemDto)
-	@ValidateNested() // To validate nested objects
+	@ValidateNested() //? To validate item fields
 	item: CreateItemDto;
 
 	@IsNotEmpty()
 	@IsNumber()
 	@Min(0)
-	initialPrice: number;
+	basePrice: number;
 
 	@IsDate()
 	@Type(() => Date)
 	startDate: Date;
 
-	@IsMongoId() // To validate nested objects
+	@IsMongoId()
 	category: ObjectId;
 }
