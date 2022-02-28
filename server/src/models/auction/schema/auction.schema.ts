@@ -3,7 +3,6 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { AuctionStatus } from '../enums';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';

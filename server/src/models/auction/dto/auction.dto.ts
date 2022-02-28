@@ -8,6 +8,10 @@ import { AuctionStatus } from '../enums';
 import { ItemDto } from 'src/models/items/dto';
 import { Category } from 'src/models/category/schema/category.schema';
 import { CategoryDto } from 'src/models/category/dto';
+import { Seller } from 'src/models/users/seller/schema/seller.schema';
+import { SellerDto } from 'src/models/users/seller/dto';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { BuyerDto } from 'src/models/users/buyer/dto';
 
 /**
  * Auction dto - Describe what auction data to be sent over the network
@@ -28,16 +32,7 @@ export class AuctionDto {
 	item: Item;
 
 	@Expose()
-	initialPrice: number;
-
-	@Expose()
-	chairCost: number; // The cost of registering to bid.
-
-	@Expose()
-	numOfBids: number; // Current number of bids
-
-	@Expose()
-	highestBidValue: number; // Current highest bid value
+	basePrice: number;
 
 	@Expose()
 	startDate: Date;
@@ -46,14 +41,36 @@ export class AuctionDto {
 	endDate: Date;
 
 	@Expose()
+	chairCost: number;
+
+	@Expose()
+	minimumBidAllowed: number;
+
+	@Expose()
+	currentBid: number;
+
+	@Expose()
+	bidIncrement: number;
+
+	@Expose()
+	numOfBids: number;
+
+	@Expose()
 	status: AuctionStatus;
 
 	@Expose()
 	@Transform(({ obj }) => {
-		//* Serialize  the seller object to remove the sensitive data
-		return SerializeIt(UserDto, obj.seller);
+		//* Serialize  the buyer object to remove the sensitive data
+		return SerializeIt(BuyerDto, obj.winningBuyer);
 	})
-	seller: User;
+	winningBuyer: Buyer;
+
+	@Expose()
+	@Transform(({ obj }) => {
+		//* Serialize  the seller object to remove the sensitive data
+		return SerializeIt(SellerDto, obj.seller);
+	})
+	seller: Seller;
 
 	@Expose()
 	@Transform(({ obj }) => {
