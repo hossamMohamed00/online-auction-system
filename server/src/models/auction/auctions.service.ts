@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
-import { User } from '../users/shared-user/schema/user.schema';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 
@@ -13,6 +17,7 @@ export class AuctionsService {
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly itemService: ItemService,
+		private readonly categoryService: CategoryService,
 	) {}
 
 	/**
@@ -21,8 +26,18 @@ export class AuctionsService {
 	 * @param seller - Seller who created the auction
 	 */
 	async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
-		//* Get the item data
-		const { item: itemData, ...restAuctionData } = createAuctionDto;
+		//* Get the item data and category data
+		const {
+			item: itemData,
+			category: categoryId,
+			...restAuctionData
+		} = createAuctionDto;
+
+		//? Ensure that the category exists
+		const isExists = await this.categoryService.isExists(categoryId);
+		if (!isExists) {
+			throw new BadRequestException('Category not found ❌.');
+		}
 
 		//* Create new item with this data
 		const item = await this.itemService.create(itemData);
@@ -40,10 +55,12 @@ export class AuctionsService {
 			chairCost: chairCostValue,
 			item,
 			seller,
+			categoryId,
 		});
 
 		//* Save the instance
 		await createdAuction.save();
+
 		return createdAuction;
 	}
 
@@ -51,8 +68,11 @@ export class AuctionsService {
 	 * Find all auctions
 	 * @returns List of all existing auctions
 	 */
-	findAll() {
-		return this.auctionModel.find({}).populate('seller').exec();
+	async findAll() {
+		const auctions = await this.auctionModel.find({}).populate('seller').exec();
+		console.log({ auctions });
+
+		return auctions;
 	}
 
 	/**

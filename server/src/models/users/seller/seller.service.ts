@@ -35,17 +35,19 @@ export class SellerService {
 	/**
 	 * List seller's auctions
 	 */
-	async listAuctions(seller: SellerDocument): Promise<Auction[]> {
+	async listAuctions(seller: SellerDocument) {
 		/*
 		 * Populate 'auctions' property to the seller
 		 */
-		await seller.populate({
-			path: 'auctions',
-		});
+		await seller.populate({ path: 'auctions' });
+
+		console.log(`Is Populated ${seller.populated('auctions')}`);
 
 		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = seller.auctions;
+
+		console.log({ auctions });
 
 		return auctions;
 	}

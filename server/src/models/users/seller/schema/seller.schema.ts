@@ -10,8 +10,8 @@ export type SellerDocument = Seller & Document;
 
 @Schema()
 export class Seller {
-  @Prop({ required: true, default: true })
-  isSeller: boolean;
+	@Prop({ required: true, default: true })
+	isSeller: boolean;
 }
 
 export const SellerSchema = SchemaFactory.createForClass(Seller);
@@ -21,7 +21,7 @@ export const SellerSchema = SchemaFactory.createForClass(Seller);
 //* ==> It's not actual data stored in database.
 //* ==> It's a relationship between entities.
 SellerSchema.virtual('auctions', {
-  ref: 'Auction',
-  localField: '_id',
-  foreignField: 'seller',
+	ref: 'Auction',
+	localField: '_id',
+	foreignField: 'seller',
 });

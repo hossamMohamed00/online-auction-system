@@ -4,7 +4,8 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
+
 import { AuctionDocument } from '../auction/schema/auction.schema';
 import { UpdateCategoryDto } from './dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -82,6 +83,16 @@ export class CategoryService {
 		if (!category) throw new NotFoundException('Category not found ❌');
 
 		return category;
+	}
+
+	/**
+	 * Check if category exists in the database or not
+	 * @param categoryId
+	 * @returns true if category exists, false otherwise
+	 */
+	async isExists(categoryId: ObjectId): Promise<boolean> {
+		const count = await this.categoryModel.countDocuments({ _id: categoryId });
+		return count > 0;
 	}
 
 	/**
