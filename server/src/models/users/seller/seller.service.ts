@@ -42,15 +42,12 @@ export class SellerService {
 		/*
 		 * Populate 'auctions' property to the seller
 		 */
+		this.logger.log('Populating auctions on seller...')
 		await seller.populate('auctions');
-
-		console.log(`Is Populated ${seller.populated('auctions')}`);
 
 		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = seller.auctions;
-
-		this.logger.log({ auctions });
 
 		return auctions;
 	}

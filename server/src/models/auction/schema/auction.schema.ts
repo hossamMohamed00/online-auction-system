@@ -7,6 +7,7 @@ import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { User } from 'src/models/users/shared-user/schema/user.schema';
 
 export type AuctionDocument = Auction & Document;
 
@@ -61,20 +62,20 @@ export class Auction {
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
-		ref: Buyer.name,
+		ref: User.name,
 		//? The below option tells this plugin to always call `populate()` on `winningBuyer`
 		autopopulate: true,
 		default: null,
 	})
-	winningBuyer: Buyer;
+	winningBuyer: User;
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
-		ref: Seller.name,
+		ref: User.name,
 		//? The below option tells this plugin to always call `populate()` on `seller`
 		autopopulate: true,
 	})
-	seller: Seller;
+	seller: User;
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
