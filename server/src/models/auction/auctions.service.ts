@@ -55,7 +55,7 @@ export class AuctionsService {
 			chairCost: chairCostValue,
 			item,
 			seller,
-			categoryId,
+			category: categoryId,
 		});
 
 		//* Save the instance

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -11,6 +11,9 @@ import { Seller, SellerDocument } from './schema/seller.schema';
 
 @Injectable()
 export class SellerService {
+	//? Create logger
+	private logger: Logger = new Logger('SellerService');
+
 	constructor(
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
@@ -39,7 +42,7 @@ export class SellerService {
 		/*
 		 * Populate 'auctions' property to the seller
 		 */
-		await seller.populate({ path: 'auctions' });
+		await seller.populate('auctions');
 
 		console.log(`Is Populated ${seller.populated('auctions')}`);
 
@@ -47,7 +50,7 @@ export class SellerService {
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = seller.auctions;
 
-		console.log({ auctions });
+		this.logger.log({ auctions });
 
 		return auctions;
 	}
