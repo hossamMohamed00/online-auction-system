@@ -59,6 +59,6 @@ export class AuctionsController {
 	@Roles(Role.Admin)
 	@Delete(':id')
 	remove(@Param() { id }: MongoObjectIdDto) {
-		return this.auctionsService.remove(id);
+		return this.auctionsService.remove({ auctionId: id, sellerId: null });
 	}
 }

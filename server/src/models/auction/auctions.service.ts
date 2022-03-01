@@ -110,12 +110,15 @@ export class AuctionsService {
 
 	/**
 	 * Remove auction by id
-	 * @param _id - auction id
+	 * @param { auctionId, sellerId } - auction id and seller id
 	 * @returns Deleted auction instance
 	 */
-	async remove(_id: string) {
-		const auction = await this.auctionModel.findByIdAndRemove(_id);
-		if (!auction) throw new NotFoundException('Auction not found ❌');
+	async remove({ auctionId, sellerId }) {
+		const auction = await this.auctionModel.findOneAndRemove({
+			_id: auctionId,
+			seller: sellerId,
+		});
+		if (!auction) throw new NotFoundException('Auction not found for that seller❌');
 
 		return auction;
 	}

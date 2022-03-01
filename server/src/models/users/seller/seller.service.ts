@@ -42,7 +42,7 @@ export class SellerService {
 		/*
 		 * Populate 'auctions' property to the seller
 		 */
-		this.logger.log('Populating auctions on seller...')
+		this.logger.log('Populating auctions on seller...');
 		await seller.populate('auctions');
 
 		// FIXME: Fix this error
@@ -64,8 +64,6 @@ export class SellerService {
 	 * @returns deleted auction document
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
-		// TODO - Ensure that the seller owns this auction
-
-		return this.auctionsService.remove(auctionId);
+		return this.auctionsService.remove({ auctionId, sellerId });
 	}
 }
