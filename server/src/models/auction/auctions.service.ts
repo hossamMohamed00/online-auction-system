@@ -35,28 +35,28 @@ export class AuctionsService {
 		} = createAuctionDto;
 
 		//? Ensure that the category exists
-		const isExists = await this.categoryService.isExists(categoryId);
-		if (!isExists) {
+		const isCategoryExists = await this.categoryService.isExists(categoryId);
+		if (!isCategoryExists) {
 			throw new BadRequestException('Category not found ❌.');
 		}
 
 		//* Create new item with this data
-		const item = await this.itemService.create(itemData);
+		const createdItem = await this.itemService.create(itemData);
 
-		//? Calc and get the Minimum Bid Allowed for that auction
-		const MinBidAllowed = 0;
+		//? Set the Minimum Bid Allowed to be equal to the basePrice.
+		const MinBidAllowed = restAuctionData.basePrice;
 
 		//? Calc tha chair cost value
-		const chairCostValue = 0;
+		const chairCostValue = this.calculateChairCost(restAuctionData.basePrice);
 
 		//* Create new auction document
 		const createdAuction: AuctionDocument = new this.auctionModel({
 			...restAuctionData,
 			minimumBidAllowed: MinBidAllowed,
 			chairCost: chairCostValue,
-			item,
-			seller,
+			item: createdItem,
 			category: categoryId,
+			seller,
 		});
 
 		//* Save the instance
@@ -170,8 +170,10 @@ export class AuctionsService {
 
 	/**
 	 //TODO Calculate the amount of money needed to join the auction
+	 @param basePrice: The opening price for the auction
 	 */
-	calculateChairCost() {
-		return 0;
+	calculateChairCost(basePrice: number) {
+		//* The chair cost will be 25% of the base price
+		return basePrice * 0.25
 	}
 }

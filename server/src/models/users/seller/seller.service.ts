@@ -31,8 +31,7 @@ export class SellerService {
 		createAuctionDto: CreateAuctionDto,
 		seller: SellerDocument,
 	): Promise<Auction> {
-		const auction = this.auctionsService.create(createAuctionDto, seller);
-		return auction;
+		return this.auctionsService.create(createAuctionDto, seller);
 	}
 
 	/**
@@ -74,6 +73,7 @@ export class SellerService {
 	 * @returns deleted auction document
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
+		//TODO: Remove auction's item first
 		return this.auctionsService.remove(auctionId, sellerId);
 	}
 }

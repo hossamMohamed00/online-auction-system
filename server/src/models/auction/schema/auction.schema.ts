@@ -1,12 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-
 import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
-import { Seller } from 'src/models/users/seller/schema/seller.schema';
-import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 
 export type AuctionDocument = Auction & Document;
@@ -40,7 +37,7 @@ export class Auction {
 	/*
   ? The minimum acceptable amount that is required for a bidder to place a Bid on an Item.
   ? The Minimum Bid is calculated using the Bidding Increment Rules and the Current Bid.
-  * The Minimum Bid is equal to the Starting Bid when the Bidding begins.
+  * The Minimum Bid is equal to the Base price when the Bidding begins.
   */
 	@Prop({ required: true, min: 0 })
 	minimumBidAllowed: number;
