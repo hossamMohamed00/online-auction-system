@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateItemDto } from './dto';
+import { UpdateItemDto } from './dto/update-item.dto';
 import { Item, ItemDocument } from './schema/item.schema';
 
 @Injectable()
@@ -23,5 +24,27 @@ export class ItemService {
 		await createdItem.save();
 
 		return createdItem;
+	}
+
+	/**
+	 * Update an item data
+	 * @param itemData - New item data
+	 * @return true if the item was updated, false otherwise
+	 */
+	async update(_id: string, updateItemDto: UpdateItemDto): Promise<boolean> {
+		//* Omit the _id
+		delete updateItemDto._id;
+
+		const updatedItem = await this.itemModel.findByIdAndUpdate(
+			_id,
+			updateItemDto,
+			{
+				new: true,
+			},
+		);
+
+		if (updatedItem) return true;
+
+		return false;
 	}
 }

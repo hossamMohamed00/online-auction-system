@@ -9,6 +9,7 @@ import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto';
+import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 
 @Injectable()
@@ -93,34 +94,71 @@ export class AuctionsService {
 
 	/**
 	 * Update auction details
-	 * @param _id - Auction id
+	 * @param auctionId - Auction id
+	 * @param sellerId - Seller id
 	 * @param updateAuctionDto - Dto for auction's properties to be updated
 	 * @returns updated auction instance
 	 */
-	async update(_id: string, updateAuctionDto: UpdateAuctionDto) {
+	async update(
+		auctionId: string,
+		sellerId: string,
+		{ item: itemNewData, ...updateAuctionDto }: UpdateAuctionDto,
+	) {
+		//? Check if the auction exists or not
+		const isExists = await this.isExists(auctionId, sellerId);
+		if (!isExists) {
+			throw new BadRequestException('Auction not found for that seller ❌');
+		}
+
+		//? Update the item first if it changed
+		if (itemNewData) {
+			await this.itemService.update(itemNewData._id, itemNewData);
+		}
+
+		//* Add the status to the object and set it back to 'pending'
+		updateAuctionDto['status'] = AuctionStatus.Pending;
+
+		//* Find the auction and update it
 		const auction = await this.auctionModel.findByIdAndUpdate(
-			_id,
+			auctionId,
 			updateAuctionDto,
 			{ new: true },
 		);
-		if (!auction) throw new NotFoundException('Auction not found ❌');
 
 		return auction;
 	}
 
 	/**
 	 * Remove auction by id
-	 * @param { auctionId, sellerId } - auction id and seller id
+	 * @param auctionId
+	 * @param sellerId
 	 * @returns Deleted auction instance
 	 */
-	async remove({ auctionId, sellerId }) {
+	async remove(auctionId: string, sellerId: string) {
 		const auction = await this.auctionModel.findOneAndRemove({
 			_id: auctionId,
 			seller: sellerId,
 		});
-		if (!auction) throw new NotFoundException('Auction not found for that seller❌');
+		if (!auction)
+			throw new NotFoundException('Auction not found for that seller❌');
 
 		return auction;
+	}
+
+	/**
+	 * Check if auction exists or not
+	 * @param auctionId
+	 * @param sellerId
+	 * @returns true if auction exists, false otherwise
+	 */
+	async isExists(auctionId: string, sellerId: string): Promise<boolean> {
+		//? Check if the seller owns this auction
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			seller: sellerId,
+		});
+
+		return count > 0;
 	}
 
 	/* Helper functions */

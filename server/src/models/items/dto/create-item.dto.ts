@@ -1,7 +1,5 @@
-import { Type } from 'class-transformer';
 import {
 	IsEnum,
-	IsMongoId,
 	IsNotEmpty,
 	IsOptional,
 	IsString,

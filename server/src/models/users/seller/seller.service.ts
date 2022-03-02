@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
-import { CreateAuctionDto } from 'src/models/auction/dto';
+import { CreateAuctionDto, UpdateAuctionDto } from 'src/models/auction/dto';
 import {
 	Auction,
 	AuctionDocument,
@@ -52,9 +52,19 @@ export class SellerService {
 		return auctions;
 	}
 
-	//TODO: Update auction data
-	async editAuction(): Promise<Auction> {
-		throw new Error('Not Implemented yet');
+	/**
+	 * Update specific auction for the seller
+	 * @param auctionId - Auction id
+	 * @param sellerId - Logged in seller id
+	 * @param updateAuctionDto - New auction data
+	 * @returns Updated auction instance
+	 */
+	async editAuction(
+		auctionId: string,
+		sellerId: string,
+		updateAuctionDto: UpdateAuctionDto,
+	): Promise<Auction> {
+		return this.auctionsService.update(auctionId, sellerId, updateAuctionDto);
 	}
 
 	/**
@@ -64,6 +74,6 @@ export class SellerService {
 	 * @returns deleted auction document
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
-		return this.auctionsService.remove({ auctionId, sellerId });
+		return this.auctionsService.remove(auctionId, sellerId);
 	}
 }

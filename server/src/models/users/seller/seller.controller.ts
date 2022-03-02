@@ -50,10 +50,11 @@ export class SellerController implements AuctionsBehaviors {
 	@Serialize(AuctionDto)
 	@Patch('auction/:id')
 	editAuction(
+		@Param() { id }: MongoObjectIdDto, // auction id
 		@Body() updateAuctionDto: UpdateAuctionDto,
-		@GetCurrentUserData() seller: SellerDocument,
+		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
-		return this.sellerService.editAuction();
+		return this.sellerService.editAuction(id, sellerId, updateAuctionDto);
 	}
 
 	@Serialize(AuctionDto)

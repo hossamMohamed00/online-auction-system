@@ -15,10 +15,14 @@ export interface AuctionsBehaviors {
 
 	//* Edit seller's auction details
 	editAuction(
+		auctionId: MongoObjectIdDto,
 		updateAuctionDto: UpdateAuctionDto,
-		seller: SellerDocument,
+		sellerId: string,
 	): Promise<Auction>;
 
 	//* Remove auction of that seller
-	removeAuction(id: MongoObjectIdDto, sellerId: string): Promise<Auction>;
+	removeAuction(
+		auctionId: MongoObjectIdDto,
+		sellerId: string,
+	): Promise<Auction>;
 }
