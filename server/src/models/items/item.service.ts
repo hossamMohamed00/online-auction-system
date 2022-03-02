@@ -47,4 +47,15 @@ export class ItemService {
 
 		return false;
 	}
+
+	/**
+	 * Remove an item from the database by id
+	 * @param _id - Item id to be removed
+	 * @returns true if item was removed, false otherwise
+	 */
+	async remove(_id: string): Promise<boolean> {
+		const removedItem = await this.itemModel.findByIdAndRemove(_id);
+		if (!removedItem) return false;
+		return true;
+	}
 }

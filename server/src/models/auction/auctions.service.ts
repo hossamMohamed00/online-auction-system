@@ -135,13 +135,16 @@ export class AuctionsService {
 	 * @returns Deleted auction instance
 	 */
 	async remove(auctionId: string, sellerId: string) {
-		const auction = await this.auctionModel.findOneAndRemove({
+		const auction: AuctionDocument = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,
 		});
 		if (!auction)
 			throw new NotFoundException('Auction not found for that seller❌');
 
+		//* Remove the auction using this approach to fire the pre hook event
+		await auction.remove();
+		
 		return auction;
 	}
 
@@ -174,6 +177,6 @@ export class AuctionsService {
 	 */
 	calculateChairCost(basePrice: number) {
 		//* The chair cost will be 25% of the base price
-		return basePrice * 0.25
+		return basePrice * 0.25;
 	}
 }
