@@ -29,6 +29,7 @@ import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import {
+	AuctionDto,
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 } from 'src/models/auction/dto';
@@ -45,6 +46,7 @@ export class AdminController
 	/**
 	 * List all available auctions
 	 */
+	@Serialize(AuctionDto)
 	@Get('auction')
 	listAllAuctions(
 		@Query() filterAuctionQuery: FilterAuctionQueryDto,
@@ -52,6 +54,7 @@ export class AdminController
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
 
+	@Serialize(AuctionDto)
 	@Post('auction/approve/:id')
 	approveAuction(
 		@Param() { id: auctionId }: MongoObjectIdDto,
@@ -59,6 +62,7 @@ export class AdminController
 		return this.adminService.approveAuction(auctionId);
 	}
 
+	@Serialize(AuctionDto)
 	@Post('auction/reject/:id')
 	rejectAuction(
 		@Param() { id: auctionId }: MongoObjectIdDto,
