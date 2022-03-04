@@ -9,5 +9,5 @@ export interface AuctionsBehavior {
 	): Promise<Auction[]>;
 
 	//* Approve specific auction
-	approveAuction(id: MongoObjectIdDto): Promise<boolean>;
+	approveAuction(id: MongoObjectIdDto): Promise<Auction>;
 }

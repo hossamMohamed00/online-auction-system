@@ -141,9 +141,9 @@ export class AuctionsService {
 	/**
 	 * Approve specific auction
 	 * @param auctionId
-	 * @return true if auction approved, false otherwise
+	 * @return the updated auction
 	 */
-	async approveAuction(auctionId: string) {
+	async approveAuction(auctionId: string): Promise<Auction> {
 		//TODO: Add End date to the auction
 
 		//? Find the auction by id and set the status to be Accepted
@@ -153,10 +153,7 @@ export class AuctionsService {
 			{ new: true },
 		);
 
-		//? Return true if the auction approved successfully
-		if (approvedAuction) return true;
-
-		return false;
+		return approvedAuction;
 	}
 
 	/**

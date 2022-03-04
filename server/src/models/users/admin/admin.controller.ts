@@ -52,7 +52,7 @@ export class AdminController
 	@Post('auction/approve/:id')
 	approveAuction(
 		@Param() { id: auctionId }: MongoObjectIdDto,
-	): Promise<boolean> {
+	): Promise<Auction> {
 		return this.adminService.approveAuction(auctionId);
 	}
 

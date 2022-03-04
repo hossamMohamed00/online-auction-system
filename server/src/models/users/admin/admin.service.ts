@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { FilterAuctionQueryDto } from 'src/models/auction/dto';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { CreateEmployeeDto } from '../employee/dto';
@@ -34,13 +35,14 @@ export class AdminService {
 	 * Approve auction by id
 	 * @param auctionId
 	 */
-	async approveAuction(auctionId: string): Promise<boolean> {
-		const done = await this.auctionService.approveAuction(auctionId);
+	async approveAuction(auctionId: string): Promise<Auction> {
+		const approvedAuction = await this.auctionService.approveAuction(auctionId);
 
 		//? Return true if the auction approved successfully
-		if (done) return true;
+		if (!approvedAuction)
+			throw new BadRequestException('Cannot approve this auction right now!');
 
-		return false;
+		return approvedAuction;
 	}
 
 	/* Handle Employee Functions */
