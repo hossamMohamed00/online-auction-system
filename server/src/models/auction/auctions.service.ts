@@ -11,6 +11,7 @@ import { Seller } from '../users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
 	FilterAuctionQueryDto,
+	RejectAuctionDto,
 	UpdateAuctionDto,
 } from './dto';
 import { AuctionStatus } from './enums';
@@ -75,13 +76,10 @@ export class AuctionsService {
 	 * @returns List of all existing auctions
 	 */
 	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
-		console.log({ filterAuctionQuery });
-
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate('seller')
 			.exec();
-		console.log({ auctions });
 
 		return auctions;
 	}
@@ -154,6 +152,24 @@ export class AuctionsService {
 		);
 
 		return approvedAuction;
+	}
+
+	/**
+	 * Reject specific auction and supply rejection message
+	 * @param auctionId
+	 * @param rejectAuctionDto - The rejection message
+	 */
+	async rejectAuction(auctionId: string, rejectAuctionDto: RejectAuctionDto) {
+		const rejectedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				status: AuctionStatus.Denied,
+				rejectionMessage: rejectAuctionDto.message,
+			},
+			{ new: true },
+		);
+
+		return rejectedAuction;
 	}
 
 	/**

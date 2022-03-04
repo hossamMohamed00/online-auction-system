@@ -57,6 +57,9 @@ export class Auction {
 	@Prop({ enum: AuctionStatus, default: AuctionStatus.Pending })
 	status: AuctionStatus;
 
+	@Prop({ default: null })
+	rejectionMessage: string;
+
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: User.name,

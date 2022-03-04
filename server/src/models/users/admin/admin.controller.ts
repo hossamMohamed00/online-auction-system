@@ -28,7 +28,10 @@ import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auction } from 'src/models/auction/schema/auction.schema';
-import { FilterAuctionQueryDto } from 'src/models/auction/dto';
+import {
+	FilterAuctionQueryDto,
+	RejectAuctionDto,
+} from 'src/models/auction/dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
@@ -54,6 +57,14 @@ export class AdminController
 		@Param() { id: auctionId }: MongoObjectIdDto,
 	): Promise<Auction> {
 		return this.adminService.approveAuction(auctionId);
+	}
+
+	@Post('auction/reject/:id')
+	rejectAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() rejectAuctionDto: RejectAuctionDto,
+	) {
+		return this.adminService.rejectAuction(auctionId, rejectAuctionDto);
 	}
 
 	/* Handle Employee Behaviors */

@@ -2,7 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
-import { FilterAuctionQueryDto } from 'src/models/auction/dto';
+import {
+	FilterAuctionQueryDto,
+	RejectAuctionDto,
+} from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
@@ -42,7 +45,30 @@ export class AdminService {
 		if (!approvedAuction)
 			throw new BadRequestException('Cannot approve this auction right now!');
 
+		//TODO: Send email to inform the seller
+
 		return approvedAuction;
+	}
+
+	/**
+	 * Reject specific auction by id
+	 * @param auctionId
+	 * @param rejectAuctionDto - Rejection Reason
+	 * @returns Updated auction
+	 */
+	async rejectAuction(auctionId: string, rejectAuctionDto: RejectAuctionDto) {
+		const rejectedAuction = await this.auctionService.rejectAuction(
+			auctionId,
+			rejectAuctionDto,
+		);
+
+		//? Return true if the auction approved successfully
+		if (!rejectedAuction)
+			throw new BadRequestException('Cannot reject this auction right now!');
+
+		//TODO: Send email to inform the seller
+
+		return rejectedAuction;
 	}
 
 	/* Handle Employee Functions */
