@@ -49,6 +49,13 @@ export class AdminController
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
 
+	@Post('auction/approve/:id')
+	approveAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+	): Promise<boolean> {
+		return this.adminService.approveAuction(auctionId);
+	}
+
 	/* Handle Employee Behaviors */
 
 	/**

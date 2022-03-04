@@ -139,6 +139,27 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Approve specific auction
+	 * @param auctionId
+	 * @return true if auction approved, false otherwise
+	 */
+	async approveAuction(auctionId: string) {
+		//TODO: Add End date to the auction
+
+		//? Find the auction by id and set the status to be Accepted
+		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{ status: AuctionStatus.Accepted },
+			{ new: true },
+		);
+
+		//? Return true if the auction approved successfully
+		if (approvedAuction) return true;
+
+		return false;
+	}
+
+	/**
 	 * Remove auction by id
 	 * @param auctionId
 	 * @param sellerId

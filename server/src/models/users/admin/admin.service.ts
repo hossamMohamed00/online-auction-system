@@ -23,10 +23,24 @@ export class AdminService {
 	/* Handle Auctions Functions */
 
 	/**
-	 * TODO: Add function description here...
+	 * List all auctions available
+	 * @param filterAuctionQuery - Contains search criteria to search for specific auctions
 	 */
 	listAllAuctions(filterAuctionQuery: FilterAuctionQueryDto) {
 		return this.auctionService.findAll(filterAuctionQuery);
+	}
+
+	/**
+	 * Approve auction by id
+	 * @param auctionId
+	 */
+	async approveAuction(auctionId: string): Promise<boolean> {
+		const done = await this.auctionService.approveAuction(auctionId);
+
+		//? Return true if the auction approved successfully
+		if (done) return true;
+
+		return false;
 	}
 
 	/* Handle Employee Functions */
