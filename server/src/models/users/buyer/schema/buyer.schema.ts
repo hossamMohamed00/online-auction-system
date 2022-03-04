@@ -10,8 +10,8 @@ export type BuyerDocument = Buyer & Document;
 
 @Schema()
 export class Buyer {
-  @Prop({ required: true, default: true })
-  isBuyer: boolean;
+	@Prop({ required: true, default: true })
+	isBuyer: boolean;
 }
 
 export const BuyerSchema = SchemaFactory.createForClass(Buyer);

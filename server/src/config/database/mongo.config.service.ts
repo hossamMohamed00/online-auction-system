@@ -7,9 +7,9 @@ import { ConfigService } from '@nestjs/config';
  */
 @Injectable()
 export class MongoConfigService {
-  constructor(private configService: ConfigService) {}
+	constructor(private configService: ConfigService) {}
 
-  get connectionString(): string {
-    return this.configService.get<string>('mongo.connectionString');
-  }
+	get connectionString(): string {
+		return this.configService.get<string>('mongo.connectionString');
+	}
 }

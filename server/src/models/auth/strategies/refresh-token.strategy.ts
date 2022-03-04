@@ -8,30 +8,30 @@ import { JwtPayload } from '../types';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
-  Strategy,
-  'jwt-refresh',
+	Strategy,
+	'jwt-refresh',
 ) {
-  constructor(
-    private readonly authConfigService: AuthConfigService,
-    private usersService: UsersService,
-  ) {
-    //? Setup JWT Options
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: authConfigService.refreshTokenSecret,
-    });
-  }
+	constructor(
+		private readonly authConfigService: AuthConfigService,
+		private usersService: UsersService,
+	) {
+		//? Setup JWT Options
+		super({
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			ignoreExpiration: false,
+			secretOrKey: authConfigService.refreshTokenSecret,
+		});
+	}
 
-  /**
-   * The return value of this method will be assigned to req.user
-   * @param payload :JwtPayload
-   * @returns user instance
-   */
-  async validate(payload: JwtPayload): Promise<UserDocument> {
-    const user: UserDocument = await this.usersService.findById(payload.sub);
-    if (!user) throw new ForbiddenException('Access Denied ❌');
+	/**
+	 * The return value of this method will be assigned to req.user
+	 * @param payload :JwtPayload
+	 * @returns user instance
+	 */
+	async validate(payload: JwtPayload): Promise<UserDocument> {
+		const user: UserDocument = await this.usersService.findById(payload.sub);
+		if (!user) throw new ForbiddenException('Access Denied ❌');
 
-    return user;
-  }
+		return user;
+	}
 }

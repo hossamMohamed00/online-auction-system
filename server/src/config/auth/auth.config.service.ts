@@ -7,33 +7,33 @@ import { ConfigService } from '@nestjs/config';
  */
 @Injectable()
 export class AuthConfigService {
-  constructor(private configService: ConfigService) {}
+	constructor(private configService: ConfigService) {}
 
-  //? Local authentication environment variables.
-  get accessTokenSecret(): string {
-    return this.configService.get<string>('auth.accessToken');
-  }
+	//? Local authentication environment variables.
+	get accessTokenSecret(): string {
+		return this.configService.get<string>('auth.accessToken');
+	}
 
-  get accessTokenExpiration(): number {
-    return Number(this.configService.get<number>('auth.accessTokenExpiration'));
-  }
+	get accessTokenExpiration(): number {
+		return Number(this.configService.get<number>('auth.accessTokenExpiration'));
+	}
 
-  get refreshTokenSecret(): string {
-    return this.configService.get<string>('auth.refreshToken');
-  }
+	get refreshTokenSecret(): string {
+		return this.configService.get<string>('auth.refreshToken');
+	}
 
-  get refreshTokenExpiration(): number {
-    return Number(
-      this.configService.get<number>('auth.refreshTokenExpiration'),
-    );
-  }
+	get refreshTokenExpiration(): number {
+		return Number(
+			this.configService.get<number>('auth.refreshTokenExpiration'),
+		);
+	}
 
-  //? Google auth environment variables.
-  get googleClientId(): string {
-    return this.configService.get<string>('auth.googleClientId');
-  }
+	//? Google auth environment variables.
+	get googleClientId(): string {
+		return this.configService.get<string>('auth.googleClientId');
+	}
 
-  get googleClientSecret(): string {
-    return this.configService.get<string>('auth.googleClientSecret');
-  }
+	get googleClientSecret(): string {
+		return this.configService.get<string>('auth.googleClientSecret');
+	}
 }

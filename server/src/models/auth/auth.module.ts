@@ -8,14 +8,14 @@ import { AuthService } from './auth.service';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 
 @Module({
-  imports: [
-    AuthConfigModule,
-    UsersModule,
-    PassportModule,
-    JwtModule.register({}),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
-  exports: [AuthService],
+	imports: [
+		AuthConfigModule,
+		UsersModule,
+		PassportModule,
+		JwtModule.register({}),
+	],
+	controllers: [AuthController],
+	providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
+	exports: [AuthService],
 })
 export class AuthModule {}

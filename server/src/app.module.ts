@@ -18,42 +18,42 @@ import { BuyerModule } from './models/users/buyer/buyer.module';
 import { EmployeeModule } from './models/users/employee/employee.module';
 
 @Module({
-  imports: [
-    CategoryModule,
-    ItemModule,
-    //? Load all user related modules
-    SchemaModule,
-    AdminModule,
-    EmployeeModule,
-    SellerModule,
-    BuyerModule,
-    //? All environment variables Loader Modules.
-    AppConfigModule,
-    MongoConfigModule,
-    AuthConfigModule,
-    //? Setup Database
-    MongoDatabaseProviderModule,
-    //* Main Modules
-    UsersModule,
-    AuthModule,
-    AuctionsModule,
-  ],
-  providers: [
-    //? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
-    {
-      provide: APP_GUARD,
-      useClass: AccessTokenAuthGuard,
-    },
-    //? Enable HasRoleGuard on all routes to check whether the user has the required role to access the endpoint or not
-    {
-      provide: APP_GUARD,
-      useClass: HasRoleGuard,
-    },
-  ],
+	imports: [
+		CategoryModule,
+		ItemModule,
+		//? Load all user related modules
+		SchemaModule,
+		AdminModule,
+		EmployeeModule,
+		SellerModule,
+		BuyerModule,
+		//? All environment variables Loader Modules.
+		AppConfigModule,
+		MongoConfigModule,
+		AuthConfigModule,
+		//? Setup Database
+		MongoDatabaseProviderModule,
+		//* Main Modules
+		UsersModule,
+		AuthModule,
+		AuctionsModule,
+	],
+	providers: [
+		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
+		{
+			provide: APP_GUARD,
+			useClass: AccessTokenAuthGuard,
+		},
+		//? Enable HasRoleGuard on all routes to check whether the user has the required role to access the endpoint or not
+		{
+			provide: APP_GUARD,
+			useClass: HasRoleGuard,
+		},
+	],
 })
 export class AppModule {
-  //? Configure the application middleware
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LogsMiddleware).forRoutes('*');
-  }
+	//? Configure the application middleware
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LogsMiddleware).forRoutes('*');
+	}
 }

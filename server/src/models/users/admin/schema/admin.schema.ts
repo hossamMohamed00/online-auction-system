@@ -10,8 +10,8 @@ export type AdminDocument = Admin & Document;
 
 @Schema()
 export class Admin {
-  @Prop({ required: true, default: true })
-  isAdmin: boolean;
+	@Prop({ required: true, default: true })
+	isAdmin: boolean;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);

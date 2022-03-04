@@ -10,16 +10,16 @@ import * as Joi from '@hapi/joi';
  * @module
  */
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.development.env',
-      load: [configuration],
-      validationSchema: Joi.object({
-        DATABASE_CONNECTION_STRING: Joi.string().required(),
-      }),
-    }),
-  ],
-  providers: [ConfigService, MongoConfigService],
-  exports: [ConfigService, MongoConfigService],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: '.development.env',
+			load: [configuration],
+			validationSchema: Joi.object({
+				DATABASE_CONNECTION_STRING: Joi.string().required(),
+			}),
+		}),
+	],
+	providers: [ConfigService, MongoConfigService],
+	exports: [ConfigService, MongoConfigService],
 })
 export class MongoConfigModule {}

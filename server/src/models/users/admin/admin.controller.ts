@@ -8,7 +8,7 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { IsPublicRoute, Roles } from 'src/common/decorators';
+import { Roles } from 'src/common/decorators';
 import { AdminService } from './admin.service';
 import { Role } from 'src/models/users/shared-user/enums';
 import {
@@ -18,31 +18,39 @@ import {
 } from 'src/models/category/dto';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
-import { CategoryBehaviors, EmployeeBehaviors } from './interfaces';
+import {
+	AuctionsBehavior,
+	CategoryBehaviors,
+	EmployeeBehaviors,
+} from './interfaces';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Auction } from 'src/models/auction/schema/auction.schema';
+import { FilterAuctionQueryDto } from 'src/models/auction/dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
 @Controller('admin')
-export class AdminController implements EmployeeBehaviors, CategoryBehaviors {
+export class AdminController
+	implements AuctionsBehavior, EmployeeBehaviors, CategoryBehaviors
+{
 	constructor(private readonly adminService: AdminService) {}
 
-	@Post()
-	@IsPublicRoute()
-	createAdmin(@Body() body: any) {
-		return this.adminService.create(body);
-	}
-
-	@Get()
-	@IsPublicRoute()
-	findAll() {
-		return this.adminService.findAll();
+	/* Handle Auction Behaviors */
+	/**
+	 * List all available auctions
+	 */
+	@Get('auction')
+	listAllAuctions(
+		@Query() filterAuctionQuery: FilterAuctionQueryDto,
+	): Promise<Auction[]> {
+		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
 
 	/* Handle Employee Behaviors */
+
 	/**
 	 * Add new employee
 	 * @param createEmployeeDto

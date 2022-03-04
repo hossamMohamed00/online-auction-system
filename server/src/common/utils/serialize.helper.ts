@@ -1,8 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 
 interface ClassConstructor {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  new (...args: any[]): {};
+	// eslint-disable-next-line @typescript-eslint/ban-types
+	new (...args: any[]): {};
 }
 
 /**
@@ -12,7 +12,7 @@ interface ClassConstructor {
  * @returns
  */
 export function SerializeIt(dto: ClassConstructor, target: any) {
-  return plainToInstance(dto, target, {
-    excludeExtraneousValues: true,
-  });
+	return plainToInstance(dto, target, {
+		excludeExtraneousValues: true,
+	});
 }

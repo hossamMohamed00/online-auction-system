@@ -9,14 +9,14 @@ import { getAppConfigValidationObj } from './app.validation-object';
  * @module
  */
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.development.env',
-      load: [configuration],
-      validationSchema: getAppConfigValidationObj(),
-    }),
-  ],
-  providers: [ConfigService, AppConfigService],
-  exports: [ConfigService, AppConfigService],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: '.development.env',
+			load: [configuration],
+			validationSchema: getAppConfigValidationObj(),
+		}),
+	],
+	providers: [ConfigService, AppConfigService],
+	exports: [ConfigService, AppConfigService],
 })
 export class AppConfigModule {}

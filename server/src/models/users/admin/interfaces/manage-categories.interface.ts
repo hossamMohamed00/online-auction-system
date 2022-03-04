@@ -7,12 +7,12 @@ import { CategoryDocument } from 'src/models/category/schema/category.schema';
  */
 
 export interface CategoryBehaviors {
-  addCategory(body: CreateCategoryDto): Promise<CategoryDocument>;
-  showAllCategories(name: string): Promise<CategoryDocument[]>;
-  getCategory(id: MongoObjectIdDto): Promise<CategoryDocument>;
-  updateCategory(
-    id: MongoObjectIdDto,
-    updateCategoryDto: UpdateCategoryDto,
-  ): Promise<CategoryDocument>;
-  deleteCategory(id: MongoObjectIdDto): Promise<CategoryDocument>;
+	addCategory(body: CreateCategoryDto): Promise<CategoryDocument>;
+	showAllCategories(name: string): Promise<CategoryDocument[]>;
+	getCategory(id: MongoObjectIdDto): Promise<CategoryDocument>;
+	updateCategory(
+		id: MongoObjectIdDto,
+		updateCategoryDto: UpdateCategoryDto,
+	): Promise<CategoryDocument>;
+	deleteCategory(id: MongoObjectIdDto): Promise<CategoryDocument>;
 }

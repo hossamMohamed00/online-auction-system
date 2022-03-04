@@ -73,7 +73,6 @@ export class SellerService {
 	 * @returns deleted auction document
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
-		//TODO: Remove auction's item first
 		return this.auctionsService.remove(auctionId, sellerId);
 	}
 }

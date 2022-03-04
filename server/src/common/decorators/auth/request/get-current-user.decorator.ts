@@ -6,13 +6,13 @@ import { UserDocument } from 'src/models/users/shared-user/schema/user.schema';
  */
 
 export const GetCurrentUserData = createParamDecorator(
-  (data: string | undefined, context: ExecutionContext) => {
-    const req = context.switchToHttp().getRequest();
-    const user: UserDocument = req.user;
+	(data: string | undefined, context: ExecutionContext) => {
+		const req = context.switchToHttp().getRequest();
+		const user: UserDocument = req.user;
 
-    //? The user object is attached to the request from passport strategy.
-    if (!data) return user; // ***Check Rt Strategy***
+		//? The user object is attached to the request from passport strategy.
+		if (!data) return user; // ***Check Rt Strategy***
 
-    return user[data]; //* like user['_id']
-  },
+		return user[data]; //* like user['_id']
+	},
 );

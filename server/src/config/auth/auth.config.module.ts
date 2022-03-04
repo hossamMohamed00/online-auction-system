@@ -9,14 +9,14 @@ import { getAuthConfigValidationObj } from './auth.validation-object';
  * @module
  */
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.development.env',
-      load: [configuration],
-      validationSchema: getAuthConfigValidationObj(),
-    }),
-  ],
-  providers: [ConfigService, AuthConfigService],
-  exports: [ConfigService, AuthConfigService],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: '.development.env',
+			load: [configuration],
+			validationSchema: getAuthConfigValidationObj(),
+		}),
+	],
+	providers: [ConfigService, AuthConfigService],
+	exports: [ConfigService, AuthConfigService],
 })
 export class AuthConfigModule {}

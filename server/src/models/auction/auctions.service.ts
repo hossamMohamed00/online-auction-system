@@ -8,7 +8,11 @@ import { Model } from 'mongoose';
 import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
-import { CreateAuctionDto, UpdateAuctionDto } from './dto';
+import {
+	CreateAuctionDto,
+	FilterAuctionQueryDto,
+	UpdateAuctionDto,
+} from './dto';
 import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 
@@ -67,10 +71,16 @@ export class AuctionsService {
 
 	/**
 	 * Find all auctions
+	 * @Param filterAuctionQuery - Contains search criteria
 	 * @returns List of all existing auctions
 	 */
-	async findAll() {
-		const auctions = await this.auctionModel.find({}).populate('seller').exec();
+	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
+		console.log({ filterAuctionQuery });
+
+		const auctions = await this.auctionModel
+			.find(filterAuctionQuery)
+			.populate('seller')
+			.exec();
 		console.log({ auctions });
 
 		return auctions;
@@ -144,7 +154,7 @@ export class AuctionsService {
 
 		//* Remove the auction using this approach to fire the pre hook event
 		await auction.remove();
-		
+
 		return auction;
 	}
 

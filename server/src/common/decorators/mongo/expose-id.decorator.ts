@@ -6,9 +6,9 @@ import { ExposeOptions, Transform, TransformFnParams } from 'class-transformer';
  */
 
 export const ExposeObjectId =
-  (_options?: ExposeOptions) => (target: Object, propertyKey: string) => {
-    Transform((params: TransformFnParams) => params.obj[propertyKey])(
-      target,
-      propertyKey,
-    );
-  };
+	(_options?: ExposeOptions) => (target: Object, propertyKey: string) => {
+		Transform((params: TransformFnParams) => params.obj[propertyKey])(
+			target,
+			propertyKey,
+		);
+	};

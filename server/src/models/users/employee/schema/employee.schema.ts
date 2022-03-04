@@ -10,8 +10,8 @@ export type EmployeeDocument = Employee & Document;
 
 @Schema()
 export class Employee {
-  @Prop({ required: true, default: true })
-  isEmployee: boolean;
+	@Prop({ required: true, default: true })
+	isEmployee: boolean;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

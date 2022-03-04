@@ -7,7 +7,7 @@ import { EmployeeDocument } from '../../employee/schema/employee.schema';
  */
 
 export interface EmployeeBehaviors {
-  addEmployee(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDocument>;
-  listEmployees(): Promise<EmployeeDocument[]>;
-  removeEmployee(id: MongoObjectIdDto): Promise<EmployeeDocument>;
+	addEmployee(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDocument>;
+	listEmployees(): Promise<EmployeeDocument[]>;
+	removeEmployee(id: MongoObjectIdDto): Promise<EmployeeDocument>;
 }

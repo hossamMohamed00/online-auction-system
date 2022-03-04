@@ -1,4 +1,4 @@
 export enum ItemStatus {
-  New = 'new',
-  Used = 'used',
+	New = 'new',
+	Used = 'used',
 }

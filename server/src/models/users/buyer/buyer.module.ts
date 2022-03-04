@@ -4,8 +4,8 @@ import { BuyerController } from './buyer.controller';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [],
-  controllers: [BuyerController],
-  providers: [BuyerService],
+	imports: [],
+	controllers: [BuyerController],
+	providers: [BuyerService],
 })
 export class BuyerModule {}
