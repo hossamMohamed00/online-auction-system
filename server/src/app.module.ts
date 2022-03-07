@@ -1,12 +1,14 @@
+import { APP_GUARD } from '@nestjs/core';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
+import { EmailSchedulingService } from './providers/schedule/email-scheduling.service';
+import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
 import { SchemaModule } from './models/users/shared-user/schema/schema.module';
 import { SellerModule } from './models/users/seller/seller.module';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { AuthModule } from './models/auth/auth.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
-import { APP_GUARD } from '@nestjs/core';
 import { AuctionsModule } from './models/auction/auctions.module';
 import { LogsMiddleware } from './common/middlewares';
 import { AppConfigModule } from './config/app/app.config.module';
@@ -40,8 +42,15 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 		AuctionsModule,
 		//? Email module
 		EmailModule,
+		/*
+		? Enable task schedule
+		 * The ScheduleModule.forRoot method initializes the scheduler.
+		 * It also registers all the cron jobs we define declaratively across our application.
+		 */
+		ScheduleModule.forRoot(),
 	],
 	providers: [
+		EmailSchedulingService,
 		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
 		{
 			provide: APP_GUARD,
