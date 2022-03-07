@@ -1,12 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, Interval } from '@nestjs/schedule';
+import { Cron, Interval, SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
+import EmailService from '../mail/email.service';
 
 @Injectable()
 export class EmailSchedulingService {
-	// @Cron('* * * * * *') //* The Cron decorator also accepts a JavaScript Date object.
-	@Interval(10000)
-	log() {
-		console.log('Hello world!');
+	constructor(
+		private readonly emailService: EmailService,
+		private readonly schedulerRegistry: SchedulerRegistry,
+	) {}
+
+	scheduleEmail(emailSchedule: any) {
+		const date = new Date(emailSchedule.date);
+		const job = new CronJob(date, () => {
+			this.emailService.sendMail({
+				to: emailSchedule.recipient,
+				subject: emailSchedule.subject,
+				text: emailSchedule.content,
+			});
+		});
+
+		this.schedulerRegistry.addCronJob(
+			// Unique job name
+			`${Date.now()}-${emailSchedule.subject}`,
+			job,
+		);
+		job.start();
 	}
 }
 
