@@ -1,3 +1,4 @@
+import { EmailModule } from './providers/mail/email.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
 import { SchemaModule } from './models/users/shared-user/schema/schema.module';
@@ -33,10 +34,12 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 		AuthConfigModule,
 		//? Setup Database
 		MongoDatabaseProviderModule,
-		//* Main Modules
+		//? Main Modules
 		UsersModule,
 		AuthModule,
 		AuctionsModule,
+		//? Email module
+		EmailModule,
 	],
 	providers: [
 		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
