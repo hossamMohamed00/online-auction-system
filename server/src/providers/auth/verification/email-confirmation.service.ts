@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import EmailService from 'src/providers/mail/email.service';
@@ -7,6 +7,8 @@ import VerificationTokenPayload from './verificationTokenPayload.interface';
 
 @Injectable()
 export class EmailConfirmationService {
+	private logger: Logger = new Logger('EmailConfirmationService 📨👌🏻');
+
 	//* Inject required services
 	constructor(
 		private readonly jwtService: JwtService,
@@ -19,7 +21,7 @@ export class EmailConfirmationService {
 	 * @param name: Name of the user
 	 * @param email: Email address of the user to send verification link
 	 */
-	public sendVerificationLink(name: string, email: string) {
+	public async sendVerificationLink(name: string, email: string) {
 		//* Prepare the jwt payload
 		const payload: VerificationTokenPayload = { email };
 
@@ -36,10 +38,18 @@ export class EmailConfirmationService {
 		const emailText = getEmailContent(name, url);
 
 		//? Send the verification link
-		return this.emailService.sendMail({
+		const emailStatus: boolean = await this.emailService.sendMail({
 			to: email,
 			subject: 'Email confirmation 👌🏻🧐',
 			text: emailText,
 		});
+
+		if (emailStatus) {
+			this.logger.log('Verification link sent to user 📨❤');
+		} else {
+			this.logger.log('Cannot sent verification link right now ❌😢');
+		}
+
+		return;
 	}
 }

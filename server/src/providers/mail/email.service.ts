@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
-import { ConfigService } from '@nestjs/config';
 import { MailConfigService } from 'src/config/mail/mail.config.service';
 
 @Injectable()
 export default class EmailService {
+	private logger: Logger = new Logger('Email Service 📨');
 	private nodemailerTransport: Mail;
 
 	constructor(private readonly mailConfigService: MailConfigService) {
@@ -13,15 +13,24 @@ export default class EmailService {
 			service: mailConfigService.service,
 			auth: {
 				user: mailConfigService.user,
-				pass: mailConfigService.password,
+				// pass: mailConfigService.password,
 			},
 		});
 	}
 
-	async sendMail(options: Mail.Options) {
-		const result = await this.nodemailerTransport.sendMail(options);
-		console.log({ result });
-
-		return result;
+	/**
+	 * Send email with subject
+	 * @param options - Mail options object
+	 * @returns result of send email
+	 */
+	async sendMail(options: Mail.Options): Promise<boolean> {
+		try {
+			await this.nodemailerTransport.sendMail(options);
+			this.logger.log('Email sent successfully 📨❤');
+			return true;
+		} catch (error) {
+			this.logger.error('Email failed to be sent!');
+			return false;
+		}
 	}
 }
