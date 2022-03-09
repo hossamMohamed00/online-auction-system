@@ -47,13 +47,45 @@ export class EmailConfirmationService {
 
 		if (emailStatus) {
 			this.logger.log('Verification link sent to user 📨❤');
+			return true;
 		} else {
 			this.logger.log('Cannot sent verification link right now ❌😢');
+			return false;
 		}
-
-		return;
 	}
 
+	/**
+	 * Resend new verification link
+	 */
+	public async resendConfirmationLink(userId: string) {
+		//? Ensure that the user email not already confirmed
+		const user = await this.usersService.findById(userId);
+		if (user?.isEmailConfirmed) {
+			throw new BadRequestException('Email already confirmed 🙄');
+		}
+
+		//? Re-send the link again
+		const result = await this.sendVerificationLink(user.name, user.email);
+
+		if (result) {
+			this.logger.log('Email confirmation resend 😉');
+			return {
+				status: true,
+				message: 'Email confirmation resend 😉',
+			};
+		} else {
+			this.logger.error('Cannot resend new confirmation link right now 😪');
+			return {
+				status: false,
+				message: 'Cannot resend new confirmation link right now 😪',
+			};
+		}
+	}
+
+	/**
+	 * Mark the user email as confirmed
+	 * @param email - User email
+	 */
 	async confirmEmail(email: string) {
 		//? Check if the email address is already confirmed
 		const user = await this.usersService.findByEmail(email);
@@ -66,6 +98,10 @@ export class EmailConfirmationService {
 		await this.usersService.markEmailAsConfirmed(email);
 
 		this.logger.log('Email confirmed successfully 😍');
+		return {
+			status: true,
+			message: 'Email address confirmed successfully 💃🏻💃🏻',
+		};
 	}
 
 	/**

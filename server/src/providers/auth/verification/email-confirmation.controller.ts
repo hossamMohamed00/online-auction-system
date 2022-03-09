@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { IsPublicRoute } from 'src/common/decorators';
+import { GetCurrentUserData, IsPublicRoute } from 'src/common/decorators';
 import ConfirmEmailDto from './dto/confirmEmail.dto';
 import { EmailConfirmationService } from './email-confirmation.service';
 
@@ -17,6 +17,11 @@ export class EmailConfirmationController {
 			confirmationData.token,
 		);
 		//* Confirm the email
-		await this.emailConfirmationService.confirmEmail(email);
+		return await this.emailConfirmationService.confirmEmail(email);
+	}
+
+	@Post('resend-confirmation-link')
+	async resendConfirmationLink(@GetCurrentUserData('_id') userId: string) {
+		return await this.emailConfirmationService.resendConfirmationLink(userId);
 	}
 }
