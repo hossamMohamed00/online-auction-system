@@ -77,12 +77,15 @@ export class AuctionsService {
 	 */
 	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
 		let populateFields = [];
-		
+
 		//* Check if the user want to populate the nested docs
 		const wantToPopulate = filterAuctionQuery.populate;
 		if (wantToPopulate) {
 			populateFields = ['seller', 'category', 'item', 'winningBuyer'];
 		}
+
+		// Delete the populate fields from the filterAuctionQuery
+		delete filterAuctionQuery.populate;
 
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
