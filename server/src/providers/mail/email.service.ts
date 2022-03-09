@@ -13,7 +13,7 @@ export default class EmailService {
 			service: mailConfigService.service,
 			auth: {
 				user: mailConfigService.user,
-				// pass: mailConfigService.password,
+				pass: mailConfigService.password,
 			},
 		});
 	}
@@ -25,10 +25,12 @@ export default class EmailService {
 	 */
 	async sendMail(options: Mail.Options): Promise<boolean> {
 		try {
-			await this.nodemailerTransport.sendMail(options);
+			const result = await this.nodemailerTransport.sendMail(options);
 			this.logger.log('Email sent successfully 📨❤');
 			return true;
 		} catch (error) {
+			console.log({ error });
+
 			this.logger.error('Email failed to be sent!');
 			return false;
 		}

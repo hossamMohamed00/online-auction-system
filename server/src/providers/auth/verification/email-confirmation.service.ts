@@ -36,12 +36,11 @@ export class EmailConfirmationService {
 
 		//? Get the email content
 		const emailText = getEmailContent(name, url);
-
 		//? Send the verification link
 		const emailStatus: boolean = await this.emailService.sendMail({
 			to: email,
-			subject: 'Email confirmation 👌🏻🧐',
-			text: emailText,
+			subject: 'Online-Auction-System: Email confirmation 👌🏻🧐',
+			html: emailText,
 		});
 
 		if (emailStatus) {
