@@ -51,7 +51,7 @@ export class AuthController {
 			registerUserDto.email,
 		);
 
-		return null;
+		return tokens;
 	}
 
 	/**

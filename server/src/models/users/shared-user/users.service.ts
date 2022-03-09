@@ -41,6 +41,20 @@ export class UsersService {
 		return user;
 	}
 
+	/**
+	 * Set the isEmailConfirmed to true
+	 * @param email
+	 */
+	async markEmailAsConfirmed(email: string) {
+		const user = await this.usersModel.findOneAndUpdate(
+			{ email },
+			{ isEmailConfirmed: true },
+			{ new: true },
+		);
+
+		return user;
+	}
+
 	/* Category functions */
 	async getAuctionsOfCategory(categoryId: string) {
 		const categories = await this.categoryService.getAuctionsOfCategory(
