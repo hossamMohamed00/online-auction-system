@@ -1,4 +1,10 @@
-import { IsDate, IsEnum, IsOptional, IsMongoId } from 'class-validator';
+import {
+	IsDate,
+	IsEnum,
+	IsOptional,
+	IsMongoId,
+	IsBooleanString,
+} from 'class-validator';
 import { AuctionStatus } from '../../enums';
 
 export class FilterAuctionQueryDto {
@@ -9,4 +15,8 @@ export class FilterAuctionQueryDto {
 	@IsOptional()
 	@IsMongoId()
 	category: string;
+
+	@IsOptional()
+	@IsBooleanString()
+	populate: string;
 }
