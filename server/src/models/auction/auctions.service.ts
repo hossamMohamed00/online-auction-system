@@ -142,14 +142,32 @@ export class AuctionsService {
 	 * @return the updated auction
 	 */
 	async approveAuction(auctionId: string): Promise<Auction> {
-		//TODO: Add End date to the auction
+		// BAD APPROACH --> 2 Requests to the db
 
-		//? Find the auction by id and set the status to be Accepted
+		//? Get the auction from db
+		const auction = await this.auctionModel.findById(auctionId);
+		if (!auction) return null;
+
+		//? Prepare the end date
+		const auctionStartDate = auction.startDate;
+		const newEndDate = new Date();
+
+		//* Add  7 days to the startDate
+		newEndDate.setDate(auctionStartDate.getDate() + 7);
+
+		//? Find the auction by id and set the status to be Accepted and the new end date
 		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
-			{ status: AuctionStatus.Accepted },
+			{
+				$set: {
+					status: AuctionStatus.Accepted,
+					endDate: newEndDate,
+				},
+			},
 			{ new: true },
 		);
+
+		//TODO: Schedule the auction to run
 
 		return approvedAuction;
 	}
