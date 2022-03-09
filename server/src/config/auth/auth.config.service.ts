@@ -36,4 +36,19 @@ export class AuthConfigService {
 	get googleClientSecret(): string {
 		return this.configService.get<string>('auth.googleClientSecret');
 	}
+
+	//? Confirm Email environment variables.
+	get jwtVerificationTokenSecret(): string {
+		return this.configService.get<string>('auth.jwtVerificationTokenSecret');
+	}
+
+	get jwtVerificationTokenExpirationTime(): string {
+		return this.configService.get<string>(
+			'auth.jwtVerificationTokenExpirationTime',
+		);
+	}
+
+	get emailConfirmationUrl(): string {
+		return this.configService.get<string>('auth.emailConfirmationUrl');
+	}
 }

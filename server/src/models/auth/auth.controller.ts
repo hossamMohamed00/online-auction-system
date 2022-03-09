@@ -20,6 +20,7 @@ import { RefreshTokenAuthGuard } from '../../common/guards';
 import { Tokens } from './types';
 import { Serialize } from 'src/common/interceptors';
 import { UserDto } from '../users/shared-user/dto';
+import { EmailConfirmationService } from 'src/providers/auth';
 
 /**
  * These endpoints responsible for user authentication
@@ -27,7 +28,10 @@ import { UserDto } from '../users/shared-user/dto';
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
-	constructor(private authService: AuthService) {}
+	constructor(
+		private authService: AuthService,
+		private readonly emailConfirmationService: EmailConfirmationService,
+	) {}
 
 	/**
 	 * Register a new user
@@ -37,8 +41,17 @@ export class AuthController {
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
-		return this.authService.register(registerUserDto);
+	async register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
+		//? Register the user
+		const tokens = await this.authService.register(registerUserDto);
+
+		//? Send confirmation email
+		await this.emailConfirmationService.sendVerificationLink(
+			registerUserDto.name,
+			registerUserDto.email,
+		);
+
+		return tokens;
 	}
 
 	/**

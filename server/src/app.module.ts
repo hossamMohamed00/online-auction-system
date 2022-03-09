@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EmailSchedulingService } from './providers/schedule/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
+import { EmailConfirmationModule } from './providers/auth/verification/email-confirmation.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
 import { SchemaModule } from './models/users/shared-user/schema/schema.module';
@@ -22,6 +23,7 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 
 @Module({
 	imports: [
+		EmailConfirmationModule,
 		CategoryModule,
 		ItemModule,
 		//? Load all user related modules

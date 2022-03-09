@@ -18,7 +18,10 @@ export default class EmailService {
 		});
 	}
 
-	sendMail(options: Mail.Options) {
-		return this.nodemailerTransport.sendMail(options);
+	async sendMail(options: Mail.Options) {
+		const result = await this.nodemailerTransport.sendMail(options);
+		console.log({ result });
+
+		return result;
 	}
 }
