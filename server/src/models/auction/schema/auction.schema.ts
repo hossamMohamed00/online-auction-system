@@ -17,8 +17,6 @@ export class Auction {
 		required: true,
 		type: mongoose.Schema.Types.ObjectId,
 		ref: Item.name,
-		//? The below option tells this plugin to always call `populate()` on `item`
-		autopopulate: true,
 	})
 	item: Item;
 
@@ -63,8 +61,6 @@ export class Auction {
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: User.name,
-		//? The below option tells this plugin to always call `populate()` on `winningBuyer`
-		autopopulate: true,
 		default: null,
 	})
 	winningBuyer: User;
@@ -72,15 +68,12 @@ export class Auction {
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: User.name,
-		//? The below option tells this plugin to always call `populate()` on `seller`
-		autopopulate: true,
 	})
 	seller: User;
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: Category.name,
-		autopopulate: true,
 	})
 	category: Category;
 }
