@@ -58,6 +58,13 @@ export class AuthService {
 		const isMatch = await compare(password, user.password);
 		if (!isMatch) throw new NotFoundException('User not found ❌');
 
+		//TODO: Move this check to when the user access any endpoint
+		if (!user.isEmailConfirmed) {
+			throw new ForbiddenException(
+				'Access Denied, Confirm your email address first 🙄',
+			);
+		}
+
 		//? Issue tokens, save refresh_token in db and save user
 		const tokens = await this.getTokensAndSaveUser(user);
 
