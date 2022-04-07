@@ -59,6 +59,7 @@ export class AuthService {
 		if (!isMatch) throw new NotFoundException('User not found ❌');
 
 		//TODO: Move this check to when the user access any endpoint
+		 // @ts-ignore
 		if (!user.isEmailConfirmed) {
 			throw new ForbiddenException(
 				'Access Denied, Confirm your email address first 🙄',
