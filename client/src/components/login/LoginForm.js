@@ -49,7 +49,7 @@ const LoginForm = () => {
 				<input
 					placeholder="Username"
 					className={`${classes.input} form-control `}
-					onChange={userNameHandler}
+					// onChange={userNameHandler}
 					// onBlur={validateUsername}
 				/>
 				{/* {!usernameIsValid && <p className="text-danger">Username is invalid</p>} */}
@@ -58,7 +58,7 @@ const LoginForm = () => {
 					type="password"
 					placeholder="Password"
 					className={`${classes.input} form-control  `}
-					onChange={passwordHandler}
+					// onChange={passwordHandler}
 				/>
 				{/* {!passwordIsValid && <p className="text-danger">Password is invalid</p>} */}
 				<div className={classes.text}>
