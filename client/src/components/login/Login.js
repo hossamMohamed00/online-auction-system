@@ -22,7 +22,7 @@ const Login = () => {
 							<LoginForm />
 							<p className="text-center text-light">
 								Don't have an account ?{' '}
-								<span className="text-primary">Register Now</span>
+								<a className=" text-decoration-none" href='#'>Register Now</a>
 							</p>
 						</div>
 					</div>
