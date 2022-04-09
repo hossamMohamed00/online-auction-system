@@ -19,6 +19,8 @@
 	"author": "Hossam Mohamed",
 	"license": "ISC",
 	"dependencies": {
+		"@nestjs/platform-socket.io": "^8.4.4",
+		"@nestjs/websockets": "^8.4.4",
 		"concurrently": "^7.0.0"
 	}
 }
