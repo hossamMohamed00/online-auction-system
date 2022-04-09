@@ -8,8 +8,8 @@ import Register from './component/Register/Register'
 function App() {
 	return (
 		<React.Fragment>
-			{/* <Login></Login> */}
-			<Register/>
+			<Login></Login>
+			{/* <Register/> */}
 
 		</React.Fragment>
 	);

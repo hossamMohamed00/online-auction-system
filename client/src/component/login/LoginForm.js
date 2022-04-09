@@ -94,7 +94,7 @@ const LoginForm = () => {
 				<button className="btn btn-primary">Login</button>
 			</form>
 			<div className={classes.accounts}>
-				<img src={facebookImg}/>
+				<img src={facebookImg} />
 				<img src={twitterImg} />
 
 				<img src={googleImg} />

@@ -26,6 +26,7 @@
 	opacity: 1;
 	font-family: var(--main-font);
 	font-weight: bold;
+	font-size: 14px !important;
 }
 .input:focus {
 	background-color: var(--input-dark-color);
@@ -41,20 +42,31 @@
 	display: flex;
 	justify-content: space-between;
 	margin: 0 -1% 0 -4%;
-	/* margin-right: 5px; */
+	margin-right: 5px;
+	font-weight: 400;
+}
+.text label,
+p {
+	font-size: 14px;
+	font-weight: bold;
+}
+.text p{
+	font-size: 14px !important;
 }
 form button {
 	width: 100%;
 	margin-top: 5%;
+	font-size: 20px !important;
+	font-weight: bold !important;
 }
 .accounts {
 	display: flex;
 	justify-content: space-around;
 	margin-top: 5%;
 	margin-left: 5%;
-	width:90%;
+	width: 90%;
 }
-.accounts img{
+.accounts img {
 	width: 30px;
 	height: 30px;
 }
