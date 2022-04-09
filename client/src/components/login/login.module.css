@@ -17,9 +17,9 @@
 	opacity: 0.1;
 }
 .img {
-	background-image: url('../../assets/pexels-photo-5668473.jpeg');
+	background-image: url('../../assets/pexels-sora-shimazaki-5668473.png');
 	width: 100%;
-	height: 100vh;
+	height: 100vh !important;
 	background-size: cover;
 	background-position: center;
 }

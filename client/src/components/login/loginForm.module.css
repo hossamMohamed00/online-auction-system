@@ -1,28 +1,28 @@
 :root {
 	--main-font: 'Poppins', 'sans-serif';
-	--input-dark-color:#707070;
+	--input-dark-color: #707070;
 }
 .form-container {
 	width: 90%;
 	margin: 0 auto;
-	margin-top: 70px;
-	border-radius: 10px;
-	border: 1px solid #707070 ;
-	 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+	margin-top: 20px;
+	/* border-radius: 10px; */
+	/* border: 1px solid #707070 ;
+	 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
 	padding: 10%;
-	-webkit-border-radius: 10px;
+	/* -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	-ms-border-radius: 10px;
-	-o-border-radius: 10px;
+	-o-border-radius: 10px; */
 }
 
 .input {
 	background-color: var(--input-dark-color);
 	border: none;
 	margin: 0 auto;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 	width: 100%;
-	color : white;
+	color: white;
 	font-family: var(--main-font);
 	font-weight: 600;
 	font-size: 20px;
@@ -33,8 +33,8 @@
 	font-family: var(--main-font);
 	font-weight: bold;
 }
-.input:focus{
-	background-color :var(--input-dark-color);
+.input:focus {
+	background-color: var(--input-dark-color);
 	color: white;
 	font-family: var(--main-font);
 	font-weight: bold;
@@ -46,28 +46,24 @@
 .text {
 	display: flex;
 	justify-content: space-between;
-	margin:0 -1% 0 -4%;
+	margin: 0 -1% 0 -4%;
 	/* margin-right: 5px; */
 }
 form button {
-
-	width:100%;
-	margin-top: 7%;
-
+	width: 100%;
+	margin-top: 5%;
 }
-.accounts{
+.accounts {
 	display: flex;
 	justify-content: space-around;
-	margin-top: 7%;
+	margin-top: 5%;
 	margin-left: 7%;
 	width: 90%;
 }
-.errorText{
-	color: red;
-}
+
 @media screen and (max-width: 992px) {
 	.input {
-		width: 50% !important;
+		width: 100% !important;
 	}
 	.checkbox {
 		/* margin-left: 25% !important; */
