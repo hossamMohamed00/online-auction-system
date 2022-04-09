@@ -17,10 +17,10 @@ const Login = () => {
 
 					<div className="col-lg-4  col-xs-12 px-0 pl-0 ">
 						<div className={classes.form}>
-							<h1 className="pt-5"> Login </h1>
+							<h1 className="pt-3"> Login </h1>
 							<h3> Let's start with login</h3>
 							<LoginForm />
-							<p className="text-center text-light">
+							<p className="text-center text-light ">
 								Don't have an account ?{' '}
 								<a className=" text-decoration-none" href='#'>Register Now</a>
 							</p>

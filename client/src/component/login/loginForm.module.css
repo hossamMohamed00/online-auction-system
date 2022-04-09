@@ -3,37 +3,11 @@
 	--input-dark-color: #707070;
 }
 .form-container {
-	width: 90%;
-	margin: 0 auto;
+	/* width: 90%; */
+	/* margin: 0 auto; */
 	margin-top: 20px;
-
-	padding: 10%;
 }
 
-.input {
-	background-color: var(--input-dark-color);
-	border: none;
-	margin: 0 auto;
-	margin-bottom: 15px;
-	width: 100%;
-	color: white;
-	font-family: var(--main-font);
-	font-weight: 600;
-	font-size: 20px;
-}
-.input::placeholder {
-	color: white;
-	opacity: 1;
-	font-family: var(--main-font);
-	font-weight: bold;
-	font-size: 14px !important;
-}
-.input:focus {
-	background-color: var(--input-dark-color);
-	color: white;
-	font-family: var(--main-font);
-	font-weight: bold;
-}
 .checkbox {
 	margin-left: 5% !important;
 	display: inline-block;
@@ -50,7 +24,7 @@ p {
 	font-size: 14px;
 	font-weight: bold;
 }
-.text p{
+.text p {
 	font-size: 14px !important;
 }
 form button {
@@ -74,8 +48,5 @@ form button {
 @media screen and (max-width: 992px) {
 	.input {
 		width: 100% !important;
-	}
-	.checkbox {
-		/* margin-left: 25% !important; */
 	}
 }
