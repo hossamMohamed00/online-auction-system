@@ -70,13 +70,21 @@ export class ChatGateway
 		@MessageBody() data: { sender: string; message: string; recipient: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
-		const chatData = {
-			message: data.message,
-			sender: data.sender,
-			recipient: data.recipient,
-		};
+		if(user) {
+			this.logger.log('New message recieved ❤');
+			const chatData = {
+				message: data.message,
+				sender: user.name,
+				recipient: data.recipient,
+			};
+	
+			const message: Chat = await this.chatService.saveChat(chatData);
+			this.server.emit('new-message-to-client', { message });
+		} else {
+			this.server.emit('new-message-to-client', {
+				message: 'You are not logged in ❌',
+			});
+		}
 
-		const message: Chat = await this.chatService.saveChat(chatData);
-		this.server.emit('new-message-to-client', { message });
 	}
 }

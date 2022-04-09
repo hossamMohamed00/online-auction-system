@@ -22,8 +22,13 @@ export class SocketAuthGuard implements CanActivate {
 		const handshakeHeaders = client.handshake.headers;
 
 		//* Extract the access token
-		const accessToken = handshakeHeaders.authorization
-			.replace('Bearer', '')
+		let accessToken = handshakeHeaders.authorization;
+
+		if(!accessToken) {
+			return false;
+		}
+
+		accessToken = accessToken.replace('Bearer', '')
 			.trim();
 
 		//* Get the user
