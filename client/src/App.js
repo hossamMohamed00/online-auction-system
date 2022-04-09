@@ -1,25 +1,13 @@
-import './App.css';
+import React , {Fragment}  from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Register from './component/Register/Register';
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-
-				<p>
-					Edit <code>src/App.js</code> and save to reload 🔄🔄🔄🔄🔄
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
+		<Fragment>
+				<Register/>
+		</Fragment>
 	);
 }
 

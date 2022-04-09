@@ -1,0 +1,30 @@
+
+.register-steps-header{
+	height: 15vh;
+	color: white;
+	font-size: 10px;
+	font-weight: 600;
+	margin: 25px 0px 0px 20px;
+}
+
+.circle-icon{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-color: var(--light-color);
+	border-radius: 100px;
+	text-align: center;
+	color: white;
+	margin-bottom: 5px;
+	padding-top: 4px;
+}
+
+.active-bg{
+	background-color: var(--active-color);
+}
+.active{
+	color: var(--active-color);
+	font-weight: bold!important;
+
+}
+/* end register-steps-header */
