@@ -9,10 +9,6 @@ export const GetCurrentUserFromSocket = createParamDecorator(
 		const client = context.switchToWs().getClient();
 
 		if (!client.user) {
-			client.emit('new-message-to-client', {
-				message: 'You are not logged in ❌',
-			});
-
 			return null;
 		}
 
