@@ -23,7 +23,7 @@
 }
 
 .register-bg .background {
-	background-image:url("../Assets/register-bg.png");
+	background-image:url("../../../assets/register-bg.png");
 	background-position: center;
 	background-size: cover;
 	width: 100%;
