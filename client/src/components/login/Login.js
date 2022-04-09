@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './login.module.css';
 import LoginForm from './LoginForm';
+// import Register from './../../component/Register/Register';
 
 const Login = () => {
 	return (
@@ -19,6 +20,10 @@ const Login = () => {
 							<h1 className="pt-5"> Login </h1>
 							<h3> Let's start with login</h3>
 							<LoginForm />
+							<p className="text-center text-light">
+								Don't have an account ?{' '}
+								<span className="text-primary">Register Now</span>
+							</p>
 						</div>
 					</div>
 				</div>
