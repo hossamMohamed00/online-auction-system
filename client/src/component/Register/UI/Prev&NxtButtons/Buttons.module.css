@@ -1,0 +1,19 @@
+
+.btn-steps{
+	width: 85%;
+	position: absolute;
+	bottom: -18px;
+}
+.btn-steps>button{
+	width: 47%;
+	font-weight: 600;
+}
+
+.btn-steps>button:first-child{
+	background-color: #5E5F5E;
+	border-color: #5E5F5E;
+}
+.btn-steps>button:last-child{
+	background-color: #2666CF;
+	border-color: #2666CF;
+}

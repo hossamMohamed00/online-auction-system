@@ -2,6 +2,9 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+
+
+/* start paragraph  && headings styles */
 h3{
 	color: white;
 	padding: 20px 0 10px 0px;
@@ -14,12 +17,33 @@ p{
 	font-size: 10px;
 }
 
-.step2Paragraph{
+.stepParagraph{
 	color: #A2A2A2;
 	font-size: 15px;
 }
 
-/* input[type = 'radio']{font-size: 10px; margin-top: 8px;} */
+.contactDetails{
+	font-size: 12px;
+	margin-bottom: 0px;
+	padding: 5px;
+}
+
+
+.notification, label{
+	color: #2666CF!important;
+	font-size: 14px;
+}
+
+.alert{
+	color: #DD523B!important;
+	font-weight: bolder!important;
+}
+
+/* end paragraph styles */
+
+/* ********************************************** */
+
+/* start input styles */
 
 input:focus{
 	box-shadow: none!important;
@@ -30,8 +54,7 @@ input{
 	font-weight: 600 !important;
 }
 
-
-
+/* end input styles */
 
 
 
@@ -45,24 +68,6 @@ input{
 	font-size: 20px;
 }
 
-.btn-steps{
-	width: 85%;
-	position: absolute;
-	bottom: -18px;
-}
-.btn-steps>button{
-	width: 47%;
-	font-weight: 600;
-}
-
-.btn-steps>button:first-child{
-	background-color: #5E5F5E;
-	border-color: #5E5F5E;
-}
-.btn-steps>button:last-child{
-	background-color: #2666CF;
-	border-color: #2666CF;
-}
 
 .btnPhoneNum{
 	background-color: #2666CF !important;
@@ -76,13 +81,3 @@ button:disabled{
 	opacity: 1!important;
 }
 
-
-.notification, label{
-	color: #2666CF!important;
-	font-size: 12px;
-}
-
-.alert{
-	color: #DD523B!important;
-	font-weight: bolder!important;
-}

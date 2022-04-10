@@ -34,7 +34,7 @@ const Step1 = () => {
 	const ValidateForm = () => {
 		if (vaildteText(nameRef.current.value) &&  vaildteEmail(emailRef.current.value) && validatePassword(passwordRef.current.value) && validateConfirm(confirmPasswordRef.current.value)) {
 			dispatch(RegisterActions.showStep2())
-			dispatch(AuthActions.isAuthStep1({name:nameRef.current.value}))
+			dispatch(AuthActions.isAuthStep1({name:nameRef.current.value , email:emailRef.current.value , password:passwordRef.current.value}))
 		}
 		else{
 			setIsValidForm(false)
