@@ -19,7 +19,7 @@ p{
 	font-size: 15px;
 }
 
-input[type = 'radio']{font-size: 10px; margin-top: 8px;}
+/* input[type = 'radio']{font-size: 10px; margin-top: 8px;} */
 
 input:focus{
 	box-shadow: none!important;

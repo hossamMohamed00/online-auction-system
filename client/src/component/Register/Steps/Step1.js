@@ -5,6 +5,7 @@ import classes from './Steps.module.css'
 import { useDispatch } from "react-redux";
 import { RegisterActions } from "../../../store/slices/Register";
 import { AuthActions } from "../../../store/slices/RegisterSlices/isAuth";
+import RadioButton from "../UI/RadioButtons/RadioButton";
 
 const Step1 = () => {
 	// to check [password] with [checkpassword]
@@ -14,6 +15,9 @@ const Step1 = () => {
 	const passwordRef = useRef()
 	const emailRef = useRef()
 	const confirmPasswordRef = useRef()
+
+	const roleRef = useRef()
+
 
 	/* Validation */
 	const vaildteText = (value) => value.trim() !== ''
@@ -49,6 +53,7 @@ const Step1 = () => {
 	const submitHadler = (e) => {
 		e.preventDefault()
 		ValidateForm()
+		console.log(roleRef)
 	}
 	return (
 		<div className="constainer">
@@ -60,17 +65,7 @@ const Step1 = () => {
 			<Input type='password' placeholder='Password' name='password' validateText={validatePassword} ref={passwordRef} getValue={getPasswordValue} />
 			<Input type='password' placeholder='Confirm Password' name='confirmPassword' validateText={validateConfirm} ref={confirmPasswordRef} />
 
-			<div className={`${classes['role']} mt-3 pb-3 m-auto `}>
-				<div className="form-check form-check-inline">
-					<input className="form-check-input" name="role" type="radio" id="Seller" value="Seller" />
-					<label className="form-check-label text-light px-2" htmlFor="Seller">Seller</label>
-				</div>
-				<div className="form-check form-check-inline">
-					<input className="form-check-input" name="role" type="radio" id="Buyer" value="Buyer" />
-					<label className="form-check-label text-light px-2" htmlFor="Buyer">Buyer</label>
-				</div>
-
-			</div>
+			<RadioButton name="role" values= {["Seller" ,"Buyer"]} ref={roleRef} />
 
 			{!isValidForm && <p className={`${classes['alert']} p-2 text-center fs-6 `} > Please Enter the Required Information </p> }
 

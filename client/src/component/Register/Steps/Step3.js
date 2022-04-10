@@ -2,7 +2,17 @@ import React from "react";
 
 const  Step3 = () => {
 	return (
-		<h3> Step3</h3>
+		<div class="container">
+      <h2>Contact Details</h2>
+      <p>We’ll send auction update and notifications to:</p>
+
+
+      <p>How would you like to verify this account?</p>
+
+
+
+
+		</div>
 	 );
 }
 
