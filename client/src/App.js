@@ -1,14 +1,19 @@
-import React , {Fragment}  from 'react'
+import React from 'react'
+// import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import Register from './component/Register/Register';
+import Login from './component/login/Login';
+import Register from './component/Register/Register'
 
 function App() {
 	return (
-		<Fragment>
-				<Register/>
-		</Fragment>
+		<React.Fragment>
+			<Login></Login>
+			{/* <Register/> */}
+
+		</React.Fragment>
 	);
+
 }
 
 export default App;

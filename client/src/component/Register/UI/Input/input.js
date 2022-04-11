@@ -11,14 +11,14 @@ const Input = React.forwardRef((props , ref) => {
 	props.getValue && props.getValue(InputValue)
 
 	return(
-			<div className="mt-2 w-75 m-auto">
+			<div className=" m-auto">
 				<input
 					type      	= {props.type}
 					value     	= {InputValue}
 					placeholder = {props.placeholder}
 					onChange  	= {onChangeValueHandeler}
 					onBlur    	= {onBlurHandeler}
-					className 	= {` form-control ${classes['form-control']} ${hasError ? classes['alarm-input'] : '' } `}
+					className 	= {` form-control ${classes['form-control']} ${classes.input} ${hasError ? classes['alarm-input'] : '' } `}
 					ref 				= {ref}
 				/>
 
@@ -26,6 +26,7 @@ const Input = React.forwardRef((props , ref) => {
 					{ValidationPassword}
 					{ValidationconfirmPassword}
         </div>
+				{hasError&& <p className="text-danger">{props.errorMassage}</p>}
 
 
       </div>
