@@ -10,13 +10,13 @@ import RadioButton from "../UI/RadioButtons/RadioButton";
 const Step1 = () => {
 	// to check [password] with [checkpassword]
 	let password = ''
+	let roleValue = ''
 
 	const nameRef = useRef()
 	const passwordRef = useRef()
 	const emailRef = useRef()
 	const confirmPasswordRef = useRef()
 
-	const roleRef = useRef()
 
 
 	/* Validation */
@@ -27,6 +27,10 @@ const Step1 = () => {
 
 	const getPasswordValue = (value) => {
 		password = value
+	}
+	const getRoleValue = (value) => {
+		console.log(value)
+		roleValue = value
 	}
 
 	const [isValidForm , setIsValidForm] = useState(true)
@@ -43,18 +47,17 @@ const Step1 = () => {
 	}
 
 
-
-	// end Validation
-	/* ****************************************** */
-
 	// change to step2
 	const dispatch = useDispatch()
 
+
 	const submitHadler = (e) => {
 		e.preventDefault()
+		console.log(roleValue)
 		ValidateForm()
-		console.log(roleRef)
+
 	}
+
 	return (
 		<div className="constainer">
 			<h3> Personal Information</h3>
@@ -65,13 +68,12 @@ const Step1 = () => {
 			<Input type='password' placeholder='Password' name='password' validateText={validatePassword} ref={passwordRef} getValue={getPasswordValue} />
 			<Input type='password' placeholder='Confirm Password' name='confirmPassword' validateText={validateConfirm} ref={confirmPasswordRef} />
 
-			<RadioButton name="role" values= {["Seller" ,"Buyer"]} ref={roleRef} />
+			<RadioButton name="role" values= {["Seller" ,"Buyer"]}  getValue= {getRoleValue} />
 
 			{!isValidForm && <p className={`${classes['alert']} p-2 text-center fs-6 `} > Please Enter the Required Information </p> }
 
 			<button onClick={submitHadler} className={`${classes['btn-next']} btn w-75 `} type="button"  > Next   </button>
 		</div>
-
 	)
 
 }

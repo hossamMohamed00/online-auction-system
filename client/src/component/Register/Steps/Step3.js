@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AuthActions } from "../../../store/slices/RegisterSlices/isAuth";
 import Buttons from "../UI/Prev&NxtButtons/Buttons";
 import RadioButton from "../UI/RadioButtons/RadioButton";
 
@@ -8,12 +9,13 @@ import classes from './Steps.module.css'
 
 const  Step3 = () => {
 
+	//const [isAcceptant , setIsAcceptant] = useState()
+	let isAcceptant
 
 	const email 			= useSelector(store => store.RegisterAuth.step1Details.email)
 	const phoneNumber = useSelector(store => store.RegisterAuth.step2Details.phoneNum)
 
 	const Details = { "Email" : email , "PhoneNumber" : phoneNumber}
-	console.log(phoneNumber)
 
 	const ContactDetails =
 		Object.keys(Details).map(item => (
@@ -26,9 +28,19 @@ const  Step3 = () => {
 					</div>
 				</div>
 			)
-		)
+	)
+
+	const getAcceptantValue = (value) => {
+		isAcceptant = value
+	}
 
 
+	const dispatch = useDispatch()
+
+
+	const SubmitHandeler = () => {
+			dispatch(AuthActions.isAuthStep3({acceptDetails : isAcceptant}))
+	}
 
 	return (
 		<div className="container text-center">
@@ -37,16 +49,14 @@ const  Step3 = () => {
 
 			{ContactDetails}
 
-
-
 			<p className= {` ${classes['notification']} text-center fw-bolder pt-3`}>
 				How would you like to verify this account?
 			</p>
 
 
-			<RadioButton name="UsePhoneNum" values={["Yes" , "No"]} />
+			<RadioButton name="UsePhoneNum" values={["E-mail" , "Phone"]} getValue={getAcceptantValue} />
 
-			<Buttons prev="Step2" nxt="Step4"/>
+			<Buttons prev="Step2" nxt="Step4" onClick = {SubmitHandeler} />
 
 		</div>
 	 );

@@ -6,11 +6,26 @@ import RadioButton from "../UI/RadioButtons/RadioButton";
 import classes from './Steps.module.css'
 
 const Step2 = () => {
-	const dispatch 		= useDispatch()
+	let isAcceptant;
 	const phoneNumRef = useRef()
 
+	const getAcceptantValue = (value) => {
+		console.log(value)
+		isAcceptant = value
+	}
+
+	const dispatch 		= useDispatch()
+
 	const submitStep2Handeler = () => {
-		dispatch(AuthActions.isAuthStep2({phoneNum:phoneNumRef.current.value}))
+		if(isAcceptant==="Yes"){
+			dispatch(AuthActions.isAuthStep2({phoneNum: phoneNumRef.current.value}))
+		}
+		else{
+			dispatch(AuthActions.isAuthStep2({phoneNum: 'not acceptant'}))
+
+		}
+
+
 	}
 
 	return(
@@ -31,7 +46,7 @@ const Step2 = () => {
 			</p>
 
 
-			<RadioButton name="UsePhoneNum" values={["Yes" , "No"]} />
+			<RadioButton name="UsePhoneNum" values={["Yes" , "No"]}  getValue={getAcceptantValue}/>
 
 			<Buttons prev="Step1" nxt="Step3" onClick={submitStep2Handeler} />
 

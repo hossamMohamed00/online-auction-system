@@ -4,8 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 	step1Details : {name:'' , email: '', password: ''},
 	step2Details : {phoneNum : ''},
-	step3Details : {verficationNum: '' },
-	step4Details : {acceptDetails:''}
+	step3Details : {acceptDetails: '' },
+	step4Details : {verifactionCode:'' , ResendBy:''}
 
 }
 const isAuth = createSlice({
@@ -22,12 +22,15 @@ const isAuth = createSlice({
 			state.step2Details.phoneNum 		= action.payload.phoneNum
 
 		},
-		/*isAuthStep3(){
-
+		isAuthStep3(state,action){
+			state.step3Details.acceptDetails = action.payload.acceptDetails
 		},
-		isAuthStep4(){
-
-		}*/
+		isAuthStep4(state,action){
+			state.step4Details.verifactionCode = action.payload.verifactionCode
+		},
+		ResendVerficationCode(state,action){
+			state.step4Details.ResendBy = action.payload.ResendBy
+		}
 
 	}
 })

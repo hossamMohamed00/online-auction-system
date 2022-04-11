@@ -26,6 +26,10 @@ const Buttons = (props) => {
 			props.onClick && props.onClick()
 			dispatch(RegisterActions.showStep3())
 		}
+		if(props.nxt==='Step4'){
+			props.onClick && props.onClick()
+			dispatch(RegisterActions.showStep4())
+		}
 
 	}
 
