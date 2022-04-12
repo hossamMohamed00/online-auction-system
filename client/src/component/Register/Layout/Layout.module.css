@@ -13,6 +13,10 @@
 	background-color: var(--dark-color);
 }
 
+.Register > div{
+	height: 100vh!important;
+}
+
 /* start register background */
 
 .register-bg-overlay{
@@ -27,7 +31,8 @@
 	background-position: center;
 	background-size: cover;
 	width: 100%;
-	height: 100vh;
+	min-height: 100%;
+
 }
 /* end register background */
 

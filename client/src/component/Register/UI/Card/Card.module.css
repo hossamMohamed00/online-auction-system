@@ -5,10 +5,12 @@
 	margin: auto;
 	border-radius: 25px;
 	box-shadow: 0px 3px 4px #889090;
-	padding: 25px;
-	height: calc(90vh - 15vh);
+	padding-bottom: 25px!important;
+	max-height: calc(90vh - 10vh);
+}
 
-
+.loginCard{
+	padding-top: 25px!important;
 }
 .user-icon {
 	position: absolute;

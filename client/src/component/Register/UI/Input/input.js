@@ -5,8 +5,7 @@ import classes from './Input.module.css'
 const Input = React.forwardRef((props , ref) => {
 	const {value:InputValue ,hasError ,onChangeValueHandeler, onBlurHandeler } = useInput(props.validateText)
 
-	let	ValidationPassword = props.name==='password' 	&& hasError && <p>Your password must be more than 8 characters </p>
-	let ValidationconfirmPassword = props.name==='confirmPassword' 	&& hasError && <p>Your password must be more than 8 characters </p>
+
 
 	props.getValue && props.getValue(InputValue)
 
@@ -21,12 +20,7 @@ const Input = React.forwardRef((props , ref) => {
 					className 	= {` form-control ${classes['form-control']} ${classes.input} ${hasError ? classes['alarm-input'] : '' } `}
 					ref 				= {ref}
 				/>
-
-				<div className={classes['alarm']}>
-					{ValidationPassword}
-					{ValidationconfirmPassword}
-        </div>
-				{hasError&& <p className="text-danger">{props.errorMassage}</p>}
+				{hasError&& <p className={`${classes['alarm']} mb-2`}>{props.errorMassage}</p>}
 
 
       </div>

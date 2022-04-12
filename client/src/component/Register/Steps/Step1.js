@@ -18,11 +18,13 @@ const Step1 = () => {
 	const confirmPasswordRef = useRef()
 
 
+	let errorNameMessage = "Please Enter Your Name";
+	let errorEmailMessage = "Please Enter Your Email";
 
 	/* Validation */
 	const vaildteText = (value) => value.trim() !== ''
 	const vaildteEmail = (value) => value.trim().includes('@')
-	const validatePassword = (value) => value.trim().length > 2
+	const validatePassword = (value) => value.trim().length > 4
 	const validateConfirm = (value) => value.trim() === password
 
 	const getPasswordValue = (value) => {
@@ -55,20 +57,23 @@ const Step1 = () => {
 		e.preventDefault()
 		console.log(roleValue)
 		ValidateForm()
-
 	}
 
 	return (
-		<div className="constainer">
+		<div className="container">
 			<h3> Personal Information</h3>
 
-			<Input type='text' placeholder='Name' name='text' validateText={vaildteText} ref={nameRef} />
-			<Input type='email' placeholder='Email' name='email' validateText={vaildteEmail} ref={emailRef} />
+			<Input type='text' placeholder='Name' name='text' validateText={vaildteText} ref={nameRef}  errorMassage= {errorNameMessage} />
+			<Input type='email' placeholder='Email' name='email' validateText={vaildteEmail} ref={emailRef}  errorMassage ={errorEmailMessage} />
+			<Input type='password' placeholder='Password' name='password' validateText={validatePassword} ref={passwordRef} errorMassage="Your password must be more than 8 characters " getValue={getPasswordValue}  />
+			<Input type='password' placeholder='Confirm Password' name='confirmPassword' validateText={validateConfirm} ref={confirmPasswordRef} errorMassage="Your confirm password must mutch password "/>
 
-			<Input type='password' placeholder='Password' name='password' validateText={validatePassword} ref={passwordRef} getValue={getPasswordValue} />
-			<Input type='password' placeholder='Confirm Password' name='confirmPassword' validateText={validateConfirm} ref={confirmPasswordRef} />
+			<div>
+				<p className="text-light m-1 fs-6 fw-bolder"> Choose Your Role </p>
+				<RadioButton name="role" values= {["Seller" ,"Buyer"]}  getValue= {getRoleValue} />
 
-			<RadioButton name="role" values= {["Seller" ,"Buyer"]}  getValue= {getRoleValue} />
+			</div>
+
 
 			{!isValidForm && <p className={`${classes['alert']} p-2 text-center fs-6 `} > Please Enter the Required Information </p> }
 

@@ -6,7 +6,7 @@ import React, { useState } from "react";
 */
 
 const inputClasses = 'form-check-input '
-const labelClasses = 'form-check-label text-light fw-bold	 '
+const labelClasses = 'form-check-label fw-bold text-muted'
 
 const RadioButton = (props) => {
 	const initialState = props.values[0]
@@ -20,10 +20,11 @@ const RadioButton = (props) => {
 
 	console.log(props.values)
 	props.getValue(Value)
+
 	return(
-		<div className={` mt-3 pb-3 `}>
+		<div className={`pb-3 mx-3`} style={{textAlign:'left'}}>
 				{props.values.map(btn => (
-				<div className="form-check form-check-inline m-auto mx-3" key={btn} onChange={onChangeHandeler}  >
+				<div className="form-check" key={btn} onChange={onChangeHandeler}  >
 					<input className={inputClasses} name={props.name} type="radio" id={btn} value={btn} defaultChecked = {Value === btn} />
 					<label className={labelClasses} htmlFor={btn}> {btn} </label>
 				</div>

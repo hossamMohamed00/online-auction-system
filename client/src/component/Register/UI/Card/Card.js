@@ -6,7 +6,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 const Card = (props) => {
 	return(
 		<Fragment>
-			<div className = {` container ${classes["register-steps-content"]} `}  >
+			<div className = { `${props.className ? classes[props.className] : ''} container ${classes["register-steps-content"]} `}  >
 				<div className={classes['user-icon']}>
 						<span className={classes['circle-icon']}>
 								<FontAwesomeIcon icon={faUser} />

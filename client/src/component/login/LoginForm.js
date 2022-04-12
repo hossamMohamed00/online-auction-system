@@ -16,7 +16,7 @@ const LoginForm = () => {
 
 	return (
 		<div className={classes['form-container']}>
-			<Card>
+			<Card className={'loginCard'} >
 				<form>
 					<Input
 						type="text"
