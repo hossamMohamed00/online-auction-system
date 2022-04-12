@@ -35,14 +35,14 @@ const Step2 = () => {
  					by adding a phone number
 			</p>
 
-			<div className="input-group my-5">
+			<div className="input-group my-4">
   			<button className= {` ${classes.btnPhoneNum} btn`} type="button" id="phoneNum"> 20</button>
   			<input type="text" className="form-control" placeholder="" ref = {phoneNumRef} />
 
 			</div>
 
-			<p className= {` ${classes['notification']} text-center`}>
-				Use this phone number for outbid text notifications?
+			<p className= {` ${classes['notification']} `}>
+				Use this phone number for Bidding?
 			</p>
 
 

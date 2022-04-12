@@ -1,10 +1,9 @@
-.btn-primary , .btn{
-	padding: 2px!important;
-}
+
 .btn-steps{
 	width: 85%;
 	position: absolute;
 	bottom: -18px;
+	color: white;
 }
 .btn-steps>button{
 	width: 47%;

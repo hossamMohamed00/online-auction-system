@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 
 const  Step4 = () => {
-	let ResendBy  ;
+	let ResendValue  ;
 	const [Value , setValue] = useState('')
 
 	const codeNum1ref = useRef()
@@ -38,13 +38,12 @@ const  Step4 = () => {
 
 	const getReSendValue = (value) => {
 		console.log(value)
-		ResendBy = value
+		ResendValue = value
 	}
 
 
 	const ResendHandeler = () => {
-		console.log(ResendBy)
-		dispatch(AuthActions.ResendVerficationCode({ResendBy :ResendBy }))
+		dispatch(AuthActions.ResendVerficationCode({ResendBy : ResendValue }))
 	}
 
 
@@ -69,12 +68,12 @@ const  Step4 = () => {
 			</div>
 
 
-			<p className= {` ${classes['notification']} text-center fw-bolder pt-3`}>
-				How would you like to resend by?
+			<p className= {` ${classes['notification']}  fw-bolder pt-3`}>
+				Would you like to Resend Again ?
 			</p>
 
 
-			<RadioButton name="VerifyAccountBy" values={["E-mail" , "Phone"]} getValue= {getReSendValue}  />
+			<RadioButton name="VerifyAccountBy" values={["Yes" , "No"]} getValue= {getReSendValue}  />
 
 			<div className={styles['btn-steps']}>
         <button type="button" onClick = {ResendHandeler} className="btn btn-primary ">Re-Send</button>

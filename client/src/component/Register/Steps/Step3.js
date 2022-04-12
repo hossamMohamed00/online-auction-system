@@ -19,8 +19,8 @@ const  Step3 = () => {
 
 	const ContactDetails =
 		Object.keys(Details).map(item => (
-				<div className="row bg-light my-3" key={item}>
-					<div className="col-lg-4 bg-primary ">
+				<div className="row bg-light my-3 rounded-2 " key={item}>
+					<div className="col-lg-4 p-1 rounded-start " style={{backgroundColor:"#2666CF"}}>
 							<p className={`${classes.contactDetails} text-center text-light`}> {item} </p>
 					</div>
 					<div className="col-lg">
@@ -45,16 +45,15 @@ const  Step3 = () => {
 	return (
 		<div className="container text-center">
       <h3>Contact Details</h3>
-      <p className={classes['stepParagraph']}>We’ll send auction update and notifications to:</p>
+      <p className={classes['stepParagraph']}>We’ll send auction update and notifications to your email</p>
 
 			{ContactDetails}
 
-			<p className= {` ${classes['notification']} text-center fw-bolder pt-3`}>
-				How would you like to verify this account?
+			<p className= {` ${classes['notification']} fw-bolder pt-3`}>
+				Would you like to verify this account?
 			</p>
 
-
-			<RadioButton name="UsePhoneNum" values={["E-mail" , "Phone"]} getValue={getAcceptantValue} />
+			<RadioButton name="UsePhoneNum" values={["Yes" , "No"]} getValue={getAcceptantValue} />
 
 			<Buttons prev="Step2" nxt="Step4" onClick = {SubmitHandeler} />
 

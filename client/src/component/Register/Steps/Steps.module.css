@@ -7,7 +7,7 @@
 /* start paragraph  && headings styles */
 h3{
 	color: white;
-	padding: 15px 0 8px 0px;
+	padding: 25px 0 8px 0px;
 	font-weight: 600;
 }
 
@@ -30,8 +30,8 @@ p{
 
 
 .notification{
-	color: #2666CF;
-	font-size: 14px;
+	color: #A2A2A2;
+	font-size: 13px;
 }
 
 .alert{

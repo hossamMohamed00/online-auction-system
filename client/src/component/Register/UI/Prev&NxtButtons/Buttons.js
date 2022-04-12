@@ -35,8 +35,8 @@ const Buttons = (props) => {
 
 	return (
 		<div className = {classes['btn-steps']}>
-			<button onClick = {previousHandeler} className={`${classes['btn']} `} type="button">	Previous</button>
-			{props.nxt && <button onClick = {nextHandeler} className={`${classes['btn-primary' , 'btn']} mx-2`} type="button"> Next</button> }
+			<button onClick = {previousHandeler} className='btn text-light' type="button">	Previous</button>
+			{props.nxt && <button onClick = {nextHandeler} className='btn-primary btn  mx-2' type="button"> Next</button> }
 		</div>
 	);
 }
