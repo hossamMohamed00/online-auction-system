@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {step1: false , step2:false , step3:true , step4:false}
+const initialState = {step1: true , step2:false , step3:false , step4:false}
 
 const Register = createSlice({
     name : 'RegisterSteps',
