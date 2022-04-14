@@ -2,9 +2,12 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+
+
+/* start paragraph  && headings styles */
 h3{
 	color: white;
-	padding: 20px 0 10px 0px;
+	padding: 25px 0 8px 0px;
 	font-weight: 600;
 }
 
@@ -14,12 +17,33 @@ p{
 	font-size: 10px;
 }
 
-.step2Paragraph{
+.stepParagraph{
 	color: #A2A2A2;
 	font-size: 15px;
 }
 
-input[type = 'radio']{font-size: 10px; margin-top: 8px;}
+.contactDetails{
+	font-size: 12px;
+	margin-bottom: 0px;
+	padding: 5px;
+}
+
+
+.notification{
+	color: #A2A2A2;
+	font-size: 13px;
+}
+
+.alert{
+	color: #DD523B!important;
+	font-weight: bolder!important;
+}
+
+/* end paragraph styles */
+
+/* ********************************************** */
+
+/* start input styles */
 
 input:focus{
 	box-shadow: none!important;
@@ -30,8 +54,7 @@ input{
 	font-weight: 600 !important;
 }
 
-
-
+/* end input styles */
 
 
 
@@ -45,24 +68,6 @@ input{
 	font-size: 20px;
 }
 
-.btn-steps{
-	width: 85%;
-	position: absolute;
-	bottom: -18px;
-}
-.btn-steps>button{
-	width: 47%;
-	font-weight: 600;
-}
-
-.btn-steps>button:first-child{
-	background-color: #5E5F5E;
-	border-color: #5E5F5E;
-}
-.btn-steps>button:last-child{
-	background-color: #2666CF;
-	border-color: #2666CF;
-}
 
 .btnPhoneNum{
 	background-color: #2666CF !important;
@@ -77,12 +82,46 @@ button:disabled{
 }
 
 
-.notification, label{
-	color: #2666CF!important;
-	font-size: 12px;
+
+/*start step 4*/
+
+
+
+
+
+.code-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	margin-bottom: 25px;
 }
 
-.alert{
-	color: #DD523B!important;
-	font-weight: bolder!important;
+.code {
+  border-radius: 5px;
+  font-size: 30px;
+  height: 30px;
+  width: 30px;
+  border: 1px solid;
+  background-color: #fff;
+  border: 1px solid #2666cf;
+  outline-width: thin;
+  outline-color: #5e5f5e;
+  text-align: center;
+  -moz-appearance: textfield;
+  margin-left: 5px;
+	font-size: 10px;
+}
+
+.code::-webkit-outer-spin-button,
+.code::-webkit-inner-spin-button {
+  -webkit-appearance: none!important;
+  margin: 0;
+}
+
+
+/*end step 4*/
+@media screen and (max-width:992px){
+	.contactDetails{
+		padding: 10px;
+	}
 }

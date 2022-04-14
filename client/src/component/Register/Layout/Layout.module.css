@@ -1,6 +1,27 @@
 *{
 	font-family: 'Poppins', sans-serif;
 }
+html {
+  --scrollbarBG: var(--dark-color);
+  --thumbBG: var(--input-color);
+}
+body::-webkit-scrollbar {
+  width: 11px;
+}
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+
+
 :root{
 	--dark-color : #191A19 ;
 	--light-color : #a2a2a2 ;
@@ -11,6 +32,10 @@
 
 .Register{
 	background-color: var(--dark-color);
+}
+
+.Register > div{
+	height: 100vh!important;
 }
 
 /* start register background */
@@ -27,7 +52,8 @@
 	background-position: center;
 	background-size: cover;
 	width: 100%;
-	height: 100vh;
+	min-height: 100%;
+
 }
 /* end register background */
 
