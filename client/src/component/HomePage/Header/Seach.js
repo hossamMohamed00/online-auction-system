@@ -34,7 +34,7 @@ const Search = () => {
 			<div className="">
 
 				<div className={classes.Search}>
-					<div className="input-group position-relative w-75 m-auto">
+					<div className={` ${classes.SearchInputGroup} input-group position-relative w-75 m-auto `}>
 						<input type="text" className={` ${classes.SearchInput} form-control `} value={SearchContent} onChange={changeHandeler} onFocus={focusHandeler} onBlur={blurHandeler}/>
 						<span className={` ${classes.SearchIcon} input-group-text `}>
 							<FontAwesomeIcon icon={faMagnifyingGlass}  />

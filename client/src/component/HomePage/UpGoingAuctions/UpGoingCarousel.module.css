@@ -68,11 +68,10 @@
 
 /* end AuctionDetails*/
 
+
 /* *************************************** */
 @media screen and (max-width:992px){
-	.Carousel{
-		height: fit-content!important;
-	}
+
 	.Carousel p{
 		font-size: 10px;
 	}
@@ -85,10 +84,11 @@
 	}
 
 	.itemImage,.alertText{
-		width: 80%!important;
-		margin-left: 10%!important;
+		width: 300px!important;
+		margin-left: calc((100% - 300px) / 2)!important;
+		margin-right: calc((100% - 300px) / 2)!important
 	}
-	.itemImage{height: 60%;}
+	.itemImage{max-height: 300px!important; }
 	.ItemText{padding-left: 5%; text-align: center;}
 
 	.AuctionPrice , .AuctionTime{

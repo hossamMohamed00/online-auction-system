@@ -97,7 +97,9 @@
 	.Header{
 		height: 40vh;
 	}
+	.SearchResult{ height: 120px;}
 }
+
 @media screen and (max-width:567px){
 	.Header{
 		height: 40vh;
@@ -109,7 +111,8 @@
 	h1 { font-size: 20px!important}
 	p {font-size: 10px!important ; padding-top: 5px;}
 
-	.SearchResult{ height: 120px;}
+	.SearchResult{ height: 100px;width: 90%!important;}
 	.SearchInput{ padding: 1px;}
+	.SearchInputGroup{width: 90%!important;}
 
 }
