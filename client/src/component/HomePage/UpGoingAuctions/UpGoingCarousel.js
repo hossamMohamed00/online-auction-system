@@ -26,7 +26,7 @@ const UpGoingCarousel = () => {
 
 	const ShowCarouselItems = CarouselItems.map((Item , index)=> {
 		return(
-			<Carousel.Item className={` ${classes['carousel-inner']} `} interval={2000}>
+			<Carousel.Item  className={` ${classes['carousel-inner']} `} interval={2000} key={index}>
 			<div className="row">
 				<div className={` ${classes.ImageCarousel} col-lg-4 col-md-6 col-sm-12`}>
 					<p className={`${classes.alertText} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>

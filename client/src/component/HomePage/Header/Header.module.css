@@ -1,11 +1,10 @@
+*{	font-family: 'Kalmansk' !important	}
 .Header{
 	height: 70vh;
-	font-family: 'Poppins', sans-serif;
 	background-image: url('.././../../assets/pexels-abhilash-sahoo-4413295.jpg');
 	background-size: cover;
 	background-position: center;
 	margin-bottom: 10px;
-
 }
 
 .overlay{
@@ -19,20 +18,12 @@
 
 /* start navbar */
 
-.nav{
-	background-color: #191a19;
-}
+.nav {background-color: #191a19}
 
+.navbarBrand{	font-size: 20px!important}
+.navLinkRegister{ color: #5595b7; border-right: 1px solid white; padding-right: 15px!important;}
 
-.navLinkRegister{
-	color: #5595b7;
-	border-right: 1px solid white;
-	padding-right: 15px!important;
-}
-
-.navLinkLogin{
-	padding-left: 15px!important;
-}
+.navLinkLogin{ padding-left: 15px!important }
 /* end navbar */
 
 
@@ -45,7 +36,9 @@
 	margin-top: 0;
 	z-index: 100;
 }
-
+.HeaderContent h1{
+	font-family: 'Kalmansk' !important	;
+}
 /* ************************************************** */
 /* start search css */
 .Search{
@@ -58,13 +51,8 @@
 	border-color: #5595b7!important;
 	box-shadow: 3px 1px 5px #5595b7!important;
 	color: black!important;
-	font-weight: bold!important;
 }
-.SearchInput{
-	color: black!important;
-	font-weight: bold!important;
-
-}
+.SearchInput{color: black!important; padding: 1.5px; padding-left: 5px;}
 .SearchIcon {
 	background-color: #5595b7!important;
 	border-color: #5595b7;
@@ -106,7 +94,7 @@
 	}
 	nav{padding: 0!important}
 
-	.navbarBrand{ font-size: 15px!important; font-weight: bold;}
+	.navbarBrand{ font-size: 15px!important; font-weight: bold;font-size: 15px;}
 
 	h1 { font-size: 20px!important}
 	p {font-size: 10px!important ; padding-top: 5px;}
