@@ -9,7 +9,7 @@ import scollbarStyle from '../UI/ScrollBar.module.css'
 const HomePage = () => {
 	return (
 		<Fragment>
-			<div className= {`${scollbarStyle} container-fluid`} style={{backgroundColor: "#191a19" , minHeight:"100vh"}}>
+			<div className= {`${scollbarStyle.scollbar} container-fluid px-0`} style={{backgroundColor: "#191a19" , minHeight:"100vh"}}>
 				<Header/>
 				<UpGoingAuctions/>
 				<CurrentAuctions/>

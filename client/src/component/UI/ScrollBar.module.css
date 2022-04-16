@@ -14,18 +14,22 @@ html {
   --thumbBG: var(--input-color);
 	background-color: var(--dark-color);
 }
-body::-webkit-scrollbar {
+.scollbar::-webkit-scrollbar, body::-webkit-scrollbar {
   width: 11px;
 }
-body {
+body ,.scollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track{
   background: var(--scrollbarBG);
 }
-body::-webkit-scrollbar-thumb {
+.scollbar::-webkit-scrollbar-track { background: white}
+
+body::-webkit-scrollbar-thumb , .scollbar::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG) ;
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
 }
+.scollbar::-webkit-scrollbar-thumb  { border-color: white}
+
