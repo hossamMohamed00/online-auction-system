@@ -1,10 +1,11 @@
-*{	font-family: 'Kalmansk' !important	}
+*{ font-family: 'Amiri', serif;}
+/* *{font-family: 'kalmansk'} */
+
 .Header{
 	height: 70vh;
 	background-image: url('.././../../assets/pexels-abhilash-sahoo-4413295.jpg');
 	background-size: cover;
 	background-position: center;
-	margin-bottom: 10px;
 }
 
 .overlay{
@@ -36,9 +37,7 @@
 	margin-top: 0;
 	z-index: 100;
 }
-.HeaderContent h1{
-	font-family: 'Kalmansk' !important	;
-}
+
 /* ************************************************** */
 /* start search css */
 .Search{

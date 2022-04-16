@@ -1,7 +1,6 @@
-*{	font-family: 'Kalmansk' !important	}
 
 :root {
-	--main-font: 'Poppins', 'sans-serif';
+	--main-font:'Amiri', serif;
 	--input-dark-color: #707070;
 }
 .form-container {

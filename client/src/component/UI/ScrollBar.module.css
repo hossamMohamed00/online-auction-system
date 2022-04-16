@@ -6,9 +6,7 @@
 	--alarm-color : #DD523B;
 }
 
-*{
-	font-family: 'Poppins', sans-serif;
-}
+
 html {
   --scrollbarBG: var(--dark-color , #191a19);
   --thumbBG: var(--input-color);
