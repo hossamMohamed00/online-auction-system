@@ -1,0 +1,54 @@
+.sidebar {
+	/* width: 20%; */
+	height: 100vh;
+	background-color: #191c20;
+	margin-right: 10%;
+	overflow: auto;
+}
+
+ul {
+	list-style: none;
+	color:#5e5f61;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 20%;
+	/* margin-bottom: 5%; */
+}
+ul li{
+	margin-bottom: 5%;
+
+
+}
+
+ul li a{
+
+	font-size: 25px;
+	font-weight: 600;
+
+}
+ul li a:active ,ul li a:focus, ul li a:hover{
+
+	color:white;
+}
+.adminName{
+
+	display: flex;
+	justify-content: space-around;
+	padding: 20px;
+
+}
+
+
+/* .img{
+	width: 100px;
+	height: 100px;
+	border-radius:50% ;
+	-webkit-border-radius:50% ;
+	-moz-border-radius:50% ;
+	-ms-border-radius:50% ;
+	-o-border-radius:50% ;
+
+	border: 1px solid #191c20;
+	display: inline-block;
+} */

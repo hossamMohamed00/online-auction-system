@@ -1,0 +1,22 @@
+.dropdown a {
+	background-color: #191c20 !important;
+	border: none;
+	font-size: 20px;
+	margin-top: 20px;
+	color: rgb(190, 184, 184) !important;
+	text-decoration: none;
+	outline: none;
+}
+.dropdown a:hover,
+.dropdown a:focus {
+	box-shadow: none;
+	color: White;
+}
+
+.list {
+	width: 200px;
+	padding: 7px;
+	background-color: #191c20;
+	color: white;
+	border: none;
+}
