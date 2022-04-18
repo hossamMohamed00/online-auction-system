@@ -1,11 +1,5 @@
 
-:root {
-	--main-font:'Amiri', serif;
-	--input-dark-color: #707070;
-}
 .form-container {
-	/* width: 90%; */
-	/* margin: 0 auto; */
 	margin-top: 50px;
 }
 

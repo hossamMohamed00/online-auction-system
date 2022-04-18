@@ -3,12 +3,12 @@
 	height: 100vh;
 }
 .form {
-	background-color: #191a19;
+	background-color: var(--dark-color);
 	width: 100%;
 	height: 100%;
 }
 .overlay {
-	background-color: #164da8;
+	background-color: var(--overlay-blue);
 	top: 0;
 	left: 0;
 	opacity: 0.1;
@@ -36,7 +36,6 @@ h1 {
 	font-size: 14px !important;
 }
 .form p{
-
 	margin-top: 5px !important;
 }
 

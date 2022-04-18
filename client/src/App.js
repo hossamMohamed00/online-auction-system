@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 // pages
 import Register from './Pages/Register'
-// import Login from './Pages/Login'
+import Login from './Pages/Login'
 import HomePage from './Pages/HomePage';
 
 // css files
@@ -20,7 +20,7 @@ function App() {
 				<Route path='/register' element={<Register/>} />
 				<Route path='/' element={<Navigate to="/register" /> } />
 
-				{/* <Route path='/login' element={<Login/>} /> */}
+				<Route path='/login' element={<Login/>} />
 				<Route path='/homePage' element={<HomePage/>} />
 
 			</Routes>

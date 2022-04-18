@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classes from './login.module.css';
 import LoginForm from './LoginForm';
 // import Register from './../../component/Register/Register';
@@ -22,7 +23,7 @@ const Login = () => {
 							<LoginForm />
 							<p className="text-center text-light ">
 								Don't have an account ?{' '}
-								<a className=" text-decoration-none" href='#'>Register Now</a>
+								<Link to='/register' className=" text-decoration-none">Register Now</Link>
 							</p>
 						</div>
 					</div>
