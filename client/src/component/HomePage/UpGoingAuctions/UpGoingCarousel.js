@@ -2,10 +2,11 @@ import React  from "react";
 import { Carousel } from "react-bootstrap";
 import classes from './UpGoingCarousel.module.css'
 
-import LabtopImage from '../../../assets/1458.png'
+import LabtopImage1 from '../../../assets/pexels-pixabay-38568.jpg'
+import LabtopImage2 from '../../../assets/pexels-antony-trivet-9897933.jpg'
 
 const CarouselItems = [{
-	'ItemImageSrc' : LabtopImage,
+	'ItemImageSrc' : LabtopImage1,
 	'ItemCategory' : "Labtop",
 	'ItemName' : "Labtop Dell",
 	'ItemDescription' : "Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win 10 Pro Black – Certified Refurbished",
@@ -13,7 +14,7 @@ const CarouselItems = [{
 	'ItemAuctionPrice' : "1200 $"
 },
 {
-	'ItemImageSrc' : LabtopImage,
+	'ItemImageSrc' : LabtopImage2,
 	'ItemCategory' : "Labtop",
 	'ItemName' : "Labtop Dell",
 	'ItemDescription' : "Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win 10 Pro Black – Certified Refurbished",
@@ -27,8 +28,8 @@ const UpGoingCarousel = () => {
 	const ShowCarouselItems = CarouselItems.map((Item , index)=> {
 		return(
 			<Carousel.Item  className={` ${classes['carousel-inner']} `} interval={2000} key={index}>
-			<div className="row">
-				<div className={` ${classes.ImageCarousel} col-lg-4 col-md-6 col-sm-12`}>
+			<div className="row h-100">
+				<div className={` ${classes.ImageCarousel}  col-md-6 col-sm-12`}>
 					<p className={`${classes.alertText} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>
 					<img
 						src={Item['ItemImageSrc']}
@@ -38,7 +39,7 @@ const UpGoingCarousel = () => {
 					<p className="text-center pl-5 fw-bold"> Category : {Item['ItemCategory']} </p>
 				</div>
 
-				<div className="col-lg-6 col-md-6 col-sm-12 pt-2 ">
+				<div className="col-md-6 col-sm-12 pt-2 ">
 					<h2 className="fw-bold text-center pb-2"> { Item['ItemName'] } </h2>
 					<p className={` lead ${classes.ItemText} `}> { Item['ItemDescription'] } </p>
 

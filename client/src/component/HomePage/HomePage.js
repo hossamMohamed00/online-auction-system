@@ -14,9 +14,9 @@ const HomePage = () => {
 				<Header/>
 				<div className="d-md-flex mb-5">
 					<Categories/>
-					<CurrentAuctions/>
+					<UpGoingAuctions/>
 				</div>
-				<UpGoingAuctions/>
+					<CurrentAuctions/>
 			</div>
 
 

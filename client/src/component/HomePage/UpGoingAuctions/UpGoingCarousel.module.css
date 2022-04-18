@@ -1,26 +1,20 @@
 .Carousel{
-	width: 100%;
+	width: calc(100vw - 25vw);
 	height: fit-content;
 	color: white;
-	padding-bottom: 5%;
 	position: relative;
-
 }
 
 
 .Carousel > a{
-	/* position: absolute!important;
-	top: -45px!important;
-	opacity: 1; */
 	display: none!important;
 }
 .next{ display: none!important;}
 .prev{ display: none!important;}
 
 .carousel-inner{
-	height: 50vh !important;
-	margin-left: 10%;
-	padding-top: 50px!important;
+	height: fit-content!important;
+	padding-top: 30px!important;
 }
 
 .itemImage{
@@ -32,9 +26,7 @@
 .ItemText{
 	font-size: 12px;
 	color: #bde0f2;
-	padding-left: 25px;
 	padding-bottom: 10px;
-	font-weight: bold;
 }
 .alertText{
 	background-color: #5595b7;
@@ -47,7 +39,6 @@
   border-radius: 50%!important;
 }
 
-
 /* start AuctionDetails*/
 .AuctionDetails{
 	display: flex;
@@ -55,13 +46,12 @@
 	align-items: center;
 }
 .AuctionPrice , .AuctionTime{
-	padding: 0px 25px 0px 25px;
+	padding: 0px 15px 0px 15px;
 }
 .AuctionPrice p, .AuctionTime p{
 	font-size: 12px;
 	padding-bottom: 0!important;
 	color: #BDE0F2;
-	font-weight: bold;
 }
 .AuctionPrice{
 	border-left: 1px solid white;
@@ -71,33 +61,25 @@
 
 
 /* *************************************** */
-@media screen and (max-width:992px){
 
-	.Carousel p{
-		font-size: 10px;
-	}
-	.ImageCarousel{
-		height: fit-content;
-	}
-	.carousel-inner{
-		height: fit-content!important;
-		margin-left: 0%;
-	}
 
-	.itemImage,.alertText{
-		width: 300px!important;
-		margin-left: calc((100% - 300px) / 2)!important;
-		margin-right: calc((100% - 300px) / 2)!important
-	}
-	.itemImage{max-height: 300px!important; }
-	.ItemText{padding-left: 5%; text-align: center;}
+@media screen and (max-width:768px){
+	.Carousel{width: 100%; margin: 0 auto;}
+	.Carousel p{ font-size: 12px}
 
-	.AuctionPrice , .AuctionTime{
-		margin-bottom: 50px;
-	}
-	.AuctionPrice h5 , .AuctionTime h5{
-		font-size: 10px;
-	}
+	.ImageCarousel{ height: fit-content}
 
+	.AuctionPrice , .AuctionTime{padding: 0px 15px 0px 15px;margin-bottom: 50px}
 }
 
+
+@media (min-width: 769px) and (max-width: 992px) {
+	.AuctionPrice , .AuctionTime{
+		padding: 0px 5px 0px 5px!important;
+	}
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+	.carousel-inner{height: 40vh!important}
+}

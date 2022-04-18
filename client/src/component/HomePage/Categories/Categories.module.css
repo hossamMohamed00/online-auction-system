@@ -1,8 +1,7 @@
 .Categories{
 	height: fit-content!important;
-	width: 20vw!important;
-	/* background-color:  #43758f!important; */
-	background-color:  #4f4e4c!important;
+	width: 25vw!important;
+	background-color: #191a19;
 	color: white;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -10,28 +9,42 @@
 }
 
 .CategoriesHeader{
-	background-color: #191a19	;
+	/* background-color: #191a19; */
+	background-color:  #4f4e4c!important;
 	padding: 10px;
 	font-size: 20px;
 }
 
 li{ cursor: pointer; list-style: none}
-li:hover{ background-color: #191a19	}
+li:hover{
+	background-color: #4f4e4c!important;
+	transition: all 0.5s;
+	padding-left: 5%!important;
+}
 
 .categoryBadge{
 	background-color: #43758f;
 }
 
+/* ********************************************* */
+
+/* start media query */
 
 @media screen and (max-width:576px){
 	.Categories{
 		width: 80vw!important;
 		margin: 0 auto;
+		margin-top: 15px;
 	}
 }
 
+
 @media screen and (min-width:576px) and (max-width:992px){
 	.Categories{
-		width: 25vw!important;
+		width: 70vw!important;
+		margin: 0 auto;
 	}
+	.CategoriesHeader{  margin-top: 15px;}
 }
+
+/* end media query */
