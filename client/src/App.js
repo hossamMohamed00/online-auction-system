@@ -12,7 +12,7 @@ function App() {
 	return (
 		<React.Fragment>
 			{/* <Login></Login> */}
-			{/* <Register/>	 */}
+			{/* <Register/> */}
 
 			<HomePage/>
 

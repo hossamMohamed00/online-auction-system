@@ -30,32 +30,32 @@ const CurrentAuctionsItems = [
 
 		'ItemDescription' : 'Watch description '
 	},
-	{ 'ItemImageSrc' 			: itemImage2,
-		'ItemName'				: 'Watch',
-		'ItemCategory' 		: 'Watches ',
+	{ 'ItemImageSrc' 			: itemImage3 ,
+	'ItemName'				: 'Watch',
+	'ItemCategory' 		: 'Watches ',
 
-		'ItemDescription' : 'Watch description '
+	'ItemDescription' : 'Watch description '
 	}
 ]
 
 
 const CurrentAuctionsContent = () => {
 
-	const FirstThreeItems =  CurrentAuctionsItems.slice(1,4)
+	const FirstThreeItems =  CurrentAuctionsItems.slice(0,3)
 	const RestItems 			=  CurrentAuctionsItems.slice(3)
 	const [showRestItems , setShowRestItems] = useState(false)
 
-	console.log(RestItems)
+
 	const RestItemsHandeler = (e) => {
 		e.preventDefault();
 		setShowRestItems(true)
 	}
 
-	const getCurrentAuctions = (Items) => {
+	const getCurrentAuctions = (Items , animate) => {
 		return(
 			Items.map((item , idx) => (
 				<Col key={idx}>
-					<Card className= {` mb-3 ${classes.CurrentAuctionsCard} `}>
+					<Card className= {` mb-3 ${classes.CurrentAuctionsCard} ${animate ? classes.animation : ''} `}>
 
 						{/* Card item category */}
 						<Card.Img variant="top" src={item['ItemImageSrc']}/>
@@ -81,9 +81,9 @@ const CurrentAuctionsContent = () => {
 	return (
 		<div className={classes.CurrentAuctionsContent}>
 			<Row xs={1} md={2} lg={3} className="g-4 mx-auto py-3">
-				{getCurrentAuctions(FirstThreeItems)}
-				{showRestItems && getCurrentAuctions(RestItems)}
-				{!showRestItems &&
+				{getCurrentAuctions(FirstThreeItems , false)}
+				{showRestItems && getCurrentAuctions(RestItems, true)}
+				{!showRestItems && RestItems.length!==0 &&
 					<button className= {` text-light col-12 ${classes.btnGetAuctions}`} onClick={RestItemsHandeler}>
 						See All Auctions <span></span>
 						<FontAwesomeIcon icon={faCircleArrowRight} />
