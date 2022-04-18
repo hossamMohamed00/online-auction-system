@@ -11,10 +11,10 @@
 }
 
 .btn-steps>button:first-child{
-	background-color: #5E5F5E;
-	border-color: #5E5F5E;
+	background-color: var(--semiDark-color);
+	border-color: var(--semiDark-color);
 }
 .btn-steps>button:last-child{
-	background-color: #2666CF;
-	border-color: #2666CF;
+	background-color: var(--btnActive-color);
+	border-color: var(--btnActive-color);
 }

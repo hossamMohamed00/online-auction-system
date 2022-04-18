@@ -1,0 +1,16 @@
+:root{
+	--dark-color : #191A19 ;
+	--semiDark-color : #4f4e4c;
+	--btnActive-color: #2666cf;
+	--overlay-blue :#164da8;
+	--alert-color : #DD523B;
+
+	--paragaph-color : #A2A2A2;
+}
+
+*{
+	font-family: 'Amiri', serif;
+	box-sizing: border-box;
+
+
+}

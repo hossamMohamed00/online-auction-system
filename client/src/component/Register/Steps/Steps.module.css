@@ -1,25 +1,22 @@
-*{
-	font-family: 'Poppins', sans-serif;
-}
-
 
 
 /* start paragraph  && headings styles */
-h3{
-	color: white;
+.Steps h3{
+	color: white!important;
 	padding: 25px 0 8px 0px;
 	font-weight: 600;
 }
 
-p{
+.Steps p{
 	text-align: left;
 	font-weight: 600;
-	font-size: 10px;
+	font-size: 14px;
 }
 
 .stepParagraph{
 	color: #A2A2A2;
 	font-size: 15px;
+	padding-bottom: 15px;
 }
 
 .contactDetails{
@@ -31,11 +28,10 @@ p{
 
 .notification{
 	color: #A2A2A2;
-	font-size: 13px;
 }
 
 .alert{
-	color: #DD523B!important;
+	color: var(--alert-color)!important;
 	font-weight: bolder!important;
 }
 
@@ -49,18 +45,15 @@ input:focus{
 	box-shadow: none!important;
 }
 
-input{
-	color: black!important;
-	font-weight: 600 !important;
-}
+
 
 /* end input styles */
 
 
 
 .btn-next{
-	background-color: var(--active-color);
-	color: white;
+	background-color:  var(--btnActive-color)!important;
+	color: white!important;
 	position: absolute;
 	bottom: -18px;
 	left: 15%;
@@ -70,7 +63,7 @@ input{
 
 
 .btnPhoneNum{
-	background-color: #2666CF !important;
+	background-color: var(--btnActive-color)!important;
 	color: white;
 }
 
@@ -84,9 +77,6 @@ button:disabled{
 
 
 /*start step 4*/
-
-
-
 
 
 .code-container {
