@@ -15,13 +15,14 @@ const Sidebar = () => {
 				<div className={classes.adminName}>
 					<div className={classes.img}>
 						<img src={adminImg} alt="admin" />
-
 					</div>
-					<Dropdown
-						username="Hossam Mohamed"
-						list={dropdownListForAdmin}
-						id="admin"
-					/>
+					<div className={classes.username}>
+						<Dropdown
+							username="Hossam Mohamed"
+							list={dropdownListForAdmin}
+							id="admin"
+						/>
+					</div>
 				</div>
 				<ul>
 					<li>
@@ -42,12 +43,11 @@ const Sidebar = () => {
 						<Dropdown
 							username="Auctions Requests"
 							list={dropdownListAuctionsRequests}
-							id='auctionsRequests'
+							id="auctionsRequests"
 						/>
 					</li>
 				</ul>
 			</div>
-			{/* <i class="fas fa-th"></i> */}
 		</React.Fragment>
 	);
 };

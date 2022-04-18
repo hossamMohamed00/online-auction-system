@@ -3,7 +3,7 @@
 	border: none;
 	font-size: 20px;
 	margin-top: 20px;
-	color: rgb(190, 184, 184) !important;
+	color: rgb(190, 184, 184) ;
 	text-decoration: none;
 	outline: none;
 }
@@ -13,10 +13,11 @@
 	color: White;
 }
 
-.list {
+.listLink {
 	width: 200px;
 	padding: 7px;
 	background-color: #191c20;
 	color: white;
 	border: none;
+	margin-top: 0 !important;
 }
