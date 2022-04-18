@@ -1,4 +1,5 @@
 import React ,{ Fragment} from "react";
+import { Link } from "react-router-dom";
 import classes from './Header.module.css'
 import Search from "./Seach";
 
@@ -14,8 +15,9 @@ const  Header = () => {
 							<a className={` ${classes.navbarBrand} navbar-brand fw-bold `} href="#">Online Aution</a>
 
 							<div className="d-flex pt-1">
-								<p className= {`fw-bold ${classes.navLinkRegister} `}> Register </p>
-								<p className= {`text-light fw-bold ${classes.navLinkLogin} `}> Login </p>
+								<Link to='/register' className= {`fw-bold ${classes.navLinkRegister} `}> Register </Link>
+								<Link to='/login' className= {`fw-bold text-light ${classes.navLinkLogin} `}> Login </Link>
+
 							</div>
 
 						</div>

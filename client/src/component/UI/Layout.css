@@ -1,11 +1,16 @@
 :root{
-	--dark-color : #191A19 ;
-	--semiDark-color : #4f4e4c;
-	--btnActive-color: #2666cf;
-	--overlay-blue :#164da8;
-	--alert-color : #DD523B;
+	--dark-color 			: #191A19 ;
+	--semiDark-color 	: #4f4e4c;
+	--overlay-dark 		: rgba(0, 0, 0, 0.68);
 
-	--paragaph-color : #A2A2A2;
+	--paragaph-color 	: #A2A2A2;
+
+	--btnActive-color	: #2666cf;
+	--main-color 			: #5595b7;
+	--overlay-blue 		: #164da8;
+
+	--alert-color 		: #DD523B;
+
 }
 
 *{
@@ -13,4 +18,28 @@
 	box-sizing: border-box;
 
 
+}
+
+
+
+/*start animation */
+.animation{
+	animation: slide-in 500ms;
+  animation-timing-function: linear;
+}
+
+/*end animation */
+
+
+
+
+/* ************************************** */
+/* Key frames*/
+@keyframes slide-in {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0%);
+	}
 }

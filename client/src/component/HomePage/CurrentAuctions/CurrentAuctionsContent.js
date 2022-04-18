@@ -55,7 +55,7 @@ const CurrentAuctionsContent = () => {
 		return(
 			Items.map((item , idx) => (
 				<Col key={idx}>
-					<Card className= {` mb-3 ${classes.CurrentAuctionsCard} ${animate ? classes.animation : ''} `}>
+					<Card className= {` mb-3 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
 
 						{/* Card item category */}
 						<Card.Img variant="top" src={item['ItemImageSrc']}/>
@@ -84,10 +84,13 @@ const CurrentAuctionsContent = () => {
 				{getCurrentAuctions(FirstThreeItems , false)}
 				{showRestItems && getCurrentAuctions(RestItems, true)}
 				{!showRestItems && RestItems.length!==0 &&
-					<button className= {` text-light col-12 ${classes.btnGetAuctions}`} onClick={RestItemsHandeler}>
-						See All Auctions <span></span>
-						<FontAwesomeIcon icon={faCircleArrowRight} />
-					</button>}
+					<div className='w-100'>
+						<button className= {` text-light ${classes.btnGetAuctions}`} onClick={RestItemsHandeler}>
+							See All Auctions <span></span>
+							<FontAwesomeIcon icon={faCircleArrowRight} />
+						</button>
+					</div>
+				}
 			</Row>
 
 
