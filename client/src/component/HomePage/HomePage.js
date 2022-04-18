@@ -5,6 +5,7 @@ import UpGoingAuctions from "./UpGoingAuctions/UpGoingAuctions";
 
 import scollbarStyle from '../UI/ScrollBar.module.css'
 import Categories from "./Categories/Categories";
+import Footer from "./Footer/Footer";
 
 
 const HomePage = () => {
@@ -16,9 +17,9 @@ const HomePage = () => {
 					<Categories/>
 					<UpGoingAuctions/>
 				</div>
-					<CurrentAuctions/>
+				<CurrentAuctions/>
+				<Footer/>
 			</div>
-
 
 		</Fragment>
 	);
