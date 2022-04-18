@@ -1,4 +1,7 @@
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import Card from "../UI/Card/Card";
 
 import Step1 from "../Steps/Step1";
@@ -7,7 +10,7 @@ import Step3 from "../Steps/Step3";
 import Step4 from "../Steps/Step4";
 
 
-import { useSelector } from "react-redux";
+
 
 const RegisterContent = () => {
 	const step1 = useSelector((store) => store.RegisterSteps.step1)
@@ -25,7 +28,10 @@ const RegisterContent = () => {
 				{step4 && <Step4 />}
 			</Card>
 
-			<p className="text-light mt-4 text-center "> Already have an account ? <span className="text-primary pe-auto"> Sign in </span></p>
+			<p className="text-light mt-4 text-center ">
+				<span>Already have an account ?</span>
+				<Link to='/login' className="text-primary pe-auto"> Sign in </Link>
+			</p>
 		</Fragment>
 	)
 }

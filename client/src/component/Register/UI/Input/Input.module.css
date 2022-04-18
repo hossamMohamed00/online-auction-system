@@ -1,39 +1,27 @@
-.form-control{
-	background-color: #5e5f5e ;
-	border-color: #5e5f5e;
-	color: white!important;
-	font-size: 15px;
-	font-weight: 600 !important;
-	padding: 0!important;
-}
-
 .input{
 	width:100%;
 	padding: 5px !important;
-	background-color: #707070;
+	background-color: var(--semiDark-color)!important;
+	border-color: var(--semiDark-color)!important;
+	color: white!important;
+
 	margin-bottom: 15px;
 }
 .input::placeholder {
-	color: white;
+	color: white!important;
 	opacity: 1;
-/* padding:10px; */
-	font-weight: bold;
 	font-size: 14px !important;
 }
-.input:focus {
-	background-color:#707070;
-	color: white;
-	font-weight: bold;
-}
+
 .alarm-input{
-	background-color:#DD523B !important;
-	border-color:#DD523B !important;
+	background-color:var(--alert-color)!important;
+	border-color:var(--alert-color)!important;
 	color: white!important;
 	margin-bottom: 0!important;
 }
 
 .alarm{
-	color: var(--alarm-color);
+	color: var(--alert-color)!important;
 	font-weight: 600;
 	text-align: left;
 	font-size: 10px;

@@ -29,7 +29,7 @@ const Step2 = () => {
 	}
 
 	return(
-		<div className="container">
+		<div className= {`container ${classes.Steps} `}>
 			<h3> Account Setup</h3>
 			<p className={classes['stepParagraph']}> This Step to ensure you're a real person
  					by adding a phone number

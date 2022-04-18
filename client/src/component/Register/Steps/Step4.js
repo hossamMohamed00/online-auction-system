@@ -56,7 +56,7 @@ const  Step4 = () => {
 	}
 
 	return (
-		<div className="container text-center">
+		<div className= {`container ${classes.Steps} text-center `}>
       <h3>Verification</h3>
       <p className={classes['stepParagraph']}>We’ve just sent a text message with a fresh verification code to the
         phone number ***1023.
