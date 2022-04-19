@@ -9,6 +9,7 @@ import {
 	OnGatewayInit,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { UsersService } from '../users/shared-user/users.service';
 import { SocketAuthGuard } from 'src/common/guards';
 import { User } from '../users/shared-user/schema/user.schema';
 import { GetCurrentUserFromSocket } from './../../common/decorators/';
@@ -24,6 +25,9 @@ export class ChatGateway
 {
 	@Inject()
 	private chatService: ChatService;
+
+	private readonly usersService: UsersService;
+
 
 	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
@@ -67,16 +71,22 @@ export class ChatGateway
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-to-server')
 	async listenForMessages(
-		@MessageBody() data: { sender: string; message: string; recipient: string },
+		@MessageBody() data: { message: string; recipient: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
 		if(user) {
 			this.logger.log('New message recieved ❤');
+			const chat =this.chatService.findpraivateChat(user.name,data.recipient)
+		
+
+			
 			const chatData = {
 				message: data.message,
 				sender: user.name,
 				recipient: data.recipient,
+				
 			};
+			
 	
 			const message: Chat = await this.chatService.saveChat(chatData);
 			this.server.emit('new-message-to-client', { message });
