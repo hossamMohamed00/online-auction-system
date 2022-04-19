@@ -11,10 +11,7 @@ export class ChatService {
 	constructor(
 		@InjectModel(Chat.name)
 		private readonly chatModel: Model<ChatDocument>,
-
-
 	) {
-
 	}
 
 	/**
@@ -27,12 +24,12 @@ export class ChatService {
 		const chats = await this.chatModel.find().exec();
 		return chats;
 	}
-	async findchats(name: string) {
+	async findChats(name: string) {
 		const chat = await this.chatModel.find({ $or: [{ User1: name }, { User2: name }] })
 		return chat
 	}
 
-	async findpraivateChat(User1: string, User2: string): Promise<ChatDocument> {
+	async findPrivateChat(User1: string, User2: string): Promise<ChatDocument> {
 
 		const chat = await this.chatModel.findOne({ User1: User1, User2: User2 })
 		if (chat) {
@@ -42,7 +39,7 @@ export class ChatService {
 			return chat
 		}
 	}
-	async updatechat(chat: ChatDocument, message: any): Promise<Chat> {
+	async updateChat(chat: ChatDocument, message: any): Promise<Chat> {
 
 		chat.messages.push(message);
 		return chat
@@ -53,10 +50,10 @@ export class ChatService {
 	 * @param chat - Chat instance
 	 */
 	async saveChat({ message, sender, recipient }): Promise<Chat> {
-		const mychat = await this.findpraivateChat(sender, recipient)
+		const mychat = await this.findPrivateChat(sender, recipient)
 		if (mychat) {
 			const newmessage = sender.concat(": ", message)
-			this.updatechat(mychat, newmessage)
+			this.updateChat(mychat, newmessage)
 			await mychat.save();
 		}
 		else {

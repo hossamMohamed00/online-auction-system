@@ -28,7 +28,6 @@ export class ChatGateway
 
 	private readonly usersService: UsersService;
 
-
 	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
 	server: Server;
@@ -74,20 +73,16 @@ export class ChatGateway
 		@MessageBody() data: { message: string; recipient: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
-		if(user) {
+		if (user) {
 			this.logger.log('New message recieved ❤');
-			const chat =this.chatService.findpraivateChat(user.name,data.recipient)
-		
+			const chat = this.chatService.findPrivateChat(user.name, data.recipient);
 
-			
 			const chatData = {
 				message: data.message,
 				sender: user.name,
 				recipient: data.recipient,
-				
 			};
-			
-	
+
 			const message: Chat = await this.chatService.saveChat(chatData);
 			this.server.emit('new-message-to-client', { message });
 		} else {
@@ -95,6 +90,5 @@ export class ChatGateway
 				message: 'You are not logged in ❌',
 			});
 		}
-
 	}
 }
