@@ -19,7 +19,11 @@ import { Chat } from './schema/chat.schema';
 /**
  * Its job is to receive and send messages.
  */
-@WebSocketGateway()
+@WebSocketGateway({
+	cors: {
+		origin: '*',
+	},
+})
 export class ChatGateway
 	implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
@@ -42,7 +46,7 @@ export class ChatGateway
 	 * Run when the service initialises
 	 */
 	afterInit(server: any) {
-		this.logger.log('MessageGateway initialized ⚡');
+		this.logger.log('MessageGateway initialized ⚡⚡');
 	}
 
 	/**
@@ -51,7 +55,8 @@ export class ChatGateway
 	async handleConnection(client: any, ...args: any[]) {
 		this.count++;
 		this.logger.log('New User Connected 👍🏻');
-		const messages: Chat[] = await this.chatService.getAllChats();
+		const messages: Chat[] = await this.chatService.getAllClientChatHistory();
+
 		client.emit('all-messages-to-client', messages);
 	}
 
