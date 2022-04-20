@@ -2,20 +2,41 @@ import React from 'react';
 
 import classes from './sidebar.module.css';
 import Dropdown from '../../UI/Dropdown';
-import adminImg from '../../../../../assets/icons8-administrator-male-80.png'
+import adminImg from '../../../../../assets/icons8-administrator-male-80.png';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faTh } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faGears } from '@fortawesome/free-solid-svg-icons';
+import { faMessage } from '@fortawesome/free-solid-svg-icons';
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
-	const dropdownListForAdmin = ['profile', 'Settings','inbox', 'Logout'];
-	const dropdownListManageAuctions = ['Current Auctions', 'Ongoing Auctions'];
-	const dropdownListManageUsers = ['Sellers', 'buyers'];
-	const dropdownListAuctionsRequests = ['Show auctions requests'];
+	const dropdownListForAdmin = [
+		{ title: 'profile', icon:faUser  },
+		{ title: 'Settings', icon:faGears },
+		{ title: 'inbox', icon: faMessage},
+		{ title: 'Logout', icon: faPowerOff},
+	];
+	const dropdownListManageAuctions = [
+		{ title: 'Current Auctions', icon:  faGavel } ,
+		{ title: 'Ongoing Auctions', icon: faGavel  },
+	];
+
+	const dropdownListManageUsers = [
+		{ title: 'Sellers', icon:  faUser  },
+		{ title: 'Buyers', icon:  faUser },
+	];
+	const dropdownListAuctionsRequests = [
+		{ title: 'Show auctions requests', icon:  faTh  },
+	];
 	return (
 		<React.Fragment>
 			<div className={classes.sidebar}>
 				<div className={classes.adminName}>
-					<div className={classes.img}>
+					{/* <div className={classes.img}>
 						<img src={adminImg} alt="admin" />
-					</div>
+					</div> */}
 					<div className={classes.username}>
 						<Dropdown
 							username="Hossam Mohamed"
@@ -30,6 +51,8 @@ const Sidebar = () => {
 							username="Manage Auctions"
 							list={dropdownListManageAuctions}
 							id="auctions"
+							icon={faGavel}
+							className="auction"
 						/>
 					</li>
 					<li>
@@ -37,6 +60,8 @@ const Sidebar = () => {
 							username="Manage Users"
 							list={dropdownListManageUsers}
 							id="users"
+							icon={faUsers}
+							className="users"
 						/>
 					</li>
 					<li>
@@ -44,6 +69,8 @@ const Sidebar = () => {
 							username="Auctions Requests"
 							list={dropdownListAuctionsRequests}
 							id="auctionsRequests"
+							icon={faTh}
+							className="requests"
 						/>
 					</li>
 				</ul>
@@ -52,4 +79,3 @@ const Sidebar = () => {
 	);
 };
 export default Sidebar;
-

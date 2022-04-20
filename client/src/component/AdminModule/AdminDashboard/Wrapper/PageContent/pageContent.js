@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from '../header/header';
 
-const PageContent =()=>{
+const PageContent =(props)=>{
 
 return (
 	<React.Fragment>
-			<Header />
+			<Header toggleSideBar={props.toggle}/>
+			<h1> PageContent</h1>
 
 		<div className='row'></div>
 	</React.Fragment>

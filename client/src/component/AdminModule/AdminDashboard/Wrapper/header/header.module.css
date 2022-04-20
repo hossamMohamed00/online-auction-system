@@ -1,8 +1,14 @@
 .headerNav{
-height: 10% !important;
+height: fit-content;
 	padding-top: 10%;
 	padding-bottom: 10%;
 	/* margin-right:5% ; */
 	/* position: fixed; */
 	width:100%;
+}
+
+.barBtn{
+	color : white;
+	border:none;
+	background-color:black;
 }
