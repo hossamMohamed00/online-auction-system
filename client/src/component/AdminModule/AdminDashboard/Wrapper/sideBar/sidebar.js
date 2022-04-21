@@ -34,6 +34,9 @@ const Sidebar = () => {
 	return (
 		<React.Fragment>
 			<div className={classes.sidebar}>
+				<h1 className="text-light text-center mt-3">
+					On<span className="text-danger">Line Auction</span>
+				</h1>
 				<div className={classes.adminName}>
 					<div className={classes.img}>
 						<img src={adminImg} alt="admin" />

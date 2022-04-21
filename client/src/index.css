@@ -7,6 +7,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+		/* font-family: 'Source Sans Pro', sans-serif; */
+		font-family: 'Nunito', sans-serif;
 }

@@ -1,9 +1,10 @@
 .sidebar {
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	background-color: #191c20;
 	margin-right: 10%;
 	overflow: auto;
+	/* position: fixed; */
 }
 
 .adminName .username{
@@ -21,10 +22,7 @@
 	justify-content:space-evenly;
 
 }
-.adminName .img{
-	/* margin-bottom:2%; */
 
-}
 
 ul {
 	list-style: none;
