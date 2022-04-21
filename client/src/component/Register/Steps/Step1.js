@@ -60,7 +60,7 @@ const Step1 = () => {
 	}
 
 	return (
-		<div className="container">
+		<div className= {`container ${classes.Steps} `}>
 			<h3> Personal Information</h3>
 
 			<Input type='text' placeholder='Name' name='text' validateText={vaildteText} ref={nameRef}  errorMassage= {errorNameMessage} />

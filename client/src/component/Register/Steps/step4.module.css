@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+
 
 .code-container {
   display: flex;
@@ -16,7 +14,7 @@
   width: 30px;
   border: 1px solid;
   background-color: #fff;
-  border: 1px solid #2666cf;
+  border: 1px solid var(--btnActive-color);
   outline-width: thin;
   outline-color: #5e5f5e;
   margin: 1%;
@@ -50,9 +48,6 @@
   max-width: 400px;
   color: #777;
   border-radius: 5px;
-}
-a:visited {
-  color: #2666cf;
 }
 
 @media (max-width: 600px) {

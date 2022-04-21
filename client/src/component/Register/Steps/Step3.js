@@ -43,7 +43,7 @@ const  Step3 = () => {
 	}
 
 	return (
-		<div className="container text-center">
+		<div className= {`container ${classes.Steps} text-center`}>
       <h3>Contact Details</h3>
       <p className={classes['stepParagraph']}>We’ll send auction update and notifications to your email</p>
 

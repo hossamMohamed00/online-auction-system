@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef } from 'react';
+import React, {useRef } from 'react';
 import classes from './loginForm.module.css';
 import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
@@ -52,9 +52,9 @@ const LoginForm = () => {
 					<button className="btn btn-primary">Login</button>
 				</form>
 				<div className={classes.accounts}>
-					<img src={facebookImg} />
-					<img src={twitterImg} />
-					<img src={googleImg} />
+					<img src={facebookImg} alt="facebookImg" />
+					<img src={twitterImg} alt="twitterImg"/>
+					<img src={googleImg} alt="googleImg" />
 				</div>
 			</Card>
 		</div>

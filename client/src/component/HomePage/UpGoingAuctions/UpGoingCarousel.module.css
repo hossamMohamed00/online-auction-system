@@ -1,0 +1,85 @@
+.Carousel{
+	width: calc(100vw - 25vw);
+	height: fit-content;
+	color: white;
+	position: relative;
+}
+
+
+.Carousel > a{
+	display: none!important;
+}
+.next{ display: none!important;}
+.prev{ display: none!important;}
+
+.carousel-inner{
+	height: fit-content!important;
+	padding-top: 30px!important;
+}
+
+.itemImage{
+	width: 100%;
+	height: 55%;
+	margin-bottom: 10px;
+}
+
+.ItemText{
+	font-size: 12px!important;
+	color: #bde0f2;
+	padding-bottom: 10px;
+}
+.alertText{
+	background-color: var(--main-color);
+}
+
+/* change carausel indecators style */
+.Carousel button{
+	width: 15px!important;
+  height: 15px!important;
+  border-radius: 50%!important;
+}
+
+/* start AuctionDetails*/
+.AuctionDetails{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.AuctionPrice , .AuctionTime{
+	padding: 0px 15px 0px 15px;
+}
+.AuctionPrice p, .AuctionTime p{
+	font-size: 12px;
+	padding-bottom: 0!important;
+	color: #BDE0F2;
+}
+.AuctionPrice{
+	border-left: 1px solid white;
+}
+
+/* end AuctionDetails*/
+
+
+/* *************************************** */
+
+
+@media screen and (max-width:768px){
+	.Carousel{width: 100%; margin: 0 auto;}
+	.Carousel p{ font-size: 12px}
+
+	.ImageCarousel{ height: fit-content}
+
+	.AuctionPrice , .AuctionTime{padding: 0px 15px 0px 15px;margin-bottom: 50px}
+}
+
+
+@media (min-width: 769px) and (max-width: 992px) {
+	.AuctionPrice , .AuctionTime{
+		padding: 0px 5px 0px 5px!important;
+	}
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+	.carousel-inner{height: 40vh!important}
+}
