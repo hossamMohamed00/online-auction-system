@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './sidebar.module.css';
 import Dropdown from '../../UI/Dropdown';
-import adminImg from '../../../../../assets/icons8-administrator-male-80.png';
+import adminImg from '../../../../../assets/icons8-test-account-40.png';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
@@ -10,33 +10,34 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
-
+import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = () => {
 	const dropdownListForAdmin = [
-		{ title: 'profile', icon:faUser  },
-		{ title: 'Settings', icon:faGears },
-		{ title: 'inbox', icon: faMessage},
-		{ title: 'Logout', icon: faPowerOff},
+		{ title: 'profile', icon: faUser },
+		{ title: 'Settings', icon: faGears },
+		{ title: 'inbox', icon: faMessage },
+		{ title: 'Logout', icon: faPowerOff },
 	];
 	const dropdownListManageAuctions = [
-		{ title: 'Current Auctions', icon:  faGavel } ,
-		{ title: 'Ongoing Auctions', icon: faGavel  },
+		{ title: 'Current Auctions', icon: faGavel },
+		{ title: 'Ongoing Auctions', icon: faGavel },
 	];
 
 	const dropdownListManageUsers = [
-		{ title: 'Sellers', icon:  faUser  },
-		{ title: 'Buyers', icon:  faUser },
+		{ title: 'Sellers', icon: faUser },
+		{ title: 'Buyers', icon: faUser },
 	];
 	const dropdownListAuctionsRequests = [
-		{ title: 'Show auctions requests', icon:  faTh  },
+		{ title: 'Pending auctions', icon: faTh },
 	];
+	const dropdownListManageCategories = [];
 	return (
 		<React.Fragment>
 			<div className={classes.sidebar}>
 				<div className={classes.adminName}>
-					{/* <div className={classes.img}>
+					<div className={classes.img}>
 						<img src={adminImg} alt="admin" />
-					</div> */}
+					</div>
 					<div className={classes.username}>
 						<Dropdown
 							username="Hossam Mohamed"
@@ -71,6 +72,15 @@ const Sidebar = () => {
 							id="auctionsRequests"
 							icon={faTh}
 							className="requests"
+						/>
+					</li>
+					<li>
+						<Dropdown
+							username="Manage Categories"
+							id="categories"
+							list={dropdownListManageCategories}
+							icon={faListAlt}
+							className="categories"
 						/>
 					</li>
 				</ul>

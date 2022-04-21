@@ -8,14 +8,15 @@ const Dropdown = props => {
 	console.log(props.list)
 	return (
 		<div className={classes.dropdown}>
-			<div className={`${classes.icon} ${classes[props.className]}`}>
-				<FontAwesomeIcon icon={props.icon} />
+			<div className={`${classes.icon} ${classes[props.className ? props.className:'']}`}>
+				<FontAwesomeIcon icon={props.icon ? props.icon :''} />
 			</div>
 
 			<a
 				className={` fw-bolder ${classes.username}`}
 				href={`#${props.id}`}
 				data-bs-toggle="collapse"
+				aria-expanded="true"
 			>
 				{props.username}
 			</a>
@@ -25,9 +26,8 @@ const Dropdown = props => {
 				return (
 					<div class="collapse" id={props.id}>
 						<div className={classes.linkIcon}>
-							<FontAwesomeIcon icon={item.icon} />
+							<FontAwesomeIcon icon={item.icon ? item.icon : ''} />
 						</div>
-
 						<a class={`card card-body fw-bold ${classes.listLink}`}>
 							{item.title}
 						</a>

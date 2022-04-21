@@ -12,3 +12,8 @@ height: fit-content;
 	border:none;
 	background-color:black;
 }
+
+.navbar{
+
+	justify-content: flex-start;
+}

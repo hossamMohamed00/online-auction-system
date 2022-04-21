@@ -15,11 +15,12 @@
 
 .username{
 
-	margin-left: 1.5%;
+	margin-left: 5.5%;
 }
 
 .icon{
 	display: inline-block;
+
 }
 .auction{
 	color: #0763A7;
@@ -32,6 +33,9 @@
 
 	color: yellow;
 }
+.categories{
+	color:#D5311E;
+}
 
 .listLink {
 	width: 200px;
@@ -41,7 +45,9 @@
 	border: none;
 	margin-top: 0 !important;
 	margin-left: 6%;
-	/* display: inline-block; */
+	display: inline-block;
+	width:70%;
+
 }
 
 .linkIcon{
@@ -49,4 +55,14 @@
 	margin-left: 5%;
 	color:aliceblue;
 	display: inline-block;
+	width:35px;
+	height: 35px;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	background-color: black;
+	text-align:center;
+	padding-top: 5px;
 }

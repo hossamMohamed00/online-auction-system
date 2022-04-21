@@ -7,8 +7,23 @@
 }
 
 .adminName .username{
-	margin-top: 30px;
-	margin-left: 7%;
+
+	margin-left: 3%;
+	/* display: inline-block; */
+	margin-top: 2%;
+	width:75%;
+
+}
+.adminName{
+	margin-top:10%;
+	margin-left:5% ;
+	display: flex;
+	justify-content:space-evenly;
+
+}
+.adminName .img{
+	/* margin-bottom:2%; */
+
 }
 
 ul {
@@ -18,6 +33,7 @@ ul {
 	flex-direction: column;
 	justify-content: space-between;
 	margin-top: 10%;
+	margin-left: 5% ;
 }
 
 ul li{
