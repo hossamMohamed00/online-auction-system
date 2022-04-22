@@ -12,8 +12,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 // import Login from './component/login/Login';
 // import Register from './component/Register/Register'
 // import Sidebar from './component/AdminModule/sideBar/sidebar';
-import Wrapper from './component/AdminModule/AdminDashboard/Wrapper/Wrapper';
+// import Wrapper from './component/AdminModule/AdminDashboard/Wrapper/Wrapper';
 import './component/UI/Layout.css'
+// import DashboardLayout from './component/UI/DashboardLayout/DashboardLayout'
+import Profile from './component/AdminModule/AdminDashboard/adminProfile/profile';
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
 				<Route path='/homePage' element={<HomePage/>} />
 
 			</Routes> */}
-			<Wrapper/>
+			<Profile/>
 
 		</React.Fragment>
 	);

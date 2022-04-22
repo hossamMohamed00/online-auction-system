@@ -3,7 +3,7 @@
 	border: none;
 	font-size: 20px;
 	margin-top: 20px;
-	color: rgb(190, 184, 184) ;
+	color: rgb(190, 184, 184);
 	text-decoration: none;
 	outline: none;
 }
@@ -11,30 +11,28 @@
 .dropdown a:focus {
 	box-shadow: none;
 	color: White;
+
 }
 
-.username{
-
-	margin-left: 5.5%;
+.username {
+	margin-left: 6.5%;
 }
 
-.icon{
+.icon {
 	display: inline-block;
-
 }
-.auction{
-	color: #0763A7;
+.auction {
+	color: #0763a7;
 }
-.users{
+.users {
 	color: orange;
 }
 
-.requests{
-
+.requests {
 	color: yellow;
 }
-.categories{
-	color:#D5311E;
+.categories {
+	color: #d5311e;
 }
 
 .listLink {
@@ -46,23 +44,24 @@
 	margin-top: 0 !important;
 	margin-left: 6%;
 	display: inline-block;
-	width:70%;
-
+	width: 70%;
+	font-size: 16px !important;
+	line-height: 2.5;
+	/* transition: all 0.5s; */
 }
 
-.linkIcon{
-
+.linkIcon {
 	margin-left: 5%;
-	color:aliceblue;
+	color: aliceblue;
 	display: inline-block;
-	width:35px;
-	height: 35px;
+	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	-ms-border-radius: 50%;
 	-o-border-radius: 50%;
 	background-color: black;
-	text-align:center;
+	text-align: center;
 	padding-top: 5px;
 }

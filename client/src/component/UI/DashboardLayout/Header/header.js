@@ -6,19 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import adminImg from '../../../../../assets/icons8-test-account-40.png';
-
-
+import adminImg from '../../../../assets/icons8-test-account-40.png';
 
 const Header = props => {
 	return (
-		<nav class={`navbar navbar-light bg-black  p-2 ${classes.headerNav}  `}>
-			<div class="container-fluid ">
+		<nav
+			class={`navbar navbar-light bg-black  p-2 ${classes.headerNav} fixed-top  `}
+		>
+			<div class="container-fluid  ">
+				{/* <div className='d-flex justify-content-between'></div> */}
 				<div className="d-flex">
-					<button onClick={props.toggleSideBar} className={classes.barBtn}>
+					<button onClick={props.toggleSidebar} className={classes.barBtn}>
 						<FontAwesomeIcon icon={faBars} />
 					</button>
-					<form class={`d-flex `}>
+					<form class={`d-flex ${classes.searchInput}`}>
 						<input
 							class={`form-control ${classes.search}`}
 							type="search"
@@ -27,12 +28,11 @@ const Header = props => {
 						/>
 					</form>
 				</div>
-
 				<div className=" text-light px-2">
 					<FontAwesomeIcon icon={faMessage} />
 					<span className={classes.bar}></span>
 					<FontAwesomeIcon icon={faBell} />
-					<img src={adminImg} className={classes.adminImg}/>
+					<img src={adminImg} className={classes.adminImg} />
 				</div>
 			</div>
 		</nav>

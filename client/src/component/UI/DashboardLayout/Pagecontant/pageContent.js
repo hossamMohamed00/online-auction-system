@@ -1,15 +1,18 @@
 import React from 'react';
-import Header from '../header/header';
 import classes from './content.module.css'
+import Footer from './../../../HomePage/Footer/Footer';
 
 const PageContent =(props)=>{
 
 return (
 	<React.Fragment>
-		<Header toggleSideBar={props.toggle} />
 
 		<div className={classes.PageContent}>
 			<h1> PageContent</h1>
+			{props.children}
+		</div>
+		<div className='bg-black'>
+			<Footer/>
 		</div>
 	</React.Fragment>
 );

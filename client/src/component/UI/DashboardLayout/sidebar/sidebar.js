@@ -1,8 +1,8 @@
 import React from 'react';
 
 import classes from './sidebar.module.css';
-import Dropdown from '../../UI/Dropdown';
-import adminImg from '../../../../../assets/icons8-test-account-40.png';
+import Dropdown from '../UI/Dropdown';
+import adminImg from '../../../../assets/icons8-test-account-40.png';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
@@ -13,9 +13,9 @@ import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = () => {
 	const dropdownListForAdmin = [
-		{ title: 'profile', icon: faUser },
+		{ title: 'Profile', icon: faUser },
 		{ title: 'Settings', icon: faGears },
-		{ title: 'inbox', icon: faMessage },
+		{ title: 'Inbox', icon: faMessage },
 		{ title: 'Logout', icon: faPowerOff },
 	];
 	const dropdownListManageAuctions = [
@@ -33,17 +33,20 @@ const Sidebar = () => {
 	const dropdownListManageCategories = [];
 	return (
 		<React.Fragment>
-			<div className={classes.sidebar}>
-				<h1 className="text-light text-center mt-3">
-					On<span className="text-danger">Line Auction</span>
-				</h1>
+			<div className={`${classes.sidebar}  position-relative`}>
+				<div className={`${classes.logo}  text-center `}>
+					<h2 className="text-light  mt-3  ">
+						On<span className="text-danger">Line Auction</span>
+					</h2>
+				</div>
+
 				<div className={classes.adminName}>
 					<div className={classes.img}>
 						<img src={adminImg} alt="admin" />
 					</div>
 					<div className={classes.username}>
 						<Dropdown
-							username="Hossam Mohamed"
+							username="Safa Ramadan"
 							list={dropdownListForAdmin}
 							id="admin"
 						/>

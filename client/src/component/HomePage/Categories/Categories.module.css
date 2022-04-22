@@ -15,8 +15,8 @@
 	font-size: 20px;
 }
 
-li{ cursor: pointer; list-style: none}
-li:hover{
+.categories{ cursor: pointer; list-style: none ;color:white}
+.categories:hover{
 	background-color: #4f4e4c!important;
 	transition: all 0.5s;
 	padding-left: 5%!important;

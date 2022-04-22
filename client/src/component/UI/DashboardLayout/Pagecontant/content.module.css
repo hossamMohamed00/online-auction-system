@@ -1,0 +1,14 @@
+
+.PageContent{
+	background-color: #191C20;
+	width: 90%;
+	height: 100vh;
+	border-radius:15px;
+	-webkit-border-radius:15px;
+	-moz-border-radius:15px;
+	-ms-border-radius:15px;
+	-o-border-radius:15px;
+	padding:2%;
+	margin : 10% 5% 3% 5%;
+}
+

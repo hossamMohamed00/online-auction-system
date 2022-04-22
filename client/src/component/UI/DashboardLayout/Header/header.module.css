@@ -4,7 +4,8 @@
 	padding-bottom: 10%;
 	/* margin-right:5% ; */
 	/* position: fixed; */
-	width: 100%;
+	width: 75%;
+	left: 25%;
 }
 
 .barBtn {
@@ -12,7 +13,9 @@
 	border: none;
 	background-color: black;
 }
-
+.searchInput {
+	width: 350px;
+}
 .search {
 	margin-left: 3%;
 	background-color: #191c20 !important;
@@ -21,13 +24,11 @@
 	width: 100%;
 	float: right;
 }
-.bar{
-
+.bar {
 	border-left: 1px solid #191c20;
 	margin-left: 5px;
 	margin-right: 5px;
 }
-.adminImg{
-
-	margin-left:25px;
+.adminImg {
+	margin-left: 25px;
 }

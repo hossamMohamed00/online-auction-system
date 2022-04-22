@@ -1,32 +1,15 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 
-import classes from './wrapper.module.css';
-import Sidebar from './sideBar/sidebar';
-import PageContent from './PageContent/pageContent';
-
+// import classes from './wrapper.module.css';
+// import Sidebar from './sideBar/sidebar';
+// import PageContent from './PageContent/pageContent';
+import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout'
 
 const Wrapper = () => {
 
-	const [showSideBar , setShowSideBar]=useState(true);
+return(
 
-	const toggle =()=>{
-
-			setShowSideBar(!showSideBar);
-	}
-	return (
-		<div className={`container-fluid  ${classes.wrapper}`}>
-			<div className="row">
-				{showSideBar && (
-					<div className="col-lg-3 col-md-3 p-0 m-0 ">
-						<Sidebar />
-					</div>
-				)}
-
-				<div className="col-lg col-md-9 p-0 m-0">
-					<PageContent toggle={toggle} />
-				</div>
-			</div>
-		</div>
-	);
+	<DashboardLayout/>
+)
 };
 export default Wrapper;

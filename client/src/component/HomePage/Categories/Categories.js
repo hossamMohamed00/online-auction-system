@@ -10,7 +10,7 @@ const Categories = () => {
 
 	const showAllCategories = AllCategories.map(( category,index) => {
 		return(
-			<li key={index} className="p-2">
+			<li key={index} className={`p-2 ${classes.categories}`}>
 				<FontAwesomeIcon icon={faCircleArrowRight} />
 				<span className="p-2">{category} </span>
 				<span className= {` ${classes.categoryBadge} badge text-light rounded-pill float-end `} >4</span>
