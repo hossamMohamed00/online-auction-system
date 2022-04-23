@@ -7,11 +7,11 @@ import {
 	OnGatewayConnection,
 	OnGatewayDisconnect,
 	OnGatewayInit,
+	ConnectedSocket,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { UsersService } from '../users/shared-user/users.service';
+import { Server, Socket } from 'socket.io';
 import { SocketAuthGuard } from 'src/common/guards';
-import { User } from '../users/shared-user/schema/user.schema';
+import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 import { GetCurrentUserFromSocket } from './../../common/decorators/';
 import { ChatService } from './chat.service';
 import { Chat } from './schema/chat.schema';
@@ -30,8 +30,6 @@ export class ChatGateway
 	@Inject()
 	private chatService: ChatService;
 
-	private readonly usersService: UsersService;
-
 	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
 	server: Server;
@@ -39,8 +37,8 @@ export class ChatGateway
 	//? Create logger instance
 	private logger: Logger = new Logger('ChatGateway');
 
-	//* Keep track of connections
-	private count: number = 0;
+	//* Keep track of online users
+	private users: any = [];
 
 	/**
 	 * Run when the service initialises
@@ -52,48 +50,71 @@ export class ChatGateway
 	/**
 	 * Fires when the client be connected
 	 */
-	async handleConnection(client: any, ...args: any[]) {
-		this.count++;
+	async handleConnection(@ConnectedSocket() client: Socket, ...args: any[]) {
 		this.logger.log('New User Connected 👍🏻');
-		const messages: Chat[] = await this.chatService.getAllClientChatHistory();
 
-		client.emit('all-messages-to-client', messages);
+		// Push the socket id to the users array
+		this.users.push(client.id);
 	}
 
 	/**
 	 * Fires when the client be disconnected
 	 */
 	handleDisconnect(client: any) {
-		this.count--;
 		this.logger.log('User Disconnected 👎🏻');
 	}
 
 	/*-------------------------------------------*/
+
+	/*
+	 * Get the chat history between the client and specific receiver
+	 */
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('get-chat-history')
+	async getClientChatHistory(
+		@ConnectedSocket() client: Socket,
+		@MessageBody() data: { receiverEmail: string },
+		@GetCurrentUserFromSocket() user: User,
+	) {
+		// Display log message
+		this.logger.log(
+			'Try to load chat-history between ' +
+				user.email +
+				' and ' +
+				data.receiverEmail,
+		);
+
+		//? Get chat history of the client with the given receiver
+		const chatHistory: Chat = await this.chatService.getAllClientChatHistory(
+			user.email,
+			data.receiverEmail,
+		);
+
+		//* Send the chat history to the client back
+		client.emit('chat-history-to-client', chatHistory);
+	}
+
 	/*
 	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.
 	 */
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-to-server')
 	async listenForMessages(
-		@MessageBody() data: { message: string; recipient: string },
+		@MessageBody() data: { message: string; receiverEmail: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
-		if (user) {
-			this.logger.log('New message recieved ❤');
-			const chat = this.chatService.findPrivateChat(user.name, data.recipient);
+		// Display log message
+		this.logger.log('New message recieved ❤');
 
-			const chatData = {
-				message: data.message,
-				sender: user.name,
-				recipient: data.recipient,
-			};
+		//* Handle the incoming message
+		this.chatService.handleNewMessage(
+			user.email,
+			data.receiverEmail,
+			data.message,
+		);
 
-			const message: Chat = await this.chatService.saveChat(chatData);
-			this.server.emit('new-message-to-client', { message });
-		} else {
-			this.server.emit('new-message-to-client', {
-				message: 'You are not logged in ❌',
-			});
-		}
+		//TODO: Emit the message to private room
+		let message: string = data.message;
+		this.server.emit('new-message-to-client', { message });
 	}
 }

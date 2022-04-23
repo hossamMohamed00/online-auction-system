@@ -2,8 +2,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { Chat, ChatDocument } from './schema/chat.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { MESSAGES } from '@nestjs/core/constants';
-import { SocketAuthGuard } from 'src/common/guards';
+import { Message } from './dto';
 
 @Injectable()
 export class ChatService {
@@ -13,52 +12,149 @@ export class ChatService {
 	) {}
 
 	/**
-	 * @returns List of available chats
+	 * Create new chat between 2 users
+	 * @param clientEmail
+	 * @param receiverEmail
+	 * @param message
 	 */
-	async getAllClientChatHistory(): Promise<Chat[]> {
-		return await this.chatModel.find();
+	async createNewChat(
+		clientEmail: string,
+		receiverEmail: string,
+		message: string,
+	): Promise<ChatDocument> {
+		//* Create new chat
+		const createdChat: ChatDocument = new this.chatModel({
+			user1: clientEmail,
+			user2: receiverEmail,
+			message,
+		});
+
+		if (!createdChat) {
+			throw new Error('Failed to create chat');
+		}
+		// Save the created chat
+		await createdChat.save();
+
+		return createdChat;
 	}
-	async findAll() {
-		const chats = await this.chatModel.find().exec();
-		return chats;
+
+	/**
+	 * @returns Chat history between client and receiver
+	 */
+	async getAllClientChatHistory(
+		clientEmail: string,
+		receiverEmail: string,
+	): Promise<any> {
+		// Find the chat document
+		const chat = await this.findPrivateChat(clientEmail, receiverEmail);
+		if (chat) {
+			// Return the messages array only
+			return chat.messages;
+		}
 	}
+
+	/**
+	 * Handle the new incoming message by saving it
+	 * @param clientEmail
+	 * @param receiverEmail
+	 * @param messageString
+	 */
+	async handleNewMessage(
+		clientEmail: string,
+		receiverEmail: string,
+		messageString: string,
+	) {
+		//* Find the chat between the client and the given receiver
+		let chat = await this.findPrivateChat(clientEmail, receiverEmail);
+
+		//? If the chat is not found, create new one
+		if (!chat) {
+			chat = await this.createNewChat(
+				clientEmail,
+				receiverEmail,
+				messageString,
+			);
+		}
+
+		//* Create new message object
+		const message = new Message(messageString, clientEmail);
+
+		//* Update chat messages
+		this.updateChatMessages(chat, message);
+	}
+
 	async findChats(name: string) {
 		const chat = await this.chatModel.find({
-			$or: [{ User1: name }, { User2: name }],
+			$or: [{ user1: name }, { user2: name }],
 		});
 		return chat;
 	}
 
-	async findPrivateChat(User1: string, User2: string): Promise<ChatDocument> {
-		const chat = await this.chatModel.findOne({ User1: User1, User2: User2 });
-		if (chat) {
-			return chat;
-		} else {
-			const chat = await this.chatModel.findOne({ User1: User2, User2: User1 });
-			return chat;
+	/**
+	 * Get the chat between the 2 users
+	 * @param user1Email
+	 * @param user2Email
+	 * @returns Chat if exists
+	 */
+	async findPrivateChat(
+		user1Email: string,
+		user2Email: string,
+	): Promise<ChatDocument | null> {
+		// Find the chat from DB
+		const chat = await this.chatModel.findOne({
+			$and: [
+				{
+					$or: [{ user1: user1Email }, { user1: user2Email }],
+				},
+				{
+					$or: [{ user2: user1Email }, { user2: user2Email }],
+				},
+			],
+		});
+
+		//? If the chat not exists, return null
+		if (!chat) {
+			return null;
 		}
-	}
-	async updateChat(chat: ChatDocument, message: any): Promise<Chat> {
-		chat.messages.push(message);
+
 		return chat;
 	}
 
 	/**
-	 * Save chatr id exists or create new one
+	 * Get user chat and update messages array
+	 * @param userChat
+	 * @param message
+	 * @returns true if success, false otherwise
+	 */
+	async updateChatMessages(
+		userChat: ChatDocument,
+		message: Message,
+	): Promise<boolean> {
+		// Append the message to the chat
+		userChat.messages.push(message);
+
+		// save the chat
+		await userChat.save();
+
+		return true;
+	}
+
+	/**
+	 * Save chat if exists or create new one
 	 * @param chat - Chat instance
 	 */
 	async saveChat({ message, sender, recipient }): Promise<Chat> {
-		const mychat = await this.findPrivateChat(sender, recipient);
-		if (mychat) {
-			const newmessage = sender.concat(': ', message);
-			this.updateChat(mychat, newmessage);
-			await mychat.save();
+		const myChat = await this.findPrivateChat(sender, recipient);
+		if (myChat) {
+			const newMessage = sender.concat(': ', message);
+			this.updateChatMessages(myChat, newMessage);
+			await myChat.save();
 		} else {
 			const createdChat = new this.chatModel();
-			const newmessage = sender.concat(': ', message);
-			createdChat.messages.push(newmessage);
-			createdChat.User1 = sender;
-			createdChat.User2 = recipient;
+			const newMessage = sender.concat(': ', message);
+			createdChat.messages.push(newMessage);
+			createdChat.user1 = sender;
+			createdChat.user2 = recipient;
 			await createdChat.save();
 			return createdChat;
 		}
