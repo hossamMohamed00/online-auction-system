@@ -41,9 +41,6 @@ export class ChatGateway
 	//? Create logger instance
 	private logger: Logger = new Logger('ChatGateway');
 
-	//* Keep track of online users
-	private onlineUsers: any = [];
-
 	/**
 	 * Run when the service initialises
 	 */
@@ -106,6 +103,8 @@ export class ChatGateway
 
 		//* Send the chat history to the client back
 		client.emit('chat-history-to-client', chatHistory);
+
+		this.logger.log('Chat history loaded and emitted to user ✔✔');
 	}
 
 	/*
@@ -119,21 +118,19 @@ export class ChatGateway
 		@ConnectedSocket() client: Socket,
 	) {
 		// Display log message
-		this.logger.log('New message recieved ❤');
+		this.logger.log(
+			'New message recieved ❤ from ' + user.email + ' to ' + data.receiverEmail,
+		);
 
 		//* Handle the incoming message
-		this.chatService.handleNewMessage(
+		const message = await this.chatService.handleNewMessage(
 			user.email,
 			data.receiverEmail,
 			data.message,
 		);
 
 		//TODO: Emit the message to private room
-		let message: string = data.message;
-		console.log(this.onlineUsers[0]);
 
-		this.server
-			.to([this.onlineUsers[0], client.id])
-			.emit('new-message-to-client', { message });
+		this.server.to([client.id]).emit('new-message-to-client', message);
 	}
 }

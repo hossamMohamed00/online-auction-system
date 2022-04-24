@@ -89,7 +89,7 @@ export class ChatService {
 		clientEmail: string,
 		receiverEmail: string,
 		messageString: string,
-	) {
+	): Promise<Message> {
 		//* Find the chat between the client and the given receiver
 		let chat = await this.findPrivateChat(clientEmail, receiverEmail);
 
@@ -107,6 +107,8 @@ export class ChatService {
 
 		//* Update chat messages
 		this.updateChatMessages(chat, message);
+
+		return message;
 	}
 
 	async findChats(name: string) {
