@@ -11,7 +11,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { SocketAuthGuard } from 'src/common/guards';
-import { User, UserDocument } from '../users/shared-user/schema/user.schema';
+import { User } from '../users/shared-user/schema/user.schema';
 import { GetCurrentUserFromSocket } from './../../common/decorators/';
 import { ChatService } from './chat.service';
 import { RoomMembersService } from './room-members.service';
@@ -84,21 +84,18 @@ export class ChatGateway
 	@SubscribeMessage('get-chat-history')
 	async getClientChatHistory(
 		@ConnectedSocket() client: Socket,
-		@MessageBody() data: { receiverEmail: string },
+		@MessageBody() data: { with: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
 		// Display log message
 		this.logger.log(
-			'Try to load chat-history between ' +
-				user.email +
-				' and ' +
-				data.receiverEmail,
+			'Try to load chat-history between ' + user.email + ' and ' + data.with,
 		);
 
 		//? Get chat history of the client with the given receiver
 		const chatHistory: Chat = await this.chatService.getAllClientChatHistory(
 			user.email,
-			data.receiverEmail,
+			data.with,
 		);
 
 		//* Send the chat history to the client back
@@ -129,7 +126,7 @@ export class ChatGateway
 			data.message,
 		);
 
-		// Prepare to send the message to the clients
+		//? Prepare to send the message to the clients
 		const messageTo = [client.id];
 
 		//* Find the receiver socketId if he is online
@@ -141,8 +138,6 @@ export class ChatGateway
 		if (receiverSocketId) {
 			messageTo.push(receiverSocketId);
 		}
-
-		console.log(messageTo);
 
 		//* Emit the message
 		this.server.to(messageTo).emit('new-message-to-client', message);
