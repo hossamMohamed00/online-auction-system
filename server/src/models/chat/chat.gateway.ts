@@ -14,6 +14,7 @@ import { SocketAuthGuard } from 'src/common/guards';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 import { GetCurrentUserFromSocket } from './../../common/decorators/';
 import { ChatService } from './chat.service';
+import { RoomMembersService } from './room-members.service';
 import { Chat } from './schema/chat.schema';
 
 /**
@@ -30,6 +31,9 @@ export class ChatGateway
 	@Inject()
 	private chatService: ChatService;
 
+	@Inject()
+	private roomMembersServices: RoomMembersService;
+
 	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
 	server: Server;
@@ -38,7 +42,7 @@ export class ChatGateway
 	private logger: Logger = new Logger('ChatGateway');
 
 	//* Keep track of online users
-	private users: any = [];
+	private onlineUsers: any = [];
 
 	/**
 	 * Run when the service initialises
@@ -51,17 +55,27 @@ export class ChatGateway
 	 * Fires when the client be connected
 	 */
 	async handleConnection(@ConnectedSocket() client: Socket, ...args: any[]) {
-		this.logger.log('New User Connected 👍🏻');
+		//* Get the user
+		const user: User = await this.chatService.getConnectedClientUserObject(
+			client,
+		);
 
-		// Push the socket id to the users array
-		this.users.push(client.id);
+		//* Add the member to the list of all members
+		this.roomMembersServices.addMember({
+			socketId: client.id,
+			email: user.email,
+		});
+
+		this.logger.log('New User Connected 👍🏻, with email: ' + user.email);
 	}
 
 	/**
 	 * Fires when the client be disconnected
 	 */
-	handleDisconnect(client: any) {
-		this.logger.log('User Disconnected 👎🏻');
+	async handleDisconnect(client: Socket) {
+		//* Remove the member from the list of all members
+		const removedMember = this.roomMembersServices.removeMember(client.id);
+		this.logger.log('User Disconnected 👎🏻, with email: ' + removedMember.email);
 	}
 
 	/*-------------------------------------------*/
@@ -102,6 +116,7 @@ export class ChatGateway
 	async listenForMessages(
 		@MessageBody() data: { message: string; receiverEmail: string },
 		@GetCurrentUserFromSocket() user: User,
+		@ConnectedSocket() client: Socket,
 	) {
 		// Display log message
 		this.logger.log('New message recieved ❤');
@@ -115,6 +130,10 @@ export class ChatGateway
 
 		//TODO: Emit the message to private room
 		let message: string = data.message;
-		this.server.emit('new-message-to-client', { message });
+		console.log(this.onlineUsers[0]);
+
+		this.server
+			.to([this.onlineUsers[0], client.id])
+			.emit('new-message-to-client', { message });
 	}
 }

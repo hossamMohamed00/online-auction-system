@@ -3,13 +3,39 @@ import { Chat, ChatDocument } from './schema/chat.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Message } from './dto';
+import { Socket } from 'socket.io';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../users/shared-user/schema/user.schema';
 
 @Injectable()
 export class ChatService {
 	constructor(
 		@InjectModel(Chat.name)
 		private readonly chatModel: Model<ChatDocument>,
+		private readonly authService: AuthService,
 	) {}
+
+	/**
+	 * Accept the socket client and return the user
+	 * @param client
+	 * @return user if found
+	 */
+	async getConnectedClientUserObject(client: Socket): Promise<User | null> {
+		//* Get the access token from client
+		const accessToken = await this.authService.getJWTTokenFromSocketClient(
+			client,
+		);
+
+		//? If no access token found
+		if (!accessToken) {
+			return null;
+		}
+
+		//* Get the user
+		const user = await this.authService.getUserFromJWT(accessToken); //* The user may be null (expired token)
+
+		return user;
+	}
 
 	/**
 	 * Create new chat between 2 users

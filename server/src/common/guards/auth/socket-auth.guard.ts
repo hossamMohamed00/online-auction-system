@@ -18,22 +18,20 @@ export class SocketAuthGuard implements CanActivate {
 		//* Get socket io client
 		const client = context.switchToWs().getClient();
 
-		//* Extract the headers
-		const handshakeHeaders = client.handshake.headers;
+		//* Get the access token from client
+		const accessToken = await this.authService.getJWTTokenFromSocketClient(
+			client,
+		);
 
-		//* Extract the access token
-		let accessToken = handshakeHeaders.authorization;
-
+		//? If no access token found
 		if (!accessToken) {
 			return false;
 		}
 
-		accessToken = accessToken.replace('Bearer', '').trim();
-
 		//* Get the user
 		const user = await this.authService.getUserFromJWT(accessToken); //* The user may be null (expired token)
 
-		//?Ensure that the user exists
+		//? Ensure that the user exists
 		if (user) {
 			//* Attach the user to the client object to be accessed via get user from socket decorator
 			client.user = user;

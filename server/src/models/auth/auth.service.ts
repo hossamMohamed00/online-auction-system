@@ -15,6 +15,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class AuthService {
@@ -163,6 +164,28 @@ export class AuthService {
 		await user.save();
 
 		return tokens;
+	}
+
+	/**
+	 * Accept socket client and return access token
+	 * @param client
+	 * @returns access token if found
+	 */
+	async getJWTTokenFromSocketClient(client: Socket) {
+		//* Extract the headers
+		const handshakeHeaders = client.handshake.headers;
+
+		//* Extract the access token
+		let accessToken = handshakeHeaders.authorization;
+
+		if (!accessToken) {
+			return false;
+		}
+
+		// Extract the access token
+		accessToken = accessToken.replace('Bearer', '').trim();
+
+		return accessToken;
 	}
 
 	/**

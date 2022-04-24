@@ -1,4 +1,3 @@
-import { ChatGateway } from './models/chat/chat.gateway';
 import { ChatModule } from './models/chat/chat.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
