@@ -129,8 +129,22 @@ export class ChatGateway
 			data.message,
 		);
 
-		//TODO: Emit the message to private room
+		// Prepare to send the message to the clients
+		const messageTo = [client.id];
 
-		this.server.to([client.id]).emit('new-message-to-client', message);
+		//* Find the receiver socketId if he is online
+		const receiverSocketId = this.roomMembersServices.getMemberSocketId(
+			data.receiverEmail,
+		);
+
+		// Append the receiverSocketId to the list to receive the message
+		if (receiverSocketId) {
+			messageTo.push(receiverSocketId);
+		}
+
+		console.log(messageTo);
+
+		//* Emit the message
+		this.server.to(messageTo).emit('new-message-to-client', message);
 	}
 }

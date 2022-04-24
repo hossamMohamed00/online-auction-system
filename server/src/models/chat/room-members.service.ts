@@ -50,4 +50,14 @@ export class RoomMembersService {
 			return null;
 		}
 	}
+
+	/**
+	 * Get the socketId of the given member
+	 * @param email Member email
+	 * @returns member socketId
+	 */
+	getMemberSocketId(email: string) {
+		const member = this.onlineMembers.find(member => member.email === email);
+		return member?.socketId;
+	}
 }
