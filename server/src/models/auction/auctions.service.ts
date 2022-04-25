@@ -18,6 +18,7 @@ import {
 } from './dto';
 import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
+import { HandleDateService } from 'src/common/utils';
 
 @Injectable()
 export class AuctionsService {
@@ -165,7 +166,8 @@ export class AuctionsService {
 		const auctionStartDate = auction.startDate;
 
 		//* Add 7 days to the startDate
-		const newEndDate = moment(auctionStartDate).add(7, 'days');
+		const newEndDate =
+			HandleDateService.getNewEndDateFromStartDate(auctionStartDate);
 
 		//? Find the auction by id and set the status to be Accepted and the new end date
 		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
