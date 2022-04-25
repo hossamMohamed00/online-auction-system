@@ -21,6 +21,7 @@ import { Chat } from './schema/chat.schema';
  * Its job is to receive and send messages.
  */
 @WebSocketGateway({
+	namespace: 'chat', // To be access as lo localhost:8000/chat
 	cors: {
 		origin: '*',
 	},
