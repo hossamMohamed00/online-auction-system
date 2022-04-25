@@ -2,9 +2,11 @@ import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
+	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as moment from 'moment';
 import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
@@ -26,6 +28,7 @@ export class AuctionsService {
 		private readonly categoryService: CategoryService,
 	) {}
 
+	private logger: Logger = new Logger('AuctionsService 👋🏻');
 	/**
 	 * Create new auction
 	 * @param createAuctionDto
@@ -160,25 +163,30 @@ export class AuctionsService {
 
 		//? Prepare the end date
 		const auctionStartDate = auction.startDate;
-		const newEndDate = new Date();
 
-		//* Add  7 days to the startDate
-		newEndDate.setDate(auctionStartDate.getDate() + 7);
+		//* Add 7 days to the startDate
+		const newEndDate = moment(auctionStartDate).add(7, 'days');
 
 		//? Find the auction by id and set the status to be Accepted and the new end date
 		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
 				$set: {
-					status: AuctionStatus.Accepted,
-					endDate: newEndDate,
+					status: AuctionStatus.Accepted, // Update status to Accepted
+					endDate: newEndDate, // Update end date
 				},
 			},
 			{ new: true },
 		);
 
-		//TODO: Schedule the auction to run
+		//TODO: Schedule the auction to run in start date automatically
 
+		//* Display log message
+		this.logger.log(
+			'Auction with title ' +
+				approvedAuction.title +
+				' approved successfully 👏🏻',
+		);
 		return approvedAuction;
 	}
 
