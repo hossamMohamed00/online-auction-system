@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { getCurrentDateFormatted } from 'src/common/utils';
+import { HandleDateService } from 'src/common/utils';
 import { Message } from '../dto';
 
 export type ChatDocument = Chat & Document;
@@ -16,7 +16,7 @@ export class Chat {
 	@Prop({ required: [true, 'user2 is required'] })
 	user2: string;
 
-	@Prop({ default: getCurrentDateFormatted() })
+	@Prop({ default: HandleDateService.getCurrentDateFormatted() })
 	createdAt: string;
 }
 

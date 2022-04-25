@@ -1,4 +1,4 @@
-import { getCurrentDateFormatted } from 'src/common/utils';
+import { HandleDateService } from 'src/common/utils';
 
 export class Message {
 	constructor(message: string, user1IsSender: string) {
@@ -6,7 +6,7 @@ export class Message {
 		this.senderEmail = user1IsSender;
 
 		// Get the current date from moment js
-		this.sentAt = getCurrentDateFormatted();
+		this.sentAt = HandleDateService.getCurrentDateFormatted();
 	}
 
 	message: string;
