@@ -85,9 +85,9 @@ We'll need at least the following entities to implement the service:
 | currentBid        |   number    |
 | numOfBids         |   number    |
 | extensionTime     |   number    |
-| status            | Status enum |
-| winningBidder     |    Buyer    |
 | seller            |   Seller    |
+| winningBidder     |    Buyer    |
+| status            | Status enum |
 | category          |  Category   |
 
 ## Server
@@ -305,6 +305,25 @@ The code will be hosted on Github, PRs and issues welcome.
 The web client will be hosted using any free web hosting platform such as firebase or netlify. A domain will be purchased for the site, and configured to point to the web host's server public IP.
 
 We'll deploy the server to a (likely shared) VPS for flexibility. The VM will have HTTP/HTTPS ports open, and we'll start with a manual deployment, to be automated later using Github actions or similar. The server will have closed CORS policy except for the domain name and the web host server.
+
+## Implement Real-time Protocol
+
+### What’s WebSocket?
+
+WebSocket is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455, and the WebSocket API in Web IDL is being standardized by the W3C. WebSocket is distinct from HTTP.
+
+### What’s Socket.IO?
+
+Socket.IO is a JavaScript library for realtime web applications. It enables realtime, bi-directional communication between web clients and servers. It has two parts: a client-side library that runs in the browser, and a server-side library for Node.js.
+
+### What’s Redis Pub/Sub?
+
+Redis Pub/Sub implements the messaging system where the senders (in redis terminology called publishers). The pub-sub pattern allows senders of messages, called publishers to publish messages to receivers called subscribers through a channel without knowledge of which subscribers exist — if any. All subscribers exist at the time the message received can receive the message at the same time.
+
+### Why use Redis for WebSocket communication?
+
+Actually, using Websocket is enough as the transport protocol to communicate between the clients. But there is some scenario that makes our chat realtime application struggle.
+Let’s consider a chat application. When a user first connects, a corresponding WebSocket connection is created within the application (WebSocket server) and it is associated with the specific application instance. This WebSocket connection is what empowers the medium to enables us to broadcast chat messages between users. Now, if a new user comes in, they may be connected to a new instance. So we have a scenario where different users (hence their respective WebSocket connections) are associated with different instances. As a result, they will not be able to exchange messages with each other — this is unacceptable, even for our toy chat application. So, we need to use Redis Pub/Sub events to makes those things run-in smoothly.
 
 ## References
 

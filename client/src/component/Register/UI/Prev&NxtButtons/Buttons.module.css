@@ -1,0 +1,20 @@
+
+.btn-steps{
+	width: 85%;
+	position: absolute;
+	bottom: -18px;
+	color: white;
+}
+.btn-steps>button{
+	width: 47%;
+	font-weight: 600;
+}
+
+.btn-steps>button:first-child{
+	background-color: var(--semiDark-color);
+	border-color: var(--semiDark-color);
+}
+.btn-steps>button:last-child{
+	background-color: var(--btnActive-color);
+	border-color: var(--btnActive-color);
+}

@@ -2,6 +2,7 @@ import {
 	BadRequestException,
 	ForbiddenException,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -14,6 +15,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Tokens } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +25,8 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
 	) {}
+
+	private logger: Logger = new Logger('AuthService');
 
 	/**
 	 * Register new user
@@ -160,5 +164,61 @@ export class AuthService {
 		await user.save();
 
 		return tokens;
+	}
+
+	/**
+	 * Accept socket client and return access token
+	 * @param client
+	 * @returns access token if found
+	 */
+	async getJWTTokenFromSocketClient(client: Socket) {
+		//* Extract the headers
+		const handshakeHeaders = client.handshake.headers;
+
+		//* Extract the access token
+		let accessToken = handshakeHeaders.authorization;
+
+		if (!accessToken) {
+			return false;
+		}
+
+		// Extract the access token
+		accessToken = accessToken.replace('Bearer', '').trim();
+
+		return accessToken;
+	}
+
+	/**
+	 * Get the user who owns the access token
+	 * @param accessToken user access token
+	 */
+	async getUserFromJWT(accessToken: string): Promise<UserDocument> {
+		/*
+		 * First verify the token.
+		 * Then, search for the user
+		 * Finally, return the user
+		 */
+		try {
+			//* verify token
+			const payload: JwtPayload = await this.jwtService.verifyAsync(
+				accessToken,
+				{
+					// Attach access token secret
+					secret: this.authConfigService.accessTokenSecret,
+				},
+			);
+			if (!payload) return null;
+
+			//* Search for the user
+			const user = await this.usersService.findById(payload.sub);
+			if (!user) return null;
+
+			//* Return the user
+			return user;
+		} catch (error) {
+			//* An error occurred
+			this.logger.log('Expired Token...❌');
+			return null;
+		}
 	}
 }

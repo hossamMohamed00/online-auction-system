@@ -1,26 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+// pages
+import Register from './Pages/Register'
+import Login from './Pages/Login'
+import HomePage from './Pages/HomePage';
+
+// css files
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import './component/UI/Layout.css'
+
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
+		<React.Fragment>
 
-				<p>
-					Edit <code>src/App.js</code> and save to reload 🔄🔄🔄🔄🔄
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
+			<Routes>
+				<Route path='/register' element={<Register/>} />
+				<Route path='/' element={<Navigate to="/register" /> } />
+
+				<Route path='/login' element={<Login/>} />
+				<Route path='/homePage' element={<HomePage/>} />
+
+			</Routes>
+
+		</React.Fragment>
 	);
+
 }
 
 export default App;
