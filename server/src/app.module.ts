@@ -1,17 +1,18 @@
 import { APP_GUARD } from '@nestjs/core';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { EmailSchedulingService } from './providers/schedule/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
 import { EmailConfirmationModule } from './providers/auth/verification/email-confirmation.module';
+import { ChatModule } from './models/chat/chat.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
 import { SchemaModule } from './models/users/shared-user/schema/schema.module';
 import { SellerModule } from './models/users/seller/seller.module';
 import { AccessTokenAuthGuard, HasRoleGuard } from './common/guards';
 import { AuctionsModule } from './models/auction/auctions.module';
-import { LogsMiddleware } from './common/middlewares';
+import { LogsMiddleware as HttpRequestsLogsMiddleware } from './common/middlewares';
 import { AppConfigModule } from './config/app/app.config.module';
 import { MongoConfigModule } from './config/database/mongo.config.module';
 import { AuthConfigModule } from './config/auth/auth.config.module';
@@ -24,6 +25,9 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 @Module({
 	imports: [
 		EmailConfirmationModule,
+		//? Import the chat module
+		ChatModule,
+		//? Import category and item modules
 		CategoryModule,
 		ItemModule,
 		//? Load all user related modules
@@ -68,6 +72,6 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 export class AppModule {
 	//? Configure the application middleware
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(LogsMiddleware).forRoutes('*');
+		consumer.apply(HttpRequestsLogsMiddleware).forRoutes('*');
 	}
 }

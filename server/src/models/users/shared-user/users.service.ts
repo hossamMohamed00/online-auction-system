@@ -40,6 +40,15 @@ export class UsersService {
 		const user = await this.usersModel.findOne({ email }).exec();
 		return user;
 	}
+	async findByName(name: string) {
+		const user = await this.usersModel.findOne({ name }).exec();
+		if(user){
+			return true
+		}
+		else{
+			return false;
+		}
+	}
 
 	/**
 	 * Set the isEmailConfirmed to true
