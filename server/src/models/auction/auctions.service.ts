@@ -40,8 +40,19 @@ export class AuctionsService {
 		const {
 			item: itemData,
 			category: categoryId,
+			startDate,
 			...restAuctionData
 		} = createAuctionDto;
+
+		//? Ensure that the start date is valid
+		const isValidStartDate =
+			HandleDateService.isValidAuctionStartDate(startDate);
+
+		if (!isValidStartDate) {
+			throw new BadRequestException(
+				'Invalid start date 😪, It must be between Today and up to 2 months 📅',
+			);
+		}
 
 		//? Ensure that the category exists
 		const isCategoryExists = await this.categoryService.isExists(categoryId);
@@ -61,6 +72,7 @@ export class AuctionsService {
 		//* Create new auction document
 		const createdAuction: AuctionDocument = new this.auctionModel({
 			...restAuctionData,
+			startDate,
 			minimumBidAllowed: MinBidAllowed,
 			chairCost: chairCostValue,
 			item: createdItem,
