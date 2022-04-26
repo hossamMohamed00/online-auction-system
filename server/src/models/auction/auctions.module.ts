@@ -9,6 +9,7 @@ import {
 import { ItemModule } from '../items/item.module';
 import { CategoryModule } from '../category/category.module';
 import { ItemService } from './../items/item.service';
+import { AuctionValidationService } from './auction-validation.service';
 
 @Module({
 	imports: [
@@ -40,7 +41,7 @@ import { ItemService } from './../items/item.service';
 			},
 		]),
 	],
-	providers: [AuctionsService],
+	providers: [AuctionValidationService, AuctionsService],
 	exports: [
 		AuctionsService,
 		MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),

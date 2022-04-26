@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as moment from 'moment';
 import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
@@ -19,12 +18,14 @@ import {
 import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
+import { AuctionValidationService } from './auction-validation.service';
 
 @Injectable()
 export class AuctionsService {
 	constructor(
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
+		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
 		private readonly categoryService: CategoryService,
 	) {}
@@ -36,52 +37,46 @@ export class AuctionsService {
 	 * @param seller - Seller who created the auction
 	 */
 	async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
-		//* Get the item data and category data
-		const {
-			item: itemData,
-			category: categoryId,
-			startDate,
-			...restAuctionData
-		} = createAuctionDto;
-
-		//? Ensure that the start date is valid
-		const isValidStartDate =
-			HandleDateService.isValidAuctionStartDate(startDate);
-
-		if (!isValidStartDate) {
-			throw new BadRequestException(
-				'Invalid start date 😪, It must be between Today and up to 2 months 📅',
+		//? Validate the data first
+		const validationResult =
+			await this.auctionValidationService.validateCreateAuctionData(
+				createAuctionDto,
 			);
-		}
 
-		//? Ensure that the category exists
-		const isCategoryExists = await this.categoryService.isExists(categoryId);
-		if (!isCategoryExists) {
-			throw new BadRequestException('Category not found ❌.');
+		//? If there is validation error, throw an exception
+		if (!validationResult.success) {
+			throw new BadRequestException(validationResult.message);
 		}
 
 		//* Create new item with this data
-		const createdItem = await this.itemService.create(itemData);
+		const createdItem = await this.itemService.create(createAuctionDto.item);
 
 		//? Set the Minimum Bid Allowed to be equal to the basePrice.
-		const MinBidAllowed = restAuctionData.basePrice;
+		const MinBidAllowed = createAuctionDto.basePrice;
 
 		//? Calc tha chair cost value
-		const chairCostValue = this.calculateChairCost(restAuctionData.basePrice);
+		const chairCostValue = this.calculateChairCost(createAuctionDto.basePrice);
 
 		//* Create new auction document
 		const createdAuction: AuctionDocument = new this.auctionModel({
-			...restAuctionData,
-			startDate,
+			title: createAuctionDto.title,
+			basePrice: createAuctionDto.basePrice,
+			startDate: createAuctionDto.startDate,
 			minimumBidAllowed: MinBidAllowed,
 			chairCost: chairCostValue,
 			item: createdItem,
-			category: categoryId,
+			category: createAuctionDto.category,
 			seller,
 		});
 
 		//* Save the instance
 		await createdAuction.save();
+
+		this.logger.log(
+			'New auction created and it will start at: ' +
+				createAuctionDto.startDate.toLocaleString() +
+				'📅',
+		);
 
 		return createdAuction;
 	}
@@ -263,13 +258,13 @@ export class AuctionsService {
 	/**
 	//TODO Calculate the minimum bid allowed for that auction
 	 */
-	calculateMinimumBidAllowed() {}
+	private calculateMinimumBidAllowed() {}
 
 	/**
 	 //TODO Calculate the amount of money needed to join the auction
 	 @param basePrice: The opening price for the auction
 	 */
-	calculateChairCost(basePrice: number) {
+	private calculateChairCost(basePrice: number) {
 		//* The chair cost will be 25% of the base price
 		return basePrice * 0.25;
 	}
