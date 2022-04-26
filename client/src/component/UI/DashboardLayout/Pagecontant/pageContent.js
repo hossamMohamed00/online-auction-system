@@ -8,12 +8,12 @@ return (
 	<React.Fragment>
 
 		<div className={classes.PageContent}>
-			<h1> PageContent</h1>
+			{/* <h1> PageContent</h1> */}
 			{props.children}
 		</div>
-		<div className='bg-black'>
+		{/* <div className='bg-black'>
 			<Footer/>
-		</div>
+		</div> */}
 	</React.Fragment>
 );
 

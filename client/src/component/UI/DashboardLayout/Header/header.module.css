@@ -1,13 +1,7 @@
 .headerNav {
-	height: fit-content;
-	padding-top: 10%;
-	padding-bottom: 10%;
-	/* margin-right:5% ; */
-	/* position: fixed; */
 	width: 75%;
-	left: 25%;
+	left: 25% !important;
 }
-
 .barBtn {
 	color: white;
 	border: none;
@@ -16,11 +10,15 @@
 .searchInput {
 	width: 350px;
 }
+.search::placeholder {
+	color: #BABBBD;
+	font-size: 15px;
+}
 .search {
 	margin-left: 3%;
 	background-color: #191c20 !important;
-	border: none;
-	outline: none;
+	border: none !important;
+	outline: none !important;
 	width: 100%;
 	float: right;
 }

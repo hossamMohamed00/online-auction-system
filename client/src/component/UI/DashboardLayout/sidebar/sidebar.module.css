@@ -25,16 +25,16 @@
 	/* display: inline-block; */
 	margin-top: 2%;
 	width: 75%;
+
 }
 .adminName {
 	margin-top: 30%;
 	margin-left: 5%;
 	display: flex;
-	margin-bottom: 2%;
 	justify-content: space-evenly;
 }
 
-ul {
+.sidebar ul {
 	list-style: none;
 	color: #5e5f61;
 	display: flex;
@@ -44,16 +44,17 @@ ul {
 	margin-left: 8%;
 }
 
-ul li {
+.sidebar ul li {
 	margin-bottom: 10%;
+	/* min-width:100%; */
 }
 
-ul li a {
-	font-size: 13px;
+.sidebar ul li a {
+	font-size: 17px;
 	font-weight: 600;
 }
-ul li a:active,
-ul li a:focus,
-ul li a:hover {
+.sidebar ul li a:active,
+.sidebar ul li a:focus,
+.sidebar ul li a:hover {
 	color: white;
 }

@@ -11,26 +11,9 @@ import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faListAlt } from '@fortawesome/free-solid-svg-icons';
-const Sidebar = () => {
-	const dropdownListForAdmin = [
-		{ title: 'Profile', icon: faUser },
-		{ title: 'Settings', icon: faGears },
-		{ title: 'Inbox', icon: faMessage },
-		{ title: 'Logout', icon: faPowerOff },
-	];
-	const dropdownListManageAuctions = [
-		{ title: 'Current Auctions', icon: faGavel },
-		{ title: 'Ongoing Auctions', icon: faGavel },
-	];
-
-	const dropdownListManageUsers = [
-		{ title: 'Sellers', icon: faUser },
-		{ title: 'Buyers', icon: faUser },
-	];
-	const dropdownListAuctionsRequests = [
-		{ title: 'Pending auctions', icon: faTh },
-	];
-	const dropdownListManageCategories = [];
+const Sidebar = props => {
+	const {Admin} = props.sidebarContent;
+	console.log(Admin.admin.list);
 	return (
 		<React.Fragment>
 			<div className={`${classes.sidebar}  position-relative`}>
@@ -46,8 +29,8 @@ const Sidebar = () => {
 					</div>
 					<div className={classes.username}>
 						<Dropdown
-							username="Safa Ramadan"
-							list={dropdownListForAdmin}
+							username={Admin.admin.name}
+							list={Admin.admin.list}
 							id="admin"
 						/>
 					</div>
@@ -55,8 +38,8 @@ const Sidebar = () => {
 				<ul>
 					<li>
 						<Dropdown
-							username="Manage Auctions"
-							list={dropdownListManageAuctions}
+							username={Admin.auctions.name}
+							list={Admin.auctions.list}
 							id="auctions"
 							icon={faGavel}
 							className="auction"
@@ -64,8 +47,8 @@ const Sidebar = () => {
 					</li>
 					<li>
 						<Dropdown
-							username="Manage Users"
-							list={dropdownListManageUsers}
+							username={Admin.users.name}
+							list={Admin.users.list}
 							id="users"
 							icon={faUsers}
 							className="users"
@@ -73,8 +56,8 @@ const Sidebar = () => {
 					</li>
 					<li>
 						<Dropdown
-							username="Auctions Requests"
-							list={dropdownListAuctionsRequests}
+							username={Admin.requests.name}
+							list={Admin.requests.list}
 							id="auctionsRequests"
 							icon={faTh}
 							className="requests"
@@ -82,9 +65,9 @@ const Sidebar = () => {
 					</li>
 					<li>
 						<Dropdown
-							username="Manage Categories"
+							username={Admin.categories.name}
 							id="categories"
-							list={dropdownListManageCategories}
+							list={Admin.categories.list}
 							icon={faListAlt}
 							className="categories"
 						/>

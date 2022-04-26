@@ -3,7 +3,7 @@ import classes from './Footer.module.css'
 
 function Footer() {
 	return (
-		<div className={classes.Footer}>
+		<div className={`${classes.Footer} `}>
 			<h4 className='text-center'> Footer </h4>
 		</div>
 	);
