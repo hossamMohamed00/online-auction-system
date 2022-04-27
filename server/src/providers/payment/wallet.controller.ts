@@ -11,7 +11,7 @@ import { ChargeWalletDto } from './dto';
 export class StripeController {
 	constructor(private readonly walletService: WalletService) {}
 
-	@Post()
+	@Post('charge')
 	async createCharge(
 		@Body() chargeWalletDto: ChargeWalletDto,
 		@GetCurrentUserData('_id') userId: string,
