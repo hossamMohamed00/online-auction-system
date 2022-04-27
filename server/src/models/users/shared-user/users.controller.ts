@@ -23,16 +23,4 @@ export class UsersController {
 	findAll() {
 		return this.usersService.findAll();
 	}
-
-	/**
-	 * List specific category auctions
-	 * @param category id
-	 * @returns List of category's auctions
-	 */
-	@Roles(Role.Admin, Role.Employee, Role.Seller, Role.Buyer)
-	@Serialize(AuctionDto)
-	@Get('category/:id/auctions')
-	getAuctionsOfCategory(@Param() { id }: MongoObjectIdDto) {
-		return this.usersService.getAuctionsOfCategory(id);
-	}
 }
