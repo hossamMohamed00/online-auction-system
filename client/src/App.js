@@ -18,10 +18,10 @@ function App() {
 
 			<Routes>
 				<Route path='/register' element={<Register/>} />
-				<Route path='/' element={<Navigate to="/register" /> } />
+				<Route path='/' element={<Navigate to="/home-page" /> } />
 
 				<Route path='/login' element={<Login/>} />
-				<Route path='/homePage' element={<HomePage/>} />
+				<Route path='/home-page' element={<HomePage/>} />
 
 			</Routes>
 

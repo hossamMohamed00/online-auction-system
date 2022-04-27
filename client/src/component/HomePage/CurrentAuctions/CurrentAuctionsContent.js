@@ -80,7 +80,7 @@ const CurrentAuctionsContent = () => {
 
 	return (
 		<div className={classes.CurrentAuctionsContent}>
-			<Row xs={1} md={2} lg={3} className="g-4 mx-auto py-3">
+			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto py-3">
 				{getCurrentAuctions(FirstThreeItems , false)}
 				{showRestItems && getCurrentAuctions(RestItems, true)}
 				{!showRestItems && RestItems.length!==0 &&
