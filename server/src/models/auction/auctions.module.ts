@@ -10,6 +10,7 @@ import { ItemModule } from '../items/item.module';
 import { CategoryModule } from '../category/category.module';
 import { ItemService } from './../items/item.service';
 import { AuctionValidationService } from './auction-validation.service';
+import { AuctionsController } from './auctions.controller';
 
 @Module({
 	imports: [
@@ -41,6 +42,7 @@ import { AuctionValidationService } from './auction-validation.service';
 			},
 		]),
 	],
+	controllers: [AuctionsController],
 	providers: [AuctionValidationService, AuctionsService],
 	exports: [
 		AuctionsService,

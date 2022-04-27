@@ -5,12 +5,14 @@ import {
 	IsMongoId,
 	IsBooleanString,
 } from 'class-validator';
-import { AuctionStatus } from '../../enums';
+import { AuctionStatusForSearch } from '../../enums';
 
 export class FilterAuctionQueryDto {
 	@IsOptional()
-	@IsEnum(AuctionStatus)
-	status: AuctionStatus;
+	@IsEnum(AuctionStatusForSearch, {
+		message: 'Sorry, status must be one of [pending, accepted, closed] 👀',
+	})
+	status: AuctionStatusForSearch;
 
 	@IsOptional()
 	@IsMongoId()
