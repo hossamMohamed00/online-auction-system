@@ -16,7 +16,7 @@ import { Tokens } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 import { Socket } from 'socket.io';
-import StripeService from 'src/providers/payment/stripe.service';
+import WalletService from 'src/providers/payment/wallet.service';
 import { Seller, SellerDocument } from '../users/seller/schema/seller.schema';
 import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
 import { AvailableRolesForRegister } from '../users/shared-user/enums';
@@ -34,7 +34,7 @@ export class AuthService {
 		private readonly usersService: UsersService,
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
-		private readonly stripeService: StripeService,
+		private readonly stripeService: WalletService,
 	) {}
 
 	private logger: Logger = new Logger('AuthService');

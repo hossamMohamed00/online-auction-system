@@ -1,4 +1,4 @@
-import { StripeModule } from './providers/payment/stripe.module';
+import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
@@ -27,7 +27,7 @@ import { StripeConfigModule } from './config/stripe/stripe.config.module';
 @Module({
 	imports: [
 		//? Import stripe module
-		StripeModule,
+		WalletModule,
 
 		//? Import the chat module
 		ChatModule,
