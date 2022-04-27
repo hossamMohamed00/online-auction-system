@@ -4,3 +4,8 @@ export enum Role {
 	Seller = 'seller',
 	Buyer = 'buyer',
 }
+
+export enum AvailableRolesForRegister {
+	Seller = 'seller',
+	Buyer = 'buyer',
+}
