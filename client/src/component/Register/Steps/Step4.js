@@ -4,7 +4,7 @@ import RadioButton from "../UI/RadioButtons/RadioButton";
 import classes from './Steps.module.css'
 import styles from '../UI/Prev&NxtButtons/Buttons.module.css';
 import { AuthActions } from "../../../store/slices/RegisterSlices/userDetails";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router';
 
 import useInput from "../../../CustomHooks/useInput";
