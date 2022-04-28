@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardElement } from '@stripe/react-stripe-js';
-import usePaymentForm from './usePaymentForm.jsx';
+import usePaymentForm from './usePaymentForm.js';
 
 const PaymentForm = () => {
 	const { handleSubmit } = usePaymentForm();
