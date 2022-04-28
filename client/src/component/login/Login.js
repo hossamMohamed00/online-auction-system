@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './login.module.css';
 import LoginForm from './LoginForm';
-// import Register from './../../component/Register/Register';
 
 const Login = () => {
 	return (

@@ -1,12 +1,11 @@
 const url = 'http://localhost:8000'
 
 const RegisterUrl 		= `${url}/auth/register `;
-const LoginUrl			 	= `${url}/auth/register`;
+const LoginUrl			 	= `${url}/auth/login`;
 const ConfirmEmailUrl = `${url}/email-confirmation/confirm`;
 
 
 export const Register = async (userDetails) => {
-    console.log(userDetails)
 
     const response = await fetch(RegisterUrl, {
         method : 'POST',
@@ -46,6 +45,7 @@ export const Login = async (userDetails) => {
 	});
 	const data = await response.json()
 	if (!response.ok) {
+		console.log(data)
 		throw new Error(data.message);
 
 	}

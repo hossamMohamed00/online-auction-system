@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import useHttp from "../../../CustomHooks/useHttp";
+// import useHttp from "../../../CustomHooks/useHttp";
+// import { sendConfiramtion } from "../../../Api/Auth";
 import {useDispatch, useSelector } from "react-redux";
-import { sendConfiramtion } from "../../../Api/Auth";
 
 import Buttons from "../UI/Prev&NxtButtons/Buttons";
 import RadioButton from "../UI/RadioButtons/RadioButton";
@@ -12,7 +12,7 @@ import { RegisterActions } from "../../../store/slices/RegisterSlices/Register";
 
 
 const  Step3 = () => {
-	const {sendRequest , status , data , error } = useHttp(sendConfiramtion);
+	// const {sendRequest , status , data , error } = useHttp(sendConfiramtion);
 	// const {sendRequest:reSendConfiramtionRequest , status:reSendConfiramtionStatus  , error:reSendConfiramtionError } = useHttp(reSendConfiramtion);
 
 	const dispatch = useDispatch();
@@ -44,17 +44,18 @@ const  Step3 = () => {
 		isAcceptant = value
 	}
 
-	useEffect(()=>{
-		if(status==='completed'){
-			console.log(data)
-			// dispatch(RegisterActions.showStep4())
-		}
-	},[status])
+	// useEffect(()=>{
+	// 	if(status==='completed'){
+	// 		console.log(data)
+	// 		// dispatch(RegisterActions.showStep4())
+	// 	}
+	// },[status])
 
 	const SubmitHandeler = () => {
 		if(isAcceptant){
 			console.log(idToken)
-			sendRequest(idToken)
+			// sendRequest(idToken)
+			dispatch(RegisterActions.showStep4())
 		}
 		else{
 			console.log("resend")
@@ -75,7 +76,7 @@ const  Step3 = () => {
 
 			<RadioButton name="UsePhoneNum" values={["Yes" , "No"]} getValue={getAcceptantValue} />
 
-			{error && <p className={`${classes['alert']} p-2 text-center fs-6 `} > {error} </p> }
+			{/* {error && <p className={`${classes['alert']} p-2 text-center fs-6 `} > {error} </p> } */}
 
 			<Buttons prev="Step2" nxt="Step4" onClick = {SubmitHandeler} />
 

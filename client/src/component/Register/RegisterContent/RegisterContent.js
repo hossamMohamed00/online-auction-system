@@ -28,7 +28,7 @@ const RegisterContent = () => {
 
 			<p className="text-light mt-4 text-center ">
 				<span>Already have an account ?</span>
-				<Link to='/login' className="text-primary pe-auto"> Sign in </Link>
+				<Link to='/login' className="text-primary text-decoration-none pe-auto"> Sign in </Link>
 			</p>
 		</Fragment>
 	)

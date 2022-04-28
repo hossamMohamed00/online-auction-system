@@ -5,10 +5,14 @@ import classes from './Steps.module.css'
 import styles from '../UI/Prev&NxtButtons/Buttons.module.css';
 import { AuthActions } from "../../../store/slices/RegisterSlices/userDetails";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router';
+
 import useInput from "../../../CustomHooks/useInput";
 
 
-const  Step4 = (props) => {
+const  Step4 = () => {
+
+	const navigate = useNavigate();
 	let ResendValue  ;
 
 	const codeNum1ref = useRef()
@@ -18,7 +22,7 @@ const  Step4 = (props) => {
 	const codeNum5ref = useRef()
 	const codeNum6ref = useRef()
 
-	const userDetails = useSelector(store => store.userDetails.step1Details)
+	// const userDetails = useSelector(store => store.userDetails.step1Details)
 	const {value:InputValue ,hasError ,onChangeValueHandeler, onBlurHandeler } = useInput((value)=>value.trim().length===1)
 
 	const ContactDetails = [codeNum1ref,codeNum2ref ,codeNum3ref ,codeNum4ref, codeNum5ref ,codeNum6ref].map((item,index) => (
@@ -53,9 +57,7 @@ const  Step4 = (props) => {
 		e.preventDefault()
 		const verifactionCode = codeNum1ref.current.value + codeNum2ref.current.value + codeNum3ref.current.value + codeNum4ref.current.value + codeNum5ref.current.value + codeNum6ref.current.value
 		if(verifactionCode && ResendValue==="No"){
-			dispatch(AuthActions.setStep4Details({verifactionCode :verifactionCode }))
-			console.log(userDetails	)
-			props.RegisterUser(userDetails)
+			navigate('/home-page')
 		}
 
 	}
@@ -71,7 +73,7 @@ const  Step4 = (props) => {
 				{ContactDetails}
 			</div>
 
-			{hasError && <div className={`d-block ${classes.alert}`}> Please Enter verification code </div>}
+			{/* {hasError && <div className={`d-block ${classes.alert}`}> Please Enter verification code </div>} */}
 
 			<p className= {` ${classes['notification']}  fw-bolder pt-3`}>
 				Would you like to Resend Again ?

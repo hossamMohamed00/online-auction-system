@@ -38,9 +38,9 @@ const useHttp =  (requestFun ) => {
 
     const sendRequest = useCallback(async (requestData)=>{
         try{
-            const responseData = await requestFun(requestData)
-            console.log(responseData)
-            dispatch({type:"SUCCESS" , Data:responseData})
+          const responseData = await requestFun(requestData)
+          console.log(responseData)
+          dispatch({type:"SUCCESS" , Data:responseData})
         }
         catch (error) {
 					console.log(error.message)
