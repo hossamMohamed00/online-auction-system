@@ -90,14 +90,15 @@ export class AuctionsService {
 		let populateFields = [];
 
 		//* Check if the user want to populate the nested docs
-		const wantToPopulate = filterAuctionQuery.populate;
+		const wantToPopulate = filterAuctionQuery?.populate;
 		if (wantToPopulate) {
 			populateFields = ['seller', 'category', 'item', 'winningBuyer'];
+
+			// Delete the populate fields from the filterAuctionQuery
+			delete filterAuctionQuery.populate;
 		}
 
-		// Delete the populate fields from the filterAuctionQuery
-		delete filterAuctionQuery.populate;
-
+		//TODO: Don't send denied auctions to normal users
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate(populateFields);
@@ -113,7 +114,7 @@ export class AuctionsService {
 	async findById(_id: string) {
 		const auction = await this.auctionModel
 			.findById(_id)
-			.populate('seller')
+			.populate(['seller', 'category', 'item', 'winningBuyer'])
 			.exec();
 
 		if (!auction) throw new NotFoundException('Auction not found ❌');

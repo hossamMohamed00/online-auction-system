@@ -30,10 +30,21 @@ function App() {
 	// );
 
 	//* TEMPORARY Payment code
-	return (
-		<Elements stripe={stripePromise}>
+	<Elements stripe={stripePromise}>
 			<PaymentForm />
-		</Elements>
+	</Elements>
+
+	return (
+		// <React.Fragment>
+		// 	<Routes>
+		// 		<Route path="/home-page" element={<HomePage />} />
+		// 		<Route path="/" element={<Navigate to="/home-page" />} />
+
+		// 		<Route path="/register" element={<Register />} />
+
+		// 		<Route path="/login" element={<Login />} />
+		// 	</Routes>
+		// </React.Fragment>
 	);
 }
 

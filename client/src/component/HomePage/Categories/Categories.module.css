@@ -1,27 +1,37 @@
 .Categories{
 	height: fit-content!important;
-	width: 25vw!important;
-	background-color: #191a19;
+	width: fit-content!important;
+	background-color: var(--dark-color);
 	color: white;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
+
 	padding-bottom: 20px;
+	position: absolute;
+	top:55.99px;
+	text-align: center;
+
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	z-index: 1000;
+
+	margin-right: 15px;
+
 }
 
 .CategoriesHeader{
 	/* background-color: #191a19; */
 	background-color:  #4f4e4c!important;
-	padding: 10px;
+	padding-top: 25px!important;
 	font-size: 20px;
+
+	/* border-top: 2px solid white!important; */
+
 }
 
-li{ cursor: pointer; list-style: none}
+li{ cursor: pointer; list-style: none;	padding: 10px 25px 10px 25px ;}
 li:hover{
 	background-color: #4f4e4c!important;
 	transition: all 0.5s;
-	padding-left: 5%!important;
 }
-
 .categoryBadge{
 	background-color: #43758f;
 }
@@ -30,21 +40,18 @@ li:hover{
 
 /* start media query */
 
-@media screen and (max-width:576px){
+@media (max-width: 768px){
 	.Categories{
-		width: 80vw!important;
-		margin: 0 auto;
-		margin-top: 15px;
+    width: 100%!important;
+    top: 45px;
+    text-align: left;
+    left: 0;
+		padding-top: 10px;
+		background-color: rgba(0, 0, 0, 0.9);
+
+
 	}
 }
 
-
-@media screen and (min-width:576px) and (max-width:992px){
-	.Categories{
-		width: 70vw!important;
-		margin: 0 auto;
-	}
-	.CategoriesHeader{  margin-top: 15px;}
-}
 
 /* end media query */

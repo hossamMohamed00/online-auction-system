@@ -42,10 +42,9 @@ export class UsersService {
 	}
 	async findByName(name: string) {
 		const user = await this.usersModel.findOne({ name }).exec();
-		if(user){
-			return true
-		}
-		else{
+		if (user) {
+			return true;
+		} else {
 			return false;
 		}
 	}
@@ -62,14 +61,5 @@ export class UsersService {
 		);
 
 		return user;
-	}
-
-	/* Category functions */
-	async getAuctionsOfCategory(categoryId: string) {
-		const categories = await this.categoryService.getAuctionsOfCategory(
-			categoryId,
-		);
-
-		return categories;
 	}
 }

@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import Register from './slices/Register'
-import isAuth from "./slices/RegisterSlices/isAuth";
+import AuthData from "./slices/RegisterSlices/AuthData";
+import Register from './slices/RegisterSlices/Register'
+import userDetails from "./slices/RegisterSlices/userDetails";
 
 
 const store = configureStore({
 	reducer:{
 		RegisterSteps : Register,
-		RegisterAuth  : isAuth
+		userDetails  : userDetails,
+		AuthData  : AuthData,
+
 	}
 })
 

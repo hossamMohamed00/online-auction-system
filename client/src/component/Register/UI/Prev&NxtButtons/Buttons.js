@@ -1,7 +1,7 @@
 import React from "react";
 
 import {useDispatch } from 'react-redux'
-import {RegisterActions} from '../../../../store/slices/Register'
+import {RegisterActions} from '../../../../store/slices/RegisterSlices/Register'
 
 import classes from './Buttons.module.css'
 
@@ -28,7 +28,6 @@ const Buttons = (props) => {
 		}
 		if(props.nxt==='Step4'){
 			props.onClick && props.onClick()
-			dispatch(RegisterActions.showStep4())
 		}
 
 	}
