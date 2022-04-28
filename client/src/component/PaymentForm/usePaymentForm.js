@@ -7,8 +7,7 @@ const usePaymentForm = () => {
 	const handleSubmit = async event => {
 		event.preventDefault();
 
-		console.log(process.env.REACT_APP_API_URL);
-		const amountToCharge = 100;
+		const amountToCharge = 10000;
 
 		const cardElement = elements.getElement(CardElement);
 
@@ -31,7 +30,8 @@ const usePaymentForm = () => {
 
 		const paymentMethodId = paymentMethod.id;
 
-		console.log('start');
+		console.log('Start Charge');
+
 		fetch(`${process.env.REACT_APP_API_URL}/wallet/charge`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -40,11 +40,10 @@ const usePaymentForm = () => {
 			}),
 			credentials: 'include',
 			headers: {
+				Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjY4YzY3N2NiYjdiNDEzZTEyMjQ5YmMiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MTExOTc1MCwiZXhwIjoxMDY1MTExOTc1MH0.JDRqtQCY03dhjltd-p7snit_AJvYAH9PustUKK2euQA`,
 				'Content-Type': 'application/json',
 			},
 		});
-
-		console.log('end');
 	};
 
 	return {

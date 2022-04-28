@@ -18,32 +18,23 @@ import './component/UI/Layout.css';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
-	// return (
-	// 	<React.Fragment>
-	// 		<Routes>
-	// 			<Route path="/register" element={<Register />} />
-	// 			<Route path="/" element={<Navigate to="/register" />} />
-	// 			<Route path="/login" element={<Login />} />
-	// 			<Route path="/homePage" element={<HomePage />} />
-	// 		</Routes>
-	// 	</React.Fragment>
-	// );
-
 	//* TEMPORARY Payment code
-	<Elements stripe={stripePromise}>
-			<PaymentForm />
-	</Elements>
-
 	return (
+		<Elements stripe={stripePromise}>
+			<PaymentForm />
+		</Elements>
 		// <React.Fragment>
+
 		// 	<Routes>
-		// 		<Route path="/home-page" element={<HomePage />} />
-		// 		<Route path="/" element={<Navigate to="/home-page" />} />
+		// 		<Route path='/home-page' element={<HomePage/>} />
+		// 		<Route path='/' element={<Navigate to="/home-page" /> } />
 
-		// 		<Route path="/register" element={<Register />} />
+		// 		<Route path='/register' element={<Register/>} />
 
-		// 		<Route path="/login" element={<Login />} />
+		// 		<Route path='/login' element={<Login/>} />
+
 		// 	</Routes>
+
 		// </React.Fragment>
 	);
 }
