@@ -1,30 +1,33 @@
-import React, { Fragment } from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCircleArrowRight} from '@fortawesome/free-solid-svg-icons'
+import React, { Fragment , useState} from 'react';
 import classes from './Categories.module.css'
 
 const Categories = () => {
+	const [isHiddenCategories , setIsHiddenCategories ] = useState(false)
 
 	const AllCategories = ["Labtop" , "Phones" ,"Tablet" ,"Home" , "Electronics"] ;
 
 	const showAllCategories = AllCategories.map(( category,index) => {
 		return(
-			<li key={index} className="p-2">
-				<FontAwesomeIcon icon={faCircleArrowRight} />
+			<li key={index} >
 				<span className="p-2">{category} </span>
-				<span className= {` ${classes.categoryBadge} badge text-light rounded-pill float-end `} >4</span>
 			</li>
 
 		)
 	})
-	return (
+
+	const btnShowCategoryHandeler = (e) => {
+		e.preventDefault()
+		setIsHiddenCategories(true)
+		console.log("yes")
+	}
+
+		return (
 			<Fragment>
-				<div className={classes.Categories}>
-						<h4 className={classes.CategoriesHeader}> Categories</h4>
-						<ul className="list-group ">
-							{showAllCategories}
-						</ul>
+				<div className={ ` ${classes.Categories} ${isHiddenCategories ? 'd-none' : ''  }` }>
+					<button type="button" className="btn-close d-md-none float-end m-2 text-dark bg-light" onClick={btnShowCategoryHandeler} aria-label="Close"></button>
+					<ul className= {`list-group d-md-block  `} >
+						{showAllCategories}
+					</ul>
 				</div>
 			</Fragment>
 	);

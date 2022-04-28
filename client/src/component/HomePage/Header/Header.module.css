@@ -14,20 +14,6 @@
 	left: 0;
 }
 
-/* start navbar */
-
-.nav {background-color: var(--dark-color)!important}
-
-.navbarBrand{	font-size: 20px!important}
-
-.navLinkRegister{ color: var(--main-color); border-right: 1px solid white; padding-right: 15px!important;}
-.navLinkLogin{ padding-left: 15px!important }
-
-.navLinkRegister , .navLinkLogin {text-decoration: none;}
-.navLinkRegister:hover{color: white}
-.navLinkLogin:hover{color: var(--main-color)!important}
-
-/* end navbar */
 
 
 .HeaderContent{
@@ -98,11 +84,9 @@
 	nav{padding: 0!important}
 
 	.navbarBrand{ font-size: 15px!important; font-weight: bold;font-size: 15px;}
-/*
-	h1 { font-size: 20px!important}
-	p {font-size: 10px!important ; padding-top: 5px;} */
 
-	.SearchResult{ height: 100px;width: 90%!important;}
+
+	.SearchResult{max-height: 150px!important;}
 	.SearchInput{ padding: 1px;}
 	.SearchInputGroup{width: 90%!important;}
 

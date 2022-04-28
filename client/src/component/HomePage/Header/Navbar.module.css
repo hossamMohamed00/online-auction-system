@@ -1,0 +1,40 @@
+
+/* start navbar */
+
+.nav {background-color: var(--dark-color)}
+
+.navbarBrand{	font-size: 20px!important}
+
+.navLink{
+	text-decoration: none;
+	color: white!important;
+	padding-left: 30px!important;
+	cursor: pointer;
+}
+.navLinkRegister{border-right: 1px solid white!important; padding-right: 10px!important;}
+.navLinkLogin {padding-left: 10px!important}
+.navLink:hover{
+	color: var(--main-color)!important;
+	transition: all 0.5s;
+}
+
+.active{color: var(--main-color)!important}
+
+
+
+@media (max-width: 768px){
+	.nav {padding: 10px !important;	}
+	.nav > div{display: inline-block !important;}
+
+	.navLinks{
+		border-top: 1px solid white;
+		margin-top: 10px !important;
+		flex-direction: column!important;
+		display: none;
+		transition: all 2s;
+	}
+	.navLink{padding-top: 14px !important; padding-left: 5px !important}
+	.navLinkRegister{border-right: 0!important;}
+}
+/* end navbar */
+
