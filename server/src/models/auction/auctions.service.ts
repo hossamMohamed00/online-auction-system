@@ -98,6 +98,7 @@ export class AuctionsService {
 			delete filterAuctionQuery.populate;
 		}
 
+		//TODO: Don't send denied auctions to normal users
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate(populateFields);
@@ -113,7 +114,7 @@ export class AuctionsService {
 	async findById(_id: string) {
 		const auction = await this.auctionModel
 			.findById(_id)
-			.populate('seller')
+			.populate(['seller', 'category', 'item', 'winningBuyer'])
 			.exec();
 
 		if (!auction) throw new NotFoundException('Auction not found ❌');
