@@ -4,11 +4,13 @@ import Header from "../component/HomePage/Header/Header";
 import UpGoingAuctions from "../component/HomePage/UpGoingAuctions/UpGoingAuctions";
 
 import scollbarStyle from '../component/UI/ScrollBar.module.css'
-import Categories from "../component/HomePage/Categories/Categories";
 import Footer from "../component/HomePage/Footer/Footer";
+import { useSelector } from "react-redux";
 
 
 const HomePage = () => {
+	const token = useSelector(store => store.AuthData.idToken)
+	console.log(token , "hhhhhh")
 	return (
 		<Fragment>
 			<div className= {`${scollbarStyle.scollbar} container-fluid px-0`} style={{backgroundColor: "#191a19" , minHeight:"100vh"}}>

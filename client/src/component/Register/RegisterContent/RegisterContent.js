@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector  } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Card from "../UI/Card/Card";
@@ -10,14 +10,12 @@ import Step3 from "../Steps/Step3";
 import Step4 from "../Steps/Step4";
 
 
-
-
 const RegisterContent = () => {
+
 	const step1 = useSelector((store) => store.RegisterSteps.step1)
 	const step2 = useSelector((store) => store.RegisterSteps.step2)
 	const step3 = useSelector((store) => store.RegisterSteps.step3)
 	const step4 = useSelector((store) => store.RegisterSteps.step4)
-
 
 	return (
 		<Fragment>
