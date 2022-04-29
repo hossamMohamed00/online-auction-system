@@ -8,7 +8,7 @@ import './component/UI/Layout.css'
 
 // pages
 import Register from './Pages/Register'
-import Login from './Pages/Login'
+import LoginPage from './Pages/Login'
 import HomePage from './Pages/HomePage';
 
 
@@ -23,7 +23,7 @@ function App() {
 
 				<Route path='/register' element={<Register/>} />
 
-				<Route path='/login' element={<Login/>} />
+				<Route path='/login' element={<LoginPage/>} />
 
 			</Routes>
 

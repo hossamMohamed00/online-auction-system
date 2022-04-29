@@ -37,14 +37,14 @@ const Navbar = ()=> {
 					<NavLink to='/how-bid' className= {activeLink} > How Bid </NavLink>
 					<NavLink to='/contact-us' className= {activeLink} > Contact Us </NavLink>
 
-					<span to='/' className= {`text-start pb-0 fw-bold ${classes.navLink} `}
+					<div to='/' className= {`text-start pb-0 fw-bold ${classes.navLink} `}
 					 onClick = {showCategoriesContentHandeler}
 					>
 						Categories
 						{!isShowanCategoriesContent && <FontAwesomeIcon icon={faAnglesDown} className="px-2"/>}
 						{isShowanCategoriesContent && <FontAwesomeIcon icon={faAnglesUp} className="px-2"/>}
 						{isShowanCategoriesContent && <Categories/> }
-					</span>
+					</div>
 
 					<NavLink to='/register' className= {`fw-bold ${classes.navLink} ${classes.navLinkRegister } `}> Register </NavLink>
 					<NavLink to='/login' className= {`fw-bold text-light ${classes.navLink} ${classes.navLinkLogin } `}> Login </NavLink>

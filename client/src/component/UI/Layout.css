@@ -25,10 +25,18 @@
 
 /*start animation */
 .animation{
-	animation: slide-in 500ms;
+	animation: slide-from-left 500ms;
   animation-timing-function: linear;
 }
 
+.animation-top{
+	animation: 	slide-from-top 500ms;
+  animation-timing-function: linear;
+	transition: all 0.5;
+}
+.animation-from-bottom{
+	animation: slide-from-bottom 500ms;
+}
 /*end animation */
 
 
@@ -36,11 +44,20 @@
 
 /* ************************************** */
 /* Key frames*/
-@keyframes slide-in {
+@keyframes slide-from-left {
 	from {
 		transform: translateX(-100%);
 	}
 	to {
 		transform: translateX(0%);
+	}
+}
+
+@keyframes slide-from-top{
+	from {
+		transform: translateY(-10%);
+	}
+	to {
+		transform: translateY(0%);
 	}
 }

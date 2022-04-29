@@ -23,7 +23,7 @@ const Categories = () => {
 
 		return (
 			<Fragment>
-				<div className={ ` ${classes.Categories} ${isHiddenCategories ? 'd-none' : ''  }` }>
+				<div className={ `${classes.Categories} ${isHiddenCategories ? 'd-none' : 'animation-top'  }` }>
 					<button type="button" className="btn-close d-md-none float-end m-2 text-dark bg-light" onClick={btnShowCategoryHandeler} aria-label="Close"></button>
 					<ul className= {`list-group d-md-block  `} >
 						{showAllCategories}

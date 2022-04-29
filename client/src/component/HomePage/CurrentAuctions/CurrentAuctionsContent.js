@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import { Card, Col, Row} from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import itemImage2 from '../../../assets/pexels-pixabay-38568.jpg'
 import itemImage3 from '../../../assets/pexels-antony-trivet-9897933.jpg'
 
 import classes from './CurrentAuctions.module.css'
-
+import useTimer from '../../../CustomHooks/useTimer';
 
 
 const CurrentAuctionsItems = [
@@ -45,14 +45,19 @@ const CurrentAuctionsContent = () => {
 	const RestItems 			=  CurrentAuctionsItems.slice(3)
 	const [showRestItems , setShowRestItems] = useState(false)
 
-
 	const RestItemsHandeler = (e) => {
 		e.preventDefault();
 		setShowRestItems(true)
 	}
 
+
+	const AuctionDate = new Date('Fri Apr 29 2022 16:13:00');
+
+	const {days , hours , minutes , seconds } = useTimer(AuctionDate)
+
 	const getCurrentAuctions = (Items , animate) => {
 		return(
+
 			Items.map((item , idx) => (
 				<Col key={idx}>
 					<Card className= {` mb-3 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
@@ -61,9 +66,10 @@ const CurrentAuctionsContent = () => {
 						<Card.Img variant="top" src={item['ItemImageSrc']}/>
 						<div className={classes.CardItemCategory}> {item['ItemCategory']} </div>
 						<div className={classes.CardAuctionDetails}>
-							<span> 5 h</span>
-							<span> 3 m</span>
-							<span> 2 s</span>
+							<span> {days} Days </span>
+							<span> {hours} h</span>
+							<span> {minutes} m</span>
+							<span> {seconds} s</span>
 						</div>
 
 						<Card.Body>
