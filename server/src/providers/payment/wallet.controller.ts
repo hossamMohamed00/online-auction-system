@@ -12,14 +12,16 @@ export class StripeController {
 	constructor(private readonly walletService: WalletService) {}
 
 	@Post('charge')
-	async createCharge(
+	createCharge(
 		@Body() chargeWalletDto: ChargeWalletDto,
 		@GetCurrentUserData('_id') userId: string,
+		@GetCurrentUserData('email') userEmail: string,
 	) {
-		await this.walletService.chargeWallet(
+		return this.walletService.chargeWallet(
 			chargeWalletDto.amount,
 			chargeWalletDto.paymentMethodId,
 			userId,
+			userEmail,
 		);
 	}
 }

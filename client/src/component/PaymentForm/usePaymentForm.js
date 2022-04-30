@@ -32,18 +32,23 @@ const usePaymentForm = () => {
 
 		console.log('Start Charge');
 
-		fetch(`${process.env.REACT_APP_API_URL}/wallet/charge`, {
-			method: 'POST',
-			body: JSON.stringify({
-				paymentMethodId,
-				amount: amountToCharge,
-			}),
-			credentials: 'include',
-			headers: {
-				Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjY4YzY3N2NiYjdiNDEzZTEyMjQ5YmMiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MTExOTc1MCwiZXhwIjoxMDY1MTExOTc1MH0.JDRqtQCY03dhjltd-p7snit_AJvYAH9PustUKK2euQA`,
-				'Content-Type': 'application/json',
+		const result = await fetch(
+			`${process.env.REACT_APP_API_URL}/wallet/charge`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					paymentMethodId,
+					amount: amountToCharge,
+				}),
+				credentials: 'include',
+				headers: {
+					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjY4YzY3N2NiYjdiNDEzZTEyMjQ5YmMiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MTM0NjgxMywiZXhwIjoxMDY1MTM0NjgxM30.fPJGDa-kJz6G13ZnLMK7Iz224tppgQ5rpPjOVKs_JCc`,
+					'Content-Type': 'application/json',
+				},
 			},
-		});
+		);
+
+		console.log(result.ok);
 	};
 
 	return {

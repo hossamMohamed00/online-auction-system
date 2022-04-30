@@ -49,13 +49,17 @@ export default class WalletService {
 		amount: number,
 		paymentMethodId: string,
 		stripCustomerId: string,
+		customerEmail: string,
 	) {
 		// Create new charge for the user and return a PaymentIntent object.
 		return this.stripe.paymentIntents.create({
 			amount,
 			customer: stripCustomerId,
 			payment_method: paymentMethodId,
+			payment_method_types: ['card'],
 			currency: this.stripeConfigService.stripeCurrency,
+			description: 'Charge user wallet with ' + amount,
+			receipt_email: customerEmail, // Email address that the receipt for the resulting payment will be sent to.
 			confirm: true, // flag is set to true to indicate that we want to confirm the payment immediately
 		});
 	}

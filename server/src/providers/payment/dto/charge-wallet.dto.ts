@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, Min, Max } from 'class-validator';
 
 export class ChargeWalletDto {
 	@IsString()
@@ -6,6 +6,7 @@ export class ChargeWalletDto {
 	paymentMethodId: string;
 
 	@IsNumber()
+	@Min(100)
 	amount: number;
 }
 
