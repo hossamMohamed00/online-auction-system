@@ -1,0 +1,81 @@
+.ViewCurrentAuction{height: 100vh!important	}
+
+.ItemImage{
+	color: white;
+	margin: auto;
+}
+
+.ItemImage > img{
+	width:95%;
+	margin: 5%;
+
+	margin-left: 2%;
+	border-radius: 10px;
+	opacity: 0.8;
+}
+
+.Auction{
+	height: 100%;
+	border-left: 0.5px solid #3d3b3b96;
+	padding-top: 0;
+	padding-left: 3%;
+}
+
+.AuctionHeader{
+	display: flex;
+	max-width: 90%;
+	border-bottom: 1px solid #34343496;
+	margin-bottom: 20px;
+}
+.AuctionHeader > button {
+	font-size: 15px;
+	margin: 2px;
+	margin-bottom: 0;
+	color: var(--paragaph-color);
+	cursor: pointer;
+	transition: all 0.5;
+	padding: 5px 15px !important;
+
+}
+
+.AuctionHeader > button:first-of-type{
+	margin-left: 0;
+}
+
+.AuctionHeader > button:hover , .ActiveLink{
+	background-color: var(--overlay-dark);
+	color: white!important;
+	border-bottom-color: white;
+	border-bottom-left-radius: 20px solid white!important;
+	border-bottom-right-radius: 20px solid white!important;
+}
+.AuctionHeader > button:focus{
+	box-shadow: none;
+}
+
+
+
+
+/* styles in small and extra small */
+
+@media (max-width: 768px) {
+	.ItemImage > img{
+		width: 85%;
+		margin-left: calc((100% - 85%) / 2)
+	}
+	.Auction{
+		border-left: 0;
+	}
+}
+
+
+@media (min-width: 769px) and (max-width:992px) {
+	.ItemImage > img{
+		width: 80%;
+    margin-left: 10%;
+    margin-bottom: 2%;
+	}
+	.Auction{
+		border-left: 0;
+	}
+}

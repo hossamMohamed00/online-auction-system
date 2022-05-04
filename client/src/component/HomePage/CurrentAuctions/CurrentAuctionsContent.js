@@ -10,27 +10,32 @@ import itemImage3 from '../../../assets/pexels-antony-trivet-9897933.jpg'
 
 import classes from './CurrentAuctions.module.css'
 import useTimer from '../../../CustomHooks/useTimer';
+import { Link , useLocation } from 'react-router-dom';
 
 
 const CurrentAuctionsItems = [
-	{ 'ItemImageSrc' 			: itemImage1 ,
+	{ 'id'							: Math.random(),
+		'ItemImageSrc' 		: itemImage1 ,
 		'ItemName'				: 'Labtop',
 		'ItemCategory' 		: 'Labtop ',
 		'ItemDescription' : 'IPhone description '
 	},
-	{ 'ItemImageSrc' 			: itemImage2 ,
+	{ 'id'							: Math.random() ,
+		'ItemImageSrc' 		: itemImage2 ,
 		'ItemName'				: 'IPhone',
 		'ItemCategory' 		: 'Screens ',
 
 		'ItemDescription' : 'IPhone description '
 	},
-	{ 'ItemImageSrc' 			: itemImage3 ,
+	{ 'id'							: Math.random() ,
+		'ItemImageSrc' 		: itemImage3 ,
 		'ItemName'				: 'Watch',
 		'ItemCategory' 		: 'Watches ',
 
 		'ItemDescription' : 'Watch description '
 	},
-	{ 'ItemImageSrc' 			: itemImage3 ,
+	{'id'							: Math.random() ,
+	'ItemImageSrc' 		: itemImage3 ,
 	'ItemName'				: 'Watch',
 	'ItemCategory' 		: 'Watches ',
 
@@ -40,6 +45,8 @@ const CurrentAuctionsItems = [
 
 
 const CurrentAuctionsContent = () => {
+
+	const location = useLocation()
 
 	const FirstThreeItems =  CurrentAuctionsItems.slice(0,3)
 	const RestItems 			=  CurrentAuctionsItems.slice(3)
@@ -76,7 +83,8 @@ const CurrentAuctionsContent = () => {
 							<Card.Title className='fw-bold'> {item['ItemName']} </Card.Title>
 							<Card.Text className={classes.CardItemDesc}> {item['ItemDescription']} </Card.Text>
 
-							<button className={`${classes.CardFooter} btn col-6   `}> Place A Bid </button>
+							<Link className={`${classes.CardFooter} btn col-6  `} to = {`${location.pathname}/auctions/${item.id}`} > Place A Bid </Link>
+
 						</Card.Body>
 					</Card>
 				</Col>

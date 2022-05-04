@@ -13,6 +13,8 @@ import HomePage from './Pages/HomePage';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';
+import ViewCurrentAuction from './component/Auctions/ViewCurrentAuction/ViewCurrentAuction';
+import PageNotFound from './Pages/PageNotFound';
 
 
 function App() {
@@ -20,8 +22,10 @@ function App() {
 		<React.Fragment>
 
 			<Routes>
-				<Route path='/home-page' element={<HomePage/>} />
+				<Route path='/home-page' element={<HomePage/>}/>
 				<Route path='/' element={<Navigate to="/home-page" /> } />
+
+				<Route path='/home-page/auctions/:id' element={<ViewCurrentAuction/>} exact/>
 
 				<Route path='/register' element={<Register/>} />
 				<Route path='/login' element={<LoginPage/>} />
@@ -29,6 +33,9 @@ function App() {
 				<Route path='/how-bid' element={<HowBidPage/>} />
 				<Route path='/about-us' element={<AboutUsPage/>} />
 				<Route path='/contact-us' element={<ContactUsPage/>} />
+
+
+				<Route path="*" element={<PageNotFound />} />
 
 			</Routes>
 

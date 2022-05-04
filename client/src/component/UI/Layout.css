@@ -17,11 +17,11 @@
 *{
 	font-family: 'Amiri', serif;
 	box-sizing: border-box;
-
-
 }
 
-
+body , html {
+	background-color: var(--dark-color);
+}
 
 /*start animation */
 .animation{

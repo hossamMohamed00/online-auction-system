@@ -9,17 +9,17 @@ import Categories from "../Categories/Categories";
 const activeLink = navData => `${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `
 
 const Navbar = ()=> {
-	const [isShowanNavContent , setIsShowanNavContent] = useState(false)
-	const [isShowanCategoriesContent , setIsShowanCategoriesContent] = useState(false)
+	const [isShownNavContent , setisShownNavContent] = useState(false)
+	const [isShownCategoriesContent , setisShownCategoriesContent] = useState(false)
 
 	const showNavContentHandeler = () => {
-		setIsShowanNavContent((prevState)=>!prevState )
+		setisShownNavContent((prevState)=>!prevState )
 	}
 
 	const showCategoriesContentHandeler = (e) => {
 		console.log("yes")
 		e.preventDefault()
-		setIsShowanCategoriesContent((prevState)=>!prevState )
+		setisShownCategoriesContent((prevState)=>!prevState )
 	}
 
 	return (
@@ -31,7 +31,7 @@ const Navbar = ()=> {
 					onClick = {showNavContentHandeler}
 				/>
 
-				<div className={`${classes.navLinks} d-md-flex pt-1 ${isShowanNavContent ? 'd-flex' : 'd-xs-none'} `}>
+				<div className={`${classes.navLinks} d-md-flex pt-1 ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
 					<NavLink to='/home-page' className= {activeLink} > Home Page </NavLink>
 					<NavLink to='/about-us' className= {activeLink} > About Us </NavLink>
 					<NavLink to='/how-bid' className= {activeLink} > How Bid </NavLink>
@@ -41,9 +41,9 @@ const Navbar = ()=> {
 					 onClick = {showCategoriesContentHandeler}
 					>
 						Categories
-						{!isShowanCategoriesContent && <FontAwesomeIcon icon={faAnglesDown} className="px-2"/>}
-						{isShowanCategoriesContent && <FontAwesomeIcon icon={faAnglesUp} className="px-2"/>}
-						{isShowanCategoriesContent && <Categories/> }
+						{!isShownCategoriesContent && <FontAwesomeIcon icon={faAnglesDown} className="px-2"/>}
+						{isShownCategoriesContent && <FontAwesomeIcon icon={faAnglesUp} className="px-2"/>}
+						{isShownCategoriesContent && <Categories/> }
 					</div>
 
 					<NavLink to='/register' className= {`fw-bold ${classes.navLink} ${classes.navLinkRegister } `}> Register </NavLink>

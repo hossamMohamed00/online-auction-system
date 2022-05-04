@@ -1,0 +1,39 @@
+
+
+.CreatorName , .CategoryName{	color: var(--paragaph-color );}
+.ItemsDetails > p , .MinimumBidValue , .AuctionDate{
+	color : #e9d8a6!important;
+}
+
+/* start timer style  */
+.timer{
+	display: flex;
+	justify-content: center;
+	margin-top: 2%;
+}
+
+.timer > span {
+	color: 	white;
+	border-radius: 5px;
+	padding: 5px ;
+	text-align: center;
+	cursor: pointer;
+}
+
+.hrRight{border-right: 1.7px solid var(--paragaph-color ); margin-top: -24px; opacity: 0.25;}
+.btnPlaceBid{
+	background-color: #ae2012;
+	color: white;
+	margin-top:25px;
+	font-size: 20px;
+	transition: all 0.5s;
+	box-shadow: none!important;
+}
+
+.btnPlaceBid:hover{
+	background-color: #e9d8a6;
+	color: #ae2012;
+	box-shadow: none!important;
+}
+.btnPlaceBid:focus{	box-shadow: none!important;
+}

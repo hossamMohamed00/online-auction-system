@@ -1,0 +1,40 @@
+.Col {
+	height: 100vh!important;
+}
+.PageNotFoundHeading{
+	color: #a9aaa7!important;
+}
+.OOPs{
+	font-size: 90px;
+	color: #a74035;
+}
+
+
+.BackHomeLink > h4{
+	text-decoration: none;
+	background-color: #a74035;
+	margin-top: 25px !important;
+	padding: 5px;
+	border-radius: 25px;
+	width: 50%;
+	margin: 0 auto;
+	transition: all 0.5;
+
+}
+
+.BackHomeLink > h4:hover{
+	background-color: #a9aaa7;
+	color: #333;
+}
+
+@media (max-width: 992px) {
+	.Col {
+		height: 50vh!important;
+		margin-bottom: 15%;
+	}
+
+	.BackHomeLink > h4{
+		width: 40%;
+	}
+
+}
