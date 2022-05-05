@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
 import useTimer from '../../../CustomHooks/useTimer';
-import BiddingModal from './BiddingForm/BiddingModal';
+import AuctionFooter from './AuctionFooter';
 
 import classes from './AuctionDetails.module.css'
 
 const AuctionDetails = () => {
-
-	const [modalShow, setModalShow] = useState(false);
 
 	const AuctionDate = new Date('Tue May 03 2022 24:00:00');
 	const {hours , minutes , seconds } = useTimer(AuctionDate)
@@ -35,9 +33,9 @@ const AuctionDetails = () => {
 
 			<hr className='text-light  my-4 '></hr>
 
-			<div className='d-flex justify-content-around w-100 text-center'>
+			<div className='d-flex justify-content-between w-100 text-center'>
 				<div>
-					<h6 className='fw-bold text-light'> Minimum Bid </h6>
+					<h6 className='fw-bold text-light px-3'> Minimum Bid </h6>
 						<span className={`ps-2 fs-6 ${classes.MinimumBidValue}`}> 1500 $ </span>
 				</div>
 				<div className={classes.hrRight}></div>
@@ -48,13 +46,7 @@ const AuctionDetails = () => {
 
 			</div>
 
-			<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}> Place on Bid</button>
-
-			<BiddingModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-
+			<AuctionFooter/>
 		</div>
 	);
 }

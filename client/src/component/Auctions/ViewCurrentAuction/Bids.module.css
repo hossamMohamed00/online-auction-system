@@ -1,0 +1,27 @@
+.Bids{
+	width: 100%;
+	margin-top: -5px;
+	max-height: 50vh!important;
+	overflow-y: scroll;
+	padding: 10px;
+
+	border: 0!important;
+}
+
+
+.Bids::-webkit-scrollbar-thumb {
+  background-color: #e9d8a6!important;
+}
+.BidsContent{
+	background-color: #111111!important;
+}
+
+.BidsHeader{
+	background-color: #e9d8a6!important;
+}
+
+
+
+@media (max-width:992px){
+	.Bids {max-height: 30vh!important}
+}

@@ -1,11 +1,9 @@
-
-
 .CreatorName , .CategoryName{	color: var(--paragaph-color );}
 .ItemsDetails > p , .MinimumBidValue , .AuctionDate{
-	color : #e9d8a6!important;
+	color : #d7cdb2!important;
 }
 
-/* start timer style  */
+/* start timer style */
 .timer{
 	display: flex;
 	justify-content: center;
@@ -24,7 +22,7 @@
 .btnPlaceBid{
 	background-color: #ae2012;
 	color: white;
-	margin-top:25px;
+	margin-top:35px;
 	font-size: 20px;
 	transition: all 0.5s;
 	box-shadow: none!important;

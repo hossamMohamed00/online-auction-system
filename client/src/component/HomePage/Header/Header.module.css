@@ -60,6 +60,9 @@
 	border-bottom-left-radius: .25rem;
 	border-bottom-right-radius: .25rem;
 }
+.SearchResult::-webkit-scrollbar-track { background: white}
+.SearchResult::-webkit-scrollbar-thumb  { border-color: white}
+
 
 .SearchResult > p{
 	padding: 0;

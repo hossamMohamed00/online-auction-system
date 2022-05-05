@@ -32,8 +32,12 @@ function AucitonHeader() {
 			<h1 className='py-4'> Labtop </h1>
 			<div className={classes.AuctionHeader}>
 				<button className={`btn ${isShownDetails ? classes.ActiveLink : ''}` } onClick={btnDetailsHandeler}> Details </button>
-				<button className={`btn ${isShownBids ? classes.ActiveLink : ''}` } onClick={btnBidsHandeler} >Bids</button>
-				<button className={`btn ${isShownBidders ? classes.ActiveLink : ''}` } onClick={btnBiddersHandeler} >Bidders</button>
+				<button className={`btn ${isShownBids ? classes.ActiveLink : ''}` } onClick={btnBidsHandeler} >
+					Bids
+				</button>
+				<button className={`btn ${isShownBidders ? classes.ActiveLink : ''}` } onClick={btnBiddersHandeler} >
+					Bidders
+				</button>
 			</div>
 			{isShownDetails && <AuctionDetails/>}
 			{isShownBids && <Bids/> }
