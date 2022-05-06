@@ -6,8 +6,8 @@ import { AuthDataActions } from '../../store/slices/RegisterSlices/AuthData';
 import { Login } from '../../Api/Auth';
 import useHttp from '../../CustomHooks/useHttp';
 
-import Input from '../Register/UI/Input/input';
-import Card from '../Register/UI/Card/Card';
+import Input from '../UI/Input/input';
+import Card from '../UI/Card/Card';
 import classes from './loginForm.module.css';
 
 //images
