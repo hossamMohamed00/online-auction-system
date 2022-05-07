@@ -4,6 +4,7 @@ import {
 	IsMongoId,
 	IsNotEmpty,
 	IsNumber,
+	IsNumberString,
 	IsString,
 	Min,
 	ValidateNested,
@@ -23,8 +24,7 @@ export class CreateAuctionDto {
 	item: CreateItemDto;
 
 	@IsNotEmpty()
-	@IsNumber()
-	@Min(0)
+	@IsNumberString()
 	basePrice: number;
 
 	@IsDate()

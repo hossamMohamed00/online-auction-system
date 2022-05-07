@@ -5,6 +5,12 @@ import {
 	IsString,
 	MinLength,
 } from 'class-validator';
+import {
+	HasMimeType,
+	IsFile,
+	MaxFileSize,
+	MemoryStoredFile,
+} from 'nestjs-form-data';
 
 import { ItemStatus } from '../enums/item-status.enum';
 export class CreateItemDto {
@@ -36,4 +42,11 @@ export class CreateItemDto {
 	@IsString()
 	@IsOptional()
 	investigationLocation?: string; // Location on map
+
+	@IsNotEmpty({ message: 'Please provide valid item image 📷' })
+	@IsFile()
+	@MaxFileSize(1e6)
+	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
+	// image: MemoryStoredFile;
+	image: any;
 }

@@ -26,4 +26,7 @@ export class ItemDto {
 
 	@Expose()
 	investigationLocation?: string; // Location on map
+
+	@Expose()
+	imageUrl: string;
 }

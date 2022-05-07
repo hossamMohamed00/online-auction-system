@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { CreateItemDto } from './dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item, ItemDocument } from './schema/item.schema';
@@ -9,6 +10,7 @@ import { Item, ItemDocument } from './schema/item.schema';
 export class ItemService {
 	constructor(
 		@InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/**
@@ -17,8 +19,24 @@ export class ItemService {
 	 * @returns Created item instance
 	 */
 	async create(itemData: CreateItemDto) {
+		//* First of all, save the image to cloudinary
+		let imageUrl = '';
+		try {
+			// Upload image to cloudinary
+			const savedImage = await this.cloudinary.uploadImage(itemData.image);
+
+			if (savedImage.url) {
+				imageUrl = savedImage.url;
+			}
+		} catch (error) {
+			throw new BadRequestException(
+				'Cannot upload image to cloudinary, ',
+				error,
+			);
+		}
+
 		//* Create new item
-		const createdItem = new this.itemModel(itemData);
+		const createdItem = new this.itemModel({ ...itemData, imageUrl });
 
 		//* Save the item
 		await createdItem.save();

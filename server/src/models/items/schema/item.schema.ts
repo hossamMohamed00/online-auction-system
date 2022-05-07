@@ -28,6 +28,9 @@ export class Item {
 
 	@Prop()
 	investigationLocation?: string; // Location on map
+
+	@Prop({ required: true })
+	imageUrl: string;
 }
 
 export const ItemSchema = SchemaFactory.createForClass(Item);

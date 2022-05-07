@@ -13,18 +13,24 @@ export class CloudinaryService {
 	 */
 	async uploadImage(
 		file: Express.Multer.File,
-	): Promise<UploadApiResponse | UploadApiErrorResponse> {
+	): Promise<Partial<UploadApiResponse> | Partial<UploadApiErrorResponse>> {
 		//* Try to upload the file and resolve the response if success or reject in case of error
 		return new Promise((resolve, reject) => {
 			//* Upload the file to cloudinary
 			const upload = v2.uploader.upload_stream((error, result) => {
 				if (error) {
 					this.logger.warn('Image upload failed 😪');
-					return reject(error);
+					return reject({
+						errorCode: error.http_code,
+						errorMessage: error.message,
+					});
 				}
 
 				this.logger.log('Image upload success 😃');
-				resolve(result);
+				resolve({
+					url: result.url,
+					id: result.public_id,
+				});
 			});
 
 			//? convert the file from buffer to a readable stream
