@@ -40,9 +40,22 @@ export class SellerService {
 	async listAuctions(seller: SellerDocument) {
 		/*
 		 * Populate 'auctions' property to the seller
+		 * Also populate item and category documents
 		 */
-		this.logger.log('Populating auctions on seller...');
-		await seller.populate('auctions');
+		this.logger.log(
+			'Populating auctions on seller and nested item and category...',
+		);
+		await seller.populate({
+			path: 'auctions',
+			populate: [
+				{
+					path: 'item',
+				},
+				{
+					path: 'category',
+				},
+			],
+		});
 
 		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error

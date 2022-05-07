@@ -30,7 +30,7 @@ export class ItemDto {
 	@Expose()
 	@Transform(({ obj }) => {
 		//* Just return the url of the image
-		return obj.image.url;
+		return obj.image?.url;
 	})
 	image: string;
 }

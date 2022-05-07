@@ -225,6 +225,7 @@ export class AuctionsService {
 	 * @returns Deleted auction instance
 	 */
 	async remove(auctionId: string, sellerId: string) {
+		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
 		const auction: AuctionDocument = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,

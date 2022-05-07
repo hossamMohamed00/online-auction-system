@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
@@ -77,8 +81,13 @@ export class ItemService {
 	 * @returns true if item was removed, false otherwise
 	 */
 	async remove(_id: string): Promise<boolean> {
-		const removedItem = await this.itemModel.findByIdAndRemove(_id);
-		if (!removedItem) return false;
+		const item = await this.itemModel.findOne({ _id });
+		if (!item)
+			throw new NotFoundException('Auction not found for that seller❌');
+
+		//* Remove the auction using this approach to fire the pre hook event
+		await item.remove();
+
 		return true;
 	}
 }

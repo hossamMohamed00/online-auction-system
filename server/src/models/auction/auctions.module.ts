@@ -21,7 +21,7 @@ import { AuctionsController } from './auctions.controller';
 				name: Auction.name,
 				imports: [ItemModule],
 				useFactory: (itemService: ItemService) => {
-					const logger: Logger = new Logger('Auction Mongoose Module');
+					const logger: Logger = new Logger('Auction Module');
 					const schema = AuctionSchema;
 					//? Add the auto-populate plugin
 					schema.plugin(require('mongoose-autopopulate'));
@@ -33,7 +33,7 @@ import { AuctionsController } from './auctions.controller';
 						//* Remove the item by id
 						//@ts-ignore
 						await itemService.remove(this.item._id);
-						logger.log('Remove the item related to that auction...🧺');
+						logger.log('Removing the item related to that auction...🧺');
 					});
 
 					return schema;
