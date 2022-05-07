@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './dropdown.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import {Link} from'react-router-dom'
 
 const Dropdown = props => {
 	console.log({ data: props.list });
@@ -36,9 +37,9 @@ const Dropdown = props => {
 						<div className={classes.linkIcon}>
 							<FontAwesomeIcon icon={item.icon ? item.icon : ''} />
 						</div>
-						<a class={`card card-body fw-bold ${classes.listLink}`}>
+						<Link to={item.path ? item.path :''} class={`card card-body fw-bold ${classes.listLink}`}>
 							{item.title}
-						</a>
+						</Link>
 					</div>
 				);
 			})}
