@@ -15,6 +15,8 @@ import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';
 import ViewCurrentAuction from './component/Auctions/ViewCurrentAuction/ViewCurrentAuction';
 import PageNotFound from './Pages/PageNotFound';
+import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
+import ViewAllAuctions from './component/Auctions/ViewAllAuctions/ViewAllAuctions';
 
 
 function App() {
@@ -25,7 +27,9 @@ function App() {
 				<Route path='/home-page' element={<HomePage/>}/>
 				<Route path='/' element={<Navigate to="/home-page" /> } />
 
-				<Route path='/home-page/auctions/:id' element={<ViewCurrentAuction/>} exact/>
+				<Route path='/auctions' element={<ViewAllAuctions/>} exact/>
+				<Route path='/auctions/:id' element={<ViewCurrentAuction/>} exact/>
+				<Route path='/categories' element={<ViewCategoryAuctions/>} />
 
 				<Route path='/register' element={<Register/>} />
 				<Route path='/login' element={<LoginPage/>} />

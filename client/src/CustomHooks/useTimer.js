@@ -11,7 +11,6 @@ const useTimer = (futureDate) => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 		if(!isTimeUp){
-			console.log("timer")
 			setNow(new Date());
 		}}, 1000);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import useTimer from '../../../CustomHooks/useTimer';
 import AuctionFooter from './AuctionFooter';
@@ -33,7 +33,7 @@ const AuctionDetails = () => {
 
 			<hr className='text-light  my-4 '></hr>
 
-			<div className='d-flex justify-content-between w-100 text-center'>
+			<div className='d-flex justify-content-evenly w-100 text-center'>
 				<div>
 					<h6 className='fw-bold text-light px-3'> Minimum Bid </h6>
 						<span className={`ps-2 fs-6 ${classes.MinimumBidValue}`}> 1500 $ </span>

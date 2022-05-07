@@ -27,7 +27,7 @@
 	text-align: center;
 }
 .CardAuctionDetails{
-	bottom: 112px ;
+	bottom: 120px ;
 	position: absolute;
 }
 .CardAuctionDetails > span{
@@ -42,6 +42,10 @@
 	color: #889090;
 	font-family: 'sans-serif'!important;
 	font-size: 12px;
+}
+.MinmumBid{
+	color: var(--alert-color);
+	font-size: 15px!important;
 }
 .CardFooter{
 	background-color: white!important;

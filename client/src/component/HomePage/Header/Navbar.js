@@ -33,7 +33,7 @@ const Navbar = ()=> {
 
 				<div className={`${classes.navLinks} d-md-flex pt-1 ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
 					<NavLink to='/home-page' className= {activeLink} > Home Page </NavLink>
-					<NavLink to='/about-us' className= {activeLink} > About Us </NavLink>
+					<NavLink to='/auctions' className= {activeLink} > Auctions </NavLink>
 					<NavLink to='/how-bid' className= {activeLink} > How Bid </NavLink>
 					<NavLink to='/contact-us' className= {activeLink} > Contact Us </NavLink>
 
