@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { CreateItemDto } from './dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { ImageType } from './schema/image.type';
 import { Item, ItemDocument } from './schema/item.schema';
 
 @Injectable()
@@ -20,15 +21,19 @@ export class ItemService {
 	 */
 	async create(itemData: CreateItemDto) {
 		//* First of all, save the image to cloudinary
-		let imageUrl = '';
+		let image: ImageType = new ImageType();
 		try {
 			// Upload image to cloudinary
 			const savedImage = await this.cloudinary.uploadImage(itemData.image);
 
+			//* If upload success, save image url and public id to db
 			if (savedImage.url) {
-				imageUrl = savedImage.url;
+				image.url = savedImage.url;
+				image.publicId = savedImage.public_id;
 			}
 		} catch (error) {
+			console.log(error);
+
 			throw new BadRequestException(
 				'Cannot upload image to cloudinary, ',
 				error,
@@ -36,7 +41,7 @@ export class ItemService {
 		}
 
 		//* Create new item
-		const createdItem = new this.itemModel({ ...itemData, imageUrl });
+		const createdItem = new this.itemModel({ ...itemData, image });
 
 		//* Save the item
 		await createdItem.save();

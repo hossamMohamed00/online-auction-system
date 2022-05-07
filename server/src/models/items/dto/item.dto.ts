@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { ExposeObjectId } from 'src/common/decorators';
 import { ItemStatus } from '../enums/item-status.enum';
 export class ItemDto {
@@ -28,5 +28,9 @@ export class ItemDto {
 	investigationLocation?: string; // Location on map
 
 	@Expose()
-	imageUrl: string;
+	@Transform(({ obj }) => {
+		//* Just return the url of the image
+		return obj.image.url;
+	})
+	image: string;
 }
