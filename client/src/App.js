@@ -13,10 +13,9 @@ import HomePage from './Pages/HomePage';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';
-import ViewCurrentAuction from './component/Auctions/ViewCurrentAuction/ViewCurrentAuction';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
-import ViewAllAuctions from './component/Auctions/ViewAllAuctions/ViewAllAuctions';
+import ViewAuctions from './Pages/ViewAuctions';
 
 
 function App() {
@@ -27,16 +26,16 @@ function App() {
 				<Route path='/home-page' element={<HomePage/>}/>
 				<Route path='/' element={<Navigate to="/home-page" /> } />
 
-				<Route path='/auctions' element={<ViewAllAuctions/>} exact/>
-				<Route path='/auctions/:id' element={<ViewCurrentAuction/>} exact/>
-				<Route path='/categories' element={<ViewCategoryAuctions/>} />
-
 				<Route path='/register' element={<Register/>} />
 				<Route path='/login' element={<LoginPage/>} />
 
 				<Route path='/how-bid' element={<HowBidPage/>} />
 				<Route path='/about-us' element={<AboutUsPage/>} />
 				<Route path='/contact-us' element={<ContactUsPage/>} />
+
+				<Route path='/auctions' element={<ViewAuctions/>} exact/>
+				<Route path='/categories' element={<ViewCategoryAuctions/>} />
+
 
 
 				<Route path="*" element={<PageNotFound />} />

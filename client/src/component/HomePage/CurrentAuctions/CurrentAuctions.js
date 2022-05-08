@@ -21,18 +21,11 @@ const CurrentAuctions = () => {
 		sendRequest()
 	} , [sendRequest])
 
-	useEffect(()=>{
-		if(status === 'compelte'){
-			console.log(data)
-		}
-	} , [status])
-
-
 	return (
 		<Fragment>
 			<div className={`${classes.CurrentAuctions} container`}>
-				<h2 className="text-light fw-bold px-3 pt-3"> Current Auctions  </h2>
-				{data  && <ViewAuctionDetails AuctionData={FirstThreeItems} /> }
+				<h2 className="text-light fw-bold px-3 pt-4 text-center"> Current Auctions  </h2>
+				{data && status==='completed'  && <ViewAuctionDetails AuctionData={FirstThreeItems} /> }
 				{data && data.length > 3 &&
 					<div className='w-100'>
 						<Link className= {` text-light text-decoration-none ${classes.btnGetAuctions}`} to="/">

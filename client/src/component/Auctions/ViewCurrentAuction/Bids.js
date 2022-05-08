@@ -10,7 +10,7 @@ import scollbarStyle from '../../UI/ScrollBar.module.css'
 
 function Bids() {
 	return (
-		<>
+
 			<div className={`${scollbarStyle.scollbar} ${classes.Bids} `}>
 
 				<div className={`${classes.BidsContent} toast d-block mb-3 w-100`} role="alert" >
@@ -61,9 +61,6 @@ function Bids() {
 
 				</div>
 			</div>
-
-		<AuctionFooter/>
-		</>
 	);
 }
 

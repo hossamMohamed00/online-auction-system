@@ -33,18 +33,20 @@ const ViewAuctionDetails = (props) => {
 
 						{/* Card item category */}
 						<Card.Img variant="top" src={itemImage1}/>
-						<div className={classes.CardItemCategory}> {item['ItemCategory']} </div>
+						<div className={classes.CardItemCategory}> {item.category.name} </div>
 						<div className={classes.CardAuctionDetails}>
 							{getDate(new Date(item.endDate))}
 						</div>
 
 						<Card.Body>
-							<Card.Title className='fw-bold'> {item['title']} </Card.Title>
-							<Card.Text className={classes.CardItemDesc}> {item['ItemDescription']} </Card.Text>
+							<Card.Title className='fw-bold fs-5'> {item['title']} </Card.Title>
+							<Card.Text className=''>
+								<p className={classes.Description} > {item['item']['shortDescription']} </p>
+								<p> Creator : {item.seller.name} </p>
+								<p className={classes.MinmumBid}> Minimum Bid Allowed: {item['minimumBidAllowed']} </p>
+							</Card.Text>
 
-							<Card.Text className={classes.MinmumBid}> Minimum Bid Allowed: {item['minimumBidAllowed']} </Card.Text>
-
-							<Link className={`${classes.CardFooter} btn col-6  `} to = {`/auctions/${item._id}`} > Place A Bid </Link>
+							<Link className={`${classes.CardFooter} btn col-6  `} to = {`/auctions?id=${item._id}`} >  View Details </Link>
 
 						</Card.Body>
 					</Card>

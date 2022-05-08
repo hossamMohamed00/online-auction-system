@@ -27,7 +27,7 @@
 	text-align: center;
 }
 .CardAuctionDetails{
-	bottom: 120px ;
+	bottom: 190px ;
 	position: absolute;
 }
 .CardAuctionDetails > span{
@@ -38,18 +38,18 @@
 }
 .CardAuctionDetails > span:first-of-type{margin-left: 0;}
 
-.CardItemDesc{
-	color: #889090;
-	font-family: 'sans-serif'!important;
-	font-size: 12px;
-}
+
 .MinmumBid{
-	color: var(--alert-color);
+	color: #ade8f4!important;
 	font-size: 15px!important;
 }
+.Description{
+	color: #cad2c5;
+
+}
 .CardFooter{
-	background-color: white!important;
-	color: var(--dark-color)!important;
+	background-color: #264653!important;
+	color: white!important;
 	border-radius: 15px;
 	position: absolute;
 	bottom: -15px;

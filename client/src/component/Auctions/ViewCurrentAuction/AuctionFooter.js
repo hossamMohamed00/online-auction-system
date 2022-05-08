@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BiddingModal from './BiddingForm/BiddingModal';
 
 
-import classes from './AuctionDetails.module.css'
+import classes from './ViewCurrentAuction.module.css'
 
 
 function AuctionFooter() {

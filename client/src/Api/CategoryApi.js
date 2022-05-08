@@ -11,7 +11,7 @@ export const getAllCategories = async () => {
 }
 
 export const getCategoryAuctions = async (id) => {
-  const response = await fetch(`${url}/${id}/auctions`);
+  const response = await fetch(`${url}/${id}/auctions?populate=true`);
   const data = await response.json()
   if (!response.ok) {
     throw new Error(data.message);
