@@ -1,8 +1,10 @@
 import React from 'react';
 
-import UsersLayout from './usersLayout/usersLayout'
+import UsersLayout from './usersLayout/TableLayout';
 
 const SellersPage = () => {
+	const columNames = ['name', 'email', 'phone', 'Role', 'Edit'];
+
 	const users = [
 		{
 			name: 'hossam',
@@ -30,7 +32,7 @@ const SellersPage = () => {
 		},
 	];
 
-	return <UsersLayout users={users} title="Sellers" />;
+	return <UsersLayout columNames={columNames} users={users} title="Sellers" />;
 };
 
 export default SellersPage;

@@ -1,0 +1,25 @@
+.usersTable {
+	border-collapse: unset;
+
+}
+td {
+	padding: 2% 0 0;
+}
+td a {
+	margin-left: 2%;
+}
+thead tr td {
+	border: none !important;
+}
+
+.editIcon {
+	background-color: #191c20 !important;
+}
+
+@media screen and (max-width:575.98px){
+
+	.usersTable{
+		font-size:10px ;
+	}
+
+}

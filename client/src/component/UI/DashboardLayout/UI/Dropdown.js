@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './dropdown.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import {Link} from'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Dropdown = props => {
 	console.log({ data: props.list });
@@ -22,7 +22,6 @@ const Dropdown = props => {
 				href={`#${props.id}`}
 				data-bs-toggle="collapse"
 				aria-expanded="true"
-
 			>
 				<span className={classes.name}>{props.username}</span>
 				<span className={classes.dropIcon}>
@@ -33,11 +32,14 @@ const Dropdown = props => {
 			{/* <!-- Collapsible Element HTML --> */}
 			{props.list.map(item => {
 				return (
-					<div class="collapse" id={props.id}>
+					<div className="collapse" id={props.id}>
 						<div className={classes.linkIcon}>
 							<FontAwesomeIcon icon={item.icon ? item.icon : ''} />
 						</div>
-						<Link to={item.path ? item.path :''} class={`card card-body fw-bold ${classes.listLink}`}>
+						<Link
+							to={item.path ? item.path : ''}
+							className={`card card-body fw-bold ${classes.listLink}`}
+						>
 							{item.title}
 						</Link>
 					</div>

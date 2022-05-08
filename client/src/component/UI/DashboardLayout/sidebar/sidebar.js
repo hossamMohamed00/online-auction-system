@@ -12,7 +12,7 @@ import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = props => {
-	const {Admin} = props.sidebarContent;
+	const { Admin } = props.sidebarContent;
 	console.log(Admin.admin.list);
 	return (
 		<React.Fragment>

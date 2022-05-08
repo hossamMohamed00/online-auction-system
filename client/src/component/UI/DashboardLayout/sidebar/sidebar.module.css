@@ -3,8 +3,9 @@
 	height: 100%;
 	background-color: #191c20;
 	margin-right: 10%;
-	overflow: auto;
-	/* position: fixed; */
+
+	/* overflow-y: auto; */
+
 	z-index: 10000;
 }
 .logo {
@@ -25,10 +26,9 @@
 	/* display: inline-block; */
 	margin-top: 2%;
 	width: 75%;
-
 }
 .adminName {
-	margin-top: 30%;
+	padding-top: 30%;
 	margin-left: 5%;
 	display: flex;
 	justify-content: space-evenly;
@@ -57,4 +57,10 @@
 .sidebar ul li a:focus,
 .sidebar ul li a:hover {
 	color: white;
+}
+
+@media screen and (max-width: 991px) {
+	.sidebar {
+		visibility: hidden;
+	}
 }

@@ -24,15 +24,19 @@ const Wrapper = props => {
 		setShowSideBar(!showSideBar);
 	};
 	return (
-		<div className={`container-fluid  ${classes.wrapper} `}>
+		<div className={`container-fluid   ${classes.wrapper}  `}>
 			<div className="row">
 				{showSideBar && (
-					<div className="col-lg-3 col-md-3 p-0 m-0 ">
+					<div
+						className={` ${
+							showSideBar ? classes.showSideBarSmallMedia : ''
+						} col-lg-3 col-md-3 p-0 m-0 `}
+					>
 						<Sidebar sidebarContent={sidebarContent} />
 					</div>
 				)}
 
-				<div className="col-lg col-md p-0 m-0">
+				<div className={`  col-lg col-md p-0 m-0`}>
 					<Header
 						toggleSidebar={toggleSidebar}
 						showSideBarValue={showSideBar}

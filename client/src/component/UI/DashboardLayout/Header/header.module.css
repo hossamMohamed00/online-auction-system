@@ -30,3 +30,12 @@
 .adminImg {
 	margin-left: 25px;
 }
+
+
+@media screen and (max-width: 991px){
+	.headerNav{
+		width: 100% !important;
+		left: 0!important;
+	}
+
+}
