@@ -6,7 +6,7 @@
 
 	padding-bottom: 20px;
 	position: absolute;
-	top:55.99px;
+	top:41.99px;
 	text-align: center;
 
 	border-bottom-right-radius: 10px;
@@ -42,13 +42,12 @@ li:hover{
 @media (max-width: 768px){
 	.Categories{
     width: 100%!important;
-    top: 45px;
+		height: 100%!important;
+    top: 0px;
     text-align: left;
     left: 0;
 		padding-top: 10px;
 		background-color: rgba(0, 0, 0, 1);
-
-
 	}
 }
 

@@ -14,7 +14,7 @@ const Categories = () => {
 	},[sendRequest])
 
 
-	const showAllCategories = status === 'completed' && (data || data.length > 0 )  && data.map(( category,index) => {
+	const showAllCategories =  !error && (status === 'completed') && (data || data.length > 0 )  && data.map(( category,index) => {
 		return(
 			<li key={index} >
 				<Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link>

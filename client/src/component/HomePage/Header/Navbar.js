@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { NavLink , Link} from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faAnglesDown , faAnglesUp , faBars} from '@fortawesome/free-solid-svg-icons'
+import {faArrowDown , faArrowUp , faBars} from '@fortawesome/free-solid-svg-icons'
 
 import classes from './Navbar.module.css'
 import Categories from "../Categories/Categories";
@@ -23,7 +24,7 @@ const Navbar = ()=> {
 	}
 
 	return (
-	<nav className= {`${classes.nav} navbar navbar-dark fixed-top px-1 `}>
+	<nav className= {`${classes.nav} navbar navbar-dark fixed-top px-1  `}>
 			<div className="container-fluid">
 				<Link className={` ${classes.navbarBrand} navbar-brand fw-bold `} to="/home-page">Online Aution</Link>
 
@@ -31,7 +32,7 @@ const Navbar = ()=> {
 					onClick = {showNavContentHandeler}
 				/>
 
-				<div className={`${classes.navLinks} d-md-flex pt-1 ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
+				<div className={`${classes.navLinks} d-md-flex pt-1 position-relative ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
 					<NavLink to='/home-page' className= {activeLink} > Home Page </NavLink>
 					<NavLink to='/auctions' className= {activeLink} > Auctions </NavLink>
 					<NavLink to='/how-bid' className= {activeLink} > How Bid </NavLink>
@@ -41,8 +42,8 @@ const Navbar = ()=> {
 					 onClick = {showCategoriesContentHandeler}
 					>
 						Categories
-						{!isShownCategoriesContent && <FontAwesomeIcon icon={faAnglesDown} className="px-2"/>}
-						{isShownCategoriesContent && <FontAwesomeIcon icon={faAnglesUp} className="px-2"/>}
+						{!isShownCategoriesContent && <FontAwesomeIcon icon={faArrowDown} className="px-2"/>}
+						{isShownCategoriesContent && <FontAwesomeIcon icon={faArrowUp} className="px-2"/>}
 						{isShownCategoriesContent && <Categories/> }
 					</div>
 

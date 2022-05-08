@@ -3,8 +3,6 @@ import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faUser} from '@fortawesome/free-solid-svg-icons'
 
-import AuctionFooter from './AuctionFooter';
-
 import 	classes from './Bids.module.css'
 import scollbarStyle from '../../UI/ScrollBar.module.css'
 
