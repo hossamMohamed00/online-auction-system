@@ -19,7 +19,7 @@ export class StartAuctionSchedulingService {
 	 * @param auctionId - Cron job name
 	 * @param startDate - start date
 	 */
-	addCronJob(auctionId: string, startDate: Date) {
+	addCronJobForStartAuction(auctionId: string, startDate: Date) {
 		const job = new CronJob(startDate, async () => {
 			//* Mark the auctions as started
 			const result = await this.auctionService.markAuctionAsStarted(auctionId);

@@ -74,11 +74,7 @@ export class AuctionsService {
 		//* Save the instance
 		await createdAuction.save();
 
-		this.logger.log(
-			'New auction created and it will start at: ' +
-				createAuctionDto.startDate.toLocaleString() +
-				'📅',
-		);
+		this.logger.log('New auction created and now waiting for approval ✔✔');
 
 		return createdAuction;
 	}
@@ -179,7 +175,7 @@ export class AuctionsService {
 		const newEndDate =
 			HandleDateService.getNewEndDateFromStartDate(auctionStartDate);
 
-		//? Find the auction by id and set the status to be Accepted and the new end date
+		//? Find the auction by id and set the status to be UpComing and the new end date
 		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
@@ -191,7 +187,7 @@ export class AuctionsService {
 			{ new: true },
 		);
 
-		//TODO: Schedule the auction to run in start date automatically
+		//* Schedule the auction to run in start date automatically
 		this.startAuctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
@@ -229,8 +225,30 @@ export class AuctionsService {
 	 * @param auctionId - Auction id
 	 */
 	async markAuctionAsStarted(auctionId: string) {
-		//TODO: Add logic here
-		this.logger.debug('Auction Started!!');
+		//? Find the auction by id and set the status to be OnGoing.
+		const startedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$set: {
+					status: AuctionStatus.OnGoing,
+				},
+			},
+			{ new: true },
+		);
+
+		if (!startedAuction) {
+			throw new BadRequestException(
+				'Unable to start auction, auction not found ❌',
+			);
+		}
+
+		this.logger.debug(
+			"Auction with title '" +
+				startedAuction.title +
+				"' started and open to accept bids!!",
+		);
+
+		return true;
 	}
 
 	/**
