@@ -184,7 +184,7 @@ export class AuctionsService {
 			auctionId,
 			{
 				$set: {
-					status: AuctionStatus.Accepted, // Update status to Accepted
+					status: AuctionStatus.UpComing, // Update status to up coming
 					endDate: newEndDate, // Update end date
 				},
 			},
@@ -192,7 +192,7 @@ export class AuctionsService {
 		);
 
 		//TODO: Schedule the auction to run in start date automatically
-		this.startAuctionSchedulingService.addCronJob(
+		this.startAuctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
 		);
