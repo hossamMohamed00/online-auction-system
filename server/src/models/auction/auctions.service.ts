@@ -20,6 +20,7 @@ import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class AuctionsService {
@@ -191,9 +192,9 @@ export class AuctionsService {
 		);
 
 		//TODO: Schedule the auction to run in start date automatically
-		this.startAuctionSchedulingService.addTimeout(
-			'start_auction',
-			HandleDateService.getDateAsMs(approvedAuction.startDate),
+		this.startAuctionSchedulingService.addCronJob(
+			approvedAuction._id,
+			approvedAuction.startDate,
 		);
 
 		//* Display log message
@@ -221,6 +222,15 @@ export class AuctionsService {
 		);
 
 		return rejectedAuction;
+	}
+
+	/**
+	 * Set the auction status to started(current auction)
+	 * @param auctionId - Auction id
+	 */
+	async markAuctionAsStarted(auctionId: string) {
+		//TODO: Add logic here
+		this.logger.debug('Auction Started!!');
 	}
 
 	/**

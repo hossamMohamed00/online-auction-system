@@ -52,6 +52,6 @@ export class HandleDateService {
 	 * @param date
 	 */
 	public static getDateAsMs(date: Date): number {
-		return moment(date).milliseconds();
+		return moment(date).valueOf();
 	}
 }

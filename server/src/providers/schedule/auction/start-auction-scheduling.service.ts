@@ -1,42 +1,57 @@
-import { Injectable, Logger } from '@nestjs/common';
-import {
-	Cron,
-	CronExpression,
-	Interval,
-	SchedulerRegistry,
-	Timeout,
-} from '@nestjs/schedule';
+import { Injectable, Inject, Logger, forwardRef } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import * as moment from 'moment';
+import { AuctionsService } from 'src/models/auction/auctions.service';
 
 @Injectable()
 export class StartAuctionSchedulingService {
-	constructor(private readonly schedulerRegistry: SchedulerRegistry) {}
-
 	private readonly logger = new Logger(StartAuctionSchedulingService.name);
 
-	// @Cron(moment().add(2, 'seconds').toDate())
-	@Timeout('start_auction', moment().milliseconds())
-	startAuction() {}
+	constructor(
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the tow services
+		private readonly auctionService: AuctionsService,
+		private readonly schedulerRegistry: SchedulerRegistry,
+	) {}
 
 	/**
-	 * Used to create new timeout for auction to start automatically
-	 * @param timeoutName - Timeout name
-	 * @param startDateInMs - start date in ms
+	 * Used to create new cron job for auction to start automatically
+	 * @param auctionId - Cron job name
+	 * @param startDate - start date
 	 */
-	addTimeout(timeoutName: string, startDateInMs: number) {
-		const callback = () => {
-			this.logger.warn(
-				`New timeout created and will executing after (${moment(
-					startDateInMs,
-				).toDate()})!`,
-			);
-		};
+	addCronJob(auctionId: string, startDate: Date) {
+		const job = new CronJob(startDate, async () => {
+			//* Mark the auctions as started
+			const result = await this.auctionService.markAuctionAsStarted(auctionId);
 
-		const timeout = setTimeout(callback, startDateInMs);
+			//TODO: Create Cron Job for auction end date
+		});
 
-		// Add the timeout to schedule registry
-		this.schedulerRegistry.addTimeout(timeoutName, timeout);
+		//* Add the timeout to schedule registry
+		this.schedulerRegistry.addCronJob(auctionId, job);
+		job.start();
+
+		this.logger.debug(
+			'New Cron Job added for start auction at ' + moment(startDate).format(),
+		);
+
+		this.getCrons();
+	}
+
+	/**
+	 * List all cron jobs
+	 */
+	getCrons() {
+		const jobs = this.schedulerRegistry.getCronJobs();
+		jobs.forEach((value, key, map) => {
+			let next;
+			try {
+				next = value.nextDates().toDate();
+			} catch (e) {
+				next = 'error: next fire date is in the past!';
+			}
+			this.logger.debug(`job: ${key} -> next: ${next}`);
+		});
 	}
 }
 
