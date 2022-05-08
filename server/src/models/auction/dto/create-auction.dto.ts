@@ -29,7 +29,7 @@ export class CreateAuctionDto {
 
 	@IsDate()
 	@Type(() => Date)
-	startDate: Date; //TODO: Ensure that the given start date is valid [Must be after today at least]
+	startDate: Date;
 
 	@IsMongoId()
 	category: ObjectId;

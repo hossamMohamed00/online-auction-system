@@ -39,11 +39,19 @@ export class HandleDateService {
 	 * @param startDate
 	 * @boolean true if valid, false otherwise
 	 */
-	static isValidAuctionStartDate(startDate: Date) {
+	public static isValidAuctionStartDate(startDate: Date) {
 		const dateAfter2Months = moment().add(
 			this.auctionSDValidDurationInMonths,
 			'months',
 		);
 		return moment(startDate).isBetween(undefined, dateAfter2Months); // moment(undefined) evaluates as moment()
+	}
+
+	/**
+	 * Return the given date in Ms
+	 * @param date
+	 */
+	public static getDateAsMs(date: Date): number {
+		return moment(date).milliseconds();
 	}
 }

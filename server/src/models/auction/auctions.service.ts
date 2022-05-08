@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -19,6 +18,8 @@ import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
 
 @Injectable()
 export class AuctionsService {
@@ -27,7 +28,7 @@ export class AuctionsService {
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
-		private readonly categoryService: CategoryService,
+		private startAuctionSchedulingService: StartAuctionSchedulingService,
 	) {}
 
 	private logger: Logger = new Logger('AuctionsService 👋🏻');
@@ -190,6 +191,10 @@ export class AuctionsService {
 		);
 
 		//TODO: Schedule the auction to run in start date automatically
+		this.startAuctionSchedulingService.addTimeout(
+			'start_auction',
+			HandleDateService.getDateAsMs(approvedAuction.startDate),
+		);
 
 		//* Display log message
 		this.logger.log(

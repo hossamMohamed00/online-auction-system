@@ -11,6 +11,7 @@ import { CategoryModule } from '../category/category.module';
 import { ItemService } from './../items/item.service';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionsController } from './auctions.controller';
+import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
 
 @Module({
 	imports: [
@@ -43,7 +44,7 @@ import { AuctionsController } from './auctions.controller';
 		]),
 	],
 	controllers: [AuctionsController],
-	providers: [AuctionValidationService, AuctionsService],
+	providers: [AuctionValidationService, AuctionsService, StartAuctionSchedulingService],
 	exports: [
 		AuctionsService,
 		MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),
