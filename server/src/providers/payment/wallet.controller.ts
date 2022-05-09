@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import WalletService from './wallet.service';
 import { Role } from 'src/models/users/shared-user/enums';
-import { ChargeWalletDto } from './dto';
+import { CreatePaymentIntent } from './dto';
 
 @ApiTags('Wallet')
 @Roles(Role.Seller, Role.Buyer)
@@ -11,15 +11,15 @@ import { ChargeWalletDto } from './dto';
 export class StripeController {
 	constructor(private readonly walletService: WalletService) {}
 
-	@Post('charge')
-	createCharge(
-		@Body() chargeWalletDto: ChargeWalletDto,
+	@Post('create-payment-intent')
+	createPaymentIntent(
+		@Body() createPaymentIntent: CreatePaymentIntent,
 		@GetCurrentUserData('_id') userId: string,
 		@GetCurrentUserData('email') userEmail: string,
 	) {
-		return this.walletService.chargeWallet(
-			chargeWalletDto.amount,
-			chargeWalletDto.paymentMethodId,
+		return this.walletService.createPaymentIntent(
+			createPaymentIntent.amount,
+			createPaymentIntent.paymentMethodId,
 			userId,
 			userEmail,
 		);
