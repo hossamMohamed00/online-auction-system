@@ -31,7 +31,11 @@ export class HandleDateService {
 	 * @returns End date for the auction
 	 */
 	public static getNewEndDateFromStartDate(auctionStartDate: Date) {
-		return moment(auctionStartDate).add(this.auctionEndDateDifference, 'days');
+		//FIXME: Get it back to valid period
+		// return moment(auctionStartDate).add(this.auctionEndDateDifference, 'days');
+
+		//* JUST FOR TESTING PURPOSE
+		return moment(auctionStartDate).add(30, 'seconds');
 	}
 
 	/**

@@ -22,17 +22,49 @@ export class StartAuctionSchedulingService {
 	addCronJobForStartAuction(auctionId: string, startDate: Date) {
 		const job = new CronJob(startDate, async () => {
 			//* Mark the auctions as started
-			const result = await this.auctionService.markAuctionAsStarted(auctionId);
+			await this.auctionService.markAuctionAsStarted(auctionId);
 
-			//TODO: Create Cron Job for auction end date
+			//? Get auction end date to create bew cron job
+			const result = await this.auctionService.getAuctionEndDate(auctionId);
+
+			//* Remove this cron job to avoid duplicate problem
+			this.deleteCron(auctionId);
+
+			//* Create Cron Job for auction end date
+			this.addCronJobForEndAuction(auctionId, result.endDate);
 		});
 
-		//* Add the timeout to schedule registry
+		//* Add the cron job to schedule registry
 		this.schedulerRegistry.addCronJob(auctionId, job);
 		job.start();
 
 		this.logger.debug(
 			'New Cron Job added for start auction at ' + moment(startDate).format(),
+		);
+
+		this.getCrons();
+	}
+
+	/**
+	 * Used to create new cron job for auction to start automatically
+	 * @param auctionId - Cron job name
+	 * @param endDate - start date
+	 */
+	addCronJobForEndAuction(auctionId: string, endDate: Date) {
+		const job = new CronJob(endDate, async () => {
+			//* Mark the auctions as ended
+			await this.auctionService.markAuctionAsEnded(auctionId);
+
+			//* Remove this cron job to avoid duplicate problem
+			this.deleteCron(auctionId);
+		});
+
+		//* Add the cron job to schedule registry
+		this.schedulerRegistry.addCronJob(auctionId, job);
+		job.start();
+
+		this.logger.warn(
+			'New Cron Job added for end auction at ' + moment(endDate).format(),
 		);
 
 		this.getCrons();
@@ -52,6 +84,15 @@ export class StartAuctionSchedulingService {
 			}
 			this.logger.debug(`job: ${key} -> next: ${next}`);
 		});
+	}
+
+	/**
+	 * Delete specified cron job
+	 * @param name
+	 */
+	deleteCron(name: string) {
+		this.schedulerRegistry.deleteCronJob(name);
+		this.logger.warn(`Cron job of auction ${name} deleted!`);
 	}
 }
 
