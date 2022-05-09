@@ -30,7 +30,7 @@ const BiddingModal = (props) => {
       <Modal.Header closeButton className={classes.BiddingModalHeader}>
         <Modal.Title id="contained-modal-title-vcenter"  >
           {isLoggedIn && <h2 className='fw-bold'>Place a Bid </h2>}
-					{!isLoggedIn && <h3 className='text-center pt-3'> Please Login in First, before placing a bid </h3>}
+					{!isLoggedIn && <h4 className='text-center pt-3'> Please Login in First, before placing a bid </h4>}
         </Modal.Title>
       </Modal.Header>
 			{isLoggedIn &&
@@ -64,8 +64,8 @@ const BiddingModal = (props) => {
 
       <Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-					{isLoggedIn && <button className={`btn col-6 fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
-					{!isLoggedIn && <Link className={`btn col-6 fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" to="/login" >
+					{isLoggedIn && <button className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
+					{!isLoggedIn && <Link className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" to="/login" >
 						Login
 					</Link> }
 					<button className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`} type="button" onClick={props.onHide}> Close </button>

@@ -2,14 +2,14 @@
 
 .ItemImage{
 	color: white;
-	margin: auto;
+	margin-bottom: 10px;
+	margin-top: 20vh;
+
 }
 
 .ItemImage > img{
-	width:95%;
-	margin: 5%;
-	margin-top: 10%;
-	margin-left: 2%;
+	width: 95%;
+	margin: 0 auto;
 	border-radius: 10px;
 	opacity: 0.8;
 }
@@ -18,7 +18,7 @@
 	height: 95vh;
 	position: relative;
 	border-left: 0.5px solid #3d3b3b96;
-	padding-top: 20px;
+	padding-top: 5vh;
 	padding-left: 3%;
 }
 
@@ -56,7 +56,7 @@
 
 
 .btnPlaceBid{
-	background-color: #ae2012;
+	background-color: var(--overlay-blue );
 	color: white;
 	position: absolute;
 	bottom: 0px;
@@ -68,8 +68,8 @@
 }
 
 .btnPlaceBid:hover{
-	background-color: #e9d8a6;
-	color: #ae2012;
+	background-color: var(--paragaph-color);
+	color: var(--overlay-blue);
 	box-shadow: none!important;
 }
 .btnPlaceBid:focus{	box-shadow: none!important}
@@ -78,15 +78,15 @@
 /* styles in small and extra small */
 
 @media (max-width: 768px) {
-	.ItemImage > img{ margin-top: 25%;}
 	.Auction{
 		height: fit-content!important;
 		padding-bottom: 55px;
+		padding-top: 0vh;
+
 	}
 	.Auction > h1 { padding-top: 0px!important;}
-	.ItemImage > img{
-		width: 85%;
-		margin-left: calc((100% - 85%) / 2)
+	.ItemImage{
+		margin-top: 10vh;
 	}
 	.Auction{
 		border-left: 0;
@@ -100,9 +100,14 @@
 		padding-bottom:100px;
 		width: 80%;
     margin: 0 auto;
+		padding-top: 0vh !important;
+
 	}
 	.Auction > h1 { padding-top: 0px !important;}
 
+	.ItemImage{
+		margin-top: 10vh;
+	}
 	.ItemImage > img{
 		width: 70%;
     margin-left: 15%;

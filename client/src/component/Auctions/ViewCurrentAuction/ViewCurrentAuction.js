@@ -15,18 +15,19 @@ const ViewCurrentAuction = () => {
 	const AuctionId = new URLSearchParams(location.search).get('id')
 
 	return (
+		<div className='container'>
 			<Row className={ `${classes.ViewCurrentAuction} m-0 p-0 h-100`} >
-				<Col lg={8} className= {classes.ItemImage}>
+				<Col lg={6} className= {classes.ItemImage}>
 					<img src={itemImage} alt="itemImage" />
 				</Col>
 
-				<Col lg={4} className={classes.Auction} >
+				<Col lg={6} className={classes.Auction} >
 					<AuctionHeader AuctionId = {AuctionId} />
 					<AuctionFooter  />
-
 				</Col>
 
 			</Row>
+		</div>
 	);
 }
 
