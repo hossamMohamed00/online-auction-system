@@ -8,6 +8,7 @@ import classes from './ViewCurrentAuction.module.css'
 
 import AuctionHeader from './AuctionHeader';
 import AuctionFooter from './AuctionFooter';
+import Slider from '../../UI/Carousel/Carousel';
 
 
 const ViewCurrentAuction = () => {
@@ -18,7 +19,11 @@ const ViewCurrentAuction = () => {
 		<div className='container'>
 			<Row className={ `${classes.ViewCurrentAuction} m-0 p-0 h-100`} >
 				<Col lg={6} className= {classes.ItemImage}>
-					<img src={itemImage} alt="itemImage" />
+					<Slider>
+							<img src={itemImage} alt="itemImage" className='w-100'/>
+							<img src={itemImage} alt="itemImage" className='w-100'/>
+
+					</Slider>
 				</Col>
 
 				<Col lg={6} className={classes.Auction} >

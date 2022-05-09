@@ -26,18 +26,6 @@
 	border-top-left-radius: 15px!important;
 	text-align: center;
 }
-.CardAuctionDetails{
-	bottom: 190px ;
-	position: absolute;
-}
-.CardAuctionDetails > span{
-	background-color: rgba(0, 0, 0, 0.5);
-	margin: 0px 3px 0px 3px;
-	padding: 0px 10px 0px 10px;
-	text-align: center;
-}
-.CardAuctionDetails > span:first-of-type{margin-left: 0;}
-
 
 .MinmumBid{
 	color: #ade8f4!important;

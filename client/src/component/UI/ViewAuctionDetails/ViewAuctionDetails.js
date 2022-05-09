@@ -2,28 +2,14 @@ import React from 'react';
 import { Card, Col, Row} from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
-import useTimer from '../../../CustomHooks/useTimer';
 
 import itemImage1 from '../../../assets/pexels-designecologist-1779487.jpg'
 
 import classes from './ViewAuctionDetails.module.css'
+import CountDownTimer from '../CountDownTimer/CountDownTimer';
 
 
 const ViewAuctionDetails = (props) => {
-
-	const getDate = (AuctionDate) => {
-		const timer = useTimer(AuctionDate) ;
-			return(
-			<>
-			<span> {timer.days} Days </span>
-			<span> {timer.hours} h</span>
-			<span> {timer.minutes} m</span>
-			<span> {timer.seconds} s</span>
-			</>
-		)
-	}
-
-
 
 	const getAuctionDetails = (Items , animate) => {
 		return(
@@ -34,9 +20,7 @@ const ViewAuctionDetails = (props) => {
 						{/* Card item category */}
 						<Card.Img variant="top" src={itemImage1}/>
 						<div className={classes.CardItemCategory}> {item.category.name} </div>
-						<div className={classes.CardAuctionDetails}>
-							{getDate(new Date(item.endDate))}
-						</div>
+						{CountDownTimer(new Date(item.endDate))}
 
 						<Card.Body>
 							<Card.Title className='fw-bold fs-5'> {item['title']} </Card.Title>
