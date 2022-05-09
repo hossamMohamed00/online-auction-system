@@ -8,7 +8,7 @@ import useHttp from "../../../CustomHooks/useHttp";
 import { Register } from "../../../Api/Auth";
 
 import RadioButton from "../UI/RadioButtons/RadioButton";
-import Input from "../UI/Input/input";
+import Input from "../../UI/Input/input";
 import classes from './Steps.module.css'
 import { AuthDataActions } from "../../../store/slices/RegisterSlices/AuthData";
 

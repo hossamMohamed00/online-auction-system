@@ -1,15 +1,24 @@
 import React, {useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
+import { AuthDataActions } from '../../store/slices/RegisterSlices/AuthData';
+import { Login } from '../../Api/Auth';
+import useHttp from '../../CustomHooks/useHttp';
+
+import Input from '../UI/Input/input';
+import Card from '../UI/Card/Card';
 import classes from './loginForm.module.css';
+
+//images
 import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
-import Input from '../Register/UI/Input/input';
-import Card from '../Register/UI/Card/Card';
-import useHttp from '../../CustomHooks/useHttp';
-import { Login } from '../../Api/Auth';
-import { useSelector } from 'react-redux';
 
 const LoginForm = () => {
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
 	const {sendRequest , status , data , error } = useHttp(Login);
 	const idToken = useSelector((store)=> store.AuthData.idToken);
 	console.log(idToken)
@@ -23,6 +32,8 @@ const LoginForm = () => {
 	useEffect(()=>{
 		if(status==='completed'){
 			console.log(data)
+			dispatch(AuthDataActions.login({idToken:data.accessToken}))
+			navigate('/home-page')
 		}
 	},[status])
 
