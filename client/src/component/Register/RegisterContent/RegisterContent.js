@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { useSelector  } from "react-redux";
 import { Link } from "react-router-dom";
 
-import Card from "../UI/Card/Card";
+import Card from "../../UI/Card/Card";
 
 import Step1 from "../Steps/Step1";
 import Step2 from "../Steps/Step2";

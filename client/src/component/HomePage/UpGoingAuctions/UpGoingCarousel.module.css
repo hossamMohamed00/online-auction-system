@@ -68,6 +68,8 @@
 	.Carousel p{ font-size: 12px}
 
 	.ImageCarousel{ height: fit-content}
+	.itemImage , .alertText{width: 90%!important; margin-left: 5%!important;}
+
 
 	.AuctionPrice , .AuctionTime{padding: 0px 15px 0px 15px;margin-bottom: 50px}
 }
@@ -77,7 +79,9 @@
 	.AuctionPrice , .AuctionTime{
 		padding: 0px 5px 0px 5px!important;
 	}
+
 }
+
 
 /* XX-Large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {
