@@ -64,6 +64,14 @@ export class CategoryService {
 		//* Populate the virtual auctions property
 		await category.populate({
 			path: 'auctions',
+			populate: [
+				{
+					path: 'item',
+				},
+				{
+					path: 'category',
+				},
+			],
 		});
 
 		// FIXME: Fix this error

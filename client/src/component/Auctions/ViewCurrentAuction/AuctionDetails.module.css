@@ -1,0 +1,22 @@
+
+.CreatorName , .CategoryName{	color: var(--paragaph-color );}
+.ItemsDetails > p , .MinimumBidValue , .AuctionDate{
+	color : #d7cdb2!important;
+}
+
+/* start timer style */
+.timer{
+	display: flex;
+	justify-content: center;
+	margin-top: 2%;
+}
+
+.timer > span {
+	color: 	white;
+	border-radius: 5px;
+	padding: 5px ;
+	text-align: center;
+	cursor: pointer;
+}
+
+.hrRight{border-right: 1.7px solid var(--paragaph-color ); margin-top: -24px; opacity: 0.25;}

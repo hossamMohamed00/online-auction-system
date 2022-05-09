@@ -6,8 +6,12 @@ import {
 	Post,
 	Delete,
 	Param,
+	UseInterceptors,
+	UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { FormDataRequest } from 'nestjs-form-data';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
@@ -31,6 +35,7 @@ export class SellerController implements AuctionsBehaviors {
 	/* Handle Auctions Functions */
 
 	@Serialize(AuctionDto)
+	@FormDataRequest() // Comes from NestjsFormDataModule
 	@Post('auction')
 	addAuction(
 		@Body() createAuctionDto: CreateAuctionDto,

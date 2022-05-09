@@ -2,7 +2,7 @@ import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { EmailSchedulingService } from './providers/schedule/email-scheduling.service';
+import { EmailSchedulingService } from './providers/schedule/mail/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
 import { EmailConfirmationModule } from './providers/auth/verification/email-confirmation.module';
@@ -23,6 +23,7 @@ import { AdminModule } from './models/users/admin/admin.module';
 import { BuyerModule } from './models/users/buyer/buyer.module';
 import { EmployeeModule } from './models/users/employee/employee.module';
 import { StripeConfigModule } from './config/stripe/stripe.config.module';
+import { StartAuctionSchedulingService } from './providers/schedule/auction/start-auction-scheduling.service';
 
 @Module({
 	imports: [
@@ -68,6 +69,7 @@ import { StripeConfigModule } from './config/stripe/stripe.config.module';
 	],
 	providers: [
 		EmailSchedulingService,
+		StartAuctionSchedulingService,
 		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
 		{
 			provide: APP_GUARD,

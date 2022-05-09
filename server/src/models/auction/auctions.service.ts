@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -19,6 +18,9 @@ import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class AuctionsService {
@@ -27,7 +29,7 @@ export class AuctionsService {
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
-		private readonly categoryService: CategoryService,
+		private startAuctionSchedulingService: StartAuctionSchedulingService,
 	) {}
 
 	private logger: Logger = new Logger('AuctionsService 👋🏻');
@@ -72,11 +74,7 @@ export class AuctionsService {
 		//* Save the instance
 		await createdAuction.save();
 
-		this.logger.log(
-			'New auction created and it will start at: ' +
-				createAuctionDto.startDate.toLocaleString() +
-				'📅',
-		);
+		this.logger.log('New auction created and now waiting for approval ✔✔');
 
 		return createdAuction;
 	}
@@ -120,6 +118,18 @@ export class AuctionsService {
 		if (!auction) throw new NotFoundException('Auction not found ❌');
 
 		return auction;
+	}
+
+	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string) {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
 	}
 
 	/**
@@ -177,19 +187,23 @@ export class AuctionsService {
 		const newEndDate =
 			HandleDateService.getNewEndDateFromStartDate(auctionStartDate);
 
-		//? Find the auction by id and set the status to be Accepted and the new end date
+		//? Find the auction by id and set the status to be UpComing and the new end date
 		const approvedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
 				$set: {
-					status: AuctionStatus.Accepted, // Update status to Accepted
+					status: AuctionStatus.UpComing, // Update status to up coming
 					endDate: newEndDate, // Update end date
 				},
 			},
 			{ new: true },
 		);
 
-		//TODO: Schedule the auction to run in start date automatically
+		//* Schedule the auction to run in start date automatically
+		this.startAuctionSchedulingService.addCronJobForStartAuction(
+			approvedAuction._id,
+			approvedAuction.startDate,
+		);
 
 		//* Display log message
 		this.logger.log(
@@ -219,12 +233,59 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Set the auction status to started(current auction)
+	 * @param auctionId - Auction id
+	 */
+	async markAuctionAsStarted(auctionId: string) {
+		//? Update auction and set the status to be OnGoing.
+		const result = await this.updateAuctionStatus(
+			auctionId,
+			AuctionStatus.OnGoing,
+		);
+
+		if (!result) {
+			throw new BadRequestException(
+				'Unable to start auction, auction not found ❌',
+			);
+		}
+
+		this.logger.debug('New auction started and now open to accept bids!!');
+
+		return true;
+	}
+
+	/**
+	 * Set the auction status to ended(close auction)
+	 * @param auctionId
+	 */
+	async markAuctionAsEnded(auctionId: string) {
+		//? Update auction and set the status to be closed.
+		const result = await this.updateAuctionStatus(
+			auctionId,
+			AuctionStatus.Closed,
+		);
+
+		if (!result) {
+			throw new BadRequestException(
+				'Unable to end auction, auction not found ❌',
+			);
+		}
+
+		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
+
+		return true;
+
+		//TODO: Check who the winner of the auction
+	}
+
+	/**
 	 * Remove auction by id
 	 * @param auctionId
 	 * @param sellerId
 	 * @returns Deleted auction instance
 	 */
 	async remove(auctionId: string, sellerId: string) {
+		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
 		const auction: AuctionDocument = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,
@@ -254,6 +315,29 @@ export class AuctionsService {
 		return count > 0;
 	}
 
+	/**
+	 * Change auction status to specific status
+	 * @param auctionId - Auction id
+	 * @param status - Auction status
+	 * @returns boolean
+	 */
+	async updateAuctionStatus(auctionId: string, status: AuctionStatus) {
+		//? Find the auction by id and set the status
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$set: {
+					status: status,
+				},
+			},
+			{ new: true },
+		);
+
+		if (!auction) {
+			return false;
+		}
+		return true;
+	}
 	/* Helper functions */
 
 	/**

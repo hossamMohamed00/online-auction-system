@@ -19,7 +19,7 @@ const  Header = () => {
 				{/* start Header content  */}
 				<div className={classes.overlay}>
 					<div className={classes.HeaderContent}>
-						<div className="mt-5 h-50">
+						<div className="">
 							<h2 className="fw-bold text-light pt-3 pb-2 fa-1 text-center">Best Place TO Bid Or Sell </h2>
 							<Search/>
 						</div>
