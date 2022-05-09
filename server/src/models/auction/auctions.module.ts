@@ -11,6 +11,7 @@ import { CategoryModule } from '../category/category.module';
 import { ItemService } from './../items/item.service';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionsController } from './auctions.controller';
+import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
 
 @Module({
 	imports: [
@@ -21,7 +22,7 @@ import { AuctionsController } from './auctions.controller';
 				name: Auction.name,
 				imports: [ItemModule],
 				useFactory: (itemService: ItemService) => {
-					const logger: Logger = new Logger('Auction Mongoose Module');
+					const logger: Logger = new Logger('Auction Module');
 					const schema = AuctionSchema;
 					//? Add the auto-populate plugin
 					schema.plugin(require('mongoose-autopopulate'));
@@ -33,7 +34,7 @@ import { AuctionsController } from './auctions.controller';
 						//* Remove the item by id
 						//@ts-ignore
 						await itemService.remove(this.item._id);
-						logger.log('Remove the item related to that auction...🧺');
+						logger.log('Removing the item related to that auction...🧺');
 					});
 
 					return schema;
@@ -43,7 +44,7 @@ import { AuctionsController } from './auctions.controller';
 		]),
 	],
 	controllers: [AuctionsController],
-	providers: [AuctionValidationService, AuctionsService],
+	providers: [AuctionValidationService, AuctionsService, StartAuctionSchedulingService],
 	exports: [
 		AuctionsService,
 		MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),

@@ -3,9 +3,16 @@ import { SellerController } from './seller.controller';
 
 import { Module } from '@nestjs/common';
 import { AuctionsModule } from 'src/models/auction/auctions.module';
+import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
-	imports: [AuctionsModule],
+	imports: [
+		//? Import Nestjs form data handler middleware
+		NestjsFormDataModule,
+		AuctionsModule,
+		CloudinaryModule,
+	],
 	controllers: [SellerController],
 	providers: [SellerService],
 })

@@ -1,12 +1,36 @@
 import { ItemService } from './item.service';
 
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Item, ItemSchema } from './schema/item.schema';
+import { Item, ItemDocument, ItemSchema } from './schema/item.schema';
+import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 
 @Module({
 	imports: [
-		MongooseModule.forFeature([{ name: Item.name, schema: ItemSchema }]),
+		MongooseModule.forFeatureAsync([
+			{
+				name: Item.name,
+				imports: [CloudinaryModule],
+				useFactory: (cloudinaryService: CloudinaryService) => {
+					const logger: Logger = new Logger('Item Module');
+					const schema = ItemSchema;
+					/**
+					 * Pre hook to remove the item image related to the item
+					 */
+					schema.pre<ItemDocument>('remove', async function () {
+						logger.log('Removing item image....🧺');
+
+						//* Remove the image by public id
+						await cloudinaryService.destroyImage(this.image.publicId);
+					});
+
+					return schema;
+				},
+				inject: [CloudinaryService],
+			},
+		]),
+		CloudinaryModule,
 	],
 	controllers: [],
 	providers: [ItemService],
