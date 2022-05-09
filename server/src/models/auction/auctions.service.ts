@@ -121,6 +121,18 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string) {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -225,30 +237,45 @@ export class AuctionsService {
 	 * @param auctionId - Auction id
 	 */
 	async markAuctionAsStarted(auctionId: string) {
-		//? Find the auction by id and set the status to be OnGoing.
-		const startedAuction = await this.auctionModel.findByIdAndUpdate(
+		//? Update auction and set the status to be OnGoing.
+		const result = await this.updateAuctionStatus(
 			auctionId,
-			{
-				$set: {
-					status: AuctionStatus.OnGoing,
-				},
-			},
-			{ new: true },
+			AuctionStatus.OnGoing,
 		);
 
-		if (!startedAuction) {
+		if (!result) {
 			throw new BadRequestException(
 				'Unable to start auction, auction not found ❌',
 			);
 		}
 
-		this.logger.debug(
-			"Auction with title '" +
-				startedAuction.title +
-				"' started and open to accept bids!!",
-		);
+		this.logger.debug('New auction started and now open to accept bids!!');
 
 		return true;
+	}
+
+	/**
+	 * Set the auction status to ended(close auction)
+	 * @param auctionId
+	 */
+	async markAuctionAsEnded(auctionId: string) {
+		//? Update auction and set the status to be closed.
+		const result = await this.updateAuctionStatus(
+			auctionId,
+			AuctionStatus.Closed,
+		);
+
+		if (!result) {
+			throw new BadRequestException(
+				'Unable to end auction, auction not found ❌',
+			);
+		}
+
+		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
+
+		return true;
+
+		//TODO: Check who the winner of the auction
 	}
 
 	/**
@@ -288,6 +315,29 @@ export class AuctionsService {
 		return count > 0;
 	}
 
+	/**
+	 * Change auction status to specific status
+	 * @param auctionId - Auction id
+	 * @param status - Auction status
+	 * @returns boolean
+	 */
+	async updateAuctionStatus(auctionId: string, status: AuctionStatus) {
+		//? Find the auction by id and set the status
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$set: {
+					status: status,
+				},
+			},
+			{ new: true },
+		);
+
+		if (!auction) {
+			return false;
+		}
+		return true;
+	}
 	/* Helper functions */
 
 	/**
