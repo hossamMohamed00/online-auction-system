@@ -1,7 +1,3 @@
-.Timer{
-	bottom: 190px ;
-	position: absolute;
-}
 .Timer > span{
 	background-color: rgba(0, 0, 0, 0.5);
 	margin: 0px 3px 0px 3px;

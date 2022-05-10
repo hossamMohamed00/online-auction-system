@@ -35,6 +35,10 @@
 	color: #cad2c5;
 
 }
+.Timer{
+	bottom: 190px ;
+	position: absolute;
+}
 .CardFooter{
 	background-color: #264653!important;
 	color: white!important;

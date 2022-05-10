@@ -20,7 +20,9 @@ const ViewAuctionDetails = (props) => {
 						{/* Card item category */}
 						<Card.Img variant="top" src={itemImage1}/>
 						<div className={classes.CardItemCategory}> {item.category.name} </div>
-						{CountDownTimer(new Date(item.endDate))}
+						<div className={classes.Timer}>
+							{CountDownTimer(new Date(item.endDate))}
+						</div>
 
 						<Card.Body>
 							<Card.Title className='fw-bold fs-5'> {item['title']} </Card.Title>
