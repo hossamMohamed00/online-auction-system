@@ -13,7 +13,10 @@ const ViewAuctionDetails = (props) => {
 
 	const location= useLocation()
 	const viewAllAuctionPage = location.pathname === '/auctions'
+
 	console.log("lcoation", viewAllAuctionPage)
+	console.log("data", props.AuctionData && props.AuctionData)
+
 
 	const getAuctionDetails = (Items , animate) => {
 		return(
@@ -31,8 +34,8 @@ const ViewAuctionDetails = (props) => {
 							<Card.Title className='fw-bold fs-5'> {item['title']} </Card.Title>
 							<Card.Text className=''>
 								<p className={classes.Description} > {item['item']['shortDescription']} </p>
-								<p> Creator : {item.seller.name} </p>
-								{viewAllAuctionPage && <p> Category : {item.category.name} </p> }
+								<p> Creator : <span className="fs-6 fw-light " > {item.seller.name} </span> </p>
+								{viewAllAuctionPage && <p> Category : <span className="fs-6 fw-light" > {item.category.name} </span> </p> }
 								<p className={classes.MinmumBid}> Minimum Bid Allowed: {item['minimumBidAllowed']} </p>
 							</Card.Text>
 

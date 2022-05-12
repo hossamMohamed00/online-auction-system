@@ -22,7 +22,7 @@
 }
 
 .DropDownBox li:hover{
-	background-color: #4f4e4c!important;
+	background-color: var(--overlay-dark)!important;
 	transition: all 0.5s;
 }
 .DropDownBox li:last-of-type:hover{

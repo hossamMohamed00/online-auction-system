@@ -11,6 +11,7 @@ import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 import AuctionHeader from '../../UI/AuctionHeader/AuctionHeader'
 
 import classes from './ViewAllAuctions.module.css'
+import FilterdAuctions from './FilterdAuction';
 
 
 const ViewAllAuctions = () => {
@@ -26,6 +27,7 @@ const ViewAllAuctions = () => {
 	}
 
 	const hideFilterHandler = () => {
+		console.log("hide")
 		setShowFilter(false)
 
 	}
@@ -35,10 +37,7 @@ const ViewAllAuctions = () => {
 		<div className={classes.ViewAllAuctions}>
 			<Row className="m-0 p-0">
 				<Col md={3} lg={2} className="m-0 p-0" >
-					<div className={` ${classes.FilterAuctions} ${showFilter ? 'd-inline-block' : 'd-none'} d-md-inline-block`}>
-						{showFilter && <FontAwesomeIcon icon={faFilterCircleXmark} className="d-md-none" onClick={hideFilterHandler}/> }
-						<p> Filter</p>
-					</div>
+					<FilterdAuctions hideFilter={hideFilterHandler} showFilter = {showFilter}/>
 				</Col>
 
 				<Col md={9} lg={10}>

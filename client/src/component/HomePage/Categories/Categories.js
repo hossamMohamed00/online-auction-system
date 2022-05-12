@@ -1,5 +1,5 @@
 import React, { Fragment , useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../../Api/CategoryApi';
 import useHttp from '../../../CustomHooks/useHttp';
 
@@ -14,11 +14,13 @@ const Categories = () => {
 		sendRequest()
 	},[sendRequest])
 
+	const navigate = useNavigate()
 
 	const showAllCategories =  !error && (status === 'completed') && (data || data.length > 0 )  && data.map(( category,index) => {
 		return(
 			<li key={index} >
-				<Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link>
+				{/* <Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link> */}
+				<button className="btn p-2 text-decoration-none text-light" onClick={()=> navigate(`/categories?id=${category._id}`)}> {category.name}</button>
 			</li>
 
 		)

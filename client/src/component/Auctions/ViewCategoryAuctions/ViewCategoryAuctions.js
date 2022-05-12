@@ -25,9 +25,13 @@ const  ViewCategoryAuctions = () => {
 	const location = useLocation()
 	const CategoriyId = new URLSearchParams(location.search).get('id')
 
+
 	useEffect(()=>{
-		sendRequest(CategoriyId)
-	} , [sendRequest])
+		if(CategoriyId){
+			sendRequest(CategoriyId)
+		}
+	} , [sendRequest , CategoriyId])
+
 
 	useEffect(()=>{
 		if(status === 'compelte'){

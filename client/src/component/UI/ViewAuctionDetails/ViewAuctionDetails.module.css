@@ -30,19 +30,19 @@
 	border-top-left-radius: 15px!important;
 	text-align: center;
 }
-.CardAuctionStatus{
-	background-color: var(--alert-color)!important;
-	opacity: 0.9;
-}
 
 .MinmumBid{
 	color: #ade8f4!important;
 	font-size: 15px!important;
 }
 .Description{
-	color: #cad2c5;
-
+	font-size: 12px!important;
+	color: var(--paragaph-color);
+	/* text-indent: 10px; */
 }
+
+
+
 .Timer{
 	position: relative;
 	margin-top: -25px;
