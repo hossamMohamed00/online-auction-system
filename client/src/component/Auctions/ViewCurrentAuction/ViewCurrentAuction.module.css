@@ -3,15 +3,10 @@
 .ItemImage{
 	color: white;
 	margin-bottom: 10px;
-	margin-top: 25vh;
+	margin-top: 20vh;
+	border-radius: 15px !important;
 }
 
-.ItemImage > img{
-	width: 95%;
-	margin: 0 auto;
-	border-radius: 10px;
-	opacity: 0.8;
-}
 
 .Auction{
 	height: 95vh;
@@ -84,9 +79,7 @@
 
 	}
 	.Auction > h1 { padding-top: 0px!important;}
-	.ItemImage{
-		margin-top: 10vh!important;
-	}
+	.ItemImage{ margin-top: 10vh !important}
 	.Auction{
 		border-left: 0;
 	}
@@ -104,16 +97,8 @@
 	}
 	.Auction > h1 { padding-top: 0px !important;}
 
-	.ItemImage{
-		margin-top: 10vh!important;
-		margin-bottom: 5vh!important;
+	.ItemImage{ margin-top: 10vh !important; margin-bottom: 5vh!important}
 
-	}
-	.ItemImage > img{
-		width: 70%;
-    margin-left: 15%;
-    margin-bottom: 0%!important;
-	}
 	.Auction{
 		border-left: 0;
 	}

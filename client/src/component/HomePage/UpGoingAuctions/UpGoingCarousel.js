@@ -1,7 +1,6 @@
 import React  from "react";
 import classes from './UpGoingAuctions.module.css'
 
-import LabtopImage1 from '../../../assets/pexels-pixabay-38568.jpg'
 import Slider from "../../UI/Carousel/Carousel";
 import CountDownTimer from "../../UI/CountDownTimer/CountDownTimer";
 import { Link } from "react-router-dom";
@@ -11,19 +10,20 @@ const UpGoingCarousel = ({UogoingAuctionData}) => {
 	const ShowCarouselItems = UogoingAuctionData.map((Item , index)=> {
 		return(
 			<div className="row" key={index}>
-				<div className='col-md-12 col-lg-6 pe-0 position-relative'>
-					<img
-						src={LabtopImage1}
-						alt={`itemImage ${index}`}
-						className={classes.itemImage}
-					/>
-					<p className={`${classes.UpgoingAuctionBadge} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>
+				<div className='col-md-12 col-lg-6 pe-0 '>
+					<div className={classes.itemImage}>
+						<img
+							src={Item.item.image}
+							alt={`itemImage ${index}`}
+						/>
+						<p className={`${classes.UpgoingAuctionBadge} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>
+					</div>
 				</div>
 
 				<div className=	{`col-md-12 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}>
 					<h2 className="fw-bold text-center pb-1"> { Item.item.name } </h2>
 					{/* start Upgoing Auciton details */}
-					<div className="p-3 pl-4">
+					<div className="ps-4 pt-4">
 						<p className={` lead ${classes.ItemDescription} `}> {  Item.item.shortDescription 	 } </p>
 						<div>
 							<div>

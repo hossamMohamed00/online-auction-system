@@ -4,15 +4,17 @@ import { Row , Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faFilterCircleXmark , faFilter} from '@fortawesome/free-solid-svg-icons'
 
-import { getCurrentAuctions } from '../../../Api/AuctionsApi';
+import { getAllAuctions } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
+
+import AuctionHeader from '../../UI/AuctionHeader/AuctionHeader'
 
 import classes from './ViewAllAuctions.module.css'
 
 
 const ViewAllAuctions = () => {
-	const {sendRequest , status , data } = useHttp(getCurrentAuctions);
+	const {sendRequest , status , data } = useHttp(getAllAuctions);
 	const [showFilter , setShowFilter] = useState(null)
 
 	useEffect(()=>{
@@ -43,11 +45,8 @@ const ViewAllAuctions = () => {
 
 					{ data && data.length > 0 &&
 						<div className = {classes.AllAuction}>
-							<div className='text-center'>
-								<hr className={classes.hrRight}></hr>
-								<h3 className='d-inline-block text-center text-light p-2'> View All Auctions</h3>
-								<hr className={classes.hrLeft}></hr>
-							</div>
+
+							<AuctionHeader text="View All Auctions" showLink = {false}/>
 
 							{/* Auction Filter in Small Media Query */}
 							<div className={`${classes.FilterIcons} ${showFilter ? 'mt-0' : ''} text-end `}>

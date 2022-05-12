@@ -4,6 +4,8 @@ import UpGoingCarousel from "./UpGoingCarousel";
 import classes from './UpGoingAuctions.module.css'
 import { getUpgoingAuctions } from "../../../Api/AuctionsApi";
 import useHttp from "../../../CustomHooks/useHttp";
+import NoData from "../../UI/NoData";
+import AuctionHeader from "../../UI/AuctionHeader/AuctionHeader";
 
 const  UpGoingAuctions =()=> {
 
@@ -25,8 +27,13 @@ const  UpGoingAuctions =()=> {
 
 	return (
 		<Fragment>
-			<div className={` ${classes.UpGoingAuctions} h-100 container`}>
-				{status === 'completed' && data.length > 0 && <UpGoingCarousel UogoingAuctionData={data}/> }
+			<div className={` ${classes.UpGoingAuctions} container-fluied`}>
+				<AuctionHeader text="UpGoing Auctions" showLink={true} />
+				<div className={classes.UpGoingAuctionsContent}>
+					{status === 'completed' && data.length > 0 && <UpGoingCarousel UogoingAuctionData={data}/> }
+				</div>
+
+				<NoData text="No UPgoing Auctions Now" data={data && data} />
 
 			</div>
 		</Fragment>

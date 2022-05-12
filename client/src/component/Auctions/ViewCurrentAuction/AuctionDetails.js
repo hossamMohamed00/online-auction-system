@@ -1,25 +1,11 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 import useTimer from '../../../CustomHooks/useTimer';
-import { getSingleAuction } from '../../../Api/AuctionsApi';
-import useHttp from '../../../CustomHooks/useHttp';
-
 
 import classes from './AuctionDetails.module.css'
 
-const AuctionDetails = (props) => {
-
-	const {sendRequest , status , data } = useHttp(getSingleAuction);
-
-	useEffect(()=>{
-		sendRequest(props.AuctionId)
-	} , [sendRequest ])
-
-	useEffect(()=>{
-		if(status === 'compelte'){
-			console.log(data)
-		}
-	} , [status])
+const AuctionDetails = ({data}) => {
 
 	const AuctionDate = data && data.endDate ;
 	const {days, hours , minutes , seconds } = useTimer(new Date (AuctionDate))
@@ -27,7 +13,7 @@ const AuctionDetails = (props) => {
 
 	return (
 		<Fragment>
-		{data && status==='completed' &&
+		{data &&
 		<div className={classes.AuctionDetails}>
 			<div className={classes.AuctionDetailsContent}>
 				<div className={classes.ItemsDetails}>
@@ -38,16 +24,21 @@ const AuctionDetails = (props) => {
 				<div className='w-75 mx-3 '>
 					<div className='pb-2'>
 						<h6 className='fw-bold text-light d-inline-block'> Creator : </h6>
-						<span className={`ps-1 ${classes.CreatorName}`}> {data.seller.name} </span>
+						<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.CreatorName}`} to = {`/seller?id=${data.seller._id}`} >  {data.seller.name} </Link>
+
 					</div>
 
-					<div className='pb-2'>
-						<h6 className='fw-bold text-light d-inline-block'> Category : </h6>
-							<span className={` ps-1 ${classes.CreatorName}`}> {data.category.name} </span>
+					<div className='pb-2 fw-bold '>
+						<h6 className='text-light d-inline-block'> Category : </h6>
+						<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.CategoryName}`} to = {`/categories?id=${data.category._id}`} >  {data.category.name}  </Link>
+
 					</div>
-					<div className='pb-2'>
-						<h6 className='fw-bold text-light d-inline-block'> Brand : </h6>
+					<div className='pb-2 fw-bold'>
+						<div>
+							<h6 className=' text-light d-inline-block'> Brand : </h6>
 							<span className={` ps-1 ${classes.CreatorName}`}> {data.item.brand} </span>
+						</div>
+
 					</div>
 
 				</div>

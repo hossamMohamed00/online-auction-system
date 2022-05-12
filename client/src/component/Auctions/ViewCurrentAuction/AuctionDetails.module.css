@@ -1,7 +1,12 @@
 
 .CreatorName , .CategoryName{	color: var(--paragaph-color );}
-.ItemsDetails > p , .MinimumBidValue , .AuctionDate{
+.CreatorName:hover , .CategoryName:hover{	color: var(--main-color );}
+
+.ItemsDetails > p {
 	color : var(--paragaph-color )!important;
+}
+.MinimumBidValue , .AuctionDate{
+	color : var(--alert-color )!important;
 }
 
 /* start timer style */

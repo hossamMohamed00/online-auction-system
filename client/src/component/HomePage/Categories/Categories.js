@@ -2,7 +2,8 @@ import React, { Fragment , useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../../Api/CategoryApi';
 import useHttp from '../../../CustomHooks/useHttp';
-import classes from './Categories.module.css'
+
+import classes from '../../UI/DropDownBox.module.css'
 
 const Categories = () => {
 	const [isHiddenCategories , setIsHiddenCategories ] = useState(false)
@@ -31,7 +32,7 @@ const Categories = () => {
 
 		return (
 			<Fragment>
-				<div className={ `${classes.Categories} ${isHiddenCategories ? 'd-none' : 'animation-top'  }` }>
+				<div className={ `${classes.DropDownBox} ${isHiddenCategories ? 'd-none' : 'animation-top'  }` }>
 					<button type="button" className="btn-close d-md-none float-end m-2 text-dark bg-light" onClick={btnShowCategoryHandeler} aria-label="Close"></button>
 					<ul className= {`list-group d-md-block  `} >
 						{showAllCategories}

@@ -16,9 +16,8 @@ const ViewAuctionDetails = (props) => {
 			Items.map((item , idx) => (
 				<Col key={idx}>
 					<Card className= {` mb-5 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
-
 						{/* Card item category */}
-						<Card.Img variant="top" src={itemImage1}/>
+						<Card.Img variant="top" src={item.item.image ? item.item.image : itemImage1 }/>
 						<div className={classes.CardItemCategory}> {item.category.name} </div>
 						<div className={classes.Timer}>
 							{CountDownTimer(new Date(item.endDate))}
@@ -43,7 +42,7 @@ const ViewAuctionDetails = (props) => {
 
 	return (
 		<div className={classes.CurrentAuctionsContent}>
-			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto py-3">
+			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
 				{getAuctionDetails(props.AuctionData , props.animate)}
 
 			</Row>

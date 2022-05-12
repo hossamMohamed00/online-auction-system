@@ -2,7 +2,6 @@
 	width: 100%;
 	height: fit-content;
 	color: white;
-	position: relative;
 }
 
 
@@ -13,9 +12,9 @@
 .prev{ display: none!important;}
 
 
-.Carousel > div > img{
+.Carousel > div >div > img{
 	width: 100%!important;
-	height: 60%;
+	height: 350px;
 }
 
 
@@ -43,6 +42,8 @@
 @media screen and (max-width:768px){
 	.Carousel{width: 100%; margin: 0 auto;}
 	.Carousel p{ font-size: 12px}
+	.Carousel > div >div > img{height: 200px;}
+
 }
 /* XX-Large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {

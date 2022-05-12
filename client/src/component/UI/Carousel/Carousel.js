@@ -6,7 +6,7 @@ import classes from './Carousel.module.css'
 const Slider = (props) => {
 	console.log(props.children.length)
 	const ShowCarouselItems = props.children && !props.children.length ?
-		<Carousel.Item>
+		<Carousel.Item interval={200} >
 			{props.children}
 		</Carousel.Item>
 		: props.children.map((item , index)=>(
@@ -17,7 +17,7 @@ const Slider = (props) => {
 
 	return(
 		<>
-			<Carousel slide className={`${classes.Carousel} m-auto `}
+			<Carousel fade className={`${classes.Carousel} m-auto `}
 				prevIcon = {<span className={`carousel-control-prev-icon ${classes['prev']} `}> </span>}
 				nextIcon = {<span className={`carousel-control-next-icon ${classes['next']} `}> </span>}
 			>
