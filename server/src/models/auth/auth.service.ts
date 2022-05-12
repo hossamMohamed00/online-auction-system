@@ -12,7 +12,7 @@ import { compare, hash } from 'bcryptjs';
 import { LoginUserDto, RegisterUserDto } from '../auth/dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Tokens } from './types';
+import { TokensAndRole } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 import { Socket } from 'socket.io';
@@ -33,7 +33,7 @@ export class AuthService {
 	 * @param registerUserDto
 	 * @returns Tokens: Object of access_token and refresh_token
 	 */
-	async register(registerUserDto: RegisterUserDto): Promise<Tokens> {
+	async register(registerUserDto: RegisterUserDto): Promise<TokensAndRole> {
 		//* Ensure that the given email is not taken
 		const isTaken = await this.usersService.findByEmail(registerUserDto.email);
 		if (isTaken) throw new BadRequestException('Email already taken ❌👀');
@@ -53,7 +53,7 @@ export class AuthService {
 	 * @param loginDto {email, password}: LoginDto
 	 * @returns Tokens object contains access_token and refresh_token
 	 */
-	async login({ email, password }: LoginUserDto): Promise<Tokens> {
+	async login({ email, password }: LoginUserDto): Promise<TokensAndRole> {
 		//* Find the user
 		const user: UserDocument = await this.usersService.findByEmail(email);
 		if (!user) throw new NotFoundException('User not found ❌');
@@ -89,7 +89,10 @@ export class AuthService {
 	 * @param refreshToken - Given refresh-token
 	 * @returns Tokens object contains access_token and refresh_token
 	 */
-	async getNewRefreshToken(_id: string, refreshToken: string): Promise<Tokens> {
+	async getNewRefreshToken(
+		_id: string,
+		refreshToken: string,
+	): Promise<TokensAndRole> {
 		const user = await this.usersService.findById(_id);
 
 		if (!user || !user.refreshToken)
@@ -111,7 +114,7 @@ export class AuthService {
 	 * @param Object contains userId (sub) and email
 	 * @returns Object contains access_token and refreshToken
 	 */
-	async getJWTTokens({ sub, email }): Promise<Tokens> {
+	async getJWTTokens({ sub, email }): Promise<TokensAndRole> {
 		//? Prepare the payload
 		const payload: JwtPayload = { sub, email };
 
@@ -128,7 +131,7 @@ export class AuthService {
 			}),
 		]);
 
-		return { accessToken, refreshToken };
+		return { accessToken, refreshToken, role: null };
 	}
 
 	async updateRefreshToken(user: UserDocument, refreshToken: string) {
@@ -150,9 +153,9 @@ export class AuthService {
 	 * @param user - User instance
 	 * @returns Tokens object contains access_token and refresh_token
 	 */
-	async getTokensAndSaveUser(user: UserDocument): Promise<Tokens> {
+	async getTokensAndSaveUser(user: UserDocument): Promise<TokensAndRole> {
 		//? Issue jwt tokens
-		const tokens = await this.getJWTTokens({
+		const tokens: TokensAndRole = await this.getJWTTokens({
 			sub: user._id,
 			email: user.email,
 		});
@@ -162,6 +165,9 @@ export class AuthService {
 
 		//* Save the user instance
 		await user.save();
+
+		//* Append user role to the token
+		tokens.role = user.role;
 
 		return tokens;
 	}
