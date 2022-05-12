@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { StripeConfigService } from 'src/config/stripe/stripe.config.service';
 import Stripe from 'stripe';
+import { SuccessOrFailType } from './types/method-return.type';
 
 /**
  * This service will interact with strip
@@ -8,7 +9,7 @@ import Stripe from 'stripe';
 
 @Injectable()
 export default class WalletService {
-	private logger: Logger = new Logger('Stripe Service 💲🤑');
+	private logger: Logger = new Logger('Wallet Service 💲🤑');
 	private stripe: Stripe;
 
 	constructor(private stripeConfigService: StripeConfigService) {
@@ -45,23 +46,61 @@ export default class WalletService {
 	 * @param stripCustomerId -Stripe customer id of a user that is making the payment
 	 * @returns
 	 */
-	public async createPaymentIntent(
+	public async chargeWallet(
 		amount: number,
 		paymentMethodId: string,
 		stripCustomerId: string,
 		customerEmail: string,
 	) {
-		// Create new payment intent for the user and return a PaymentIntent object.
-		const paymentIntent = await this.stripe.paymentIntents.create({
+		const successOrFailRes: SuccessOrFailType = await this.createPaymentIntent(
 			amount,
-			customer: stripCustomerId,
-			payment_method: paymentMethodId,
-			payment_method_types: ['card'],
-			currency: this.stripeConfigService.stripeCurrency,
-			description: 'Charge user wallet with ' + amount,
-			receipt_email: customerEmail, // Email address that the receipt for the resulting payment will be sent to.
-		});
+			paymentMethodId,
+			stripCustomerId,
+			customerEmail,
+		);
 
-		return { clientSecret: paymentIntent.client_secret };
+		if (successOrFailRes.success === false) {
+			return successOrFailRes;
+		}
+
+		//TODO: Save charge into db
+
+		return successOrFailRes;
+	}
+
+	/**
+	 * Create new payment intent
+	 * @returns payment intent object
+	 */
+	private async createPaymentIntent(
+		amount: number,
+		paymentMethodId: string,
+		stripCustomerId: string,
+		customerEmail: string,
+	): Promise<SuccessOrFailType> {
+		try {
+			//* Create new payment intent for the user.
+			const paymentIntent = await this.stripe.paymentIntents.create({
+				amount: amount * 100, // Amount to charge (Multiple by 100 to convert from cent to dollar)
+				customer: stripCustomerId,
+				payment_method: paymentMethodId,
+				payment_method_types: ['card'],
+				currency: this.stripeConfigService.stripeCurrency,
+				description: 'Charge user wallet with ' + amount,
+				receipt_email: customerEmail, // Email address that the receipt for the resulting payment will be sent to.
+				confirm: true, // Immediately confirm the charge
+			});
+
+			this.logger.debug(
+				'Successfully created payment intent, ' + paymentIntent.id,
+			);
+
+			return { success: true, message: paymentIntent.status };
+		} catch (error) {
+			// There are an error
+			this.logger.warn('Error while charging wallet, ' + error.message);
+
+			return { success: false, message: error.message };
+		}
 	}
 }

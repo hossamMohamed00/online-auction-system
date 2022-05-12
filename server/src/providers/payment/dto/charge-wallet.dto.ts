@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsNumber, Min, Max } from 'class-validator';
 
-export class CreatePaymentIntent {
+export class ChargeWalletDto {
 	@IsString()
 	@IsNotEmpty()
 	paymentMethodId: string;
@@ -10,4 +10,4 @@ export class CreatePaymentIntent {
 	amount: number;
 }
 
-export default CreatePaymentIntent;
+export default ChargeWalletDto;

@@ -1,1 +1,1 @@
-export * from './create-payment-intent.dto';
+export * from './charge-wallet.dto';
