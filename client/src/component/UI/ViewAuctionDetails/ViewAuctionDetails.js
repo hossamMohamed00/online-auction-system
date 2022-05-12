@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row} from 'react-bootstrap';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import itemImage1 from '../../../assets/pexels-designecologist-1779487.jpg'
 
@@ -11,14 +11,18 @@ import CountDownTimer from '../CountDownTimer/CountDownTimer';
 
 const ViewAuctionDetails = (props) => {
 
+	const location= useLocation()
+	const viewAllAuctionPage = location.pathname === '/auctions'
+	console.log("lcoation", viewAllAuctionPage)
+
 	const getAuctionDetails = (Items , animate) => {
 		return(
 			Items.map((item , idx) => (
 				<Col key={idx}>
 					<Card className= {` mb-5 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
 						{/* Card item category */}
-						<Card.Img variant="top" src={item.item.image ? item.item.image : itemImage1 }/>
-						<div className={classes.CardItemCategory}> {item.category.name} </div>
+						<Card.Img className = "position-relative" variant="top" src={item.item.image ? item.item.image : itemImage1 }/>
+						<div className={`${classes.CardItemCategory} ${viewAllAuctionPage ? classes.CardAuctionStatus : ''} `}> {viewAllAuctionPage ? item.status : item.category.name } </div>
 						<div className={classes.Timer}>
 							{CountDownTimer(new Date(item.endDate))}
 						</div>
@@ -28,6 +32,7 @@ const ViewAuctionDetails = (props) => {
 							<Card.Text className=''>
 								<p className={classes.Description} > {item['item']['shortDescription']} </p>
 								<p> Creator : {item.seller.name} </p>
+								{viewAllAuctionPage && <p> Category : {item.category.name} </p> }
 								<p className={classes.MinmumBid}> Minimum Bid Allowed: {item['minimumBidAllowed']} </p>
 							</Card.Text>
 

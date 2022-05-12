@@ -6,16 +6,20 @@
 	padding-bottom: 10px;
 	transition: all 0.5s;
 	border-radius: 15px!important;
-
+	transition: all 1s;
+	cursor: pointer;
+}
+.CurrentAuctionsCard:hover{
+	transform: scale(1.05)
 }
 
 .CurrentAuctionsCard img{
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
-	position: relative;
+	height: 200px!important;
 }
 
-.CardItemCategory{
+.CardItemCategory , .CardAuctionStatus {
 	min-width: 40%;
 	padding: 5px;
 	font-weight: bold;
@@ -25,6 +29,10 @@
 	left: 0;
 	border-top-left-radius: 15px!important;
 	text-align: center;
+}
+.CardAuctionStatus{
+	background-color: var(--alert-color)!important;
+	opacity: 0.9;
 }
 
 .MinmumBid{
@@ -36,8 +44,8 @@
 
 }
 .Timer{
-	bottom: 188px ;
-	position: absolute;
+	position: relative;
+	margin-top: -25px;
 }
 .CardFooter{
 	background-color: #264653!important;
