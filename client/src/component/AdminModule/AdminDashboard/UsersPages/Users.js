@@ -1,11 +1,11 @@
 import React from 'react';
 // import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
 
-import UsersLayout from './usersLayout/TableLayout';
+import TableLayout from '../../../UI/TableLayout/TableLayout';
 
 const UsersPage=()=> {
 
-	const columNames = ['name' , 'email' , 'phone','Role' ,'Edit']
+	const columNames = ['name' , 'email' , 'phone','Role' ]
 
 	const users = [
 		{
@@ -35,7 +35,11 @@ const UsersPage=()=> {
 		},
 	];
 	return (
-		<UsersLayout columNames={columNames} users={users} title='All Users'/>
+		<TableLayout
+			columNames={columNames}
+			records={{ name: users }}
+			title="All Users"
+		/>
 	);
 }
 

@@ -15,12 +15,10 @@
 	margin: 0 auto;
 	width: 25%;
 }
-/* @media screen and (min-width : 772px){
-	.logo{
-		padding : 0 important;
-	}
+.logo span{
+	color:#07B2EF;
 
-} */
+}
 .adminName .username {
 	margin-left: -3% !important;
 	/* display: inline-block; */
@@ -61,6 +59,6 @@
 
 @media screen and (max-width: 991px) {
 	.sidebar {
-		visibility: hidden;
+		display: none !important;
 	}
 }

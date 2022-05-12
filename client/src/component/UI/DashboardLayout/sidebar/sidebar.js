@@ -13,13 +13,13 @@ import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = props => {
 	const { Admin } = props.sidebarContent;
-	console.log(Admin.admin.list);
+
 	return (
 		<React.Fragment>
 			<div className={`${classes.sidebar}  position-relative`}>
 				<div className={`${classes.logo}  text-center `}>
 					<h2 className="text-light  mt-3  ">
-						On<span className="text-danger">Line Auction</span>
+						On<span >Line Auction</span>
 					</h2>
 				</div>
 
