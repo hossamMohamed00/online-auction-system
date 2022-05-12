@@ -1,14 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { CreateItemDto } from './dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { ImageType } from './schema/image.type';
 import { Item, ItemDocument } from './schema/item.schema';
 
 @Injectable()
 export class ItemService {
 	constructor(
 		@InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/**
@@ -17,8 +24,28 @@ export class ItemService {
 	 * @returns Created item instance
 	 */
 	async create(itemData: CreateItemDto) {
+		//* First of all, save the image to cloudinary
+		let image: ImageType = new ImageType();
+		try {
+			// Upload image to cloudinary
+			const savedImage = await this.cloudinary.uploadImage(itemData.image);
+
+			//* If upload success, save image url and public id to db
+			if (savedImage.url) {
+				image.url = savedImage.url;
+				image.publicId = savedImage.public_id;
+			}
+		} catch (error) {
+			console.log(error);
+
+			throw new BadRequestException(
+				'Cannot upload image to cloudinary, ',
+				error,
+			);
+		}
+
 		//* Create new item
-		const createdItem = new this.itemModel(itemData);
+		const createdItem = new this.itemModel({ ...itemData, image });
 
 		//* Save the item
 		await createdItem.save();
@@ -54,8 +81,13 @@ export class ItemService {
 	 * @returns true if item was removed, false otherwise
 	 */
 	async remove(_id: string): Promise<boolean> {
-		const removedItem = await this.itemModel.findByIdAndRemove(_id);
-		if (!removedItem) return false;
+		const item = await this.itemModel.findOne({ _id });
+		if (!item)
+			throw new NotFoundException('Auction not found for that seller❌');
+
+		//* Remove the auction using this approach to fire the pre hook event
+		await item.remove();
+
 		return true;
 	}
 }

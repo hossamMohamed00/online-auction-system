@@ -34,6 +34,12 @@
 	color: var(--alert-color)!important;
 	font-weight: bolder!important;
 }
+.alarm-input{
+	background-color:var(--alert-color)!important;
+	border-color:var(--alert-color)!important;
+	color: white!important;
+	margin-bottom: 0!important;
+}
 
 /* end paragraph styles */
 

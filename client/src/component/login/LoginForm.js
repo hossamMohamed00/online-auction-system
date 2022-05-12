@@ -1,29 +1,60 @@
-import React, {useRef } from 'react';
+import React, {useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
+import { AuthDataActions } from '../../store/slices/RegisterSlices/AuthData';
+import { Login } from '../../Api/Auth';
+import useHttp from '../../CustomHooks/useHttp';
+
+import Input from '../UI/Input/input';
+import Card from '../UI/Card/Card';
 import classes from './loginForm.module.css';
+
+//images
 import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
-import Input from '../Register/UI/Input/input';
-import Card from '../Register/UI/Card/Card';
 
 const LoginForm = () => {
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
+	const {sendRequest , status , data , error } = useHttp(Login);
+	const idToken = useSelector((store)=> store.AuthData.idToken);
+	console.log(idToken)
+
 	const nameRef= useRef();
 	const passwordRef = useRef();
 
-	const validateText = value => value.trim() !== '';
+	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
+
+	useEffect(()=>{
+		if(status==='completed'){
+			console.log(data)
+			dispatch(AuthDataActions.login({idToken:data.accessToken}))
+			navigate('/home-page')
+		}
+	},[status])
+
+
+	const submitHandeler = (e) =>{
+		e.preventDefault()
+		const userDetails = {email:nameRef.current.value , password:passwordRef.current.value , idToken }
+		sendRequest(userDetails)
+	}
 
 
 	return (
 		<div className={classes['form-container']}>
 			<Card className={'loginCard'} >
-				<form>
+				<form onSubmit={submitHandeler}>
 					<Input
-						type="text"
-						placeholder="Username"
-						validateText={validateText}
+						type="email"
+						placeholder="Email"
+						validateText={validateEmail}
 						ref={nameRef}
-						errorMassage="please enter your username"
+						errorMassage="please enter your email"
 					/>
 					<Input
 						type="password"
@@ -49,7 +80,9 @@ const LoginForm = () => {
 						</div>
 						<p className="text-primary"> Forget password ?</p>
 					</div>
-					<button className="btn btn-primary">Login</button>
+					{error && <p className={`${classes.alert} p-2 text-center fs-6 `} > {error} </p> }
+
+					<button className="btn btn-primary" onSubmit={submitHandeler}>Login</button>
 				</form>
 				<div className={classes.accounts}>
 					<img src={facebookImg} alt="facebookImg" />

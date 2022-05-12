@@ -1,5 +1,5 @@
 import React from "react";
-import useInput from "../../../../CustomHooks/useInput";
+import useInput from "../../../CustomHooks/useInput";
 import classes from './Input.module.css'
 
 const Input = React.forwardRef((props , ref) => {

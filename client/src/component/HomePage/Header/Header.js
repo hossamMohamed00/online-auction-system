@@ -1,7 +1,9 @@
 import React ,{ Fragment} from "react";
-import { Link } from "react-router-dom";
-import classes from './Header.module.css'
+
 import Search from "./Seach";
+import Navbar from "./Navbar";
+
+import classes from './Header.module.css'
 
 const  Header = () => {
 	return (
@@ -9,21 +11,7 @@ const  Header = () => {
 
 			<div className="position-relative">
 
-				{/* start Navbar  */}
-				<nav className= {`${classes.nav} navbar navbar-dark bg-dark fixed-top px-1 `}>
-						<div className="container-fluid">
-							<a className={` ${classes.navbarBrand} navbar-brand fw-bold `} href="#">Online Aution</a>
-
-							<div className="d-flex pt-1">
-								<Link to='/register' className= {`fw-bold ${classes.navLinkRegister} `}> Register </Link>
-								<Link to='/login' className= {`fw-bold text-light ${classes.navLinkLogin} `}> Login </Link>
-
-							</div>
-
-						</div>
-				</nav>
-				{/* end Navbar  */}
-
+				<Navbar/>
 				{/* start Header  */}
 				<div className= {classes.Header}>
 				</div>
@@ -31,8 +19,8 @@ const  Header = () => {
 				{/* start Header content  */}
 				<div className={classes.overlay}>
 					<div className={classes.HeaderContent}>
-						<div className="mt-5 h-50">
-							<h1 className="fw-bold text-light mb-4 fa-1 text-center">Best Place TO Bid Or Sell </h1>
+						<div className="">
+							<h2 className="fw-bold text-light pt-3 pb-2 fa-1 text-center">Best Place TO Bid Or Sell </h2>
 							<Search/>
 						</div>
 

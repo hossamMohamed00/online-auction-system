@@ -42,6 +42,11 @@ form button {
 	height: 30px;
 }
 
+.alert{
+	color: var(--alert-color)!important;
+	font-weight: bolder!important;
+}
+
 @media screen and (max-width: 992px) {
 	.input {
 		width: 100% !important;

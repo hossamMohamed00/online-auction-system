@@ -1,30 +1,41 @@
-import React, { Fragment } from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCircleArrowRight} from '@fortawesome/free-solid-svg-icons'
+import React, { Fragment , useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
+import { getAllCategories } from '../../../Api/CategoryApi';
+import useHttp from '../../../CustomHooks/useHttp';
 import classes from './Categories.module.css'
 
 const Categories = () => {
+	const [isHiddenCategories , setIsHiddenCategories ] = useState(false)
 
-	const AllCategories = ["Labtop" , "Phones" ,"Tablet" ,"Home" , "Electronics"] ;
+	const {sendRequest , status , data , error } = useHttp(getAllCategories);
 
-	const showAllCategories = AllCategories.map(( category,index) => {
+	useEffect(()=>{
+		sendRequest()
+	},[sendRequest])
+
+
+	const showAllCategories =  !error && (status === 'completed') && (data || data.length > 0 )  && data.map(( category,index) => {
 		return(
-			<li key={index} className={`p-2 ${classes.categories}`}>
-				<FontAwesomeIcon icon={faCircleArrowRight} />
-				<span className="p-2">{category} </span>
-				<span className= {` ${classes.categoryBadge} badge text-light rounded-pill float-end `} >4</span>
+			<li key={index} >
+				<Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link>
 			</li>
 
 		)
 	})
-	return (
+
+	const btnShowCategoryHandeler = (e) => {
+		e.preventDefault()
+		setIsHiddenCategories(true)
+		console.log("yes")
+	}
+
+		return (
 			<Fragment>
-				<div className={classes.Categories}>
-						<h4 className={classes.CategoriesHeader}> Categories</h4>
-						<ul className="list-group ">
-							{showAllCategories}
-						</ul>
+				<div className={ `${classes.Categories} ${isHiddenCategories ? 'd-none' : 'animation-top'  }` }>
+					<button type="button" className="btn-close d-md-none float-end m-2 text-dark bg-light" onClick={btnShowCategoryHandeler} aria-label="Close"></button>
+					<ul className= {`list-group d-md-block  `} >
+						{showAllCategories}
+					</ul>
 				</div>
 			</Fragment>
 	);
