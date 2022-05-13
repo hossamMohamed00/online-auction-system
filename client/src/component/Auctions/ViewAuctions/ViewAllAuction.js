@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Row , Col } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faFilterCircleXmark , faFilter} from '@fortawesome/free-solid-svg-icons'
+import {faFilter} from '@fortawesome/free-solid-svg-icons'
 
-import { getAllAuctions } from '../../../Api/AuctionsApi';
+import { getAllAuctions, getCurrentAuctions } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
@@ -15,32 +15,55 @@ import FilterdAuctions from './FilterdAuction';
 
 
 const ViewAllAuctions = () => {
-	const {sendRequest , status , data } = useHttp(getAllAuctions);
+
 	const [showFilter , setShowFilter] = useState(null)
 
+	const [FilterAuction , setFilterAuction] = useState(false)
+	const [FilterdDetails , setFilterdDetails] = useState(null)
+
+	const {sendRequest , status , data } = useHttp(getAllAuctions);
+	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getCurrentAuctions);
+
+
 	useEffect(()=>{
-		sendRequest()
-	} , [sendRequest])
+		if(!FilterAuction){
+			sendRequest()
+			console.log("noo")
+		}
+		else{
+			sendFilterdRequest()
+			console.log("yes")
+		}
+	} , [sendRequest , FilterAuction])
 
 	const showFilterHandler = () => {
 		setShowFilter(true)
 	}
 
 	const hideFilterHandler = () => {
-		console.log("hide")
 		setShowFilter(false)
+	}
 
+	const filterHandeler = (values) => {
+		if(values){
+			console.log(values)
+			setFilterAuction(true)
+			setFilterdDetails(values)
+		}
+		else{
+			setFilterAuction(false)
+		}
 	}
 
 	console.log(showFilter)
 	return (
 		<div className={classes.ViewAllAuctions}>
 			<Row className="m-0 p-0">
-				<Col md={3} lg={2} className="m-0 p-0" >
-					<FilterdAuctions hideFilter={hideFilterHandler} showFilter = {showFilter}/>
+				<Col md={4} lg={2} className="m-0 p-0" >
+					<FilterdAuctions hideFilter={hideFilterHandler} showFilter = {showFilter} filterHandeler = {filterHandeler} />
 				</Col>
 
-				<Col md={9} lg={10}>
+				<Col md={8} lg={10}>
 
 					{ data && data.length > 0 &&
 						<div className = {classes.AllAuction}>
@@ -57,7 +80,9 @@ const ViewAllAuctions = () => {
 								}
 							</div>
 
-							<ViewAuctionDetails AuctionData = {data} animate={false} />
+							{FilterdRequestData && FilterdRequestStatus==='completed'  &&<ViewAuctionDetails AuctionData = {FilterdRequestData} animate={false} />}
+							{data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {data} animate={false} />}
+
 						</div>
 					}
 				</Col>

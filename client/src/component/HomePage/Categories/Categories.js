@@ -19,9 +19,8 @@ const Categories = () => {
 	const showAllCategories =  !error && (status === 'completed') && (data || data.length > 0 )  && data.map(( category,index) => {
 		return(
 			<li key={index} >
-				{/* <Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link> */}
-				<button className="btn p-2 text-decoration-none text-light" onClick={()=> navigate(`/categories?id=${category._id}`)}> {category.name}</button>
-			</li>
+				<Link className="p-2 text-decoration-none text-light" to={`/categories?id=${category._id}`} >{category.name} </Link>
+				</li>
 
 		)
 	})

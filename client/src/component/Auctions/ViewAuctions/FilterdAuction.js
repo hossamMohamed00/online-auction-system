@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {faFilterCircleXmark} from '@fortawesome/free-solid-svg-icons'
@@ -20,10 +20,27 @@ function FilterdAuctions(props) {
 	const CategoryList = data && data.map((Category)=> Category.name)
 	console.log("CategoryList" , data && CategoryList)
 
-	let AuctionType
+	let AuctionType , AuctionCategory
+	const AuctionMinPriceRef = useRef()
+	const AuctionMaxPriceRef = useRef()
+
 	const getAuctionType = (value) => {
 		AuctionType = value
 		console.log(value)
+	}
+	const getAuctionCategory = (value) => {
+		AuctionCategory = value
+		console.log(value)
+	}
+
+	const filterAuctionHandeler = () => {
+		const FilterValues =
+		{ 'AuctionType' : AuctionType ,
+		  'AuctionCategory' : AuctionCategory ,
+			'AuctionMinPriceRef' : AuctionMinPriceRef.current.value ,
+			'AuctionMaxPriceRef' : AuctionMaxPriceRef.current.value ,
+		}
+		props.filterHandeler(FilterValues)
 	}
 
 	return (
@@ -41,16 +58,18 @@ function FilterdAuctions(props) {
 
 					<div className={`${classes.AuctionCategory} my-4` }>
 						<h6>Auction Category</h6>
-						<RadioButton  name="AuctionType" values={CategoryList ? CategoryList : []} getValue={getAuctionType} />
+						<RadioButton  name="AuctionCategory" values={CategoryList ? CategoryList : []} getValue={getAuctionCategory} />
 					</div>
 
-					<div className={`${classes.AuctionCategory} my-4` }>
+					<div className={`${classes.AuctionPrice} my-4` }>
 						<h6>Auction Price </h6>
-						<div class="input-group">
-	  					<input type="number" placeholder="min" class="form-control"/>
-  						<input type="number" placeholder="max" class="form-control"/>
+						<div className="input-group">
+	  					<input type="number" placeholder="min" class="form-control" ref={AuctionMinPriceRef} />
+  						<input type="number" placeholder="max" class="form-control" ref={AuctionMaxPriceRef} />
 						</div>
 					</div>
+
+					<button className={` ${classes.btnFilter} btn w-100 `} onClick={filterAuctionHandeler}> Filter</button>
 
 				{/* end filter content */}
 
