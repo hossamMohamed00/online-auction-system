@@ -10,7 +10,7 @@ const Input = React.forwardRef((props , ref) => {
 	props.getValue && props.getValue(InputValue)
 
 	return(
-			<div className=" m-auto">
+			<div>
 				<input
 					type      	= {props.type}
 					value     	= {InputValue}

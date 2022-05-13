@@ -1,23 +1,45 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import Input from "../UI/Input/input";
 
 // import style of Contact us
 import classes from './ContactForm.module.css'
 
 const ContactForm = (props) => {
+
 	const nameRef = useRef()
 	const EmailRef = useRef()
-	const MessageRef = useRef()
+
+		const [Messagevalue , setMessagevalue]  = useState('')
+		const [isTouched , setIsTouched]   			= useState(false)
+
+	const vaildteText = (value) => value.trim() !== ''
+	const vaildteEmail = (value) => value.trim().includes('@')
+
+	const isValid    = vaildteText(Messagevalue)
+	const hasError   = isTouched && !isValid
+
+	let errorNameMessage = "Please Enter Your Name";
+	let errorEmailMessage = "Please Enter Your Email";
+	let errorMessage = "Please Enter Your Complaint  ";
+
+	const textAreaChangeHandler = (e) => {
+		setMessagevalue(e.target.value)
+	}
+	const textAreaBlurHandler = (e) => {
+		setIsTouched(true)
+
+	}
 
 	const submitHandeler = (e) => {
 		e.preventDefault()
 		const values = {
 			"name":nameRef.current.value,
 			"email":EmailRef.current.value,
-			"message":MessageRef.current.value
+			"message":Messagevalue
 		}
 		props.SendComplaint(values)
 	}
-	const FormControlStyle = `form-control ${classes['form-control']}`
+	const FormControlStyle = `form-control ${classes['formControl']}`
 
 	return(
 		<React.Fragment>
@@ -26,18 +48,20 @@ const ContactForm = (props) => {
 				{/* satrt contact form */}
 					<form className={classes.ContactFormDetails}>
 						<div className="d-flex flex-column w-100">
-							<label className="py-2 pb-1"> Name </label>
-							<input type="text" className={FormControlStyle} ref={nameRef} />
+							<label className="pb-1"> Name </label>
+							<Input type='text'  name='text' validateText={vaildteText} ref={nameRef}  errorMassage= {errorNameMessage} />
+
 						</div>
 
-						<div className="d-flex flex-column mt-2 w-100">
-							<label className="py-2 pb-1"> Email </label>
-							<input type="email"  className={FormControlStyle} ref={EmailRef}/>
+						<div className="d-flex flex-column w-100">
+							<label className="pb-1"> Email </label>
+							<Input type='email'  name='email' validateText={vaildteEmail} ref={EmailRef}  errorMassage ={errorEmailMessage}  />
 						</div>
 
-						<div className="d-flex flex-column mt-2 w-100">
-							<label className="py-2 pb-1"> Message </label>
-							<textarea className={`${FormControlStyle} `} ref={MessageRef} ></textarea>
+						<div className="d-flex flex-column w-100">
+							<label className="pb-1"> Message </label>
+							<textarea className={`${FormControlStyle} `} onChange={textAreaChangeHandler} onBlur={textAreaBlurHandler} value={Messagevalue}></textarea>
+							{hasError && <p className={classes.textAreaError}> {errorMessage} </p>}
 						</div>
 						<button className={`${classes.btnSubmit} `} onClick={submitHandeler} > Submit </button>
 

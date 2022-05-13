@@ -23,18 +23,26 @@
 	padding-left: 10%;
 }
 
-.form-control{
+.ContactFormDetails input , .formControl{
 	width: 100%!important;
-	/* background-color: var(--nav-color)!important; */
-	background: none;
-
+	background: none!important;
 	border-color: #171817!important;
 	padding: 3px;
 }
+.formControl ,.formControl::placeholder {
+	box-shadow: none!important;
+	color: white!important;
+}
 
-
+.formControl:hover{
+	box-shadow: none!important;
+}
+.textAreaError{
+	color: var(--alert-color);
+}
 .btnSubmit{
 	background-color: #171817!important;
+	border-color: #171817!important;
 	color: white;
 	border-radius: 5px;
 	margin-top: 25px;
@@ -44,6 +52,7 @@
 .btnSubmit:hover{
 	color: white;
 	background-color: var(--overlay-dark)!important;
+	border-color: var(--overlay-dark)!important;
 }
 
 
