@@ -1,6 +1,23 @@
 .ContactUs{
-	margin-top: 15vh;
+	margin-top: 20vh;
+	height: 70vh;
 	color: white;
-	background-color: blue;
+}
+
+@media (max-width: 576px) {
+	.ContactUs{
+		margin-right: 0;
+		height: fit-content;
+		margin-top: 10vh;
+		margin-bottom: 5vh;
+	}
+}
+
+@media (min-width: 576px) and (max-width: 992px) {
+	.ContactUs{
+		margin-top: 20vh;
+		height: 40vh;
+		margin-right: 100px;
+	}
 }
 

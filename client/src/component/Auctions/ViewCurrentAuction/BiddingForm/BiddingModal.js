@@ -56,7 +56,7 @@ const BiddingModal = (props) => {
 
 						<div className='d-flex justify-content-between'>
 							<p> Total Bid  </p>
-							<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p>
+							{/* <p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p> */}
 						</div>
 					</div>
 				</Modal.Body>

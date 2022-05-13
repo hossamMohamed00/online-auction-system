@@ -1,5 +1,5 @@
 import React, { Fragment , useEffect, useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../../Api/CategoryApi';
 import useHttp from '../../../CustomHooks/useHttp';
 
@@ -13,8 +13,6 @@ const Categories = () => {
 	useEffect(()=>{
 		sendRequest()
 	},[sendRequest])
-
-	const navigate = useNavigate()
 
 	const showAllCategories =  !error && (status === 'completed') && (data || data.length > 0 )  && data.map(( category,index) => {
 		return(

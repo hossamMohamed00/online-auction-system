@@ -27,10 +27,11 @@ const  ViewCategoryAuctions = () => {
 
 
 	useEffect(()=>{
-		if(CategoriyId){
+		if(!!location.key){
+			console.log(!!location.key)
 			sendRequest(CategoriyId)
 		}
-	} , [sendRequest , CategoriyId])
+	} , [sendRequest , !!CategoriyId])
 
 
 	useEffect(()=>{
