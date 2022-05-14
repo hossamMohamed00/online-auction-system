@@ -51,7 +51,7 @@ const usePaymentForm = () => {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mjc5NWZlNWM2ZjJiMWRkNGRjMWY5NzAiLCJlbWFpbCI6ImVicmFtQGVtYWlsLmNvbSIsImlhdCI6MTY1MjEyMTU3MywiZXhwIjoxMDY1MjEyMTU3M30.LmG0Yps1XZyQdFQZg_HeTlm1OcJzZNJSmTI1rmktSVg`,
+					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjdmZWI3MDlkNmIxMDgwZGI4ZGI0MDgiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MjU1MDY5MCwiZXhwIjoxMDY1MjU1MDY5MH0.EeAvFyRIN9TS6qGr5ua4ciKlral4xq057LefDz4IRZ8`,
 				},
 			},
 		).then(res => res.json());

@@ -92,6 +92,7 @@ export default class WalletService {
 
 		return walletBalance;
 	}
+
 	/**
 	 * Charging the user wallet
 	 * @param amount - amount of money
@@ -102,21 +103,23 @@ export default class WalletService {
 	public async chargeWallet(
 		amount: number,
 		paymentMethodId: string,
-		stripCustomerId: string,
-		customerEmail: string,
+		user: any,
 	) {
 		const successOrFailRes: SuccessOrFailType = await this.createPaymentIntent(
 			amount,
 			paymentMethodId,
-			stripCustomerId,
-			customerEmail,
+			user.stripeCustomerId,
+			user.email,
 		);
 
 		if (successOrFailRes.success === false) {
 			return successOrFailRes;
 		}
 
-		//TODO: Save charge into db
+		//* Increment user wallet balance
+		await this.incrementWalletBalance(user, amount);
+
+		//TODO: Save transaction into db
 
 		return successOrFailRes;
 	}
@@ -155,5 +158,18 @@ export default class WalletService {
 
 			return { success: false, message: error.message };
 		}
+	}
+
+	private async incrementWalletBalance(user: User, amount: number) {
+		const wallet = await this.walletModel.updateOne(
+			{ user },
+			{ $inc: { balance: amount } },
+		);
+
+		if (!wallet) {
+			throw new BadRequestException('Wallet not found ❌');
+		}
+
+		this.logger.debug('User wallet balance updated ✔✔💲 ');
 	}
 }

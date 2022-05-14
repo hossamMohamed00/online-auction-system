@@ -26,14 +26,12 @@ export class StripeController {
 	@Post('charge')
 	chargeWallet(
 		@Body() chargeWalletDto: ChargeWalletDto,
-		@GetCurrentUserData('stripeCustomerId') stripeCustomerId: string,
-		@GetCurrentUserData('email') userEmail: string,
+		@GetCurrentUserData() user: User,
 	) {
 		return this.walletService.chargeWallet(
 			chargeWalletDto.amount,
 			chargeWalletDto.paymentMethodId,
-			stripeCustomerId,
-			userEmail,
+			user,
 		);
 	}
 }
