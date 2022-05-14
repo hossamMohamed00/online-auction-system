@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialToken = localStorage.getItem('token')
 const initialState = {
     isLoggedIn : !!initialToken ,
-    idToken : initialToken
+    idToken : initialToken,
+		role:'buyer'
+
 }
 
 const AuthData = createSlice({
@@ -13,6 +15,7 @@ const AuthData = createSlice({
         login(state , action){
           state.isLoggedIn = !!action.payload.idToken
           state.idToken = action.payload.idToken
+					state.role=action.payload.role
           localStorage.setItem('token' , state.idToken)
         },
         logout(state , action){

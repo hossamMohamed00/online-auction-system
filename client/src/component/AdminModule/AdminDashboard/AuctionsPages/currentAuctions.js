@@ -16,7 +16,7 @@ const Auctions = [
 	},
 ];
 
-return <TableLayout columNames={columNames} records={{name:Auctions}} title="Current Auctions " />;
+return <TableLayout columNames={columNames} records={{name:Auctions}} title="Current Auctions " path='' />;
 };
 
 export default CurrentAuctionsPage;

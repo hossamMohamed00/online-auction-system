@@ -1,5 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 // pages
 import Register from './Pages/Register';
@@ -33,6 +35,9 @@ import './component/UI/Layout.css'
 
 
 function App() {
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+	console.log(isLoggedIn)
+
 	return (
 		<React.Fragment>
 			<Routes>
@@ -41,8 +46,9 @@ function App() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/home-page" element={<HomePage />} />{' '}
 				{/* start Routes of admin */}
-				<Route path="/adminDashboard" element={<AdminPage />} />
-				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
+
+{		isLoggedIn &&		<Route path="/adminDashboard" element={<AdminPage />} />
+}				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
 					element={<OngoingAuctionsPage />}

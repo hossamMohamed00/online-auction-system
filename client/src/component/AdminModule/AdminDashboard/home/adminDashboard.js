@@ -15,7 +15,6 @@ const AdminDashboard = props => {
 	const dropdownListForAdmin = [
 		{ title: 'Profile', icon: faUser, path: '/adminDashboard/adminProfile' },
 		{ title: 'Inbox', icon: faMessage, path: '/adminDashboard/chatPage' },
-		{ title: 'Logout', icon: faPowerOff, path: '/login' },
 	];
 	const dropdownListManageAuctions = [
 		{
