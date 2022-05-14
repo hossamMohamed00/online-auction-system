@@ -9,7 +9,7 @@ import classes from './ContactDetails.module.css'
 const ContactDetails = () => {
 	return(
 		<React.Fragment>
-			<div className={` ${classes.ContactDetails} container p-0`} >
+			<div className={` ${classes.ContactDetails} p-0`} >
 				<h4 className="text-center"> Contact Details</h4>
 
 				<div className='mt-2'>
