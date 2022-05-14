@@ -17,7 +17,7 @@ import {
 	IsPublicRoute,
 } from 'src/common/decorators';
 import { RefreshTokenAuthGuard } from '../../common/guards';
-import { Tokens } from './types';
+import { TokensAndRole } from './types';
 import { Serialize } from 'src/common/interceptors';
 import { UserDto } from '../users/shared-user/dto';
 import { EmailConfirmationService } from 'src/providers/auth';
@@ -41,7 +41,9 @@ export class AuthController {
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	async register(@Body() registerUserDto: RegisterUserDto): Promise<Tokens> {
+	async register(
+		@Body() registerUserDto: RegisterUserDto,
+	): Promise<TokensAndRole> {
 		//? Register the user
 		const tokens = await this.authService.register(registerUserDto);
 
@@ -63,7 +65,7 @@ export class AuthController {
 	@ApiBody({})
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Body() loginDto: LoginUserDto): Promise<Tokens> {
+	async login(@Body() loginDto: LoginUserDto): Promise<TokensAndRole> {
 		return this.authService.login(loginDto);
 	}
 
