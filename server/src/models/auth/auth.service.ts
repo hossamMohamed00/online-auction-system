@@ -34,7 +34,7 @@ export class AuthService {
 		private readonly usersService: UsersService,
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
-		private readonly stripeService: WalletService,
+		private readonly walletService: WalletService,
 	) {}
 
 	private logger: Logger = new Logger('AuthService');
@@ -50,7 +50,7 @@ export class AuthService {
 		if (isTaken) throw new BadRequestException('Email already taken ❌👀');
 
 		//? Create stripe customer instance for the user
-		const stripeCustomer = await this.stripeService.createCustomer(
+		const stripeCustomer = await this.walletService.createCustomer(
 			registerUserDto.name,
 			registerUserDto.email,
 			registerUserDto.role,
@@ -71,6 +71,9 @@ export class AuthService {
 				stripeCustomerId: stripeCustomer.id,
 			});
 		}
+
+		//? Create new wallet to the user
+		await this.walletService.createWallet(createdUser);
 
 		//? Issue tokens, save refresh_token in db and save user
 		const tokens = await this.getTokensAndSaveUser(createdUser);

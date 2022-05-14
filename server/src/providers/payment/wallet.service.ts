@@ -1,6 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { StripeConfigService } from 'src/config/stripe/stripe.config.service';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import Stripe from 'stripe';
+import { Wallet, WalletDocument } from './schema/wallet.schema';
 import { SuccessOrFailType } from './types/method-return.type';
 
 /**
@@ -12,7 +18,11 @@ export default class WalletService {
 	private logger: Logger = new Logger('Wallet Service 💲🤑');
 	private stripe: Stripe;
 
-	constructor(private stripeConfigService: StripeConfigService) {
+	constructor(
+		@InjectModel(Wallet.name)
+		private readonly walletModel: Model<WalletDocument>,
+		private stripeConfigService: StripeConfigService,
+	) {
 		//* Create new strip instance and provide the secret key
 		this.stripe = new Stripe(stripeConfigService.stripeSecretKey, {
 			apiVersion: '2020-08-27',
@@ -27,7 +37,7 @@ export default class WalletService {
 	 * @returns new Stripe Customer instance
 	 */
 	public async createCustomer(name: string, email: string, role: string) {
-		this.logger.log('Creating new strip customer for ' + email + ' 😉');
+		this.logger.debug('Creating new strip customer for ' + email + ' 😉');
 		return this.stripe.customers.create({
 			name,
 			email,
@@ -40,11 +50,37 @@ export default class WalletService {
 	}
 
 	/**
+	 * Create new wallet for the user
+	 * @param user - User that owns the wallet
+	 * @returns created wallet instance
+	 */
+	public async createWallet(user: Seller | Buyer) {
+		this.logger.debug('Creating new wallet for the user 😉');
+		const createdWallet = new this.walletModel({ user });
+
+		if (!createdWallet) {
+			return null;
+		}
+
+		await createdWallet.save();
+		this.logger.log('Wallet created successfully with id ' + createdWallet.id);
+
+		return createdWallet;
+	}
+
+	/**
+	 * List all saved wallets in the system
+	 */
+	listAllWallets() {
+		return this.walletModel.find({});
+	}
+
+	/**
 	 * Charging the user wallet
 	 * @param amount - amount of money
 	 * @param paymentMethodId - id sent by our frontend app after saving the credit card details
 	 * @param stripCustomerId -Stripe customer id of a user that is making the payment
-	 * @returns
+	 * @returns either success of fail
 	 */
 	public async chargeWallet(
 		amount: number,

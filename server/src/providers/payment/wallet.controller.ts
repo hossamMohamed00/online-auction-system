@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import WalletService from './wallet.service';
@@ -11,16 +11,20 @@ import { ChargeWalletDto } from './dto';
 export class StripeController {
 	constructor(private readonly walletService: WalletService) {}
 
+	@Get()
+	listAllWallets() {
+		return this.walletService.listAllWallets();
+	}
 	@Post('charge')
 	chargeWallet(
 		@Body() chargeWalletDto: ChargeWalletDto,
-		@GetCurrentUserData('_id') userId: string,
+		@GetCurrentUserData('stripeCustomerId') stripeCustomerId: string,
 		@GetCurrentUserData('email') userEmail: string,
 	) {
 		return this.walletService.chargeWallet(
 			chargeWalletDto.amount,
 			chargeWalletDto.paymentMethodId,
-			userId,
+			stripeCustomerId,
 			userEmail,
 		);
 	}
