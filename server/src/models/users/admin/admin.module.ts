@@ -5,9 +5,10 @@ import { Module } from '@nestjs/common';
 import { CategoryModule } from 'src/models/category/category.module';
 import { EmployeeModule } from '../employee/employee.module';
 import { AuctionsModule } from 'src/models/auction/auctions.module';
+import { UsersModule } from '../shared-user/users.module';
 
 @Module({
-	imports: [AuctionsModule, EmployeeModule, CategoryModule],
+	imports: [UsersModule, AuctionsModule, EmployeeModule, CategoryModule],
 	controllers: [AdminController],
 	providers: [AdminService],
 })
