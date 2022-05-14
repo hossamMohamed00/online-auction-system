@@ -22,6 +22,7 @@ import {
 	AuctionsBehavior,
 	CategoryBehaviors,
 	EmployeeBehaviors,
+	UsersBehaviors,
 } from './interfaces';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
@@ -33,14 +34,34 @@ import {
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 } from 'src/models/auction/dto';
+import { UserDto } from '../shared-user/dto';
+import { User } from '../shared-user/schema/user.schema';
+import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
 @Controller('admin')
 export class AdminController
-	implements AuctionsBehavior, EmployeeBehaviors, CategoryBehaviors
+	implements
+		UsersBehaviors,
+		AuctionsBehavior,
+		EmployeeBehaviors,
+		CategoryBehaviors
 {
 	constructor(private readonly adminService: AdminService) {}
+
+	/* Handle Users Behaviors */
+	/**
+	 * List all system users
+	 * @returns List of all users
+	 */
+	@Serialize(UserDto)
+	@Get('users')
+	findAllSystemUsers(
+		@Query() filterUsersQueryDto: FilterUsersQueryDto,
+	): Promise<User[]> {
+		return this.adminService.findAllSystemUsers(filterUsersQueryDto);
+	}
 
 	/* Handle Auction Behaviors */
 	/**
