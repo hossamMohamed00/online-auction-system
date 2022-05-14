@@ -12,6 +12,8 @@ import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
+import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
+import { UsersService } from '../shared-user/users.service';
 import { Admin, AdminDocument } from './schema/admin.schema';
 
 @Injectable()
@@ -19,11 +21,20 @@ export class AdminService {
 	constructor(
 		@InjectModel(Admin.name)
 		private readonly AdminModel: Model<AdminDocument>,
+		private readonly usersService: UsersService,
 		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
 	) {}
+	/* Handle Users Functions */
 
+	/**
+	 * Find all users registered in the system
+	 * @returns List of users
+	 */
+	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto) {
+		return this.usersService.findAll(filterUsersQueryDto);
+	}
 	/* Handle Auctions Functions */
 
 	/**

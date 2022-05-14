@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryService } from 'src/models/category/category.service';
+import { FilterUsersQueryDto } from './dto/filter-users.dto';
 import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
@@ -15,8 +16,8 @@ export class UsersService {
 	 * Find all users
 	 * @returns List of all existing users
 	 */
-	async findAll(): Promise<User[]> {
-		const users = await this.usersModel.find().exec();
+	async findAll(filterUsersQueryDto?: FilterUsersQueryDto): Promise<User[]> {
+		const users = await this.usersModel.find(filterUsersQueryDto);
 		return users;
 	}
 

@@ -12,15 +12,4 @@ import { AuctionDto } from 'src/models/auction/dto';
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
-
-	/**
-	 * List all system users
-	 * @returns List of all users
-	 */
-	@Roles(Role.Admin)
-	@Serialize(UserDto)
-	@Get()
-	findAll() {
-		return this.usersService.findAll();
-	}
 }
