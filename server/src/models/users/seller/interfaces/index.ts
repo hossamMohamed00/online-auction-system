@@ -1,1 +1,1 @@
-export * from './manage-auctions.interface';
+export * from './seller-manage-auctions.interface';

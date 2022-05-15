@@ -9,15 +9,4 @@ export class BuyerService {
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
 	) {}
-
-	async create(body: any) {
-		const buyer = new this.buyerModel(body);
-		await buyer.save();
-
-		return buyer;
-	}
-	async findAll() {
-		const buyers = await this.buyerModel.find().exec();
-		return buyers;
-	}
 }

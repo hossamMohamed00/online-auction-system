@@ -22,20 +22,20 @@ import {
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Role } from '../shared-user/enums';
-import { AuctionsBehaviors } from './interfaces';
+import { SellerAuctionsBehaviors } from './interfaces';
 import { SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
 @ApiTags('Seller')
 @Roles(Role.Seller)
 @Controller('seller')
-export class SellerController implements AuctionsBehaviors {
+export class SellerController implements SellerAuctionsBehaviors {
 	constructor(private readonly sellerService: SellerService) {}
 
 	/* Handle Auctions Functions */
 
 	@Serialize(AuctionDto)
-	@FormDataRequest() // Comes from NestjsFormDataModule
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Post('auction')
 	addAuction(
 		@Body() createAuctionDto: CreateAuctionDto,

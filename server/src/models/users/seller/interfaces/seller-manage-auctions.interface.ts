@@ -3,7 +3,7 @@ import { CreateAuctionDto, UpdateAuctionDto } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { SellerDocument } from '../schema/seller.schema';
 
-export interface AuctionsBehaviors {
+export interface SellerAuctionsBehaviors {
 	//* Add new auction to the seller account
 	addAuction(
 		createAuctionDto: CreateAuctionDto,
