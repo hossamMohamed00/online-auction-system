@@ -4,6 +4,8 @@ import { StripeConfigModule } from 'src/config/stripe/stripe.config.module';
 import WalletService from './wallet.service';
 import { Wallet, WalletSchema } from './schema/wallet.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Transaction, TransactionSchema } from './schema';
+import TransactionService from './transaction.service';
 
 @Module({
 	imports: [
@@ -19,9 +21,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 				},
 			},
 		]),
+		MongooseModule.forFeatureAsync([
+			{
+				name: Transaction.name,
+				useFactory: () => {
+					const schema = TransactionSchema;
+					//? Add the auto-populate plugin
+					schema.plugin(require('mongoose-autopopulate'));
+					return schema;
+				},
+			},
+		]),
 	],
 	controllers: [WalletController],
-	providers: [WalletService],
-	exports: [WalletService],
+	providers: [WalletService, TransactionService],
+	exports: [WalletService, TransactionService],
 })
 export class WalletModule {}

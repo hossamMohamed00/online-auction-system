@@ -7,7 +7,9 @@ import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import Stripe from 'stripe';
+import { TransactionType } from './enums';
 import { Wallet, WalletDocument } from './schema/wallet.schema';
+import TransactionService from './transaction.service';
 import { SuccessOrFailType } from './types/method-return.type';
 
 /**
@@ -22,6 +24,8 @@ export default class WalletService {
 	constructor(
 		@InjectModel(Wallet.name)
 		private readonly walletModel: Model<WalletDocument>,
+		private readonly transactionService: TransactionService,
+
 		private stripeConfigService: StripeConfigService,
 	) {
 		//* Create new strip instance and provide the secret key
@@ -117,9 +121,15 @@ export default class WalletService {
 		}
 
 		//* Increment user wallet balance
-		await this.incrementWalletBalance(user, amount);
+		await this.IncrementWalletBalance(user, amount);
 
 		//TODO: Save transaction into db
+		await this.transactionService.createTransaction({
+			amount,
+			transactionType: TransactionType.Deposit,
+			senderWallet: user,
+			recipientWallet: user,
+		});
 
 		return successOrFailRes;
 	}
@@ -160,7 +170,12 @@ export default class WalletService {
 		}
 	}
 
-	private async incrementWalletBalance(user: User, amount: number) {
+	/**
+	 * Increment the balance of the user's wallet
+	 * @param user
+	 * @param amount
+	 */
+	private async IncrementWalletBalance(user: User, amount: number) {
 		const wallet = await this.walletModel.updateOne(
 			{ user },
 			{ $inc: { balance: amount } },

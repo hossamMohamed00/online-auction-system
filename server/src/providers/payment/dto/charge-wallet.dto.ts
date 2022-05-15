@@ -9,5 +9,3 @@ export class ChargeWalletDto {
 	@Min(100)
 	amount: number;
 }
-
-export default ChargeWalletDto;
