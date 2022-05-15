@@ -129,6 +129,7 @@ export default class WalletService {
 			transactionType: TransactionType.Deposit,
 			senderWallet: user,
 			recipientWallet: user,
+			paymentIntentId: successOrFailRes.data.paymentIntentId,
 		});
 
 		return successOrFailRes;
@@ -161,12 +162,16 @@ export default class WalletService {
 				'Successfully created payment intent, ' + paymentIntent.id,
 			);
 
-			return { success: true, message: paymentIntent.status };
+			return {
+				success: true,
+				message: paymentIntent.status,
+				data: { paymentIntentId: paymentIntent.id },
+			};
 		} catch (error) {
 			// There are an error
 			this.logger.warn('Error while charging wallet, ' + error.message);
 
-			return { success: false, message: error.message };
+			return { success: false, message: error.message, data: null };
 		}
 	}
 

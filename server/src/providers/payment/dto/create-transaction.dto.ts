@@ -24,4 +24,7 @@ export class CreateTransactionDto {
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;
+
+	@IsNotEmpty()
+	paymentIntentId: string;
 }

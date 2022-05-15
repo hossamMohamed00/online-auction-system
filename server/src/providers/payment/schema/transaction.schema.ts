@@ -32,6 +32,9 @@ export class Transaction {
 
 	@Prop({ enum: Object.values(TransactionType), required: true })
 	transactionType: TransactionType;
+
+	@Prop({ required: true })
+	paymentIntentId: string;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
