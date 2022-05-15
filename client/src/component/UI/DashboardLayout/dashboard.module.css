@@ -7,6 +7,7 @@
 @media screen and (max-width: 991px) {
 	.showSideBarSmallMedia {
 		visibility: visible;
+		
 		position: absolute;
 		top: 5.8%;
 		left: 0;

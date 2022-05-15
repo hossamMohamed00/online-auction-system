@@ -1,46 +1,38 @@
-import React from 'react';
-// import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
-
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import useHttp from '../../../../CustomHooks/useHttp';
+import { getUsers } from '../../../../Api/usersApi';
 import TableLayout from '../../../UI/TableLayout/TableLayout';
+import { getCurrentAuctions } from '../../../../Api/AuctionsApi';
 
-const UsersPage=()=> {
+const UsersPage = () => {
+	const path = 'admin/users';
+	const idToken = useSelector(store => store.AuthData.idToken);
+	const columNames = ['name', 'email', 'role'];
 
-	const columNames = ['name' , 'email' , 'phone','Role' ]
+	const { sendRequest, status, data } = useHttp(getUsers);
 
-	const users = [
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'admin',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'admin',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'admin',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'admin',
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest]);
 
-		},
-	];
+
+
+	const failed = status !== 'completed';
+	console.log(failed);
+
 	return (
-		<TableLayout
-			columNames={columNames}
-			records={{ name: users }}
-			title="All Users"
-		/>
+		<React.Fragment>
+			{data && (
+				<TableLayout
+					columNames={columNames}
+					records={{ name: data }}
+					title="All Users"
+					failed={failed}
+				/>
+			)}
+		</React.Fragment>
 	);
-}
+};
 
 export default UsersPage;

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
+import useHttp from '../../../../CustomHooks/useHttp';
+import { getUsers } from '../../../../Api/usersApi';
 import TableLayout from '../../../UI/TableLayout/TableLayout';
 
-const SellersPage = () => {
+const BuyersPage = () => {
 	const columNames = ['name', 'email', 'phone', 'Role'];
 
 	const users = [
@@ -116,7 +119,13 @@ const SellersPage = () => {
 		},
 	];
 
-	return <TableLayout columNames={columNames} records={{name:users}} title="Buyers" />;
+	return (
+		<TableLayout
+			columNames={columNames}
+			records={{ name: users }}
+			title="Buyers"
+		/>
+	);
 };
 
-export default SellersPage;
+export default BuyersPage;

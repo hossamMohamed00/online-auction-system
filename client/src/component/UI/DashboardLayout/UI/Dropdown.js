@@ -40,7 +40,7 @@ const Dropdown = props => {
 			{/* <!-- Collapsible Element HTML --> */}
 			{props.list.map(item => {
 				return (
-					<div className="collapse" id={props.id}>
+					<div className="collapse" id={props.id} >
 						<div className={classes.linkIcon}>
 							<FontAwesomeIcon icon={item.icon ? item.icon : ''} />
 						</div>
