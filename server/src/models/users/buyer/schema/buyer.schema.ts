@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { User } from '../../shared-user/schema/user.schema';
 
 export type BuyerDocument = Buyer & Document;
 
@@ -9,7 +10,7 @@ export type BuyerDocument = Buyer & Document;
  */
 
 @Schema()
-export class Buyer {
+export class Buyer extends User {
 	@Prop({ required: true, default: true })
 	isBuyer: boolean;
 
