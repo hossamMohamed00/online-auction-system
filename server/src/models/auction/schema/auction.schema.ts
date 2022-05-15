@@ -5,6 +5,7 @@ import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
 export type AuctionDocument = Auction & Document;
 
@@ -76,6 +77,12 @@ export class Auction {
 		ref: Category.name,
 	})
 	category: Category;
+
+	@Prop({
+		type: mongoose.Schema.Types.ObjectId,
+		ref: Buyer.name,
+	})
+	bidders: [Buyer];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

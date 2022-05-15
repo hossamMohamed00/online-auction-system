@@ -316,6 +316,16 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Check if the auction is available for bidding or not
+	 * @param id - Auction id
+	 * @returns true or false
+	 */
+	async isAvailableToJoin(auctionId: string): Promise<boolean> {
+		//TODO: Get auction here
+		throw new Error('Method not implemented.');
+	}
+
+	/**
 	 * Change auction status to specific status
 	 * @param auctionId - Auction id
 	 * @param status - Auction status
