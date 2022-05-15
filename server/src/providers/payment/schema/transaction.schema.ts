@@ -20,7 +20,7 @@ export class Transaction {
 		autopopulate: true,
 		required: true,
 	})
-	sender: Seller | Buyer;
+	sender: User;
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ export class Transaction {
 		autopopulate: true,
 		required: true,
 	})
-	recipient: Seller | Buyer;
+	recipient: User;
 
 	@Prop({ enum: Object.values(TransactionType), required: true })
 	transactionType: TransactionType;

@@ -3,9 +3,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import WalletService from './wallet.service';
 import { Role } from 'src/models/users/shared-user/enums';
-import { ChargeWalletDto } from './dto';
+import { ChargeWalletDto, TransactionDto } from './dto';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import TransactionService from './transaction.service';
+import { Serialize } from 'src/common/interceptors';
 
 @ApiTags('Wallet')
 @Roles(Role.Seller, Role.Buyer)
@@ -39,6 +40,7 @@ export class StripeController {
 		);
 	}
 
+	@Serialize(TransactionDto)
 	@Get('transactions')
 	listTransactionsForUser(@GetCurrentUserData() user: User) {
 		return this.transactionService.listTransactionsForUser(user);

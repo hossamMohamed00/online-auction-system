@@ -39,6 +39,8 @@ export default class TransactionService {
 			$or: [{ sender: user._id }, { recipient: user._id }],
 		});
 
+		console.log({ transactions });
+
 		return transactions;
 	}
 }
