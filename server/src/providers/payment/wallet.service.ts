@@ -84,7 +84,7 @@ export default class WalletService {
 	 * Return user wallet balance
 	 * @param user
 	 */
-	async getWalletBalance(user: User) {
+	public async getWalletBalance(user: User) {
 		const walletBalance = await this.walletModel.findOne(
 			{ user },
 			{ balance: 1, _id: 0, user: 0 }, // find only the balance field
@@ -101,14 +101,14 @@ export default class WalletService {
 	 * Charging the user wallet
 	 * @param amount - amount of money
 	 * @param paymentMethodId - id sent by our frontend app after saving the credit card details
-	 * @param stripCustomerId -Stripe customer id of a user that is making the payment
+	 * @param user - user that make the charge request
 	 * @returns either success of fail
 	 */
 	public async chargeWallet(
 		amount: number,
 		paymentMethodId: string,
 		user: any,
-	) {
+	): Promise<SuccessOrFailType> {
 		const successOrFailRes: SuccessOrFailType = await this.createPaymentIntent(
 			amount,
 			paymentMethodId,
@@ -121,9 +121,9 @@ export default class WalletService {
 		}
 
 		//* Increment user wallet balance
-		await this.IncrementWalletBalance(user, amount);
+		await this.updateWalletBalance(user, amount, false);
 
-		//TODO: Save transaction into db
+		//* Save the transaction into db
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Deposit,
@@ -134,6 +134,52 @@ export default class WalletService {
 
 		return successOrFailRes;
 	}
+
+	/**
+	 * Refund money from wallet
+	 * @param user - logged in user
+	 * @param paymentIntentId: Transaction's paymentIntent id that will be refunded
+	 */
+	public async refundMoney(
+		user: any,
+		paymentIntentId: string,
+	): Promise<SuccessOrFailType> {
+		//* Get the amount of money in the transaction
+		const amount = await this.transactionService.getTransactionAmount(
+			paymentIntentId,
+		);
+
+		//* Create the refund on stripe
+		try {
+			await this.stripe.refunds.create({
+				payment_intent: paymentIntentId,
+				reason: 'requested_by_customer',
+			});
+		} catch (error) {
+			this.logger.error(error);
+			return { success: false, message: error.message, data: null };
+		}
+
+		//* Decrement user wallet balance
+		await this.updateWalletBalance(user, amount, true);
+
+		//* Save the transaction into db
+		await this.transactionService.createTransaction({
+			amount,
+			transactionType: TransactionType.Withdrawal,
+			sender: user,
+			recipient: user,
+			paymentIntentId: paymentIntentId,
+		});
+
+		return {
+			success: true,
+			message: 'Refund done ✔✔, check your bank account 🏦',
+			data: null,
+		};
+	}
+	/*--------------------------------*/
+	//* Helper methods
 
 	/**
 	 * Create new payment intent
@@ -176,11 +222,20 @@ export default class WalletService {
 	}
 
 	/**
-	 * Increment the balance of the user's wallet
+	 * Increment or decrement the balance of the user's wallet
 	 * @param user
 	 * @param amount
 	 */
-	private async IncrementWalletBalance(user: User, amount: number) {
+	private async updateWalletBalance(
+		user: User,
+		amount: number,
+		isWithdrawal: boolean,
+	) {
+		//? Check if the transaction is Withdrawal, so add negative sign to the amount to be decremented.
+		if (isWithdrawal) {
+			amount = -amount;
+		}
+
 		const wallet = await this.walletModel.updateOne(
 			{ user },
 			{ $inc: { balance: amount } },

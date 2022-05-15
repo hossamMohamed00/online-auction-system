@@ -35,12 +35,23 @@ export default class TransactionService {
 	}
 
 	async listTransactionsForUser(user: any) {
-		const transactions = await this.transactionModel.find({
-			$or: [{ sender: user._id }, { recipient: user._id }],
+		return this.transactionModel
+			.find({
+				$or: [{ sender: user._id }, { recipient: user._id }],
+			})
+			.sort([['createdAt', -1]])
+			.exec();
+	}
+
+	/**
+	 * Get the amount of money in a transaction
+	 * @param paymentIntentId
+	 */
+	async getTransactionAmount(paymentIntentId: string): Promise<number> {
+		const transaction = await this.transactionModel.findOne({
+			paymentIntentId,
 		});
 
-		console.log({ transactions });
-
-		return transactions;
+		return transaction.amount;
 	}
 }

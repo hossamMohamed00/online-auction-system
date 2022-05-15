@@ -37,4 +37,7 @@ export class TransactionDto {
 
 	@Expose()
 	paymentIntentId: string;
+
+	@Expose()
+	createdAt: string;
 }

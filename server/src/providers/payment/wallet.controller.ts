@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import WalletService from './wallet.service';
 import { Role } from 'src/models/users/shared-user/enums';
-import { ChargeWalletDto, TransactionDto } from './dto';
+import { ChargeWalletDto, RefundWalletDto, TransactionDto } from './dto';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import TransactionService from './transaction.service';
 import { Serialize } from 'src/common/interceptors';
@@ -38,6 +38,14 @@ export class StripeController {
 			chargeWalletDto.paymentMethodId,
 			user,
 		);
+	}
+
+	@Post('refund')
+	refund(
+		@Query() { paymentIntentId }: RefundWalletDto,
+		@GetCurrentUserData() user: User,
+	) {
+		return this.walletService.refundMoney(user, paymentIntentId);
 	}
 
 	@Serialize(TransactionDto)
