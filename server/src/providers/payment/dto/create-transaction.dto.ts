@@ -17,10 +17,10 @@ export class CreateTransactionDto {
 	amount: number;
 
 	@IsNotEmpty()
-	senderWallet: Seller | Buyer;
+	sender: Seller | Buyer;
 
 	@IsNotEmpty()
-	recipientWallet: Seller | Buyer;
+	recipient: Seller | Buyer;
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;

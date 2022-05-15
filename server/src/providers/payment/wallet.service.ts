@@ -127,8 +127,8 @@ export default class WalletService {
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Deposit,
-			senderWallet: user,
-			recipientWallet: user,
+			sender: user,
+			recipient: user,
 			paymentIntentId: successOrFailRes.data.paymentIntentId,
 		});
 
