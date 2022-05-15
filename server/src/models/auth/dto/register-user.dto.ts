@@ -2,11 +2,10 @@ import {
 	IsEmail,
 	IsEnum,
 	IsNotEmpty,
-	IsOptional,
 	IsString,
 	MinLength,
 } from 'class-validator';
-import { Role } from 'src/models/users/shared-user/enums';
+import { AvailableRolesForRegister } from 'src/models/users/shared-user/enums';
 
 export class RegisterUserDto {
 	@IsString()
@@ -21,7 +20,8 @@ export class RegisterUserDto {
 	@MinLength(3)
 	password: string;
 
-	@IsOptional()
-	@IsEnum(Role)
-	role: string;
+	@IsEnum(AvailableRolesForRegister, {
+		message: 'Role must be either seller or buyer 🙂',
+	})
+	role: AvailableRolesForRegister;
 }
