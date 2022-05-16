@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
 	GetCurrentUserData,
@@ -22,6 +30,7 @@ export class BuyerController implements BuyerAuctionsBehaviors {
 
 	/* Handle Auctions Functions */
 	@Post('auction/:id')
+	@HttpCode(HttpStatus.OK)
 	joinAuction(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,

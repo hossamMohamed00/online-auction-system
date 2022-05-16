@@ -16,6 +16,12 @@ export class BuyerService {
 		private readonly auctionService: AuctionsService,
 	) {}
 
+	/**
+	 * Add the bidder to the list of auction's bidders
+	 * @param buyer - Bidder object
+	 * @param auctionId - Wanted auction
+	 * @returns result
+	 */
 	async joinAuction(buyer: Buyer, auctionId: string) {
 		this.logger.debug('Try to add ' + buyer.email + ' to auction users list!');
 
@@ -39,13 +45,21 @@ export class BuyerService {
 		}
 
 		//TODO: Ensure that the buyer has auction's assurance in his wallet
-		// const hasMinAssurance = await this.auctionService.hasMinAssurance(auctionId, buyer.email);
-
+		const hasMinAssurance = await this.auctionService.hasMinAssurance(
+			auctionId,
+			buyer._id,
+		);
+		if (!hasMinAssurance) {
+			throw new BadRequestException(
+				'Sorry, you do not have enough balance to pay auction assurance 😑',
+			);
+		}
 		//* Add the buyer to the list of auction's bidders
 		const isAdded: boolean = await this.auctionService.appendBidder(
 			auctionId,
 			buyer._id,
 		);
+
 		if (!isAdded) {
 			throw new BadRequestException(
 				"Cannot append this bidder to the list of auction's bidders 😪❌",

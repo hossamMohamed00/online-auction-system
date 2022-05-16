@@ -18,9 +18,8 @@ import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
-import { SchedulerRegistry } from '@nestjs/schedule';
-import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
-import * as moment from 'moment';
+import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
+import WalletService from 'src/providers/payment/wallet.service';
 
 @Injectable()
 export class AuctionsService {
@@ -29,7 +28,8 @@ export class AuctionsService {
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
-		private startAuctionSchedulingService: StartAuctionSchedulingService,
+		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		private readonly walletService: WalletService,
 	) {}
 
 	private logger: Logger = new Logger('AuctionsService 👋🏻');
@@ -348,6 +348,19 @@ export class AuctionsService {
 		});
 
 		return count > 0;
+	}
+
+	async hasMinAssurance(auctionId: string, bidderId: ObjectId) {
+		//* Get the auction
+		const auction = await this.auctionModel.findById(auctionId);
+
+		//* Extract the chair cost
+		const auctionChairCost = auction.chairCost;
+
+		//* Get buyer wallet balance
+		const { balance } = await this.walletService.getWalletBalance(bidderId);
+
+		return balance >= auctionChairCost;
 	}
 
 	/**

@@ -23,7 +23,7 @@ import { AdminModule } from './models/users/admin/admin.module';
 import { BuyerModule } from './models/users/buyer/buyer.module';
 import { EmployeeModule } from './models/users/employee/employee.module';
 import { StripeConfigModule } from './config/stripe/stripe.config.module';
-import { StartAuctionSchedulingService } from './providers/schedule/auction/start-auction-scheduling.service';
+import { AuctionSchedulingService } from './providers/schedule/auction/auction-scheduling.service';
 
 @Module({
 	imports: [
@@ -69,7 +69,7 @@ import { StartAuctionSchedulingService } from './providers/schedule/auction/star
 	],
 	providers: [
 		EmailSchedulingService,
-		StartAuctionSchedulingService,
+		AuctionSchedulingService,
 		//? Enable AccessTokenAuthGuard on all routes (Some routes will use IsPublicRoute to bypass authentication)
 		{
 			provide: APP_GUARD,

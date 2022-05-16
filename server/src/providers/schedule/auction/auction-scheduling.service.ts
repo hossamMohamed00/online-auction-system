@@ -5,8 +5,8 @@ import * as moment from 'moment';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 
 @Injectable()
-export class StartAuctionSchedulingService {
-	private readonly logger = new Logger(StartAuctionSchedulingService.name);
+export class AuctionSchedulingService {
+	private readonly logger = new Logger(AuctionSchedulingService.name);
 
 	constructor(
 		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the tow services
