@@ -81,4 +81,11 @@ export class AuctionDto {
 		return SerializeIt(CategoryDto, obj.category);
 	})
 	category: Category;
+
+	@Expose()
+	// @Transform(({ obj }) => {
+	// 	//TODO Serialize the category object.
+	// 	return SerializeIt(BuyerDto, obj.bidders);
+	// })
+	bidders: [Buyer];
 }

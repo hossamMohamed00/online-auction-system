@@ -5,7 +5,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -90,7 +90,13 @@ export class AuctionsService {
 		//* Check if the user want to populate the nested docs
 		const wantToPopulate = filterAuctionQuery?.populate;
 		if (wantToPopulate) {
-			populateFields = ['seller', 'category', 'item', 'winningBuyer'];
+			populateFields = [
+				'seller',
+				'category',
+				'item',
+				'winningBuyer',
+				'bidders',
+			];
 
 			// Delete the populate fields from the filterAuctionQuery
 			delete filterAuctionQuery.populate;
@@ -321,8 +327,30 @@ export class AuctionsService {
 	 * @returns true or false
 	 */
 	async isAvailableToJoin(auctionId: string): Promise<boolean> {
-		//TODO: Get auction here
-		throw new Error('Method not implemented.');
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			status: AuctionStatus.OnGoing,
+		});
+
+		return count > 0;
+	}
+
+	/**
+	 * Add new bidder to the list of auction's bidders
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async appendBidder(auctionId: string, bidderId: ObjectId): Promise<boolean> {
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$push: { bidders: bidderId },
+			},
+			{ new: true },
+		);
+
+		return auction != null;
 	}
 
 	/**

@@ -9,6 +9,7 @@ import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { CreateAuctionDto } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Role } from '../shared-user/enums';
+import { User } from '../shared-user/schema/user.schema';
 import { BuyerService } from './buyer.service';
 import { BuyerAuctionsBehaviors } from './interfaces';
 import { Buyer } from './schema/buyer.schema';
@@ -24,7 +25,7 @@ export class BuyerController implements BuyerAuctionsBehaviors {
 	joinAuction(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
-	): Promise<boolean> {
+	) {
 		return this.buyerService.joinAuction(buyer, id);
 	}
 

@@ -14,9 +14,6 @@ export type BuyerDocument = Buyer & Document;
 
 @Schema()
 export class Buyer extends User {
-	@Prop({ required: true, default: true })
-	isBuyer: boolean;
-
 	//* To keep track of stripe customer id to enable wallet
 	@Prop({ required: true, unique: true })
 	stripeCustomerId: string;

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
@@ -16,10 +15,10 @@ export class Auction {
 
 	@Prop({
 		required: true,
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: Item.name,
 	})
-	item: Item;
+	item: Types.ObjectId;
 
 	@Prop({ required: true, min: 0 })
 	basePrice: number; //? Auction starting price
@@ -60,29 +59,29 @@ export class Auction {
 	rejectionMessage: string;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: User.name,
 		default: null,
 	})
-	winningBuyer: User;
+	winningBuyer: Types.ObjectId;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: User.name,
 	})
-	seller: User;
+	seller: Types.ObjectId;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: Category.name,
 	})
-	category: Category;
+	category: Types.ObjectId;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
-		ref: Buyer.name,
+		type: Types.ObjectId,
+		ref: User.name,
 	})
-	bidders: [Buyer];
+	bidders: [Types.ObjectId];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);
