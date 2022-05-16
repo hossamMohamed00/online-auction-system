@@ -20,6 +20,7 @@ import HowBidPage from './Pages/HowBidPage';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
+import Chat from './component/Buyer_Module/Chat/Chat';
 
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
@@ -27,12 +28,13 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 function App() {
 	//* TEMPORARY Payment code
 	return (
-		<Elements stripe={stripePromise}>
-			<PaymentForm />
-		</Elements>
+		// <Elements stripe={stripePromise}>
+		// 	<PaymentForm />
+		// </Elements>
 
-		/*
+
 		<React.Fragment>
+			<Chat	 />
 			<Routes>
 				<Route path="/home-page" element={<HomePage />} />
 				<Route path="/" element={<Navigate to="/home-page" />} />
@@ -50,7 +52,7 @@ function App() {
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
-		*/
+
 	);
 }
 

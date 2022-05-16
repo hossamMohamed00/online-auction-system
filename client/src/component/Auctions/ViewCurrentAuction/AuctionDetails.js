@@ -29,13 +29,13 @@ const AuctionDetails = ({data}) => {
 					</div>
 
 					<div className='pb-2 fw-bold '>
-						<h6 className='text-light d-inline-block'> Category : </h6>
+						<h6 className='fw-bold text-light d-inline-block'> Category : </h6>
 						<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.CategoryName}`} to = {`/categories?id=${data.category._id}`} >  {data.category.name}  </Link>
 
 					</div>
 					<div className='pb-2 fw-bold'>
 						<div>
-							<h6 className=' text-light d-inline-block'> Brand : </h6>
+							<h6 className=' fw-bold text-light d-inline-block'> Brand : </h6>
 							<span className={` ps-1 ${classes.CreatorName}`}> {data.item.brand} </span>
 						</div>
 

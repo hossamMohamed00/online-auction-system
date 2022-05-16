@@ -62,8 +62,8 @@
 }
 
 .btnPlaceBid:hover{
-	background-color: var(--paragaph-color);
-	color: var(--overlay-blue);
+	background-color: var(--overlay-dark);
+	color: white;
 	box-shadow: none!important;
 }
 .btnPlaceBid:focus{	box-shadow: none!important}

@@ -27,7 +27,7 @@ const ViewCurrentAuction = () => {
 	} , [sendRequest ])
 
 	const AuctionData = data && status==='completed' && data
-
+	const ClosedAuction = AuctionData && AuctionData.status==='closed'
 	// const imageSlider =
 
 
@@ -50,7 +50,7 @@ const ViewCurrentAuction = () => {
 
 				<Col lg={6} className={classes.Auction} >
 					<AuctionHeader AuctionData = {AuctionData} />
-					<AuctionFooter  />
+					{!ClosedAuction && <AuctionFooter AuctionStatus = {AuctionData && AuctionData.status} /> }
 				</Col>
 
 			</Row>

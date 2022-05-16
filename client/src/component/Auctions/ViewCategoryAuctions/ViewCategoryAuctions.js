@@ -15,6 +15,7 @@ import classes from "./ViewCategoryAuctions.module.css"
 
 const  ViewCategoryAuctions = () => {
 
+	const [changeCategory , setChangeCategory] = useState(false)
 	const [showRestItems , setShowRestItems] = useState(false)
 
 	const {sendRequest , status , data } = useHttp(getCategoryAuctions);
@@ -27,11 +28,22 @@ const  ViewCategoryAuctions = () => {
 
 
 	useEffect(()=>{
-		if(!!location.key){
+		setChangeCategory(false)
+		if(CategoriyId){
+			setChangeCategory(true)
 			console.log(!!location.key)
 			sendRequest(CategoriyId)
 		}
-	} , [sendRequest , !!CategoriyId])
+	} , [sendRequest])
+
+	console.log(changeCategory)
+
+	useEffect(()=>{
+		if(changeCategory===true){
+			console.log("yes")
+			sendRequest(CategoriyId)
+		}
+	} , [sendRequest])
 
 
 	useEffect(()=>{
