@@ -323,13 +323,28 @@ export class AuctionsService {
 
 	/**
 	 * Check if the auction is available for bidding or not
-	 * @param id - Auction id
+	 * @param auctionId - Auction id
 	 * @returns true or false
 	 */
 	async isAvailableToJoin(auctionId: string): Promise<boolean> {
 		const count = await this.auctionModel.countDocuments({
 			_id: auctionId,
 			status: AuctionStatus.OnGoing,
+		});
+
+		return count > 0;
+	}
+
+	/**
+	 * Check if the bidder exists in the auction bidder list or not
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async isAlreadyJoined(auctionId: string, bidderId: ObjectId) {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			bidders: bidderId,
 		});
 
 		return count > 0;

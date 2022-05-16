@@ -23,7 +23,18 @@ export class BuyerService {
 		const isAvailable = await this.auctionService.isAvailableToJoin(auctionId);
 		if (!isAvailable) {
 			throw new BadRequestException(
-				'This auction currently is not available to join ✖✖',
+				'This auction currently is not available to join ❌❌',
+			);
+		}
+
+		//? Ensure that the bidder is not already joined
+		const isAlreadyJoined = await this.auctionService.isAlreadyJoined(
+			auctionId,
+			buyer._id,
+		);
+		if (isAlreadyJoined) {
+			throw new BadRequestException(
+				'You are already joined this auction before 🙂',
 			);
 		}
 
