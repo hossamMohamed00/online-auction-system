@@ -12,14 +12,17 @@ import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = props => {
-	const { Admin } = props.sidebarContent;
+	let user = props.sidebarContent;
+	console.log(user)
+	const userName = Object.keys(user)[0];
+	console.log(Object.entries(user)[1]);
 
 	return (
 		<React.Fragment>
 			<div className={`${classes.sidebar}  position-relative`}>
 				<div className={`${classes.logo}  text-center `}>
 					<h2 className="text-light  mt-3  ">
-						On<span >Line Auction</span>
+						On<span>Line Auction</span>
 					</h2>
 				</div>
 
@@ -29,17 +32,32 @@ const Sidebar = props => {
 					</div>
 					<div className={classes.username}>
 						<Dropdown
-							username={Admin.admin.name}
-							list={Admin.admin.list}
+							username={user[userName].name}
+							list={user[userName].list}
 							id="admin"
 						/>
 					</div>
 				</div>
 				<ul>
-					<li>
+					{Object.entries(user).map((user) => {
+						let counter = 1;
+						console.log(Object.entries(user)[counter]);
+						return (
+							<li>
+								<Dropdown
+									username={Object.keys(user)[counter].name}
+									list={Object.keys(user)[counter].list}
+									id="auctions"
+									icon={faGavel}
+									className="auction"
+								/>
+							</li>
+						);
+					})}
+					{/* <li>
 						<Dropdown
-							username={Admin.auctions.name}
-							list={Admin.auctions.list}
+							username={user.auctions.name}
+							list={user.auctions.list}
 							id="auctions"
 							icon={faGavel}
 							className="auction"
@@ -47,8 +65,8 @@ const Sidebar = props => {
 					</li>
 					<li>
 						<Dropdown
-							username={Admin.users.name}
-							list={Admin.users.list}
+							username={user.users.name}
+							list={user.users.list}
 							id="users"
 							icon={faUsers}
 							className="users"
@@ -56,8 +74,8 @@ const Sidebar = props => {
 					</li>
 					<li>
 						<Dropdown
-							username={Admin.requests.name}
-							list={Admin.requests.list}
+							username={user.requests.name}
+							list={user.requests.list}
 							id="auctionsRequests"
 							icon={faTh}
 							className="requests"
@@ -65,13 +83,13 @@ const Sidebar = props => {
 					</li>
 					<li>
 						<Dropdown
-							username={Admin.categories.name}
+							username={user.categories.name}
 							id="categories"
-							list={Admin.categories.list}
+							list={user.categories.list}
 							icon={faListAlt}
 							className="categories"
 						/>
-					</li>
+					</li> */}
 				</ul>
 			</div>
 		</React.Fragment>

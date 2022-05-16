@@ -4,7 +4,7 @@ const initialToken = localStorage.getItem('token')
 const initialState = {
     isLoggedIn : !!initialToken ,
     idToken : initialToken,
-		role:'buyer'
+		role:'admin'
 
 }
 
