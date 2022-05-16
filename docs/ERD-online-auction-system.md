@@ -325,6 +325,20 @@ Redis Pub/Sub implements the messaging system where the senders (in redis termin
 Actually, using Websocket is enough as the transport protocol to communicate between the clients. But there is some scenario that makes our chat realtime application struggle.
 Let’s consider a chat application. When a user first connects, a corresponding WebSocket connection is created within the application (WebSocket server) and it is associated with the specific application instance. This WebSocket connection is what empowers the medium to enables us to broadcast chat messages between users. Now, if a new user comes in, they may be connected to a new instance. So we have a scenario where different users (hence their respective WebSocket connections) are associated with different instances. As a result, they will not be able to exchange messages with each other — this is unacceptable, even for our toy chat application. So, we need to use Redis Pub/Sub events to makes those things run-in smoothly.
 
+## User wallet using stripe
+
+### Steps to follow
+
+1. A user creates an account through our NestJS API. Under the hood, we create a Stripe customer for the user and save the id for later.
+
+2. The user provides the details of the credit card through the React application. We send it straight to the Stripe API.
+
+3. Stripe API responds with a payment method id. Our frontend app sends it to our NestJS API.
+
+4. Our NestJS API gets the request and charges the user using the Stripe API.
+
 ## References
 
 - [Auction related definitions and rules](https://auction.wgbh.org/networkinfo.taf?_function=glossary#OpeningBid)
+
+- [Payment with stripe](https://wanago.io/2021/06/14/api-nestjs-stripe-react/)
