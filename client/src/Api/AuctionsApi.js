@@ -4,7 +4,7 @@ const url = 'http://localhost:8000/auctions'
 
 
 export const getCurrentAuctions = async () => {
-  const response = await fetch(`${url}?status=accepted&populate=true` );
+  const response = await fetch(`${url}?status=upcoming&populate=true` );
   const data = await response.json()
   if (!response.ok) {
     throw new Error(data.message);
