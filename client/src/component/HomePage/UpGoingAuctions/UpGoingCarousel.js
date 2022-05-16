@@ -36,11 +36,11 @@ const UpGoingCarousel = ({UogoingAuctionData}) => {
 								<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.SellerName}`} to = {`/auctions?id=${Item._id}`} >  {Item.seller.name} </Link>
 							</div>
 
-							<div>
+							<div className="mt-3">
 								<h6 className="fw-bold d-inline-block"> Start Bid will be :  </h6>
-								<p className="pb-0 d-inline-block px-2">  {Item.minimumBidAllowed} </p>
+								<p className="d-inline-block px-2">  {Item.minimumBidAllowed} </p>
 							</div>
-							<div className={classes.AuctionTime}>
+							<div>
 								<h6 className="fw-bold d-inline-block">Auction Start in :</h6>
 								<div className="d-inline-block px-2"> {CountDownTimer(new Date(Item.endDate))} </div>
 							</div>

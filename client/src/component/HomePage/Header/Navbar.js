@@ -61,7 +61,8 @@ const Navbar = ()=> {
 	return (
 	<nav className= {`${classes.nav} navbar navbar-dark fixed-top px-1  `}>
 			<div className="container-fluid">
-				<Link className={` ${classes.navbarBrand} navbar-brand fw-bold `} to="/home-page">Online Aution</Link>
+				<Link className={` ${classes.navbarBrand} navbar-brand fw-bold `} to="/home-page">
+					<span> Online </span> Auction</Link>
 
 				<FontAwesomeIcon icon={faBars} className= {` ${classes.faBars} float-end text-light d-xs d-md-none pt-1` }
 					onClick = {showNavContentHandeler}

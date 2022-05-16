@@ -24,19 +24,19 @@ const AuctionDetails = ({data}) => {
 				<div className='w-75 mx-3 '>
 					<div className='pb-2'>
 						<h6 className='fw-bold text-light d-inline-block'> Creator : </h6>
-						<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.CreatorName}`} to = {`/seller?id=${data.seller._id}`} >  {data.seller.name} </Link>
+						<Link className={`d-inline-block px-2 text-decoration-none fw-light ${classes.CreatorName}`} to = {`/seller?id=${data.seller._id}`} >  {data.seller.name} </Link>
 
 					</div>
 
 					<div className='pb-2 fw-bold '>
 						<h6 className='fw-bold text-light d-inline-block'> Category : </h6>
-						<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.CategoryName}`} to = {`/categories?id=${data.category._id}`} >  {data.category.name}  </Link>
+						<Link className={`d-inline-block px-2 text-decoration-none fw-light ${classes.CategoryName}`} to = {`/categories?id=${data.category._id}`} >  {data.category.name}  </Link>
 
 					</div>
 					<div className='pb-2 fw-bold'>
 						<div>
-							<h6 className=' fw-bold text-light d-inline-block'> Brand : </h6>
-							<span className={` ps-1 ${classes.CreatorName}`}> {data.item.brand} </span>
+							<h6 className=' fw-bold text-light d-inline-block '> Brand : </h6>
+							<span className={` ps-1  fw-light ${classes.CreatorName}`}> {data.item.brand} </span>
 						</div>
 
 					</div>

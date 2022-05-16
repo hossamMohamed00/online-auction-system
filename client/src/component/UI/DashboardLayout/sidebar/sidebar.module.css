@@ -1,0 +1,64 @@
+.sidebar {
+	width: 100%;
+	height: 100%;
+	background-color: #191c20;
+	margin-right: 10%;
+
+	/* overflow-y: auto; */
+
+	z-index: 10000;
+}
+.logo {
+	background-color: #191c24;
+	position: fixed;
+	z-index: 1000;
+	margin: 0 auto;
+	width: 25%;
+}
+.logo span{
+	color:#07B2EF;
+
+}
+.adminName .username {
+	margin-left: -3% !important;
+	/* display: inline-block; */
+	margin-top: 2%;
+	width: 75%;
+}
+.adminName {
+	padding-top: 30%;
+	margin-left: 5%;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.sidebar ul {
+	list-style: none;
+	color: #5e5f61;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 10%;
+	margin-left: 8%;
+}
+
+.sidebar ul li {
+	margin-bottom: 10%;
+	/* min-width:100%; */
+}
+
+.sidebar ul li a {
+	font-size: 17px;
+	font-weight: 600;
+}
+.sidebar ul li a:active,
+.sidebar ul li a:focus,
+.sidebar ul li a:hover {
+	color: white;
+}
+
+@media screen and (max-width: 991px) {
+	.sidebar {
+		visibility: hidden !important;
+	}
+}

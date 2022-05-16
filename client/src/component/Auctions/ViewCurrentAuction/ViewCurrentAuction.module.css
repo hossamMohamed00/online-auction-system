@@ -68,6 +68,7 @@
 }
 .btnPlaceBid:focus{	box-shadow: none!important}
 
+.btnReject {background-color: var(--alert-color); color: white;}
 
 /* styles in small and extra small */
 
