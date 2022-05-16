@@ -1,3 +1,4 @@
+import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
@@ -21,34 +22,44 @@ import { UsersModule } from './models/users/shared-user/users.module';
 import { AdminModule } from './models/users/admin/admin.module';
 import { BuyerModule } from './models/users/buyer/buyer.module';
 import { EmployeeModule } from './models/users/employee/employee.module';
+import { StripeConfigModule } from './config/stripe/stripe.config.module';
 import { StartAuctionSchedulingService } from './providers/schedule/auction/start-auction-scheduling.service';
 
 @Module({
 	imports: [
-		EmailConfirmationModule,
+		//? Import stripe module
+		WalletModule,
+
 		//? Import the chat module
 		ChatModule,
 		//? Import category and item modules
 		CategoryModule,
 		ItemModule,
+
 		//? Load all user related modules
 		SchemaModule,
 		AdminModule,
 		EmployeeModule,
 		SellerModule,
 		BuyerModule,
+
 		//? All environment variables Loader Modules.
 		AppConfigModule,
 		MongoConfigModule,
 		AuthConfigModule,
+		StripeConfigModule,
+
 		//? Setup Database
 		MongoDatabaseProviderModule,
+
 		//? Main Modules
 		UsersModule,
 		AuthModule,
 		AuctionsModule,
+
 		//? Email module
 		EmailModule,
+		EmailConfirmationModule,
 		/*
 		? Enable task schedule
 		 * The ScheduleModule.forRoot method initializes the scheduler.

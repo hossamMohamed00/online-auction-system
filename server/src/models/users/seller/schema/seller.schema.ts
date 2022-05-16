@@ -12,6 +12,10 @@ export type SellerDocument = Seller & Document;
 export class Seller {
 	@Prop({ required: true, default: true })
 	isSeller: boolean;
+
+	//* To keep track of stripe customer id to enable wallet
+	@Prop({ required: true, unique: true })
+	stripeCustomerId: string;
 }
 
 export const SellerSchema = SchemaFactory.createForClass(Seller);

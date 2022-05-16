@@ -2,6 +2,15 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentForm from './component/PaymentForm';
+
+// css files
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import './component/UI/Layout.css';
+import './component/UI/Layout.css';
 
 // pages
 import Register from './Pages/Register';
@@ -32,6 +41,8 @@ import './component/UI/Layout.css'
 // pages
 
 
+//* Payment
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 
 function App() {
@@ -39,13 +50,33 @@ function App() {
 	console.log(isLoggedIn)
 
 	return (
+
+
+
+
 		<React.Fragment>
+
+
+				{/* start Routes of admin*/}
+
+	//* TEMPORARY Payment code
+
+		<Elements stripe={stripePromise}>
+			<PaymentForm />
+		</Elements>
 			<Routes>
+				<Route path="/home-page" element={<HomePage />} />
+				<Route path="/" element={<Navigate to="/home-page" />} />
+
 				<Route path="/register" element={<Register />} />
-				<Route path="/" element={<Navigate to="/register" />} />
 				<Route path="/login" element={<LoginPage />} />
-				<Route path="/home-page" element={<HomePage />} />{' '}
-				{/* start Routes of admin */}
+
+				<Route path="/how-bid" element={<HowBidPage />} />
+				<Route path="/about-us" element={<AboutUsPage />} />
+				<Route path="/contact-us" element={<ContactUsPage />} />
+
+				<Route path="/auctions" element={<ViewAuctions />} exact />
+				<Route path="/categories" element={<ViewCategoryAuctions />} />
 
 {		isLoggedIn &&		<Route path="/adminDashboard" element={<AdminPage />} />
 }				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
@@ -68,8 +99,8 @@ function App() {
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
-			{/* <UsersPage/> */}
 		</React.Fragment>
+
 	);
 }
 

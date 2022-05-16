@@ -14,7 +14,8 @@ async function bootstrap() {
 
 	//? Enable Cross-origin resource sharing
 	app.enableCors({
-		origin: ['http://localhost:3000'], // This for react app
+		origin: ['http://localhost:3000'], //* This for react app
+		credentials: true,
 	});
 
 	//* Setup Global validation pipes
