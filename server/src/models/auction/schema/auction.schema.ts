@@ -77,10 +77,7 @@ export class Auction {
 	})
 	category: Types.ObjectId;
 
-	@Prop({
-		type: Types.ObjectId,
-		ref: User.name,
-	})
+	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
 	bidders: [Types.ObjectId];
 }
 
