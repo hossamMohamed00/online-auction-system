@@ -16,14 +16,25 @@ import { TokensAndRole } from './types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { User, UserDocument } from '../users/shared-user/schema/user.schema';
 import { Socket } from 'socket.io';
+import WalletService from 'src/providers/payment/wallet.service';
+import { Seller, SellerDocument } from '../users/seller/schema/seller.schema';
+import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
+import { AvailableRolesForRegister } from '../users/shared-user/enums';
 
 @Injectable()
 export class AuthService {
 	constructor(
+		// Inject all Models (User, buyer and seller)
 		@InjectModel(User.name) private readonly usersModel: Model<UserDocument>,
+		@InjectModel(Seller.name)
+		private readonly sellerModel: Model<SellerDocument>,
+		@InjectModel(Buyer.name)
+		private readonly buyerModel: Model<BuyerDocument>,
+
 		private readonly usersService: UsersService,
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
+		private readonly walletService: WalletService,
 	) {}
 
 	private logger: Logger = new Logger('AuthService');
@@ -38,8 +49,31 @@ export class AuthService {
 		const isTaken = await this.usersService.findByEmail(registerUserDto.email);
 		if (isTaken) throw new BadRequestException('Email already taken ❌👀');
 
-		//? Create new user instance
-		const createdUser: UserDocument = new this.usersModel(registerUserDto);
+		//? Create stripe customer instance for the user
+		const stripeCustomer = await this.walletService.createCustomer(
+			registerUserDto.name,
+			registerUserDto.email,
+			registerUserDto.role,
+		);
+
+		//? Check whether the user is buyer or seller
+		let createdUser;
+		if (registerUserDto.role === AvailableRolesForRegister.Buyer) {
+			//? Create new buyer instance
+			createdUser = new this.buyerModel({
+				...registerUserDto,
+				stripeCustomerId: stripeCustomer.id,
+			});
+		} else {
+			//? Create new buyer instance
+			createdUser = new this.sellerModel({
+				...registerUserDto,
+				stripeCustomerId: stripeCustomer.id,
+			});
+		}
+
+		//? Create new wallet to the user
+		await this.walletService.createWallet(createdUser);
 
 		//? Issue tokens, save refresh_token in db and save user
 		const tokens = await this.getTokensAndSaveUser(createdUser);
