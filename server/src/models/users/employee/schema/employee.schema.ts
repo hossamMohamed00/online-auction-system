@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { User } from '../../shared-user/schema/user.schema';
 
 export type EmployeeDocument = Employee & Document;
 
@@ -9,9 +10,6 @@ export type EmployeeDocument = Employee & Document;
  */
 
 @Schema()
-export class Employee {
-	@Prop({ required: true, default: true })
-	isEmployee: boolean;
-}
+export class Employee extends User {}
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

@@ -1,12 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { Role } from '../enums';
+import { Transform } from 'class-transformer';
 
 export type UserDocument = User & Document;
 
 @Schema({ discriminatorKey: 'kind' })
 export class User {
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
+
 	@Prop({ required: true, trim: true })
 	name: string;
 

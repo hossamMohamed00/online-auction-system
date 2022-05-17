@@ -5,7 +5,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -18,9 +18,8 @@ import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
-import { SchedulerRegistry } from '@nestjs/schedule';
-import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
-import * as moment from 'moment';
+import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
+import WalletService from 'src/providers/payment/wallet.service';
 
 @Injectable()
 export class AuctionsService {
@@ -29,7 +28,8 @@ export class AuctionsService {
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
-		private startAuctionSchedulingService: StartAuctionSchedulingService,
+		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		private readonly walletService: WalletService,
 	) {}
 
 	private logger: Logger = new Logger('AuctionsService 👋🏻');
@@ -90,7 +90,13 @@ export class AuctionsService {
 		//* Check if the user want to populate the nested docs
 		const wantToPopulate = filterAuctionQuery?.populate;
 		if (wantToPopulate) {
-			populateFields = ['seller', 'category', 'item', 'winningBuyer'];
+			populateFields = [
+				'seller',
+				'category',
+				'item',
+				'winningBuyer',
+				'bidders',
+			];
 
 			// Delete the populate fields from the filterAuctionQuery
 			delete filterAuctionQuery.populate;
@@ -313,6 +319,66 @@ export class AuctionsService {
 		});
 
 		return count > 0;
+	}
+
+	/**
+	 * Check if the auction is available for bidding or not
+	 * @param auctionId - Auction id
+	 * @returns true or false
+	 */
+	async isAvailableToJoin(auctionId: string): Promise<boolean> {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			status: AuctionStatus.OnGoing,
+		});
+
+		return count > 0;
+	}
+
+	/**
+	 * Check if the bidder exists in the auction bidder list or not
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async isAlreadyJoined(auctionId: string, bidderId: ObjectId) {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			bidders: bidderId,
+		});
+
+		return count > 0;
+	}
+
+	async hasMinAssurance(auctionId: string, bidderId: ObjectId) {
+		//* Get the auction
+		const auction = await this.auctionModel.findById(auctionId);
+
+		//* Extract the chair cost
+		const auctionChairCost = auction.chairCost;
+
+		//* Get buyer wallet balance
+		const { balance } = await this.walletService.getWalletBalance(bidderId);
+
+		return balance >= auctionChairCost;
+	}
+
+	/**
+	 * Add new bidder to the list of auction's bidders
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async appendBidder(auctionId: string, bidderId: ObjectId): Promise<boolean> {
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$push: { bidders: bidderId },
+			},
+			{ new: true },
+		);
+
+		return auction != null;
 	}
 
 	/**

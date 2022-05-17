@@ -1,13 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	forwardRef,
+	Inject,
+	Injectable,
+} from '@nestjs/common';
+import { ObjectId } from 'mongoose';
+
 import { HandleDateService } from 'src/common/utils';
 import { CategoryService } from '../category/category.service';
 import { ItemService } from '../items/item.service';
+import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto } from './dto';
 
 @Injectable()
 export class AuctionValidationService {
 	constructor(
-		private readonly itemService: ItemService,
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
+		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 	) {}
 
@@ -39,6 +48,51 @@ export class AuctionValidationService {
 		if (!isCategoryExists) {
 			validationResult.success = false;
 			validationResult.message = 'Category not found ❌.';
+
+			return validationResult;
+		}
+
+		return validationResult;
+	}
+
+	public async validateBidderJoinAuction(
+		auctionId: string,
+		bidderId: ObjectId,
+	) {
+		const validationResult = { success: true, message: undefined };
+
+		//? Ensure that auction is available to join (is currently ongoing)
+		const isAvailable = await this.auctionService.isAvailableToJoin(auctionId);
+		if (!isAvailable) {
+			validationResult.success = false;
+			validationResult.message =
+				'This auction currently is not available to join ❌❌';
+
+			return validationResult;
+		}
+
+		//? Ensure that the bidder is not already joined
+		const isAlreadyJoined = await this.auctionService.isAlreadyJoined(
+			auctionId,
+			bidderId,
+		);
+		if (isAlreadyJoined) {
+			validationResult.success = false;
+			validationResult.message =
+				'You are already joined this auction before 🙂';
+
+			return validationResult;
+		}
+
+		//?Ensure that the buyer has auction's assurance in his wallet
+		const hasMinAssurance = await this.auctionService.hasMinAssurance(
+			auctionId,
+			bidderId,
+		);
+		if (!hasMinAssurance) {
+			validationResult.success = false;
+			validationResult.message =
+				'Sorry, you do not have enough balance to pay auction assurance 😑';
 
 			return validationResult;
 		}

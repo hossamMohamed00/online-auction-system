@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 
 import { StripeConfigService } from 'src/config/stripe/stripe.config.service';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
@@ -84,17 +84,16 @@ export default class WalletService {
 	 * Return user wallet balance
 	 * @param user
 	 */
-	public async getWalletBalance(user: User) {
-		const walletBalance = await this.walletModel.findOne(
-			{ user },
-			{ balance: 1, _id: 0, user: 0 }, // find only the balance field
-		);
+	public async getWalletBalance(
+		user: User | ObjectId,
+	): Promise<{ balance: number }> {
+		const wallet = await this.walletModel.findOne({ user });
 
-		if (walletBalance == null) {
+		if (wallet == null) {
 			throw new BadRequestException('Wallet not found for that user!!');
 		}
 
-		return walletBalance;
+		return { balance: wallet.balance };
 	}
 
 	/**
