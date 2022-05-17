@@ -1,0 +1,20 @@
+.chatList{
+	min-height: 100vh;
+	/* width: 40%; */
+	/* position: absolute; */
+	/* top: 0px; */
+	/* left: 0; */
+	background-color: #191c20;
+	margin: 0;
+	padding: auto;
+}
+
+.PageContentClasses {
+	position: relative;
+	background-color: black;
+	margin: 10% 2% 5% 2%;
+	width: 96%;
+	padding: 0;
+	overflow-x: hidden;
+
+}

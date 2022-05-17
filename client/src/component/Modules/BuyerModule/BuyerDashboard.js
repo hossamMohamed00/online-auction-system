@@ -1,10 +1,9 @@
 import React from 'react';
-import {useSelector} from 'react-redux'
-
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
-import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
+// import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 import { faCommentDots, faGavel } from '@fortawesome/free-solid-svg-icons';
+import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -71,7 +70,7 @@ const BuyerDashboardContent = props => {
 		}
 	];
 	const contentExist = props.children;
-
+	console.log(contentExist)
 	return (
 		<DashboardLayout
 			buyer					= {{ name: `${email}` }}
@@ -85,7 +84,7 @@ const BuyerDashboardContent = props => {
 				props.children
 			) : (
 				<PageContent>
-					<h1>Welcome Admin</h1>
+					<h1> hello </h1>
 				</PageContent>
 			)}
 		</DashboardLayout>

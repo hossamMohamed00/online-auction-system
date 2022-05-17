@@ -29,9 +29,9 @@ const Header = props => {
 
 				</div>
 				<div className=" text-light px-2">
-					<FontAwesomeIcon icon={faMessage} />
+					<FontAwesomeIcon icon={faMessage} className={classes.MessgaeIcon}/>
 					<span className={classes.bar}></span>
-					<FontAwesomeIcon icon={faBell} />
+					<FontAwesomeIcon icon={faBell}  className={classes.NotificationIcon}/>
 					<img src={adminImg} className={classes.adminImg} />
 					<Link to='/login'className={`${classes.logout} mx-2 ` }onClick={logoutHandler}>Logout</Link>
 				</div>

@@ -30,7 +30,7 @@ import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
-import Chat from './component/Modules/BuyerModule/Chat/Chat';
+import Chat from './component/UI/Chat/Chat';
 
 
 //* Payment
@@ -89,8 +89,11 @@ function App() {
 
 				{/* start buyer routes  */}
 
-				{ isLoggedIn &&	role=== 'buyer'&& <Route path="/buyer-dashboard" element={<BuyerDashboard />} />}
-				<Route path="/buyer-dashboard/chat" element={<Chat />} />
+				{ isLoggedIn &&	role=== 'buyer' && <>
+					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+					<Route path="/buyer-dashboard/chat" element={<Chat />} />
+					</>
+				}
 
 				{/* end buyer routes  */}
 
