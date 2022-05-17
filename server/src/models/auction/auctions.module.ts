@@ -47,8 +47,8 @@ import { WalletModule } from 'src/providers/payment/wallet.module';
 	],
 	controllers: [AuctionsController],
 	providers: [
-		AuctionValidationService,
 		AuctionsService,
+		AuctionValidationService,
 		AuctionSchedulingService,
 	],
 	exports: [

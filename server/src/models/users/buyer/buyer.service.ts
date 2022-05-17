@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import WalletService from 'src/providers/payment/wallet.service';
-import { User, UserDocument } from '../shared-user/schema/user.schema';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
 
 @Injectable()
@@ -13,6 +13,7 @@ export class BuyerService {
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
 		private readonly walletService: WalletService,
+		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 	) {}
 
@@ -25,35 +26,18 @@ export class BuyerService {
 	async joinAuction(buyer: Buyer, auctionId: string) {
 		this.logger.debug('Try to add ' + buyer.email + ' to auction users list!');
 
-		//? Ensure that auction is available to join (is currently ongoing)
-		const isAvailable = await this.auctionService.isAvailableToJoin(auctionId);
-		if (!isAvailable) {
-			throw new BadRequestException(
-				'This auction currently is not available to join ❌❌',
+		//? Validate the data first
+		const validationResult =
+			await this.auctionValidationService.validateBidderJoinAuction(
+				auctionId,
+				buyer._id,
 			);
+
+		//? If there is validation error, throw an exception
+		if (!validationResult.success) {
+			throw new BadRequestException(validationResult.message);
 		}
 
-		//? Ensure that the bidder is not already joined
-		const isAlreadyJoined = await this.auctionService.isAlreadyJoined(
-			auctionId,
-			buyer._id,
-		);
-		if (isAlreadyJoined) {
-			throw new BadRequestException(
-				'You are already joined this auction before 🙂',
-			);
-		}
-
-		//TODO: Ensure that the buyer has auction's assurance in his wallet
-		const hasMinAssurance = await this.auctionService.hasMinAssurance(
-			auctionId,
-			buyer._id,
-		);
-		if (!hasMinAssurance) {
-			throw new BadRequestException(
-				'Sorry, you do not have enough balance to pay auction assurance 😑',
-			);
-		}
 		//* Add the buyer to the list of auction's bidders
 		const isAdded: boolean = await this.auctionService.appendBidder(
 			auctionId,
@@ -65,6 +49,8 @@ export class BuyerService {
 				"Cannot append this bidder to the list of auction's bidders 😪❌",
 			);
 		}
+
+		//TODO: Block the chair cost from the bidder wallet
 
 		return { success: true, message: 'Bidder joined successfully ✔' };
 	}
