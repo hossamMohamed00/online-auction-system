@@ -50,6 +50,7 @@ function App() {
 			<PaymentForm />
 		</Elements> */}
 			<Routes>
+				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />
 				<Route path="/" element={<Navigate to="/home-page" />} />
 
@@ -62,8 +63,11 @@ function App() {
 
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
+				{/* end Home Page Routes */}
 
-				{ isLoggedIn &&		<Route path="/adminDashboard" element={<AdminPage />} />}
+
+				{/* start Admin Routes */}
+				{ isLoggedIn &&	<Route path="/adminDashboard" element={<AdminPage />} />}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
@@ -76,12 +80,15 @@ function App() {
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
-				<Route path="/" element={<Navigate to="/home-page" />} />
-				<Route path="/how-bid" element={<HowBidPage />} />
-				<Route path="/about-us" element={<AboutUsPage />} />
-				<Route path="/contact-us" element={<ContactUsPage />} />
-				<Route path="/auctions" element={<ViewAuctions />} exact />
-				<Route path="/categories" element={<ViewCategoryAuctions />} />
+				{/* end Admin Routes */}
+
+
+				{/* start buyer routes  */}
+
+
+				{/* end buyer routes  */}
+
+
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
