@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {Col , Row} from 'react-bootstrap'
+import { useSelector} from 'react-redux';
 
+
+import Navbar  from '../../HomePage/Header/Navbar';
 import itemImage from '../../../assets/pexels-pixabay-38568.jpg'
 import classes from './ViewCurrentAuction.module.css'
 
@@ -18,6 +21,7 @@ import { getSingleAuction } from '../../../Api/AuctionsApi';
 const ViewCurrentAuction = () => {
 	const location = useLocation()
 	const AuctionId = new URLSearchParams(location.search).get('id')
+	const role = useSelector(store => store.AuthData.role)
 
 
 	const {sendRequest , status , data } = useHttp(getSingleAuction);
@@ -33,6 +37,7 @@ const ViewCurrentAuction = () => {
 
 	return (
 		<div className='container'>
+			{role !== 'admin' && <Navbar/>}
 			<Row className={ `${classes.ViewCurrentAuction} m-0 p-0 h-100`} >
 				<Col lg={6} className= {classes.ItemImage}>
 				{data && (data.item.image && data.item.image.length === 1)  ?

@@ -12,6 +12,7 @@ function AuctionFooter({AuctionStatus}) {
 	const role = useSelector(store => store.AuthData.role);
 
 	console.log(role)
+	console.log(AuctionStatus)
 
 	return (
 		<>
@@ -23,7 +24,7 @@ function AuctionFooter({AuctionStatus}) {
 				</button>
 
 			)}
-			{role === 'admin' && (
+			{role === 'admin' && AuctionStatus==='pending' && (
 				<div className='d-flex justify-content-evenly mt-3'>
 				<button
 					className={`btn w-100 fw-bold btn-success`}

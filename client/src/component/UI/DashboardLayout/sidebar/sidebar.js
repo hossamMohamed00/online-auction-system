@@ -16,7 +16,7 @@ const Sidebar = props => {
 	let user = props.sidebarContent;
 	console.log("user" , user)
 	const userName = Object.keys(user)[0];
-	console.log( userName , Object.entries(user) , Object.entries(user)[0]);
+	console.log( userName , Object.entries(user) , Object.entries(user)[0] );
 
 
 	return (
@@ -33,17 +33,20 @@ const Sidebar = props => {
 						<img src={adminImg} alt="admin" />
 					</div>
 					<div className={classes.username}>
+						{user[userName].list ?
 						<Dropdown
 							username={user[userName].name}
 							list={user[userName].list}
 							id="admin"
 						/>
+						: <h5 className='text-light fw-bold'> {user[userName].name}</h5>
+
+						}
 					</div>
 				</div>
 				<ul>
-					{delete user['admin']}
+					{delete user[userName]}
 					{Object.entries(user).map((user , index) => {
-						// let counter = 1;
 						console.log(user);
 						return (
 							<li key={index}>

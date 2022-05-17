@@ -13,6 +13,7 @@ import NoData from '../../UI/NoData'
 
 import classes from './ViewAllAuctions.module.css'
 import FilterdAuctions from './FilterdAuction';
+import Navbar from '../../HomePage/Header/Navbar';
 
 
 const ViewAllAuctions = () => {
@@ -59,6 +60,7 @@ const ViewAllAuctions = () => {
 	console.log(showFilter)
 	return (
 		<div className={classes.ViewAllAuctions}>
+			<Navbar/>
 			<Row className="m-0 p-0">
 				<Col md={4} lg={2} className="m-0 p-0" >
 					<FilterdAuctions hideFilter={hideFilterHandler} showFilter = {showFilter} filterHandeler = {filterHandeler} />

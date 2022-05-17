@@ -29,6 +29,8 @@ import HowBidPage from './Pages/HowBidPage';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
+import BuyerDashboard from './Pages/BuyerDashboard';
+import Chat from './component/Modules/BuyerModule/Chat/Chat';
 
 
 //* Payment
@@ -37,7 +39,9 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
-	console.log(isLoggedIn)
+	const role = useSelector(store => store.AuthData.role);
+
+	console.log(role)
 
 	return (
 
@@ -67,7 +71,7 @@ function App() {
 
 
 				{/* start Admin Routes */}
-				{ isLoggedIn &&	<Route path="/adminDashboard" element={<AdminPage />} />}
+				{ isLoggedIn &&	role=== 'admin'&& <Route path="/adminDashboard" element={<AdminPage />} />}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
@@ -85,6 +89,8 @@ function App() {
 
 				{/* start buyer routes  */}
 
+				{ isLoggedIn &&	role=== 'buyer'&& <Route path="/buyer-dashboard" element={<BuyerDashboard />} />}
+				<Route path="/buyer-dashboard/chat" element={<Chat />} />
 
 				{/* end buyer routes  */}
 

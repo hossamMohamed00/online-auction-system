@@ -52,7 +52,7 @@ const Step1 = () => {
 	useEffect(()=>{
 		if(status==='completed'){
 			dispatch(AuthActions.setStep1Details({name:nameRef.current.value , email:emailRef.current.value , password:passwordRef.current.value , role:roleValue}))
-			dispatch(AuthDataActions.login({idToken:data.accessToken}));
+			dispatch(AuthDataActions.login({idToken:data.accessToken , email:emailRef.current.value , role:data.role}));
 			dispatch(RegisterActions.showStep2())
 		}
 	},[status])

@@ -7,28 +7,33 @@ import PageContent from './Pagecontant/pageContent';
 import Header from './Header/header';
 
 // icons
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
-//request icon
-import { faTh } from '@fortawesome/free-solid-svg-icons';
-// categories icon
-import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faUsers , faGavel , faTh, faListAlt, faComment, faCreditCardAlt} from '@fortawesome/free-solid-svg-icons';
+
 
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
 
+	console.log("role2" , role , props)
+	const sidebarAdmin = props.admin && {
+		admin: { list: props.admin.list, name: props.admin.name },
+		users: { list: props.users.list, name: props.users.name , icon:faUsers },
+		auctions: { list: props.auctions.list, name: props.auctions.name , icon:faGavel  },
+		requests: { list: props.requests.list, name: props.requests.name , icon:faTh},
+		categories: { list: props.categories.list, name: props.categories.name , icon:faListAlt },
+	}
+
+	const sidebarBuyer = props.buyer && {
+		buyer					: { name: props.buyer.name },
+		profile				: { list: props.profile.list, name: props.profile.name , icon:faIdBadge },
+		viewAuctions	: { list: props.viewAuctions.list,  name: props.viewAuctions.name },
+		chat					: { list: props.chat.list,  name: props.chat.name , icon:faComment },
+		payment				: { list: props.payment.list,  name: props.payment.name  , icon:faCreditCardAlt},
+	}
 	const sidebarContent = {
-		admin: {
-			admin: { list: props.admin.list, name: props.admin.name },
-			users: { list: props.users.list, name: props.users.name , icon:faUsers},
-			auctions: { list: props.auctions.list, name: props.auctions.name , icon:faGavel  },
-			requests: { list: props.requests.list, name: props.requests.name , icon:faTh},
-			categories: { list: props.categories.list, name: props.categories.name , icon:faListAlt },
-		},
+		admin: sidebarAdmin,
 		seller: {},
-		buyer: {},
+		buyer: sidebarBuyer,
 	};
-	console.log(role)
 
 	const [showSideBar, setShowSideBar] = useState(true);
 
