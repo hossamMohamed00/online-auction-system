@@ -27,13 +27,18 @@ const BiddingModal = (props) => {
       centered
 			className={classes.BiddingModal}
     >
+			{/* Modal Header */}
       <Modal.Header closeButton className={classes.BiddingModalHeader}>
         <Modal.Title id="contained-modal-title-vcenter"  >
-          {isLoggedIn && <h2 className='fw-bold'>Place a Bid </h2>}
-					{!isLoggedIn && <h3 className='text-center pt-3'> Please Login in First, before placing a bid </h3>}
-        </Modal.Title>
+          {isLoggedIn && !props.UpgoingAuction && <h2 className='fw-bold'>Place a Bid </h2>}
+					{!isLoggedIn && <h5 className='text-center pt-3'> Please Login in First, before placing a bid </h5>}
+					{isLoggedIn && props.UpgoingAuction && <h5 className='text-center pt-3'> We will Notify you when Auction be ongoing </h5>}
+
+				</Modal.Title>
       </Modal.Header>
-			{isLoggedIn &&
+
+			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
+			{isLoggedIn && !props.UpgoingAuction &&
 				<Modal.Body className={classes.BiddingModalBody}>
 					<div className={` ${classes['ModalBodyForm']} ${!isBidValid ?'pb-2' :'' }`}>
 						<div className="input-group">
@@ -56,7 +61,7 @@ const BiddingModal = (props) => {
 
 						<div className='d-flex justify-content-between'>
 							<p> Total Bid  </p>
-							<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p>
+							{/* <p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p> */}
 						</div>
 					</div>
 				</Modal.Body>
@@ -64,12 +69,16 @@ const BiddingModal = (props) => {
 
       <Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-					{isLoggedIn && <button className={`btn col-6 fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
-					{!isLoggedIn && <Link className={`btn col-6 fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" to="/login" >
+					{isLoggedIn &&  !props.UpgoingAuction && <button className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
+					{!isLoggedIn && <Link className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" to="/login" >
 						Login
-					</Link> }
+					</Link>
+					}
+					{isLoggedIn && props.UpgoingAuction && <Link className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" to="/auctions" >
+						View Saved Auction
+					</Link>
+					}
 					<button className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`} type="button" onClick={props.onHide}> Close </button>
-
 				</div>
       </Modal.Footer>
     </Modal>

@@ -6,6 +6,7 @@ import classes from './table.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 // import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const TableLayout = props => {
@@ -59,9 +60,9 @@ const TableLayout = props => {
 															</td>
 														)}
 														{!userActions && (
-															<a className={`${classes.details} `} href="#">
+															<Link className={`${classes.details} `} to='/auctions?id=628397d740e03058e5f5b3e6'>
 																More Details
-															</a>
+															</Link>
 														)}
 													</tr>
 												);

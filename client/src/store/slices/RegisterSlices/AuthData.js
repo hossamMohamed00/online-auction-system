@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialToken = localStorage.getItem('token')
+const initialRole = localStorage.getItem('role')
+const email = localStorage.getItem('email')
+
 const initialState = {
     isLoggedIn : !!initialToken ,
     idToken : initialToken,
-		role:'admin'
+		role:initialRole,
+		email: email
 
 }
 
@@ -16,7 +20,12 @@ const AuthData = createSlice({
           state.isLoggedIn = !!action.payload.idToken
           state.idToken = action.payload.idToken
 					state.role=action.payload.role
-          localStorage.setItem('token' , state.idToken)
+					state.email=action.payload.email
+
+					localStorage.setItem('token' , state.idToken)
+					localStorage.setItem('email' , state.email)
+					localStorage.setItem('role' , state.role)
+
         },
         logout(state , action){
           state.isLoggedIn = false

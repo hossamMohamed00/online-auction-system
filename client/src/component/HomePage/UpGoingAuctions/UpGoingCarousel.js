@@ -1,75 +1,65 @@
 import React  from "react";
-import { Carousel } from "react-bootstrap";
-import classes from './UpGoingCarousel.module.css'
+import classes from './UpGoingAuctions.module.css'
 
-import LabtopImage1 from '../../../assets/pexels-pixabay-38568.jpg'
-import LabtopImage2 from '../../../assets/pexels-antony-trivet-9897933.jpg'
+import Slider from "../../UI/Carousel/Carousel";
+import CountDownTimer from "../../UI/CountDownTimer/CountDownTimer";
+import { Link } from "react-router-dom";
 
-const CarouselItems = [{
-	'ItemImageSrc' : LabtopImage1,
-	'ItemCategory' : "Labtop",
-	'ItemName' : "Labtop Dell",
-	'ItemDescription' : "Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win 10 Pro Black – Certified Refurbished",
-	'ItemAuctionTime' : "2 days , 18 Hours" ,
-	'ItemAuctionPrice' : "1200 $"
-},
-{
-	'ItemImageSrc' : LabtopImage2,
-	'ItemCategory' : "Labtop",
-	'ItemName' : "Labtop Dell",
-	'ItemDescription' : "Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win 10 Pro Black – Certified Refurbished",
-	'ItemAuctionTime' : "2 days , 18 Hours" ,
-	'ItemAuctionPrice' : "1200 $"
-}
-]
+const UpGoingCarousel = ({UogoingAuctionData}) => {
 
-const UpGoingCarousel = () => {
-
-	const ShowCarouselItems = CarouselItems.map((Item , index)=> {
+	const ShowCarouselItems = UogoingAuctionData.map((Item , index)=> {
 		return(
-			<Carousel.Item  className={` ${classes['carousel-inner']} `} interval={2000} key={index}>
-			<div className="row h-100">
-				<div className={` ${classes.ImageCarousel}  col-md-6 col-sm-12`}>
-					<p className={`${classes.alertText} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>
-					<img
-						src={Item['ItemImageSrc']}
-						alt={`${Item['ItemCategory']} + ${index}`}
-						className={classes.itemImage}
-					/>
-					<p className="text-center pl-5 fw-bold"> Category : {Item['ItemCategory']} </p>
-				</div>
-
-				<div className="col-md-6 col-sm-12 pt-2 ">
-					<h2 className="fw-bold text-center pb-2"> { Item['ItemName'] } </h2>
-					<p className={` lead ${classes.ItemText} `}> { Item['ItemDescription'] } </p>
-
-					<div className={classes.AuctionDetails}>
-						<div className={classes.AuctionTime}>
-							<h5 className="fw-bold">Auction Start in </h5>
-							<p className="text-center"> {Item['ItemAuctionTime']}</p>
-						</div>
-						<div className={classes.AuctionPrice}>
-							<h5 className="fw-bold"> Start Bid will be </h5>
-							<p className="text-center pb-0">  {Item['ItemAuctionPrice']} </p>
-						</div>
+			<div className="row" key={index}>
+				<div className='col-md-12 col-lg-6 pe-0 '>
+					<div className={classes.itemImage}>
+						<img
+							src={Item.item.image}
+							alt={`itemImage ${index}`}
+						/>
+						<p className={`${classes.UpgoingAuctionBadge} text-center p-1 m-0 fw-bold `}> UpGoing Auctions  </p>
 					</div>
 				</div>
 
-			</div>
+				<div className=	{`col-md-12 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}>
+					<h2 className="fw-bold text-center pb-1"> { Item.item.name } </h2>
+					{/* start Upgoing Auciton details */}
+					<div className="ps-4 pt-4">
+						<p className={` lead ${classes.ItemDescription} `}> {  Item.item.shortDescription 	 } </p>
+						<div>
+							<div>
+								<h6 className="fw-bold d-inline-block"> Category :  </h6>
+								<p className="d-inline-block px-2">  {Item.category.name} </p>
+							</div>
 
-		</Carousel.Item>
+							<div>
+								<h6 className="fw-bold d-inline-block"> Seller :  </h6>
+								<Link className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.SellerName}`} to = {`/auctions?id=${Item._id}`} >  {Item.seller.name} </Link>
+							</div>
+
+							<div className="mt-3">
+								<h6 className="fw-bold d-inline-block"> Start Bid will be :  </h6>
+								<p className="d-inline-block px-2">  {Item.minimumBidAllowed} </p>
+							</div>
+							<div>
+								<h6 className="fw-bold d-inline-block">Auction Start in :</h6>
+								<div className="d-inline-block px-2"> {CountDownTimer(new Date(Item.endDate))} </div>
+							</div>
+						</div>
+					</div>
+					{/* end Upgoing Auciton details */}
+
+					<Link className={`${classes.btnViewDetails} btn px-3 py-1 `} to = {`/auctions?id=${Item._id}`} >  View Auction Details </Link>
+
+				</div>
+			</div>
 	)});
 
 	return(
 		<>
-			<Carousel slide className={` container ${classes.Carousel} m-auto `}
-				prevIcon = {<span className={`carousel-control-prev-icon ${classes['prev']} `}> </span>}
-				nextIcon = {<span className={`carousel-control-next-icon ${classes['next']} `}> </span>}
-			>
-					{ShowCarouselItems}
-			</Carousel>
-
-	</>
+			<Slider>
+				{ShowCarouselItems}
+			</Slider>
+		</>
 )}
 
 export default UpGoingCarousel ;

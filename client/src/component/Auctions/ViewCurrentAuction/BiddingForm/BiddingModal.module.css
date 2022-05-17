@@ -16,7 +16,7 @@
 .BiddingModalHeader > button {display: none;}
 
 .BiddingModalHeader > div > p {
-	color: #e9d8a6!important;
+	color: var(--paragaph-color)!important;
 }
 .BiddingModalBody > p {color: #e9d8a6;}
 .bidValue{color: var(--alert-color);}
@@ -32,19 +32,22 @@
 }
 .Alarm{color: var(--alert-color);}
 
-
+.btnLogin{
+	background-color: var(--paragaph-color)!important;
+	color: black;
+}
 .btnCloseModal{
 	background-color: var(--alert-color)!important;
 	color: white;
 }
 
 .btnCloseModal:hover{
-	background-color: #e9d8a6!important;
+	background-color: var(--paragaph-color)!important;
 	color: black;
 }
 
 .btnPlaceMyBid{
-	background-color: #e9d8a6!important;
+	background-color: var(--paragaph-color)!important;
 	color: black;
 }
 

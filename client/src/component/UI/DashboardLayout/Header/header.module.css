@@ -1,6 +1,7 @@
 .headerNav {
 	width: 75%;
 	left: 25% !important;
+	transition: all 1s;
 }
 .barBtn {
 	color: white;

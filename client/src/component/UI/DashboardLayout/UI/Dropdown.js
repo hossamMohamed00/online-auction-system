@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
+import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+
+
 const Dropdown = props => {
 	// console.log(Object.keys(props.list[0])[0] )
 
@@ -38,11 +41,11 @@ const Dropdown = props => {
 			</a>
 
 			{/* <!-- Collapsible Element HTML --> */}
-			{props.list.map(item => {
+			{props.list.map((item, index) => {
 				return (
-					<div className="collapse" id={props.id} >
+					<div className="collapse" id={props.id} key={index} style={{transition: 'all 0.8s'}}>
 						<div className={classes.linkIcon}>
-							<FontAwesomeIcon icon={item.icon ? item.icon : ''} />
+							{item.icon && <FontAwesomeIcon icon={item.icon} /> }
 						</div>
 						<Link
 							to={item.path ? item.path : ''}

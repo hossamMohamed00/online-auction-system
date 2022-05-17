@@ -32,10 +32,11 @@ const LoginForm = () => {
 
 	useEffect(()=>{
 		if(status==='completed'){
+			const email = nameRef.current.value
 			console.log(data)
-			dispatch(AuthDataActions.login({idToken:data.accessToken , role:data.role}))
+			dispatch(AuthDataActions.login({idToken:data.accessToken , role:data.role , email:email}))
 			if(data.role === 'buyer'){
-			navigate('/home-page');
+			navigate('/buyer-dashboard');
 
 			}else if(data.role === 'admin'){
 				navigate('/adminDashboard');

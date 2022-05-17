@@ -1,13 +1,16 @@
 import React, { Fragment, useState } from "react";
+// import { useSelector } from "react-redux";
 
 import AuctionDetails from "./AuctionDetails";
 import Bids from "./Bids";
 
 import classes from './ViewCurrentAuction.module.css'
 
-function AucitonHeader(props) {
+function AucitonHeader({AuctionData}) {
 	const [isShownDetails , setIsShownDetails] 	= useState(true)
 	const [isShownBids , setIsShownBids] 				= useState(false)
+
+	// const role = useSelector(store => store.AuthData.role);
 
 	const btnDetailsHandeler = () => {
 		setIsShownDetails(true)
@@ -19,16 +22,17 @@ function AucitonHeader(props) {
 		setIsShownBids(true)
 	}
 
+	console.log(AuctionData)
 	return (
 		<Fragment>
-			<h1 className='pt-5 pb-2'> Labtop </h1>
+			<h1 className='pt-5 pb-2'> {AuctionData && AuctionData.item.name} </h1>
 			<div className={classes.AuctionHeader}>
 				<button className={`btn ${isShownDetails ? classes.ActiveLink : ''}` } onClick={btnDetailsHandeler}> Details </button>
-				<button className={`btn ${isShownBids ? classes.ActiveLink : ''}` } onClick={btnBidsHandeler} >
+				{AuctionData && AuctionData.status === 'ongoing' && <button className={`btn ${isShownBids ? classes.ActiveLink : ''}` } onClick={btnBidsHandeler} >
 					Bids
-				</button>
+				</button>}
 			</div>
-			{isShownDetails && <AuctionDetails AuctionId = {props.AuctionId} />}
+			{isShownDetails && <AuctionDetails data = {AuctionData} />}
 			{isShownBids && <Bids/> }
 		</Fragment>
 	);

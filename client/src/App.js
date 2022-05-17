@@ -29,16 +29,8 @@ import HowBidPage from './Pages/HowBidPage';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
-// css files
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import './component/UI/Layout.css';
-// css files
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import './component/UI/Layout.css'
-
-// pages
+import BuyerDashboard from './Pages/BuyerDashboard';
+import Chat from './component/Modules/BuyerModule/Chat/Chat';
 
 
 //* Payment
@@ -47,24 +39,22 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
-	console.log(isLoggedIn)
+	const role = useSelector(store => store.AuthData.role);
+
+	console.log(role)
 
 	return (
 
-
-
-
 		<React.Fragment>
+		{/* start Routes of admin*/}
 
+		{/* //* TEMPORARY Payment code */}
 
-				{/* start Routes of admin*/}
-
-	//* TEMPORARY Payment code
-
-		<Elements stripe={stripePromise}>
+		{/* <Elements stripe={stripePromise}>
 			<PaymentForm />
-		</Elements>
+		</Elements> */}
 			<Routes>
+				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />
 				<Route path="/" element={<Navigate to="/home-page" />} />
 
@@ -77,9 +67,12 @@ function App() {
 
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
+				{/* end Home Page Routes */}
 
-{		isLoggedIn &&		<Route path="/adminDashboard" element={<AdminPage />} />
-}				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
+
+				{/* start Admin Routes */}
+				{ isLoggedIn &&	role=== 'admin'&& <Route path="/adminDashboard" element={<AdminPage />} />}
+				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
 					element={<OngoingAuctionsPage />}
@@ -91,12 +84,17 @@ function App() {
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
-				<Route path="/" element={<Navigate to="/home-page" />} />
-				<Route path="/how-bid" element={<HowBidPage />} />
-				<Route path="/about-us" element={<AboutUsPage />} />
-				<Route path="/contact-us" element={<ContactUsPage />} />
-				<Route path="/auctions" element={<ViewAuctions />} exact />
-				<Route path="/categories" element={<ViewCategoryAuctions />} />
+				{/* end Admin Routes */}
+
+
+				{/* start buyer routes  */}
+
+				{ isLoggedIn &&	role=== 'buyer'&& <Route path="/buyer-dashboard" element={<BuyerDashboard />} />}
+				<Route path="/buyer-dashboard/chat" element={<Chat />} />
+
+				{/* end buyer routes  */}
+
+
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>

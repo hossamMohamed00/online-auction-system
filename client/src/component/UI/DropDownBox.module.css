@@ -1,38 +1,33 @@
-.Categories{
+.DropDownBox{
 	height: fit-content!important;
 	width: fit-content!important;
 	background-color: var(--dark-color);
 	color: white;
-
-	padding-bottom: 20px;
 	position: absolute;
 	top:41.99px;
 	text-align: center;
-
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	z-index: 1000;
-
-	margin-right: 1%!important;
 }
 
-.CategoriesHeader{
-	/* background-color: #191a19; */
-	background-color:  #4f4e4c!important;
-	padding-top: 25px!important;
-	font-size: 20px;
+.DropDownBox  ul {
+	list-style: none;
+}
 
-	/* border-top: 2px solid white!important; */
+.DropDownBox li{
+	cursor: pointer;
+	padding: 10px 10px ;
 
 }
 
-li{ cursor: pointer; list-style: none;	padding: 10px ;}
-li:hover{
-	background-color: #4f4e4c!important;
+.DropDownBox li:hover{
+	background-color: var(--overlay-dark)!important;
 	transition: all 0.5s;
 }
-.categoryBadge{
-	background-color: #43758f;
+.DropDownBox li:last-of-type:hover{
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 
 /* ********************************************* */
@@ -40,7 +35,7 @@ li:hover{
 /* start media query */
 
 @media (max-width: 768px){
-	.Categories{
+	.DropDownBox{
     width: 100%!important;
 		height: 100%!important;
     top: 0px;
