@@ -110,6 +110,29 @@ export class ChatService {
 
 		return message;
 	}
+	async handleNewMessageWithSupport(
+		sender: string,
+		clientEmail: string,
+		messageString: string,
+	): Promise<Message> {
+		const supportemail = 'Support@email.com';
+
+		//* Find the chat between the client and the given receiver
+		let chat = await this.findPrivateChat(clientEmail, supportemail);
+
+		//? If the chat is not found, create new one
+		if (!chat) {
+			chat = await this.createNewChat(sender, supportemail, messageString);
+		}
+
+		//* Create new message object
+		const message = new Message(messageString, sender);
+
+		//* Update chat messages
+		this.updateChatMessages(chat, message);
+
+		return message;
+	}
 
 	async findChats(name: string) {
 		const chat = await this.chatModel.find({

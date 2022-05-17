@@ -57,14 +57,23 @@ export class ChatGateway
 		const user: User = await this.chatService.getConnectedClientUserObject(
 			client,
 		);
+		if (user.role == 'employee') {
+			this.roomMembersServices.addEmployee({
+				socketId: client.id,
+				role: 'employee',
+			});
+			this.logger.log('New User Connected 👍🏻, with email: ' + user.email);
+			this.logger.log('New User Connected 👍🏻, with role: ' + user.role);
+		} else {
+			//* Add the member to the list of all members
+			this.roomMembersServices.addMember({
+				socketId: client.id,
+				email: user.email,
+			});
 
-		//* Add the member to the list of all members
-		this.roomMembersServices.addMember({
-			socketId: client.id,
-			email: user.email,
-		});
-
-		this.logger.log('New User Connected 👍🏻, with email: ' + user.email);
+			this.logger.log('New User Connected 👍🏻, with email: ' + user.email);
+			this.logger.log('New User Connected 👍🏻, with role: ' + user.role);
+		}
 	}
 
 	/**
@@ -72,8 +81,21 @@ export class ChatGateway
 	 */
 	async handleDisconnect(client: Socket) {
 		//* Remove the member from the list of all members
+		// if removed in frist condition so he is member if not so he is employee
+
 		const removedMember = this.roomMembersServices.removeMember(client.id);
-		this.logger.log('User Disconnected 👎🏻, with email: ' + removedMember.email);
+		if (removedMember) {
+			this.logger.log(
+				'User Disconnected 👎🏻, with email: ' + removedMember.email,
+			);
+		} else {
+			const removedEmployee = this.roomMembersServices.removeEmployee(
+				client.id,
+			);
+			this.logger.log(
+				'User Disconnected 👎🏻, with email: ' + removedEmployee.role,
+			);
+		}
 	}
 
 	/*-------------------------------------------*/
@@ -88,21 +110,40 @@ export class ChatGateway
 		@MessageBody() data: { with: string },
 		@GetCurrentUserFromSocket() user: User,
 	) {
-		// Display log message
-		this.logger.log(
-			'Try to load chat-history between ' + user.email + ' and ' + data.with,
-		);
+		// if employee so
+		if (user.role == 'employee') {
+			// Display log message
+			this.logger.log(
+				'Try to load chat-history between  Support and ' + data.with,
+			);
 
-		//? Get chat history of the client with the given receiver
-		const chatHistory: Chat = await this.chatService.getAllClientChatHistory(
-			user.email,
-			data.with,
-		);
+			//? Get chat history of the client with the given receiver
+			const chatHistory: Chat = await this.chatService.getAllClientChatHistory(
+				'Support@email.com',
+				data.with,
+			);
 
-		//* Send the chat history to the client back
-		client.emit('chat-history-to-client', chatHistory);
+			//* Send the chat history to the client back
+			client.emit('chat-history-to-client', chatHistory);
 
-		this.logger.log('Chat history loaded and emitted to user ✔✔');
+			this.logger.log('Chat history loaded and emitted to user ✔✔');
+		} else {
+			// Display log message
+			this.logger.log(
+				'Try to load chat-history between ' + user.email + ' and ' + data.with,
+			);
+
+			//? Get chat history of the client with the given receiver
+			const chatHistory: Chat = await this.chatService.getAllClientChatHistory(
+				user.email,
+				data.with,
+			);
+
+			//* Send the chat history to the client back
+			client.emit('chat-history-to-client', chatHistory);
+
+			this.logger.log('Chat history loaded and emitted to user ✔✔');
+		}
 	}
 
 	/*
@@ -142,5 +183,76 @@ export class ChatGateway
 
 		//* Emit the message
 		this.server.to(messageTo).emit('new-message-to-client', message);
+	}
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('new-message-to-Support')
+	async ToSupport(
+		@MessageBody() data: { message: string },
+		@GetCurrentUserFromSocket() user: User,
+		@ConnectedSocket() client: Socket,
+	) {
+		const receiverEmail = 'Support@email.com';
+		// Display log message
+		this.logger.log(
+			'New message recieved ❤ from ' + user.email + ' to ' + receiverEmail,
+		);
+
+		//* Handle the incoming message
+		const message = await this.chatService.handleNewMessageWithSupport(
+			user.email,
+			receiverEmail,
+			data.message,
+		);
+
+		//? Prepare to send the message to the clients
+		const messageTo = [client.id];
+		// this.logger.log(messageTo);
+
+		//* Find the receiver socketId if he is online
+		const SupportSocketId = this.roomMembersServices.getEmployeeSocketId();
+
+		// Append the receiverSocketId to the list to receive the message
+		if (SupportSocketId) {
+			for (let i = 0; i < SupportSocketId.length; i++) {
+				messageTo.push(SupportSocketId[i]);
+			}
+		}
+		//* Emit the message
+		this.server.to(messageTo).emit('new-message-to-employee', message);
+	}
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('new-message-From-Support')
+	async FromSupport(
+		@MessageBody() data: { message: string; receiverEmail: string },
+		@GetCurrentUserFromSocket() user: User,
+		@ConnectedSocket() client: Socket,
+	) {
+		// Display log message
+		this.logger.log(
+			'New message recieved ❤ from ' + user.email + ' to ' + data.receiverEmail,
+		);
+
+		//* Handle the incoming message
+		const message = await this.chatService.handleNewMessageWithSupport(
+			user.email,
+			data.receiverEmail,
+			data.message,
+		);
+
+		//? Prepare to send the message to the clients
+		const messageTo = [client.id];
+
+		//* Find the receiver socketId if he is online
+		const receiverSocketId = this.roomMembersServices.getMemberSocketId(
+			data.receiverEmail,
+		);
+
+		// Append the receiverSocketId to the list to receive the message
+		if (receiverSocketId) {
+			messageTo.push(receiverSocketId);
+		}
+
+		//* Emit the message
+		this.server.to(messageTo).emit('new-message-from-employee', message);
 	}
 }

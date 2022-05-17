@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class RoomMembersService {
 	private onlineMembers: any = [];
+	private onlineEmployee: any = [];
+	private logger: Logger = new Logger();
 
 	/**
 	 * Add new member to the list
@@ -33,6 +35,30 @@ export class RoomMembersService {
 
 		return member;
 	}
+	addEmployee({ socketId, role }) {
+		// Validate data
+		if (!socketId || !role) {
+			return null;
+		}
+		// Clean data
+		// email = email.trim().toLowerCase();
+
+		//? Check if already exists
+		const existingEmployee = this.onlineEmployee.find(
+			emoloyee => emoloyee.socketId === socketId,
+		);
+
+		if (existingEmployee) {
+			return null;
+		}
+
+		//* Add the member
+		const Employee = { socketId, role };
+
+		this.onlineEmployee.push(Employee);
+
+		return Employee;
+	}
 
 	/**
 	 * Remove member from the list
@@ -50,6 +76,17 @@ export class RoomMembersService {
 			return null;
 		}
 	}
+	removeEmployee(socketId: string) {
+		const index = this.onlineEmployee.findIndex(
+			member => member.socketId === socketId,
+		);
+
+		if (index !== -1) {
+			return this.onlineEmployee.splice(index, 1)[0];
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Get the socketId of the given member
@@ -59,5 +96,9 @@ export class RoomMembersService {
 	getMemberSocketId(email: string) {
 		const member = this.onlineMembers.find(member => member.email === email);
 		return member?.socketId;
+	}
+	getEmployeeSocketId() {
+		const member = this.onlineEmployee.map(data => data.socketId);
+		return member;
 	}
 }
