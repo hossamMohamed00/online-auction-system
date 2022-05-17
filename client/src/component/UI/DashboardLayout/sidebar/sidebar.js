@@ -3,23 +3,25 @@ import React from 'react';
 import classes from './sidebar.module.css';
 import Dropdown from '../UI/Dropdown';
 import adminImg from '../../../../assets/icons8-test-account-40.png';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+// import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
-import { faTh } from '@fortawesome/free-solid-svg-icons';
+// import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
-import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+
 const Sidebar = props => {
 	let user = props.sidebarContent;
-	console.log(user)
+	console.log("user" , user)
 	const userName = Object.keys(user)[0];
-	console.log(Object.entries(user)[1]);
+	console.log( userName , Object.entries(user) , Object.entries(user)[0]);
+
 
 	return (
 		<React.Fragment>
-			<div className={`${classes.sidebar}  position-relative`}>
+			<div className={`${classes.sidebar}  position-relative animation-from-left`}>
 				<div className={`${classes.logo}  text-center `}>
 					<h2 className="text-light  mt-3  ">
 						On<span>Line Auction</span>
@@ -39,16 +41,17 @@ const Sidebar = props => {
 					</div>
 				</div>
 				<ul>
-					{Object.entries(user).map((user) => {
-						let counter = 1;
-						console.log(Object.entries(user)[counter]);
+					{delete user['admin']}
+					{Object.entries(user).map((user , index) => {
+						// let counter = 1;
+						console.log(user);
 						return (
-							<li>
+							<li key={index}>
 								<Dropdown
-									username={Object.keys(user)[counter].name}
-									list={Object.keys(user)[counter].list}
-									id="auctions"
-									icon={faGavel}
+									username={user[1].name}
+									list={user[1].list}
+									id={`auctions_${index}`}
+									icon={user[1].icon ? user[1].icon : faGavel}
 									className="auction"
 								/>
 							</li>

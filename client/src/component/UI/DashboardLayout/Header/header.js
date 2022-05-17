@@ -18,7 +18,7 @@ const Header = props => {
 	}
 	return (
 		<nav
-			className={`navbar navbar-light bg-black  p-2 ${navClasses} fixed-top  `}
+			className={`navbar navbar-light bg-black  p-2 ${navClasses} fixed-top `}
 		>
 			<div className="container-fluid  ">
 				{/* <div className='d-flex justify-content-between'></div> */}

@@ -1,28 +1,17 @@
-import React , {useEffect, useRef, useState} from 'react';
+import React , {useEffect, useState} from 'react';
 
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+// import io from 'socket.io-client'
+const  Chat = () => {
 
-function Chat() {
-    const client = new W3CWebSocket('ws://127.0.0.1:8000/chat');
-    // const messageRef = useRef()
-    // const userRef = useRef()
+    // const client = io.connect('127.0.0.1:8000/chat');
+		// const [socket, setSocket] = useState(null);
 
-    // const [messages , setMessages ] = useState([])
+		// establish socket connection
+		// useEffect(() => {
+		// 	setSocket(io('http://localhost:8000/chat') );
+		// }, []);
 
-
-    // const sendMessage = (msgBody) => {
-    //     client.new-message-to-server(JSON.stringify(
-		// 			{ message: msgBody.msg , receiverEmail: msgBody.receiverEmail }
-    //     ));
-    // }
-
-    useEffect(()=>{
-        client.onopen = () => {
-          console.log('websocket')
-        }
-    },[client.onopen])
-
-
+		// console.log(socket)
     return (
         <p> hello </p>
      );

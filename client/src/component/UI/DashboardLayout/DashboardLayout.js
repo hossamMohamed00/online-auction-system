@@ -6,16 +6,24 @@ import Sidebar from './sidebar/sidebar';
 import PageContent from './Pagecontant/pageContent';
 import Header from './Header/header';
 
+// icons
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faGavel } from '@fortawesome/free-solid-svg-icons';
+//request icon
+import { faTh } from '@fortawesome/free-solid-svg-icons';
+// categories icon
+import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
 
 	const sidebarContent = {
 		admin: {
 			admin: { list: props.admin.list, name: props.admin.name },
-			users: { list: props.users.list, name: props.users.name },
-			auctions: { list: props.auctions.list, name: props.auctions.name },
-			requests: { list: props.requests.list, name: props.requests.name },
-			categories: { list: props.categories.list, name: props.categories.name },
+			users: { list: props.users.list, name: props.users.name , icon:faUsers},
+			auctions: { list: props.auctions.list, name: props.auctions.name , icon:faGavel  },
+			requests: { list: props.requests.list, name: props.requests.name , icon:faTh},
+			categories: { list: props.categories.list, name: props.categories.name , icon:faListAlt },
 		},
 		seller: {},
 		buyer: {},
@@ -34,7 +42,7 @@ const Wrapper = props => {
 					<div
 						className={` ${
 							showSideBar ? classes.showSideBarSmallMedia : ''
-						} col-lg-3 col-md-3 p-0 m-0 `}
+						} col-lg-3 col-md-3 p-0 m-0  `}
 					>
 						<Sidebar sidebarContent={sidebarContent[role]} />
 					</div>

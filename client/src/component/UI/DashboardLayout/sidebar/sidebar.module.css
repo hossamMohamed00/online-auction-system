@@ -3,7 +3,7 @@
 	height: 100%;
 	background-color: #191c20;
 	margin-right: 10%;
-
+	transition: all 0.5s;
 	/* overflow-y: auto; */
 
 	z-index: 10000;
@@ -17,7 +17,6 @@
 }
 .logo span{
 	color:#07B2EF;
-
 }
 .adminName .username {
 	margin-left: -3% !important;

@@ -9,7 +9,7 @@ import AuctionHeader from "../../UI/AuctionHeader/AuctionHeader";
 
 const  UpGoingAuctions =()=> {
 
-	const {sendRequest , status , data } = useHttp(getUpgoingAuctions);
+	const {sendRequest , status , data , error} = useHttp(getUpgoingAuctions);
 
 	useEffect(()=>{
 		sendRequest()
@@ -33,7 +33,7 @@ const  UpGoingAuctions =()=> {
 					{status === 'completed' && data.length > 0 && <UpGoingCarousel UogoingAuctionData={data}/> }
 				</div>
 
-				<NoData text="No UPgoing Auctions Now" data={data && data} />
+				<NoData text="No UPgoing Auctions Now" data={data && data} error= {error && error} />
 
 			</div>
 		</Fragment>

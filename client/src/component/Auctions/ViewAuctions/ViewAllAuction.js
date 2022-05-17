@@ -9,6 +9,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
 import AuctionHeader from '../../UI/AuctionHeader/AuctionHeader'
+import NoData from '../../UI/NoData'
 
 import classes from './ViewAllAuctions.module.css'
 import FilterdAuctions from './FilterdAuction';
@@ -21,7 +22,7 @@ const ViewAllAuctions = () => {
 	const [FilterAuction , setFilterAuction] = useState(false)
 	const [FilterdDetails , setFilterdDetails] = useState(null)
 
-	const {sendRequest , status , data } = useHttp(getAllAuctions);
+	const {sendRequest , status , data , error} = useHttp(getAllAuctions);
 	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getCurrentAuctions);
 
 
@@ -82,6 +83,7 @@ const ViewAllAuctions = () => {
 
 							{FilterdRequestData && FilterdRequestStatus==='completed'  &&<ViewAuctionDetails AuctionData = {FilterdRequestData} animate={false} />}
 							{data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {data} animate={false} />}
+							<NoData text="No Auctions Now" data={data && data} error= {error && error} />
 
 						</div>
 					}

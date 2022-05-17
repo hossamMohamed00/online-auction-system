@@ -11,7 +11,7 @@ import AuctionHeader from "../../UI/AuctionHeader/AuctionHeader";
 
 const CurrentAuctions = () => {
 
-	const {sendRequest , status , data } = useHttp(getCurrentAuctions);
+	const {sendRequest , status , data , error } = useHttp(getCurrentAuctions);
 	const FirstThreeItems =  data && data.slice(0,3)
 
 	useEffect(()=>{
@@ -24,7 +24,7 @@ const CurrentAuctions = () => {
 				<AuctionHeader text="Current Auctions" showLink={true} />
 				{data && status==='completed' && data.length > 0  && <ViewAuctionDetails AuctionData={FirstThreeItems} /> }
 
-				<NoData text="No Current Auctions Now" data={data && data} />
+				<NoData text="No Current Auctions Now" data={data && data} error= {error && error} />
 			</div>
 
 		</Fragment>
