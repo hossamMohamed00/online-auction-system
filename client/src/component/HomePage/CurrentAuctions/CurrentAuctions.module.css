@@ -1,21 +1,8 @@
 .CurrentAuctions{
 	height: fit-content;
+	margin: auto;
 	margin-bottom: 50px;
 }
 
-.CurrentAuctionsContent{
-	margin: 0 auto!important;
-
-}
-.btnGetAuctions{
-	float: right!important;
-	background: none;
-	border: 0;
-	transition: all 0.5s;
-
-}
-.btnGetAuctions:hover{
-	padding-right: 10px;
-}
 
 

@@ -21,6 +21,7 @@ const LoginForm = () => {
 
 	const {sendRequest , status , data , error } = useHttp(Login);
 	const idToken = useSelector((store)=> store.AuthData.idToken);
+	// const role = useSelector(store => store.AuthData.role);
 	console.log(idToken)
 
 	const nameRef= useRef();
@@ -31,9 +32,16 @@ const LoginForm = () => {
 
 	useEffect(()=>{
 		if(status==='completed'){
+			const email = nameRef.current.value
 			console.log(data)
-			dispatch(AuthDataActions.login({idToken:data.accessToken}))
-			navigate('/home-page')
+			dispatch(AuthDataActions.login({idToken:data.accessToken , role:data.role , email:email}))
+			if(data.role === 'buyer'){
+			navigate('/buyer-dashboard');
+
+			}else if(data.role === 'admin'){
+				navigate('/adminDashboard');
+
+			}
 		}
 	},[status])
 
