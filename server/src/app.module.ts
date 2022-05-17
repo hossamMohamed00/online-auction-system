@@ -24,14 +24,16 @@ import { BuyerModule } from './models/users/buyer/buyer.module';
 import { EmployeeModule } from './models/users/employee/employee.module';
 import { StripeConfigModule } from './config/stripe/stripe.config.module';
 import { AuctionSchedulingService } from './providers/schedule/auction/auction-scheduling.service';
+import { BidModule } from './models/bids/bid.module';
 
 @Module({
 	imports: [
 		//? Import stripe module
 		WalletModule,
-
 		//? Import the chat module
 		ChatModule,
+		//? Import the bid module
+		BidModule,
 		//? Import category and item modules
 		CategoryModule,
 		ItemModule,
