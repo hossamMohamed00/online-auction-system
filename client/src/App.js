@@ -22,7 +22,7 @@ import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers
 import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
-import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/ongoingAuctions';
+import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';

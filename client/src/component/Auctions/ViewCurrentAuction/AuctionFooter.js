@@ -66,7 +66,14 @@ function AuctionFooter({ AuctionStatus }) {
 					</button>
 				</div>
 			)}
-
+			{role === 'admin' && AuctionStatus === 'upcoming' && (
+				<button
+					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
+					type="button"
+				>
+					Extend Auction Time
+				</button>
+			)}
 			<BiddingModal
 				show={modalShow}
 				onHide={() => setModalShow(false)}
