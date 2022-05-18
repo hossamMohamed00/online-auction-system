@@ -16,11 +16,31 @@ const Wrapper = props => {
 	console.log("role2" , role , props)
 	const sidebarAdmin = props.admin && {
 		admin: { list: props.admin.list, name: props.admin.name },
-		users: { list: props.users.list, name: props.users.name , icon:faUsers },
-		auctions: { list: props.auctions.list, name: props.auctions.name , icon:faGavel  },
-		requests: { list: props.requests.list, name: props.requests.name , icon:faTh},
-		categories: { list: props.categories.list, name: props.categories.name , icon:faListAlt },
-	}
+		users: {
+			list: props.users.list,
+			name: props.users.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		auctions: {
+			list: props.auctions.list,
+			name: props.auctions.name,
+			icon: faGavel,
+			class:'auctions',
+		},
+		requests: {
+			list: props.requests.list,
+			name: props.requests.name,
+			icon: faTh,
+			class:'requests',
+		},
+		categories: {
+			list: props.categories.list,
+			name: props.categories.name,
+			icon: faListAlt,
+			class:'categories',
+		},
+	};
 
 	const sidebarBuyer = props.buyer && {
 		buyer					: { name: props.buyer.name },

@@ -31,6 +31,7 @@ import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/View
 import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/Modules/BuyerModule/Chat/Chat';
+import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 
 
 //* Payment
@@ -44,13 +45,12 @@ function App() {
 	console.log(role)
 
 	return (
-
 		<React.Fragment>
-		{/* start Routes of admin*/}
+			{/* start Routes of admin*/}
 
-		{/* //* TEMPORARY Payment code */}
+			{/* //* TEMPORARY Payment code */}
 
-		{/* <Elements stripe={stripePromise}>
+			{/* <Elements stripe={stripePromise}>
 			<PaymentForm />
 		</Elements> */}
 			<Routes>
@@ -69,9 +69,10 @@ function App() {
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
 
-
 				{/* start Admin Routes */}
-				{ isLoggedIn &&	role=== 'admin'&& <Route path="/adminDashboard" element={<AdminPage />} />}
+				{isLoggedIn && role === 'admin' && (
+					<Route path="/adminDashboard" element={<AdminPage />} />
+				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
@@ -81,24 +82,27 @@ function App() {
 					path="/adminDashboard/currentAuctions"
 					element={<CurrentAuctionsPage />}
 				/>
+				<Route
+					path="/adminDashboard/pendingAuctions"
+					element={<PendingAuctions />}
+				/>
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				{/* end Admin Routes */}
 
-
 				{/* start buyer routes  */}
 
-				{ isLoggedIn &&	role=== 'buyer'&& <Route path="/buyer-dashboard" element={<BuyerDashboard />} />}
+				{isLoggedIn && role === 'buyer' && (
+					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+				)}
 				<Route path="/buyer-dashboard/chat" element={<Chat />} />
 
 				{/* end buyer routes  */}
 
-
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
-
 	);
 }
 

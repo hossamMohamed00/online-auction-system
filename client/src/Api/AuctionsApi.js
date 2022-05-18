@@ -1,5 +1,6 @@
 const url = 'http://localhost:8000/auctions'
 
+
 const getAuctions = async (url) => {
   const response = await fetch(url);
   const data = await response.json()

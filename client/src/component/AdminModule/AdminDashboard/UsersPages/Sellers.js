@@ -1,49 +1,34 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
-
 import TableLayout from '../../../UI/TableLayout/TableLayout';
 
-const SellersPage = () => {
-	const columNames = ['name', 'email', 'phone', 'Role' ];
+const UsersPage = () => {
+	const idToken = useSelector(store => store.AuthData.idToken);
+	const columNames = ['name', 'email', 'role'];
 
-	const users = [
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'seller',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'seller',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'seller',
-		},
-		{
-			name: 'hossam',
-			email: 'hossam@gmail.com',
-			phone: '01128803117',
-			Role: 'seller',
-		},
-	];
+	const { sendRequest, status, data } = useHttp(getUsers);
+
+	useEffect(() => {
+		sendRequest({ idToken: idToken, path: 'admin/users?role=seller' });
+	}, [sendRequest]);
+
+	const failed = status !== 'completed';
+	console.log(failed);
 
 	return (
-		<TableLayout
-			columNames={columNames}
-			records={{ name: users }}
-			title="Sellers"
-		/>
+		<React.Fragment>
+			{data && (
+				<TableLayout
+					columNames={columNames}
+					records={{ name: data }}
+					title="Sellers"
+					failed={failed}
+				/>
+			)}
+		</React.Fragment>
 	);
 };
 
-export default SellersPage;
+export default UsersPage;

@@ -38,7 +38,7 @@ const AdminDashboard = props => {
 		{
 			title: 'Pending auctions',
 			icon: faTh,
-			path: '/adminDashboard/pendingRequests',
+			path: '/adminDashboard/pendingAuctions',
 		},
 	];
 	const dropdownListManageCategories = [];
