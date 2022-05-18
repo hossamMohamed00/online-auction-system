@@ -21,7 +21,9 @@ import {
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
 import { Role } from '../shared-user/enums';
+import { User, UserDocument } from '../shared-user/schema/user.schema';
 import { AuctionsBehaviors } from './interfaces';
 import { SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
@@ -69,5 +71,14 @@ export class SellerController implements AuctionsBehaviors {
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.removeAuction(id, sellerId);
+	}
+
+	@Serialize(ComplaintDto)
+	@Post('complaint')
+	CreateCompliant(
+		@Body() body: CreateComplaintDto,
+		@GetCurrentUserData() user: UserDocument,
+	) {
+		return this.sellerService.createComplaint(body, user);
 	}
 }

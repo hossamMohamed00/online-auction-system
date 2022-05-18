@@ -1,12 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Serialize } from 'src/common/interceptors';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { CreateAuctionDto, UpdateAuctionDto } from 'src/models/auction/dto';
 import {
 	Auction,
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
+import { ComplaintService } from 'src/models/complaint/complaint.service';
+import { CreateComplaintDto } from 'src/models/complaint/dto';
+import { UserDocument } from '../shared-user/schema/user.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 
 @Injectable()
@@ -18,6 +22,7 @@ export class SellerService {
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
 		private readonly auctionsService: AuctionsService,
+		private readonly complaintService: ComplaintService,
 	) {}
 
 	/* Handle Auctions Functions logic*/
@@ -87,5 +92,9 @@ export class SellerService {
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
+	}
+
+	createComplaint(body: CreateComplaintDto, User: UserDocument) {
+		return this.complaintService.create(body, User.email);
 	}
 }

@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { AuctionsModule } from 'src/models/auction/auctions.module';
 import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
 import { NestjsFormDataModule } from 'nestjs-form-data';
+import { ComplaintModule } from 'src/models/complaint/complaint.module';
 
 @Module({
 	imports: [
@@ -12,6 +13,7 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
 		NestjsFormDataModule,
 		AuctionsModule,
 		CloudinaryModule,
+		ComplaintModule,
 	],
 	controllers: [SellerController],
 	providers: [SellerService],
