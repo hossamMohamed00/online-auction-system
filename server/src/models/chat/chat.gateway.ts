@@ -145,6 +145,37 @@ export class ChatGateway
 			this.logger.log('Chat history loaded and emitted to user ✔✔');
 		}
 	}
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('get-MyChat')
+	async MyChat(
+		@ConnectedSocket() client: Socket,
+		@GetCurrentUserFromSocket() user: User,
+	) {
+		// if employee so
+		if (user.role == 'employee') {
+			// Display log message
+			//? Get chat history of the client with the given receiver
+			const chatHistory: Chat = await this.chatService.getMyChat(
+				'Support@email.com',
+			);
+
+			//* Send the chat history to the client back
+			client.emit('MyChat', chatHistory);
+
+			this.logger.log('Chat history loaded and emitted to user ✔✔');
+		} else {
+			// Display log message
+			this.logger.log('Try to load chat-history between ' + user.email);
+
+			//? Get chat history of the client with the given receiver
+			const chatHistory: Chat = await this.chatService.getMyChat(user.email);
+
+			//* Send the chat history to the client back
+			client.emit('MyChat', chatHistory);
+
+			this.logger.log('Chat history loaded and emitted to user ✔✔');
+		}
+	}
 
 	/*
 	 * a handler that will subscribe to the send_message messages and respond to the user with the exact same data.

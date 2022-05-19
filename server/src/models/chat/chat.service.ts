@@ -78,6 +78,13 @@ export class ChatService {
 			return chat.messages;
 		}
 	}
+	async getMyChat(clientEmail: string): Promise<any> {
+		// Find the chat document
+		const chat = await this.findChats(clientEmail);
+		if (chat) {
+			return chat;
+		}
+	}
 
 	/**
 	 * Handle the new incoming message by saving it
