@@ -4,20 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-import { faListAlt } from '@fortawesome/free-solid-svg-icons';
-
-
 const Dropdown = props => {
-	// console.log(Object.keys(props.list[0])[0] )
-
-	// const LogoutHandler = () => {
-	// 	if (props.list.length !== 0) {
-	// 		const logout = Object.keys(props.list[0])[0] === 'Logout' ? '' : '';
-	// 		return logout;
-	// 	}
-	// };
-	// console.log(LogoutHandler)
-
 	return (
 		<div className={classes.dropdown}>
 			<div
@@ -55,6 +42,7 @@ const Dropdown = props => {
 							{item.title}
 						</Link>
 					</div>
+
 				);
 			})}
 		</div>

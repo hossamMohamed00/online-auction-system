@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import BiddingModal from './BiddingForm/BiddingModal';
+import ModalUi from './BiddingForm/Modal';
 
 import classes from './ViewCurrentAuction.module.css';
 
 function AuctionFooter({AuctionStatus}) {
 	const [modalShow, setModalShow] = useState(false);
 
-	const UpgoingStatus = AuctionStatus === 'upcoming'
+	const UpComingStatus = AuctionStatus === 'upcoming'
 	const OnGoingStatus = AuctionStatus === 'ongoing'
+	const DeniedStatus = AuctionStatus === 'denied'
+
 	const role = useSelector(store => store.AuthData.role);
 
 	console.log(role)
@@ -20,7 +22,7 @@ function AuctionFooter({AuctionStatus}) {
 
 				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
 					{OnGoingStatus && "Place on Bid" }
-					{UpgoingStatus && "Notify me when Auction be onGoing" }
+					{UpComingStatus && "Notify me" }
 				</button>
 
 			)}
@@ -31,13 +33,13 @@ function AuctionFooter({AuctionStatus}) {
 					type="button"
 					// onClick={() => setModalShow(true)}
 				>
-					Approve
+				Approve
 
 				</button>
 				<button
 					className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
 					type="button"
-					// onClick={() => setModalShow(true)}
+					onClick={() => setModalShow(true)}
 				>
 					Reject
 
@@ -45,10 +47,11 @@ function AuctionFooter({AuctionStatus}) {
 				</div>
 			)}
 
-			<BiddingModal
+			<ModalUi
       	show={modalShow}
      	 	onHide={() => setModalShow(false)}
-				UpgoingAuction = {UpgoingStatus}
+				UpComingAuction = {UpComingStatus}
+				btnReject = {DeniedStatus}
     	/>
 
 		</>
