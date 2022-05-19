@@ -18,7 +18,7 @@ export class ChatController {
 	@Roles(Role.Seller, Role.Buyer, Role.Employee)
 	myChats(@GetCurrentUserData() user: UserDocument) {
 		//if user is employee make email = support
-		if (user.role == 'employee') {
+		if (user.role == Role.Employee) {
 			const chats = this.chatService.getMyChat('Support@email.com');
 			return chats;
 		} else {
