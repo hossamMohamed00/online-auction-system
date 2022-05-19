@@ -6,15 +6,15 @@ import classes from './header.module.css';
 
 // import icons and img
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import adminImg from '../../../../assets/icons8-test-account-40.png';
+// import adminImg from '../../../../assets/icons8-test-account-40.png';
 
 const Header = props => {
 	const navClasses = !props.showSideBarValue ? 'w-100' : classes.headerNav;
 	const logoutHandler=()=>{
-			AuthDataActions.logout();
+		AuthDataActions.logout();
 	}
 	return (
 		<nav
@@ -31,8 +31,15 @@ const Header = props => {
 				<div className=" text-light px-2">
 					<FontAwesomeIcon icon={faMessage} className={classes.MessgaeIcon}/>
 					<span className={classes.bar}></span>
-					<FontAwesomeIcon icon={faBell}  className={classes.NotificationIcon}/>
-					<img src={adminImg} className={classes.adminImg} />
+					{/* Notification Icon */}
+					<div className='d-inline-block'>
+						<FontAwesomeIcon icon={faBell}  className={classes.NotificationIcon}/>
+							<span className={`position-absolute translate-middle bg-danger rounded-circle ${classes.NotificationBadge}`}>
+    						<span className={classes.NotificationNum}> 3 </span>
+  						</span>
+					</div>
+					{/* <img src={adminImg} className={classes.adminImg} /> */}
+					<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle `} />
 					<Link to='/login'className={`${classes.logout} mx-2 ` }onClick={logoutHandler}>Logout</Link>
 				</div>
 			</div>

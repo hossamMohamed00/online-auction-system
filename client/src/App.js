@@ -31,6 +31,7 @@ import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/View
 import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
+import SellerDashboard from './Pages/SellerDashboard';
 
 
 //* Payment
@@ -96,6 +97,15 @@ function App() {
 				}
 
 				{/* end buyer routes  */}
+
+				{/* start seller routes  */}
+				{ isLoggedIn &&	role=== 'seller' && <>
+					<Route path="/seller-dashboard" element={<SellerDashboard />} />
+					{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
+					</>
+				}
+				{/* end seller routes  */}
+
 
 
 				<Route path="*" element={<PageNotFound />} />
