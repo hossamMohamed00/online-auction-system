@@ -119,22 +119,26 @@ export class BidGateway
 
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('place-bid')
-	handlePaceBid(
+	async handlePaceBid(
 		@ConnectedSocket() client: Socket,
 		@MessageBody() { bidValue }: PlaceBidDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		const savedBidder = this.auctionRoomService.getBidderRoom(client.id);
+		const savedBidder = this.auctionRoomService.getBidder(client.id);
 		if (!savedBidder) {
 			throw new WsException('You are not in this auction room ❌');
 		}
 
-		this.server
-			.to(savedBidder.room)
-			.emit('new-bid', { message: 'New bid accepted ✔', value: bidValue });
-
 		//TODO: Check if valid bid
 
 		//TODO: Save the bid
+		const createdBid = await this.bidService.creatBid(
+			savedBidder.room,
+			bidder._id,
+			bidValue,
+		);
+
+		//* Emit the bid to the client-side
+		this.server.to(savedBidder.room).emit('new-bid', createdBid);
 	}
 }
