@@ -30,8 +30,8 @@ import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
-import Chat from './component/Modules/BuyerModule/Chat/Chat';
-import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
+import Chat from './component/UI/Chat/Chat';
+import SellerDashboard from './Pages/SellerDashboard';
 
 
 //* Payment
@@ -93,12 +93,23 @@ function App() {
 
 				{/* start buyer routes  */}
 
-				{isLoggedIn && role === 'buyer' && (
+				{ isLoggedIn &&	role=== 'buyer' && <>
 					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-				)}
-				<Route path="/buyer-dashboard/chat" element={<Chat />} />
+					<Route path="/buyer-dashboard/chat" element={<Chat />} />
+					</>
+				}
 
 				{/* end buyer routes  */}
+
+				{/* start seller routes  */}
+				{ isLoggedIn &&	role=== 'seller' && <>
+					<Route path="/seller-dashboard" element={<SellerDashboard />} />
+					{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
+					</>
+				}
+				{/* end seller routes  */}
+
+
 
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>

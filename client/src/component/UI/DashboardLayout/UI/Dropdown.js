@@ -4,9 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-import { faListAlt } from '@fortawesome/free-solid-svg-icons';
-
-
 const Dropdown = props => {
 	return (
 		<div className={classes.dropdown}>
@@ -45,6 +42,7 @@ const Dropdown = props => {
 							{item.title}
 						</Link>
 					</div>
+
 				);
 			})}
 		</div>

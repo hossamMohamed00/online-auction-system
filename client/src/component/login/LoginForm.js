@@ -36,7 +36,7 @@ const LoginForm = () => {
 			console.log(data)
 			dispatch(AuthDataActions.login({idToken:data.accessToken , role:data.role , email:email}))
 			if(data.role === 'buyer'){
-			navigate('/buyer-dashboard');
+			navigate('/home-page');
 
 			}else if(data.role === 'admin'){
 				navigate('/adminDashboard');

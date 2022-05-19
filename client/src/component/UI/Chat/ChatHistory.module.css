@@ -1,0 +1,36 @@
+.ChatHistoryContent{
+	display: flex;
+	flex-direction: row;
+	margin-top: 20px;
+	transition: all 0.5s;
+	padding: 5px ;
+	cursor: pointer;
+}
+.ChatHistoryContent:hover{
+	/* background-color: #0763a7; */
+	background-color: #191c20;
+}
+.UserImage{
+	padding: 5px;
+	margin-left: 20px;
+	font-weight: bold;
+}
+
+.UserName {
+	padding-top: 5px;
+	color: white;
+	margin-left: 20px;
+	color: var(--paragaph-color);
+
+}
+
+.ChatHistorySearch{
+	background-color: #000000;
+	border: 0;
+	border-bottom: 1px solid white;
+	width: 98%;
+	margin: 0% 0% 5% 2% ;
+	border-radius: 0;
+	padding: 10px;
+	padding-left: 30px;
+}

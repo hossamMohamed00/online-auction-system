@@ -3,14 +3,8 @@ import React from 'react';
 import classes from './sidebar.module.css';
 import Dropdown from '../UI/Dropdown';
 import adminImg from '../../../../assets/icons8-test-account-40.png';
-// import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
-// import { faTh } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { faGears } from '@fortawesome/free-solid-svg-icons';
-import { faMessage } from '@fortawesome/free-solid-svg-icons';
-import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
-// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 const Sidebar = props => {
 	let user = props.sidebarContent;

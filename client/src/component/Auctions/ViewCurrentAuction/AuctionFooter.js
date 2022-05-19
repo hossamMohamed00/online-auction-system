@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-
-import BiddingModal from './BiddingForm/BiddingModal';
+import ModalUi from './BiddingForm/Modal';
 
 import classes from './ViewCurrentAuction.module.css';
 
@@ -13,8 +11,10 @@ function AuctionFooter({ AuctionStatus }) {
 
 	const [modalShow, setModalShow] = useState(false);
 
-	const UpcomingStatus = AuctionStatus === 'upcoming';
-	const OnGoingStatus = AuctionStatus === 'ongoing';
+	const UpComingStatus = AuctionStatus === 'upcoming'
+	const OnGoingStatus = AuctionStatus === 'ongoing'
+	const DeniedStatus = AuctionStatus === 'denied'
+
 	const role = useSelector(store => store.AuthData.role);
 	const accessToken = useSelector(store => store.AuthData.idToken);
 	const url = 'http://localhost:8000';
@@ -40,14 +40,24 @@ function AuctionFooter({ AuctionStatus }) {
 	return (
 		<>
 			{role === 'buyer' && (
+
+				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
+					{OnGoingStatus && "Place on Bid" }
+					{UpComingStatus && "Notify me" }
+				</button>
+
+			)}
+			{role === 'admin' && AuctionStatus==='pending' && (
+				<div className='d-flex justify-content-evenly mt-3'>
 				<button
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
 				>
-					{OnGoingStatus && 'Place on Bid'}
-					{UpcomingStatus && 'Notify me when Auction be onGoing'}
+				Approve
+
 				</button>
+				</div>
 			)}
 			{role === 'admin' && AuctionStatus === 'pending' && (
 				<div className="d-flex justify-content-evenly mt-3">
@@ -70,15 +80,19 @@ function AuctionFooter({ AuctionStatus }) {
 				<button
 					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
 					type="button"
+					onClick={() => setModalShow(true)}
 				>
 					Extend Auction Time
 				</button>
 			)}
-			<BiddingModal
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-				UpcomingAuction={UpcomingStatus}
-			/>
+
+			<ModalUi
+      	show={modalShow}
+     	 	onHide={() => setModalShow(false)}
+				UpComingAuction = {UpComingStatus}
+				btnReject = {DeniedStatus}
+    	/>
+
 		</>
 	);
 }

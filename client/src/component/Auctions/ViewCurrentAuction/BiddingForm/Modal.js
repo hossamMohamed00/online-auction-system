@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import {useSelector} from 'react-redux'
 import {Link } from 'react-router-dom'
-import classes from './BiddingModal.module.css'
+import classes from './Modal.module.css'
 
 
-const BiddingModal = (props) => {
+const ModalUi = (props) => {
 
 	const [BidValue , setBidValue ] = useState(1500)
 	const [isBidValid , setIsBidValid] = useState(true)
@@ -33,13 +33,13 @@ const BiddingModal = (props) => {
           {isLoggedIn && !props.UpgoingAuction && <h2 className='fw-bold'>Place a Bid </h2>}
 					{!isLoggedIn && <h5 className='text-center pt-3'> Please Login in First, before placing a bid </h5>}
 					{isLoggedIn && props.UpgoingAuction && <h5 className='text-center pt-3'> We will Notify you when Auction be ongoing </h5>}
-
+					{props.btnReject && <h5> write a reason for reject</h5>}
 				</Modal.Title>
       </Modal.Header>
 
 			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
-			{isLoggedIn && !props.UpgoingAuction &&
 				<Modal.Body className={classes.BiddingModalBody}>
+					{isLoggedIn && !props.UpComingAuction && <>
 					<div className={` ${classes['ModalBodyForm']} ${!isBidValid ?'pb-2' :'' }`}>
 						<div className="input-group">
 							<input type="number" className="form-control" min="1500" value={BidValue} onChange={BidValueValidation }/>
@@ -64,8 +64,12 @@ const BiddingModal = (props) => {
 							{/* <p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p> */}
 						</div>
 					</div>
+					</>
+					}
+					{props.btnReject && <h5> write a reason for reject</h5>}
+
 				</Modal.Body>
-			}
+
 
       <Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
@@ -74,10 +78,16 @@ const BiddingModal = (props) => {
 						Login
 					</Link>
 					}
-					{isLoggedIn && props.UpgoingAuction && <Link className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" to="/auctions" >
-						View Saved Auction
-					</Link>
+					{isLoggedIn && props.UpgoingAuction && <button className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" >
+						Save
+					</button>
 					}
+					{props.btnReject &&
+						<button className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" >
+							Submit
+						</button>
+					}
+
 					<button className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`} type="button" onClick={props.onHide}> Close </button>
 				</div>
       </Modal.Footer>
@@ -85,4 +95,4 @@ const BiddingModal = (props) => {
   );
 }
 
-export default BiddingModal;
+export default ModalUi;
