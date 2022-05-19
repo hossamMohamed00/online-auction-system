@@ -3,9 +3,9 @@ import { ExposeObjectId } from 'src/common/decorators';
 
 export class ComplaintDto {
 	@Expose()
-	@ExposeObjectId()
-	_id: string;
-
+	reason: string;
 	@Expose()
-	Reason: string;
+	from: string;
+	@Expose()
+	in: string;
 }

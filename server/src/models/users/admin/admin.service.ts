@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import {
 	FilterAuctionQueryDto,
@@ -9,6 +10,11 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
+import { ComplaintService } from 'src/models/complaint/complaint.service';
+import {
+	Complaint,
+	ComplaintDocument,
+} from 'src/models/complaint/schema/complaint.schema';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
@@ -18,6 +24,8 @@ import { Admin, AdminDocument } from './schema/admin.schema';
 
 @Injectable()
 export class AdminService {
+	private logger: Logger = new Logger('admin');
+
 	constructor(
 		@InjectModel(Admin.name)
 		private readonly AdminModel: Model<AdminDocument>,
@@ -25,6 +33,7 @@ export class AdminService {
 		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
+		private readonly ComplaintService: ComplaintService,
 	) {}
 	/* Handle Users Functions */
 
@@ -154,5 +163,14 @@ export class AdminService {
 	 */
 	removeCategory(id: string) {
 		return this.categoryService.remove(id);
+	}
+	listAllComplaint(): Promise<ComplaintDocument[]> {
+		return this.ComplaintService.FindAll();
+	}
+	MarkRead(id: String) {
+		return this.ComplaintService.MarkAsRead(id);
+	}
+	Delete(id: String) {
+		return this.ComplaintService.Delete(id);
 	}
 }

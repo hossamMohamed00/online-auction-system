@@ -37,6 +37,12 @@ import {
 import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
+import { ComplaintBehavior } from './interfaces/manage-complaint.interface';
+import { ComplaintDto } from 'src/models/complaint/dto';
+import {
+	Complaint,
+	ComplaintDocument,
+} from 'src/models/complaint/schema/complaint.schema';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
@@ -46,7 +52,8 @@ export class AdminController
 		UsersBehaviors,
 		AuctionsBehavior,
 		EmployeeBehaviors,
-		CategoryBehaviors
+		CategoryBehaviors,
+		ComplaintBehavior
 {
 	constructor(private readonly adminService: AdminService) {}
 
@@ -183,5 +190,18 @@ export class AdminController
 	@Delete('category/:id')
 	deleteCategory(@Param() { id }: MongoObjectIdDto) {
 		return this.adminService.removeCategory(id);
+	}
+	// @Serialize(ComplaintDto)
+	@Get('complaint')
+	listAllComplaint() {
+		return this.adminService.listAllComplaint();
+	}
+	@Patch('Read/:id')
+	MarkAsRead(@Param() { id }: MongoObjectIdDto) {
+		return this.adminService.MarkRead(id);
+	}
+	@Delete('delete/:id')
+	deletecomplaint(@Param() { id }: MongoObjectIdDto) {
+		return this.adminService.Delete(id);
 	}
 }
