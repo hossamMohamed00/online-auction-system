@@ -42,11 +42,11 @@ function ChatContent() {
 			})
 			socket.on('chat-history-to-client' , (data =>{
 				console.log("messages" , data)
-				setMessage([...data])
+				setMessage(data && [...data])
 			}))
 		}, [joined])
 
-		console.log(Message)
+		// console.log(Message)
 
 		const getTime =(time) => {
 			const date  = new Date(time)

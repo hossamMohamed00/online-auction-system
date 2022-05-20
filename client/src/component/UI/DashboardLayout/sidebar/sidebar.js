@@ -2,8 +2,9 @@ import React from 'react';
 
 import classes from './sidebar.module.css';
 import Dropdown from '../UI/Dropdown';
-import adminImg from '../../../../assets/icons8-test-account-40.png';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
+// import adminImg from '../../../../assets/icons8-test-account-40.png';
+import { faGavel, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const Sidebar = props => {
@@ -24,7 +25,8 @@ const Sidebar = props => {
 
 				<div className={classes.adminName}>
 					<div className={classes.img}>
-						<img src={adminImg} alt="admin" />
+						<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle mt-2`} />
+						{/* <img src={adminImg} alt="admin" /> */}
 					</div>
 					<div className={classes.username}>
 						{user[userName].list ?
