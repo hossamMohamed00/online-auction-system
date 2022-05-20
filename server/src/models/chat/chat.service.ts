@@ -78,6 +78,13 @@ export class ChatService {
 			return chat.messages;
 		}
 	}
+	async getMyChat(clientEmail: string): Promise<any> {
+		// Find the all chat document
+		const chat = await this.findChats(clientEmail);
+		if (chat) {
+			return chat;
+		}
+	}
 
 	/**
 	 * Handle the new incoming message by saving it
@@ -110,6 +117,29 @@ export class ChatService {
 
 		return message;
 	}
+	async handleNewMessageWithSupport(
+		sender: string,
+		clientEmail: string,
+		messageString: string,
+	): Promise<Message> {
+		const supportemail = 'Support@email.com';
+
+		//* Find the chat between the client and the given receiver
+		let chat = await this.findPrivateChat(clientEmail, supportemail);
+
+		//? If the chat is not found, create new one
+		if (!chat) {
+			chat = await this.createNewChat(sender, supportemail, messageString);
+		}
+
+		//* Create new message object
+		const message = new Message(messageString, sender);
+
+		//* Update chat messages
+		this.updateChatMessages(chat, message);
+
+		return message;
+	}
 
 	async findChats(name: string) {
 		const chat = await this.chatModel.find({
@@ -129,23 +159,45 @@ export class ChatService {
 		user2Email: string,
 	): Promise<ChatDocument | null> {
 		// Find the chat from DB
-		const chat = await this.chatModel.findOne({
-			$and: [
-				{
-					$or: [{ user1: user1Email }, { user1: user2Email }],
-				},
-				{
-					$or: [{ user2: user1Email }, { user2: user2Email }],
-				},
-			],
-		});
+		// frist check if user is employee
+		if (
+			user1Email == 'Support@email.com' ||
+			user2Email == 'Support@email.com'
+		) {
+			const chat = await this.chatModel.findOne({
+				$and: [
+					{
+						$or: [{ user1: 'Support@email.com' }, { user1: user2Email }],
+					},
+					{
+						$or: [{ user2: 'Support@email.com' }, { user2: user2Email }],
+					},
+				],
+			});
+			if (!chat) {
+				return null;
+			}
 
-		//? If the chat not exists, return null
-		if (!chat) {
-			return null;
+			return chat;
+		} else {
+			const chat = await this.chatModel.findOne({
+				$and: [
+					{
+						$or: [{ user1: user1Email }, { user1: user2Email }],
+					},
+					{
+						$or: [{ user2: user1Email }, { user2: user2Email }],
+					},
+				],
+			});
+			if (!chat) {
+				return null;
+			}
+
+			return chat;
 		}
 
-		return chat;
+		//? If the chat not exists, return null;
 	}
 
 	/**
