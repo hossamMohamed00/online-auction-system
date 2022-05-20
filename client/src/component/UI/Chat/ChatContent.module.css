@@ -21,7 +21,6 @@
 	padding: 10px;
 	border-radius: 0;
 	z-index: 1000;
-
 }
 
 .Messages{
@@ -35,6 +34,7 @@
 	width: 100%;
 	display: flex;
 	flex-direction: row;
+	transition: all 0.5s;
 	/* margin-bottom: 20px; */
 }
 .messageFromMe {

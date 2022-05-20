@@ -19,9 +19,16 @@ const ModalUi = (props) => {
 		}
 		else{setIsBidValid(true)}
 	}
+
+	const btnSavedHandeler = () => {
+		props.btnSaved('Saved') ;
+		props.onHide()
+	}
+
   return (
     <Modal
-      {...props}
+      show={props.show}
+			onHide={props.onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -30,9 +37,9 @@ const ModalUi = (props) => {
 			{/* Modal Header */}
       <Modal.Header closeButton className={classes.BiddingModalHeader}>
         <Modal.Title id="contained-modal-title-vcenter"  >
-          {isLoggedIn && !props.UpgoingAuction && <h2 className='fw-bold'>Place a Bid </h2>}
+          {isLoggedIn && !props.UpComingAuction && <h2 className='fw-bold'>Place a Bid </h2>}
 					{!isLoggedIn && <h5 className='text-center pt-3'> Please Login in First, before placing a bid </h5>}
-					{isLoggedIn && props.UpgoingAuction && <h5 className='text-center pt-3'> We will Notify you when Auction be ongoing </h5>}
+					{isLoggedIn && props.UpComingAuction && <h5 className='text-center pt-3'> We will Notify you when Auction be ongoing </h5>}
 					{props.btnReject && <h5> write a reason for reject</h5>}
 				</Modal.Title>
       </Modal.Header>
@@ -73,12 +80,13 @@ const ModalUi = (props) => {
 
       <Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-					{isLoggedIn &&  !props.UpgoingAuction && <button className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
+					{isLoggedIn &&  !props.UpComingAuction && <button className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`} type="button" > Place My Bid </button> }
 					{!isLoggedIn && <Link className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" to="/login" >
 						Login
 					</Link>
 					}
-					{isLoggedIn && props.UpgoingAuction && <button className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button" >
+					{isLoggedIn && props.UpComingAuction && <button className={`btn col fw-bold bg-light ${classes.btnLogin}`} type="button"
+						onClick={btnSavedHandeler} >
 						Save
 					</button>
 					}

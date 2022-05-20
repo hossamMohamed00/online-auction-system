@@ -19,6 +19,8 @@ import Navbar from '../../HomePage/Header/Navbar';
 const ViewAllAuctions = () => {
 
 	const [showFilter , setShowFilter] = useState(null)
+	const [Data , setData] = useState(null)
+
 
 	const [FilterAuction , setFilterAuction] = useState(false)
 	const [FilterdDetails , setFilterdDetails] = useState(null)
@@ -38,6 +40,12 @@ const ViewAllAuctions = () => {
 		}
 	} , [sendRequest , FilterAuction])
 
+	useEffect(()=>{
+		if(status ==='completed'){
+			console.log("s")
+			setData(data.filter((data)=> data.status !== 'pending' && data.status !== 'denied'))
+		}
+	}, [status])
 	const showFilterHandler = () => {
 		setShowFilter(true)
 	}
@@ -45,7 +53,7 @@ const ViewAllAuctions = () => {
 	const hideFilterHandler = () => {
 		setShowFilter(false)
 	}
-
+	console.log(Data)
 	const filterHandeler = (values) => {
 		if(values){
 			console.log(values)
@@ -56,6 +64,7 @@ const ViewAllAuctions = () => {
 			setFilterAuction(false)
 		}
 	}
+
 
 	console.log(showFilter)
 	return (
@@ -84,8 +93,8 @@ const ViewAllAuctions = () => {
 							</div>
 
 							{FilterdRequestData && FilterdRequestStatus==='completed'  &&<ViewAuctionDetails AuctionData = {FilterdRequestData} animate={false} />}
-							{data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {data} animate={false} />}
-							<NoData text="No Auctions Now" data={data && data} error= {error && error} />
+							{Data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {Data} animate={false} />}
+							<NoData text="No Auctions Now" data={data && data} error = {error && error} />
 
 						</div>
 					}

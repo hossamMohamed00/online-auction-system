@@ -19,6 +19,8 @@ const Navbar = ()=> {
 	const [isShownCategoriesContent , setisShownCategoriesContent] = useState(false)
 	const [isShownProfileContent , setisShownProfileContent] = useState(false)
 
+	const email = useSelector((store)=> store.AuthData.email)
+	const emailName = email && email.substring(0,email.indexOf('@'))
 
 	const showNavContentHandeler = () => {
 		setisShownNavContent((prevState)=>!prevState )
@@ -53,8 +55,8 @@ const Navbar = ()=> {
 	</>
 
 	const isLoggedInUser = isLoggedIn && <div  className= {`text-start pb-0 pe-3 fw-bold ${classes.navLink} `} onClick = {showProfileContentHandeler} >
-			<FontAwesomeIcon icon={faUser} className="px-1"/> Profile
-			{isShownProfileContent && <DropDownBox/> }
+		<FontAwesomeIcon icon={faUser} className="px-1"/> {emailName}
+		{isShownProfileContent && <DropDownBox/> }
 	</div>
 
 

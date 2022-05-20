@@ -6,12 +6,20 @@ import classes from './ViewCurrentAuction.module.css';
 
 function AuctionFooter({AuctionStatus}) {
 	const [modalShow, setModalShow] = useState(false);
+	const [btnSavedValue, setBtnSavedValue] = useState('');
+
 
 	const UpComingStatus = AuctionStatus === 'upcoming'
 	const OnGoingStatus = AuctionStatus === 'ongoing'
 	const DeniedStatus = AuctionStatus === 'denied'
+	// const SavedStatus = AuctionStatus === 'saved'
+
 
 	const role = useSelector(store => store.AuthData.role);
+
+	const btnSaved = (btnSavedValue) => {
+		setBtnSavedValue(btnSavedValue)
+	}
 
 	console.log(role)
 	console.log(AuctionStatus)
@@ -22,7 +30,7 @@ function AuctionFooter({AuctionStatus}) {
 
 				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
 					{OnGoingStatus && "Place on Bid" }
-					{UpComingStatus && "Notify me" }
+					{UpComingStatus && btnSavedValue ? btnSavedValue : "Notify me" }
 				</button>
 
 			)}
@@ -31,7 +39,6 @@ function AuctionFooter({AuctionStatus}) {
 				<button
 					className={`btn w-100 fw-bold btn-success`}
 					type="button"
-					// onClick={() => setModalShow(true)}
 				>
 				Approve
 
@@ -48,10 +55,12 @@ function AuctionFooter({AuctionStatus}) {
 			)}
 
 			<ModalUi
-      	show={modalShow}
-     	 	onHide={() => setModalShow(false)}
+      	show						= {modalShow}
+     	 	onHide					= {() => setModalShow(false)}
 				UpComingAuction = {UpComingStatus}
-				btnReject = {DeniedStatus}
+				btnReject 			= {DeniedStatus}
+				btnSaved 				= {btnSaved}
+				// SavedStatus 		= {SavedStatus}
     	/>
 
 		</>

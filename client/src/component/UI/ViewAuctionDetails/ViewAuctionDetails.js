@@ -16,7 +16,7 @@ const ViewAuctionDetails = (props) => {
 
 	const getAuctionDetails = (Items , animate) => {
 		return(
-			Items.map((item , idx) => (
+			Items && Items.map((item , idx) => (
 				<Col key={idx}>
 					<Card className= {` mb-5 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
 						{/* Card item category */}
