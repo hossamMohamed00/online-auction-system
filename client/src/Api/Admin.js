@@ -17,3 +17,5 @@ const get = async ( url , accessToken ) => {
 
 export const getAllAuctions = async AccessToken =>
 	get(`${url}/auction?populate=true`,AccessToken);
+export const getSingleAuction = async auctionId =>
+	get(`${url}/${auctionId}?populate=true`);

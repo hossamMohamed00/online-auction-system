@@ -23,6 +23,7 @@ import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
 import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
+import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';
