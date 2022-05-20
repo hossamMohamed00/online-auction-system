@@ -10,9 +10,9 @@ export class AuctionRoomService {
 	 * @param AuctionRoomMember - bidder data
 	 * @returns bidder if added || null
 	 */
-	addBidder({ socketId, email, room }: AuctionRoomMember) {
+	addBidder({ socketId, userId, email, room }: AuctionRoomMember) {
 		// Validate data
-		if (!socketId || !email || !room) {
+		if (!socketId || !userId || !email || !room) {
 			return null;
 		}
 
@@ -31,7 +31,7 @@ export class AuctionRoomService {
 		}
 
 		//* Add the bidder
-		const bidder = { socketId, email, room };
+		const bidder = { socketId, userId, email, room };
 
 		this.onlineBidders.push(bidder);
 
@@ -73,6 +73,18 @@ export class AuctionRoomService {
 	 */
 	getBiddersInAuctionRoom(room: string) {
 		room = room.trim().toLowerCase();
-		return this.onlineBidders.filter(bidder => bidder.room === room);
+		const roomBidders = this.onlineBidders.filter(
+			bidder => bidder.room === room,
+		);
+
+		const serializedRoomBidder = roomBidders.map(
+			(bidder: AuctionRoomMember) => {
+				return {
+					userId: bidder.userId,
+					email: bidder.email,
+				};
+			},
+		);
+		return serializedRoomBidder;
 	}
 }

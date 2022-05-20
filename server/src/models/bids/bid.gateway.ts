@@ -72,6 +72,14 @@ export class BidGateway
 			this.server
 				.to(removedBidder.room)
 				.emit('message-to-client', 'With sorry, bidder disconnected 😑');
+
+			//* Send the current list of bidders
+			this.server.to(removedBidder.room).emit('room-data', {
+				room: removedBidder.room,
+				bidders: this.auctionRoomService.getBiddersInAuctionRoom(
+					removedBidder.room,
+				),
+			});
 		}
 	}
 
@@ -93,6 +101,7 @@ export class BidGateway
 		//? Add the bidder to the list
 		const addedBidder = this.auctionRoomService.addBidder({
 			socketId: client.id,
+			userId: bidder._id,
 			email: bidder.email,
 			room: auctionId,
 		});
@@ -115,6 +124,14 @@ export class BidGateway
 		client.broadcast
 			.to(addedBidder.room)
 			.emit('message-to-client', 'Ooh, new bidder joined the auction 👏🏻⚡⚡');
+
+		//* Send the current list of bidders
+		this.server.to(addedBidder.room).emit('room-data', {
+			room: addedBidder.room,
+			bidders: this.auctionRoomService.getBiddersInAuctionRoom(
+				addedBidder.room,
+			),
+		});
 	}
 
 	@UseGuards(SocketAuthGuard)
