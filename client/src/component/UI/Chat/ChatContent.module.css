@@ -17,10 +17,19 @@
 	right: 0;
 	border: 0;
 	background-color: #22385c;
+	background-color: #22385c;
 	color: white;
-	padding: 10px;
 	border-radius: 0;
 	z-index: 1000;
+	padding: 10px;
+	box-shadow: none;
+	cursor: pointer;
+}
+
+.ChatContentButton:focus{
+	box-shadow: none;
+	background-color: #22385c;
+
 }
 
 .Messages{
