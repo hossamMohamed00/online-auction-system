@@ -55,15 +55,14 @@ export class BidGateway
 	 * Fires when the client be connected
 	 */
 	async handleConnection(@ConnectedSocket() client: Socket, ...args: any[]) {
-		console.log('Bidder connected');
-
-		// this.logger.log('New Bidder Connected 👍🏻, with email: ' + user.email);
+		console.log('New bidder connected to the bidding ws 🤘🏻');
 	}
 
 	handleDisconnect(client: Socket) {
 		//* Remove the bidder from the list
 		const removedBidder = this.auctionRoomService.removeBidder(client.id);
 
+		//? Ensure that the bidder removed from the room
 		if (removedBidder) {
 			this.logger.log(
 				'Bidder Disconnected 👎🏻, with email: ' + removedBidder.email,
@@ -132,6 +131,11 @@ export class BidGateway
 				addedBidder.room,
 			),
 		});
+
+		//* Log message to the console
+		this.logger.log(
+			"'" + bidder.email + "' joined auction with id '" + auctionId + "' ✅🤘🏻",
+		);
 	}
 
 	@UseGuards(SocketAuthGuard)
@@ -157,5 +161,10 @@ export class BidGateway
 
 		//* Emit the bid to the client-side
 		this.server.to(savedBidder.room).emit('new-bid', createdBid);
+
+		//* Log bid to the console
+		this.logger.log(
+			"'" + bidder.email + "' placed bid of '" + bidValue + "' 💰",
+		);
 	}
 }
