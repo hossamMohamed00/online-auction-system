@@ -23,19 +23,22 @@ const AddCategory = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				setFailedMessage(response.error)
-				console.log(response.error);
+				setFailedMessage('Category with that name already exists ❌');
+				console.log(response);
+					setShowAddCategory(false);
+				return;
 			}
 			nameRef.current.value = '';
 			setShowAddCategory(false);
-			setMessage('Added Successfully');
+			setMessage('Done, new category added successfully 💖🐱‍👤');
 		});
 	};
+	const messageClasses = successMessage ?'text-success':'text-danger'
 	return (
 		<>
 			<div className={`${classes.container1}`}>
-				<h3 className="text-center text-success mt-4 fw-bold">
-					{successMessage ? successMessage : failedMessage}
+				<h3 className={`text-center ${messageClasses} mt-4 fw-bold`}>
+					{ successMessage ? successMessage : failedMessage}
 				</h3>
 				<button
 					className="btn btn-danger text-center mb-4 mt-4 w-100 fw-bolder"
@@ -46,7 +49,10 @@ const AddCategory = () => {
 				{showAddCategoryForm && (
 					<div className={`${classes.container2}`}>
 						<form onSubmit={submitHandler}>
-							<label for="add" className={`form-label ${classes.formLabel} fw-bolder`}>
+							<label
+								for="add"
+								className={`form-label ${classes.formLabel} fw-bolder`}
+							>
 								Category Name
 							</label>
 							<input
@@ -56,7 +62,9 @@ const AddCategory = () => {
 								ref={nameRef}
 								className={`form-control`}
 							/>
-							<button className={`btn btn-danger text-center mb-4 mt-4  ${classes.submit}`}>
+							<button
+								className={`btn btn-danger text-center mb-4 mt-4  ${classes.submit}`}
+							>
 								Submit
 							</button>
 						</form>

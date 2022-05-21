@@ -3,9 +3,7 @@ import React from 'react';
 import PageContent from '../DashboardLayout/Pagecontant/pageContent';
 import AdminDashboard from '../../AdminModule/AdminDashboard/home/adminDashboard';
 import classes from './table.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 import { Link } from 'react-router-dom';
 // import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 

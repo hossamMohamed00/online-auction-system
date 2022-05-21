@@ -20,6 +20,7 @@ margin-bottom: 2%;
 
 .editIcon {
 	background-color: #191c20 !important;
+	border: none !important;
 }
 .details {
 	text-decoration: underline;
