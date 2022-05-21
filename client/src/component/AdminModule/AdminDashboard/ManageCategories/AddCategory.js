@@ -31,6 +31,7 @@ const AddCategory = () => {
 			nameRef.current.value = '';
 			setShowAddCategory(false);
 			setMessage('Done, new category added successfully 💖🐱‍👤');
+			window.location.reload(true)
 		});
 	};
 	const messageClasses = successMessage ?'text-success':'text-danger'

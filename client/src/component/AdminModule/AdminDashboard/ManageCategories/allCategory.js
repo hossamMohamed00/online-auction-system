@@ -31,9 +31,10 @@ const AllCategories = () => {
 			}).then(response => {
 				if (!response.ok) {
 					console.log('failed');
-					return;
+					return
 				}
 				alert('Deleted Successfully');
+				window.location.reload(true)
 			});
 		}
 	};
