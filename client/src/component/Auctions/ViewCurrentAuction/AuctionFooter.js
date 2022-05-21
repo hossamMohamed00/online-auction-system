@@ -1,61 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { getSingleAuction } from '../../../Api/Admin';
 import ModalUi from './BiddingForm/Modal';
+import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionFooter({AuctionStatus}) {
+function AuctionFooter({ AuctionStatus }) {
+	const location = useLocation();
+
+	const AuctionId = new URLSearchParams(location.search).get('id');
+
 	const [modalShow, setModalShow] = useState(false);
+	const [auctionDenied, setAuctionDenied] = useState(false);
+	// handle Rejection
 
-	const UpComingStatus = AuctionStatus === 'upcoming'
-	const OnGoingStatus = AuctionStatus === 'ongoing'
-	const DeniedStatus = AuctionStatus === 'denied'
-
+	const { data, sendRequest, status } = useHttp(getSingleAuction);
 	const role = useSelector(store => store.AuthData.role);
+	const accessToken = useSelector(store => store.AuthData.idToken);
+	const url = 'http://localhost:8000';
 
-	console.log(role)
-	console.log(AuctionStatus)
+	useEffect(() => {
+		if (status === 'completed') {
+			sendRequest({ AuctionId: AuctionId, idToken: accessToken });
+		}
+	}, [sendRequest]);
+
+	const UpComingStatus = AuctionStatus === 'upcoming';
+	const OnGoingStatus = AuctionStatus === 'ongoing';
+
+	console.log(role);
+	console.log(AuctionStatus);
+	const approveHandler = () => {
+		fetch(`${url}/admin/auction/approve/${AuctionId}`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'content-type': 'application/json',
+			},
+		}).then(res => {
+			if (!res.ok) {
+				console.log('failed');
+			}
+		});
+	};
+	const rejectHandler = rejectMassage => {
+		const rejectionMessage = { message: rejectMassage };
+		fetch(`${url}/admin/auction/reject/${AuctionId}`, {
+			method: 'POST',
+			 body: JSON.stringify(rejectionMessage),
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'content-type': 'application/json',
+			},
+		}).then(res => {
+			if (!res.ok) {
+				console.log('failed');
+			}
+			setModalShow(false);
+		});
+	};
 
 	return (
 		<>
 			{role === 'buyer' && (
-
-				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
-					{OnGoingStatus && "Place on Bid" }
-					{UpComingStatus && "Notify me" }
-				</button>
-
-			)}
-			{role === 'admin' && AuctionStatus==='pending' && (
-				<div className='d-flex justify-content-evenly mt-3'>
 				<button
-					className={`btn w-100 fw-bold btn-success`}
-					type="button"
-					// onClick={() => setModalShow(true)}
-				>
-				Approve
-
-				</button>
-				<button
-					className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
 				>
-					Reject
-
+					{OnGoingStatus && 'Place on Bid'}
+					{UpComingStatus && 'Notify me'}
 				</button>
+			)}
+
+			{role === 'admin' && AuctionStatus === 'pending' && (
+				<div className="d-flex justify-content-evenly mt-3">
+					<button
+						className={`btn w-100 fw-bold btn-success`}
+						type="button"
+						onClick={approveHandler}
+					>
+						Approve
+					</button>
+					<button
+						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+						type="button"
+						onClick={() => (
+							<>
+								{setModalShow(true)} {setAuctionDenied(true)}
+							</>
+						)}
+					>
+						Reject
+					</button>
 				</div>
+			)}
+			{role === 'admin' && AuctionStatus === 'upcoming' && (
+				<button
+					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
+					type="button"
+					onClick={() => setModalShow(true)}
+				>
+					Extend Auction Time
+				</button>
 			)}
 
 			<ModalUi
-      	show={modalShow}
-     	 	onHide={() => setModalShow(false)}
-				UpComingAuction = {UpComingStatus}
-				btnReject = {DeniedStatus}
-    	/>
-
+				show={modalShow}
+				onHide={() => setModalShow(false)}
+				UpComingAuction={UpComingStatus}
+				btnReject={auctionDenied}
+				rejectHandler={rejectHandler}
+			/>
 		</>
-
 	);
 }
 
