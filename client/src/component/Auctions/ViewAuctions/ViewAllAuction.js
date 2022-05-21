@@ -4,7 +4,7 @@ import { Row , Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faFilter} from '@fortawesome/free-solid-svg-icons'
 
-import { getAllAuctions, getCurrentAuctions } from '../../../Api/AuctionsApi';
+import { getAllAuctions, getOnGoingAuctions } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
@@ -26,7 +26,7 @@ const ViewAllAuctions = () => {
 	const [FilterdDetails , setFilterdDetails] = useState(null)
 
 	const {sendRequest , status , data , error} = useHttp(getAllAuctions);
-	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getCurrentAuctions);
+	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getOnGoingAuctions);
 
 
 	useEffect(()=>{
@@ -52,7 +52,7 @@ const ViewAllAuctions = () => {
 	const hideFilterHandler = () => {
 		setShowFilter(false)
 	}
-	console.log(Data)
+
 	const filterHandeler = (values) => {
 		if(values){
 			console.log(values)
@@ -65,7 +65,6 @@ const ViewAllAuctions = () => {
 	}
 
 
-	console.log(showFilter)
 	return (
 		<div className={classes.ViewAllAuctions}>
 			<Navbar/>

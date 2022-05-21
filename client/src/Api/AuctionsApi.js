@@ -15,7 +15,7 @@ const getAuctions = async (url) => {
 
 export const getAllAuctions = async () => getAuctions(`${url}?populate=true`)
 export const getUpgoingAuctions = async () => getAuctions(`${url}?status=upcoming&populate=true`)
-export const getCurrentAuctions = async () => getAuctions(`${url}?status=ongoing&populate=true`)
+export const getOnGoingAuctions = async () => getAuctions(`${url}?status=ongoing&populate=true`)
 export const getSavedAuctions = async () => getAuctions(`${url}?status=saved&populate=true`)
 // export const getClosedAuctions = async () => getAuctions(`${url}?status=closed&populate=true`)
 export const getSingleAuction = async (auctionId) => getAuctions(`${url}/${auctionId}?populate=true`)
