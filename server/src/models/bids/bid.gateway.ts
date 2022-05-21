@@ -18,6 +18,7 @@ import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { GetCurrentUserFromSocket } from 'src/common/decorators';
 import { JoinAuctionDto, PlaceBidDto } from './dto';
 import { AuctionRoomService } from './auction-room.service';
+import { AuctionsService } from '../auction/auctions.service';
 
 /**
  * Its job is to handle the bidding process.
@@ -36,6 +37,9 @@ export class BidGateway
 
 	@Inject()
 	private auctionRoomService: AuctionRoomService;
+
+	@Inject()
+	private auctionService: AuctionsService;
 
 	//* Attaches native Web Socket Server to a given property.
 	@WebSocketServer()
@@ -89,7 +93,7 @@ export class BidGateway
 		@MessageBody() { auctionId }: JoinAuctionDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		if (!auctionId) {
+		if (!auctionId || this.auctionService.isValidAuction(auctionId)) {
 			throw new WsException('You must provide valid auction id 😉');
 		}
 

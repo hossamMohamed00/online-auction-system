@@ -322,6 +322,20 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Check if there are an auction with given id
+	 * @param auctionId
+	 * @returns true if auction exists, false otherwise
+	 */
+	async isValidAuction(auctionId: string): Promise<boolean> {
+		//? Get the count of auctions with given id
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+		});
+
+		return count > 0;
+	}
+
+	/**
 	 * Check if the auction is available for bidding or not
 	 * @param auctionId - Auction id
 	 * @returns true or false

@@ -77,6 +77,7 @@ export class AuctionRoomService {
 			bidder => bidder.room === room,
 		);
 
+		//* Return only the email and userId
 		const serializedRoomBidder = roomBidders.map(
 			(bidder: AuctionRoomMember) => {
 				return {
