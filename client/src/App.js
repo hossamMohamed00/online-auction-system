@@ -32,26 +32,24 @@ import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
 import SellerDashboard from './Pages/SellerDashboard';
-
+import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
 
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(role)
+	console.log(role);
 
 	return (
-
 		<React.Fragment>
-		{/* start Routes of admin*/}
+			{/* start Routes of admin*/}
 
-		{/* //* TEMPORARY Payment code */}
+			{/* //* TEMPORARY Payment code */}
 
-		{/* <Elements stripe={stripePromise}>
+			{/* <Elements stripe={stripePromise}>
 			<PaymentForm />
 		</Elements> */}
 			<Routes>
@@ -70,9 +68,10 @@ function App() {
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
 
-
 				{/* start Admin Routes */}
-				{ isLoggedIn &&	role=== 'admin'&& <Route path="/adminDashboard" element={<AdminPage />} />}
+				{isLoggedIn && role === 'admin' && (
+					<Route path="/adminDashboard" element={<AdminPage />} />
+				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
@@ -87,31 +86,32 @@ function App() {
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				{/* end Admin Routes */}
 
-
 				{/* start buyer routes  */}
 
-				{ isLoggedIn &&	role=== 'buyer' && <>
-					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-					<Route path="/buyer-dashboard/chat" element={<Chat />} />
+				{isLoggedIn && role === 'buyer' && (
+					<>
+						<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+						<Route path="/buyer-dashboard/chat" element={<Chat />} />
 					</>
-				}
+				)}
 
 				{/* end buyer routes  */}
 
 				{/* start seller routes  */}
-				{ isLoggedIn &&	role=== 'seller' && <>
-					<Route path="/seller-dashboard" element={<SellerDashboard />} />
-					{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
+				{
+					<>
+						<Route path="/seller-dashboard" element={<SellerDashboard />} />
+						<Route
+							path="/seller-dashboard/viewAllAuctions"
+							element={<ViewAllAuctions />}
+						/>
 					</>
 				}
 				{/* end seller routes  */}
 
-
-
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
-
 	);
 }
 

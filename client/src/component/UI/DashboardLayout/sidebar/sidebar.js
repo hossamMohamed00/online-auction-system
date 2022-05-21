@@ -5,17 +5,17 @@ import Dropdown from '../UI/Dropdown';
 import adminImg from '../../../../assets/icons8-test-account-40.png';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 
-
 const Sidebar = props => {
 	let user = props.sidebarContent;
-	console.log("user" , user)
+	console.log('user', user);
 	const userName = Object.keys(user)[0];
-	console.log( userName , Object.entries(user) , Object.entries(user)[0] );
-
+	console.log(userName, Object.entries(user), Object.entries(user)[0]);
 
 	return (
 		<React.Fragment>
-			<div className={`${classes.sidebar}  position-relative animation-from-left`}>
+			<div
+				className={`${classes.sidebar}  position-relative animation-from-left`}
+			>
 				<div className={`${classes.logo}  text-center `}>
 					<h2 className="text-light  mt-3  ">
 						On<span>Line Auction</span>
@@ -27,20 +27,20 @@ const Sidebar = props => {
 						<img src={adminImg} alt="admin" />
 					</div>
 					<div className={classes.username}>
-						{user[userName].list ?
-						<Dropdown
-							username={user[userName].name}
-							list={user[userName].list}
-							id="admin"
-						/>
-						: <h5 className='text-light fw-bold'> {user[userName].name}</h5>
-
-						}
+						{user[userName].list ? (
+							<Dropdown
+								username={user[userName].name}
+								list={user[userName].list}
+								id="admin"
+							/>
+						) : (
+							<h5 className="text-light fw-bold"> {user[userName].name}</h5>
+						)}
 					</div>
 				</div>
 				<ul>
 					{delete user[userName]}
-					{Object.entries(user).map((user , index) => {
+					{Object.entries(user).map((user, index) => {
 						console.log(user);
 						return (
 							<li key={index}>
