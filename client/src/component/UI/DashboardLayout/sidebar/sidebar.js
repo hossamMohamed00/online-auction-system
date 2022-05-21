@@ -8,9 +8,9 @@ import { faGavel } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = props => {
 	let user = props.sidebarContent;
-	console.log("user" , user)
+	// console.log("user" , user)
 	const userName = Object.keys(user)[0];
-	console.log( userName , Object.entries(user) , Object.entries(user)[0] );
+	// console.log( userName , Object.entries(user) , Object.entries(user)[0] );
 
 
 	return (
@@ -41,7 +41,7 @@ const Sidebar = props => {
 				<ul>
 					{delete user[userName]}
 					{Object.entries(user).map((user , index) => {
-						console.log(user);
+						// console.log(user);
 						return (
 							<li key={index}>
 								<Dropdown
@@ -49,47 +49,12 @@ const Sidebar = props => {
 									list={user[1].list}
 									id={`auctions_${index}`}
 									icon={user[1].icon ? user[1].icon : faGavel}
-									className="auction"
+									className={user[1].class ? user[1].class : 'text-primary'}
 								/>
 							</li>
 						);
 					})}
-					{/* <li>
-						<Dropdown
-							username={user.auctions.name}
-							list={user.auctions.list}
-							id="auctions"
-							icon={faGavel}
-							className="auction"
-						/>
-					</li>
-					<li>
-						<Dropdown
-							username={user.users.name}
-							list={user.users.list}
-							id="users"
-							icon={faUsers}
-							className="users"
-						/>
-					</li>
-					<li>
-						<Dropdown
-							username={user.requests.name}
-							list={user.requests.list}
-							id="auctionsRequests"
-							icon={faTh}
-							className="requests"
-						/>
-					</li>
-					<li>
-						<Dropdown
-							username={user.categories.name}
-							id="categories"
-							list={user.categories.list}
-							icon={faListAlt}
-							className="categories"
-						/>
-					</li> */}
+				
 				</ul>
 			</div>
 		</React.Fragment>

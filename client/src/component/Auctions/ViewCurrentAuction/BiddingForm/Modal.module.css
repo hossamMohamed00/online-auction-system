@@ -50,7 +50,15 @@
 	background-color: var(--paragaph-color)!important;
 	color: black;
 }
-
+.reject{
+	background-color: #2E2F32 !important;
+	outline:unset;
+	border: none;
+	color: white !important;
+}
+.reject::placeholder{
+	color:white !important;
+}
 .HideBorder{border-bottom: 0; border-top: 0}
 
 @media (max-width:992px) {

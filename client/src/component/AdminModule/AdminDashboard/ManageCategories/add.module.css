@@ -1,0 +1,33 @@
+.container1{
+	margin: 0 auto !important;
+	width: 50%;
+}
+.container2{
+/* position: relative; */
+	width: 100% !important;
+	box-shadow: 2px 2px 10px var(--nav-color);
+	border-radius: 10px;
+	padding: 5% 5% !important;
+}
+
+.formLabel{
+	color: white !important;
+}
+form input{
+	background-color: #2E2F32 !important;
+	border: none !important;
+	outline: none !important;
+	color: white !important;
+
+}
+form input::placeholder{
+	color: white !important;
+}
+form button{
+	font-size: 16px !important;
+}
+.submit{
+	margin-left: 60%;
+
+	width:40%;
+}
