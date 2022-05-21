@@ -13,12 +13,28 @@ import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 
 const AdminDashboard = props => {
 	const dropdownListForAdmin = [
-		{ title: 'Profile', icon: faUser, path: '/adminDashboard/adminProfile' },
 		{ title: 'Inbox', icon: faMessage, path: '/adminDashboard/chatPage' },
+	];
+	const dropdownListForEmployees = [
+		{
+			title: 'ListAllEmployees',
+			icon: faUser,
+			path: '/adminDashboard/chatPage',
+		},
+		{
+			title: 'AddEmployee',
+			icon: faUser,
+			path: '/adminDashboard/addEmployee',
+		},
 	];
 	const dropdownListManageAuctions = [
 		{
 			title: 'Current Auctions',
+			icon: faGavel,
+			path: '/adminDashboard/currentAuctions',
+		},
+		{
+			title: 'All Auctions',
 			icon: faGavel,
 			path: '/adminDashboard/currentAuctions',
 		},
@@ -32,7 +48,7 @@ const AdminDashboard = props => {
 	const dropdownListManageUsers = [
 		{ title: 'All Users', icon: faUser, path: '/adminDashboard/allUsersPage' },
 		{ title: 'Sellers', icon: faUser, path: '/adminDashboard/sellersPage' },
-		{ title: 'Buyers', icon: faUser , path: '/adminDashboard/buyersPage'},
+		{ title: 'Buyers', icon: faUser, path: '/adminDashboard/buyersPage' },
 	];
 	const dropdownListAuctionsRequests = [
 		{
@@ -41,13 +57,20 @@ const AdminDashboard = props => {
 			path: '/adminDashboard/pendingAuctions',
 		},
 	];
-	const dropdownListManageCategories = [];
+	const dropdownListManageCategories = [
+		{
+			title: 'Manage Categories',
+			icon: faTh,
+			path: '/adminDashboard/manageCategories',
+		},
+	];
 
 	const contentExist = props.children;
 
 	return (
 		<DashboardLayout
 			admin={{ name: 'Safa Ramadan  ', list: dropdownListForAdmin }}
+			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
 			auctions={{ name: 'Manage Auctions', list: dropdownListManageAuctions }}
 			requests={{

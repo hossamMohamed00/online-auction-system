@@ -16,6 +16,12 @@ const Wrapper = props => {
 	console.log("role2" , role , props)
 	const sidebarAdmin = props.admin && {
 		admin: { list: props.admin.list, name: props.admin.name },
+		employees: {
+			list: props.Employees.list,
+			name: props.Employees.name,
+			icon: faUsers,
+			class: 'users',
+		},
 		users: {
 			list: props.users.list,
 			name: props.users.name,
@@ -26,19 +32,19 @@ const Wrapper = props => {
 			list: props.auctions.list,
 			name: props.auctions.name,
 			icon: faGavel,
-			class:'auctions',
+			class: 'auctions',
 		},
 		requests: {
 			list: props.requests.list,
 			name: props.requests.name,
 			icon: faTh,
-			class:'requests',
+			class: 'requests',
 		},
 		categories: {
 			list: props.categories.list,
 			name: props.categories.name,
 			icon: faListAlt,
-			class:'categories',
+			class: 'categories',
 		},
 	};
 

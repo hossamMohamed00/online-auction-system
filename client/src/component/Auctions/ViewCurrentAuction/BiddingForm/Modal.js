@@ -57,6 +57,7 @@ const ModalUi = props => {
 			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
+				{/* for buyer */}
 					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<>
 							<div
@@ -104,6 +105,7 @@ const ModalUi = props => {
 							</div>
 						</>
 					)}
+					{/*for  Admin  */}
 					{props.btnReject && role === 'admin' && (
 						<input
 							type="text"
@@ -117,6 +119,7 @@ const ModalUi = props => {
 
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
+					{/* buyer modal */}
 					{isLoggedIn && !props.UpgoingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
@@ -143,6 +146,7 @@ const ModalUi = props => {
 							Save
 						</button>
 					)}
+					{/* Admin modal */}
 					{props.btnReject && role === 'admin' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}

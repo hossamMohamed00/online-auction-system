@@ -21,8 +21,7 @@ const LoginForm = () => {
 
 	const {sendRequest , status , data , error } = useHttp(Login);
 	const idToken = useSelector((store)=> store.AuthData.idToken);
-	// const role = useSelector(store => store.AuthData.role);
-	console.log(idToken)
+	
 
 	const nameRef= useRef();
 	const passwordRef = useRef();
