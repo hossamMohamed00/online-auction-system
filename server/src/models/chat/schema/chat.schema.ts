@@ -16,7 +16,7 @@ export class Chat {
 	@Prop({ required: [true, 'user2 is required'] })
 	user2: string;
 
-	@Prop({ default: HandleDateService.getCurrentDateFormatted() })
+	@Prop({ default: new Date() })
 	createdAt: string;
 }
 
