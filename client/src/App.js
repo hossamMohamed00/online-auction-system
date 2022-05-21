@@ -32,6 +32,8 @@ import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
 import SellerDashboard from './Pages/SellerDashboard';
+import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
+import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
 
 
 //* Payment
@@ -93,6 +95,11 @@ function App() {
 				{ isLoggedIn &&	role=== 'buyer' && <>
 					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
 					<Route path="/buyer-dashboard/chat" element={<Chat />} />
+					{/* Buyer Auctions */}
+					<Route path="/buyer-dashboard/saved-auctions" element={<SavedAuctions />} />
+					<Route path="/buyer-dashboard/participating-auctions" element={<ViewParticipatingAuctions />} />
+
+
 					</>
 				}
 

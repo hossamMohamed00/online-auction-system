@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useCallback, useEffect,useState } from 'react';
 import moment from 'moment';
 
 import { useSelector } from 'react-redux';
@@ -16,22 +16,22 @@ function ChatContent({socket , getChatWithEmail}) {
 
 	const [joined, setJoined] = useState(false);
 
-	const  sendMessage = (messgae ,Email ) => {
+	const  sendMessage = useCallback((messgae ,Email ) => {
+		if(messgae){
 			setJoined(true)
 			socket.emit('new-message-to-server' ,{
 				message : messgae ,
 				receiverEmail : Email,
 			})
 			socket.emit('get-chat-history' ,{
-				with : Email ,
+				with : getChatWithEmail ,
 			})
-			setMessageValue('')
 		}
+		})
 
 		useEffect(()=>{
-
 			if(getChatWithEmail){
-				console.log("getChatWithEmail",  getChatWithEmail)
+				console.log("getChatWithEmail",  MessageValue)
 				socket.emit('get-chat-history' ,{
 					with : getChatWithEmail ,
 				})
@@ -41,15 +41,12 @@ function ChatContent({socket , getChatWithEmail}) {
 				}))
 			}
 
-		}, [joined , getChatWithEmail , socket])
-
+		}, [ joined , getChatWithEmail , socket , MessageValue])
 
 		const getTime =(time) => {
 			const Time = moment(time , 'LT').format('LT')
-			console.log(Time)
 			return Time
 		}
-		console.log(Message)
 	return (
 		<div className={`${classes.ChatContent}`}>
 			{Message && Message.length !== 0 && <>

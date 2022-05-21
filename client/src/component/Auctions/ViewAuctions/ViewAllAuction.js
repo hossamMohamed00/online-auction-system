@@ -42,7 +42,6 @@ const ViewAllAuctions = () => {
 
 	useEffect(()=>{
 		if(status ==='completed'){
-			console.log("s")
 			setData(data.filter((data)=> data.status !== 'pending' && data.status !== 'denied'))
 		}
 	}, [status])

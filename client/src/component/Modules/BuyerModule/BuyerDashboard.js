@@ -33,14 +33,14 @@ const BuyerDashboardContent = props => {
 
 	const dropdownListViewAuctions = [
 		{
-			title: 'View All Auctions',
+			title: 'View Saved Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			path: '/buyer-dashboard/saved-auctions',
 		},
 		{
-			title: 'View Current Auctions',
+			title: 'View Participating Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/buyer-dashboard/participating-auctions',
 		}
 	];
 

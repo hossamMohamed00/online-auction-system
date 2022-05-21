@@ -17,7 +17,7 @@ const ViewAuctionDetails = (props) => {
 	const getAuctionDetails = (Items , animate) => {
 		return(
 			Items && Items.map((item , idx) => (
-				<Col key={idx}>
+				<Col key={idx} lg={props.lg && props.lg}>
 					<Card className= {` mb-5 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
 						{/* Card item category */}
 						<Card.Img className = "position-relative" variant="top" src={item.item.image ? item.item.image : itemImage1 }/>

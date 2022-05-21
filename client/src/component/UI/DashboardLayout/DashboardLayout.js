@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux'
 
 import classes from './dashboard.module.css';
 import Sidebar from './sidebar/sidebar';
-import PageContent from './Pagecontant/pageContent';
 import Header from './Header/header';
 
 // icons

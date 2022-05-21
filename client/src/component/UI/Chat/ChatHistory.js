@@ -26,6 +26,7 @@ const ChatHistory = ({chatWith }) => {
 		if(status === 'completed'){
 			console.log(data)
 			data.map((chat)=>{
+				if(chat.messages.length !== 0){
 				console.log(chat.user1 , chat.user2 , email , chat.user1 === ChatEmail)
 				let email = chat.user1 === ChatEmail ?  chat.user2 : chat.user1
 				let lastMessage = chat.messages[chat.messages.length - 1].message
@@ -37,7 +38,7 @@ const ChatHistory = ({chatWith }) => {
 					lastMessage : lastMessage,
 					lastMessageTime : moment(lastMessageTime , 'LLLL').format('LT')
 				}])
-			})
+			}})
 		}
 	},[status])
 
@@ -48,7 +49,6 @@ const ChatHistory = ({chatWith }) => {
 
 	const FilterChats = (searchTerm) => {
 		return chats.filter(chat => chat.email.toLowerCase().includes(searchTerm.toLowerCase()) || !searchTerm)
-
 	}
 
 	return (
@@ -56,10 +56,10 @@ const ChatHistory = ({chatWith }) => {
 			<div className={`${classes.ChatHistory} `}>
 				<input type="text" placeholder='search' className={`${classes.ChatHistorySearch}  form-control `} value={searchTerm} onChange = {(e)=>setSearchTerm(e.target.value)} />
 
-				{chats.length > 0 && FilterChats(searchTerm).map((chat)=> (
+				{chats && chats.length > 0 && FilterChats(searchTerm).map((chat)=> (
 					<div className={` ${classes.ChatHistoryContent} ${activeChat === chat.email ?  classes.activeChat : ''} ` } key={chat._id} onClick={() => getChat(chat.email)} >
 						<div className={classes.UserImage}>
-							<span className='rounded-circle bg-light px-2 py-1'> {chat.email.substring(0,1) } </span>
+							<span className='rounded-circle bg-light px-2 pb-1'> {chat.email.substring(0,1) } </span>
 						</div>
 						<div className='w-100 '>
 							<h6 className={classes.UserName}> {chat.email.substring(0 , chat.email.indexOf('@'))} </h6>
