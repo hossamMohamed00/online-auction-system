@@ -43,9 +43,6 @@ const ViewCurrentAuction = () => {
 				{data && (data.item.image && data.item.image.length === 1)  ?
 					<img src={data && data.item.image ? data.item.image :itemImage } className='rounded-3' alt="itemImage" />
 					: 	<Slider>
-					{/* {data && data.item.image.map((img , index)=>(
-						<img src={img} className='rounded-3' alt={`itemImage ${index}`} />
-					))} */}
 					<img src={data && data.item.image ? data.item.image :itemImage } className='rounded-3' alt="itemImage" />
 					<img src={itemImage} alt="itemImage" className='w-100 rounded-3'/>
 					</Slider>
@@ -55,7 +52,7 @@ const ViewCurrentAuction = () => {
 
 				<Col lg={6} className={classes.Auction} >
 					<AuctionHeader AuctionData = {AuctionData} />
-					{!ClosedAuction && <AuctionFooter AuctionStatus = {AuctionData && AuctionData.status} /> }
+					{!ClosedAuction && <AuctionFooter AuctionStatus = {AuctionData && AuctionData.status}  /> }
 				</Col>
 
 			</Row>

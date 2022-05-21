@@ -54,11 +54,11 @@ const usePaymentForm = () => {
 					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjdmZWI3MDlkNmIxMDgwZGI4ZGI0MDgiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MjU1MDY5MCwiZXhwIjoxMDY1MjU1MDY5MH0.EeAvFyRIN9TS6qGr5ua4ciKlral4xq057LefDz4IRZ8`,
 				},
 			},
-		).then(res => res.json());
+			).then(res => res.json());
 
-		if (success === false) {
-			console.log({ message });
-			return;
+			if (success === false) {
+				console.log({ message });
+				return;
 		}
 
 		console.log('Charge wallet done successfully ✔✔✔, status is ' + message);

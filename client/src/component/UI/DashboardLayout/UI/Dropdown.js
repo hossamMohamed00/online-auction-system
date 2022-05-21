@@ -29,6 +29,7 @@ const Dropdown = props => {
 
 			{/* <!-- Collapsible Element HTML --> */}
 			{props.list.map((item, index) => {
+				
 				return (
 					<div className="collapse" id={props.id} key={index} style={{transition: 'all 0.8s'}}>
 						<div className={classes.linkIcon}>
@@ -38,7 +39,6 @@ const Dropdown = props => {
 							to={item.path ? item.path : ''}
 							className={`card card-body fw-bold ${classes.listLink}`}
 						>
-							{/* { console.log(logout)} */}
 							{item.title}
 						</Link>
 					</div>

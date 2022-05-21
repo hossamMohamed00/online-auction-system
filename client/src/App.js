@@ -17,12 +17,14 @@ import Register from './Pages/Register';
 import LoginPage from './Pages/Login';
 import HomePage from './Pages/HomePage';
 import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
+import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
 import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers';
 import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
-import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/ongoingAuctions';
+import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
+import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
 import HowBidPage from './Pages/HowBidPage';
@@ -32,8 +34,10 @@ import ViewAuctions from './Pages/ViewAuctions';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
 import SellerDashboard from './Pages/SellerDashboard';
+
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
+import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 
 
 //* Payment
@@ -47,13 +51,12 @@ function App() {
 	console.log(role)
 
 	return (
-
 		<React.Fragment>
-		{/* start Routes of admin*/}
+			{/* start Routes of admin*/}
 
-		{/* //* TEMPORARY Payment code */}
+			{/* //* TEMPORARY Payment code */}
 
-		{/* <Elements stripe={stripePromise}>
+			{/* <Elements stripe={stripePromise}>
 			<PaymentForm />
 		</Elements> */}
 			<Routes>
@@ -72,9 +75,10 @@ function App() {
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
 
-
 				{/* start Admin Routes */}
-				{ isLoggedIn &&	role=== 'admin'&& <Route path="/adminDashboard" element={<AdminPage />} />}
+				{isLoggedIn && role === 'admin' && (
+					<Route path="/adminDashboard" element={<AdminPage />} />
+				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
 					path="/adminDashboard/ongoingAuctions"
@@ -84,11 +88,16 @@ function App() {
 					path="/adminDashboard/currentAuctions"
 					element={<CurrentAuctionsPage />}
 				/>
+				<Route
+					path="/adminDashboard/pendingAuctions"
+					element={<PendingAuctions />}
+				/>
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
+				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
+				<Route path="/adminDashboard/manageCategories" element={<ManageCategories />} />
 				{/* end Admin Routes */}
-
 
 				{/* start buyer routes  */}
 
@@ -98,27 +107,24 @@ function App() {
 					{/* Buyer Auctions */}
 					<Route path="/buyer-dashboard/saved-auctions" element={<SavedAuctions />} />
 					<Route path="/buyer-dashboard/participating-auctions" element={<ViewParticipatingAuctions />} />
-
-
 					</>
 				}
+
 
 				{/* end buyer routes  */}
 
 				{/* start seller routes  */}
-				{ isLoggedIn &&	role=== 'seller' && <>
-					<Route path="/seller-dashboard" element={<SellerDashboard />} />
-					{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
+				{isLoggedIn && role === 'seller' && (
+					<>
+						<Route path="/seller-dashboard" element={<SellerDashboard />} />
+						{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
 					</>
-				}
+				)}
 				{/* end seller routes  */}
-
-
 
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
-
 	);
 }
 

@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
 import TableLayout from '../../../UI/TableLayout/TableLayout';
-import { getCurrentAuctions } from '../../../../Api/AuctionsApi';
+
 
 const UsersPage = () => {
-	const path = 'admin/users';
+
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const columNames = ['name', 'email', 'role'];
 
 	const { sendRequest, status, data } = useHttp(getUsers);
 
 	useEffect(() => {
-		sendRequest(idToken);
+		sendRequest({idToken: idToken , path:'admin/users'});
 	}, [sendRequest]);
 
 
