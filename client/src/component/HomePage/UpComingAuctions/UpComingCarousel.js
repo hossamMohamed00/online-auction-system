@@ -1,11 +1,12 @@
 import React  from "react";
-import classes from './UpGoingAuctions.module.css'
 
 import Slider from "../../UI/Carousel/Carousel";
 import CountDownTimer from "../../UI/CountDownTimer/CountDownTimer";
 import { Link } from "react-router-dom";
 
-const UpGoingCarousel = ({UogoingAuctionData}) => {
+import classes from './UpComingAuctions.module.css'
+
+const UpComingCarousel = ({UogoingAuctionData}) => {
 
 	const ShowCarouselItems = UogoingAuctionData.map((Item , index)=> {
 		return(
@@ -62,4 +63,4 @@ const UpGoingCarousel = ({UogoingAuctionData}) => {
 		</>
 )}
 
-export default UpGoingCarousel ;
+export default UpComingCarousel ;

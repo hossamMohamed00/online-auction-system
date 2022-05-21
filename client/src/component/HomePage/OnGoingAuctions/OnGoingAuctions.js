@@ -21,10 +21,10 @@ const OnGoingAuctions = () => {
 	return (
 		<Fragment>
 			<div className={`${classes.CurrentAuctions} container-fluied`}>
-				<AuctionHeader text="OnGoing Auctions" showLink={true} />
+				<AuctionHeader text="OnGoing  Auctions" showLink={true} />
 				{data && status==='completed' && data.length > 0  && <ViewAuctionDetails AuctionData={FirstThreeItems} /> }
 
-				<NoData text="No OnGoing Auctions Now" data={data && data} error= {error && error} />
+				<NoData text="No On Going Auctions Now" data={data && data} error= {error && error} />
 			</div>
 
 		</Fragment>
