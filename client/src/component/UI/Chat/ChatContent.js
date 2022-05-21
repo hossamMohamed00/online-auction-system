@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect,useState } from 'react';
+import moment from 'moment';
 
 import { useSelector } from 'react-redux';
 
@@ -24,10 +25,11 @@ function ChatContent({socket , getChatWithEmail}) {
 			socket.emit('get-chat-history' ,{
 				with : Email ,
 			})
-			console.log("getChatWithEmail 2 2" , Email)
+			setMessageValue('')
 		}
 
 		useEffect(()=>{
+
 			if(getChatWithEmail){
 				console.log("getChatWithEmail",  getChatWithEmail)
 				socket.emit('get-chat-history' ,{
@@ -43,17 +45,17 @@ function ChatContent({socket , getChatWithEmail}) {
 
 
 		const getTime =(time) => {
-			const date  = new Date(time)
-			// console.log(date)
-			// return date.getHours() + ` : ` + date.getMinutes()
-			return "12 : 20 pm"
+			const Time = moment(time , 'LT').format('LT')
+			console.log(Time)
+			return Time
 		}
+		console.log(Message)
 	return (
 		<div className={`${classes.ChatContent}`}>
 			{Message && Message.length !== 0 && <>
 			<input type="text" placeholder='Type your message' className={`${classes.ChatContentInput}  form-control `} onChange={(e) => setMessageValue(e.target.value)} />
-			<button className={`${classes.ChatContentButton} btn btn-secondary`} type="button" id="inputGroupFileAddon04" onClick={ () => sendMessage(MessageValue , getChatWithEmail)} >
-				<FontAwesomeIcon icon={faPaperPlane} />
+			<button className={`${classes.ChatContentButton} btn btn-secondary`} type="button" id="inputGroupFileAddon04"  >
+				<FontAwesomeIcon icon={faPaperPlane} onClick={ () => sendMessage(MessageValue , getChatWithEmail)} />
 			</button>
 			</>}
 			<div className={classes.Messages}>
@@ -66,7 +68,7 @@ function ChatContent({socket , getChatWithEmail}) {
 								<p> {message.message} </p>
 							</div>
 						</div>
-						<p className={`${classes.MessageTime} ${message.senderEmail === email ? 'text-end' : 'text-start' }` }> { getTime(message.sendAt) }</p>
+						<p className={`${classes.MessageTime} ${message.senderEmail === email ? 'text-end' : 'text-start' }` }> { getTime(message.sentAt) }</p>
 						</React.Fragment>
 					)))
 

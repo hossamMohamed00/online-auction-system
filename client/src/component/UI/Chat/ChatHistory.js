@@ -1,33 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
+
+import { getChats } from '../../../Api/Chat';
+import useHttp from '../../../CustomHooks/useHttp'
 
 import classes from './ChatHistory.module.css'
 
-const ChatHistory = ({chatWith}) => {
+const ChatHistory = ({chatWith }) => {
 
-	const [activeChat , setActiveChat] = useState(false)
-	let ChatHistoryContentClasses = `${classes.ChatHistoryContent} ${activeChat ?  classes.activeChat : ''}`
+	const [activeChat , setActiveChat] = useState('')
 
-	const getChat = () => {
-		setActiveChat(true)
-		chatWith('buyer3@email.com')
+	const [chats , setChats] = useState([])
+	const [searchTerm , setSearchTerm] = useState('')
+
+	const {sendRequest , status , data} = useHttp(getChats);
+	const idToken = useSelector(store => store.AuthData.idToken)
+	const ChatEmail 	= useSelector(store => store.AuthData.email)
+
+	useEffect(()=>{
+		sendRequest(idToken)
+	},[sendRequest])
+
+	useEffect(()=>{
+		if(status === 'completed'){
+			console.log(data)
+			data.map((chat)=>{
+				console.log(chat.user1 , chat.user2 , email , chat.user1 === ChatEmail)
+				let email = chat.user1 === ChatEmail ?  chat.user2 : chat.user1
+				let lastMessage = chat.messages[chat.messages.length - 1].message
+				let lastMessageTime = chat.messages[chat.messages.length - 1].sentAt
+				setChats((prevChats) => [
+				...prevChats,
+				{
+					email:email ,
+					lastMessage : lastMessage,
+					lastMessageTime : moment(lastMessageTime , 'LLLL').format('LT')
+				}])
+			})
+		}
+	},[status])
+
+	const getChat = (email) => {
+		setActiveChat(email)
+		chatWith(email)
 	}
+
+	const FilterChats = (searchTerm) => {
+		return chats.filter(chat => chat.email.toLowerCase().includes(searchTerm.toLowerCase()) || !searchTerm)
+
+	}
+
 	return (
 		<>
 			<div className={`${classes.ChatHistory} `}>
-				<input type="text" placeholder='search' className={`${classes.ChatHistorySearch}  form-control `}/>
+				<input type="text" placeholder='search' className={`${classes.ChatHistorySearch}  form-control `} value={searchTerm} onChange = {(e)=>setSearchTerm(e.target.value)} />
 
-				<div className={ChatHistoryContentClasses} onClick={getChat}>
-					<div className={classes.UserImage}>
-						<span className='rounded-circle bg-light px-2 py-1'> {"Buyer".substring(0,1) } </span>
+				{chats.length > 0 && FilterChats(searchTerm).map((chat)=> (
+					<div className={` ${classes.ChatHistoryContent} ${activeChat === chat.email ?  classes.activeChat : ''} ` } key={chat._id} onClick={() => getChat(chat.email)} >
+						<div className={classes.UserImage}>
+							<span className='rounded-circle bg-light px-2 py-1'> {chat.email.substring(0,1) } </span>
+						</div>
+						<div className='w-100 '>
+							<h6 className={classes.UserName}> {chat.email.substring(0 , chat.email.indexOf('@'))} </h6>
+							<span className={classes.MessageTime}> {chat.lastMessageTime} </span>
+							<p className={classes.MessageContent}> {chat.lastMessage} </p>
+						</div>
 					</div>
-					<div className='w-100 '>
-						<h6 className={classes.UserName}> Buyer 2 </h6>
-						<span className={classes.MessageTime}> 4:44 am </span>
-						<p className={classes.MessageContent}>  Messgae from Buyer 4</p>
-					</div>
-
-				</div>
-
+				))}
 			</div>
 
 		</>

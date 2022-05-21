@@ -18,6 +18,7 @@ const  Chat = () => {
 	const idToken = useSelector(store=>store.AuthData.idToken)
 	const [chatWith,setChatWith] = useState('')
 
+
 	// establish socket connection
 	const socket = io("http://localhost:8000/chat", {
 		extraHeaders: {
@@ -28,17 +29,17 @@ const  Chat = () => {
 	const getChatWith = (email) => {
 		setChatWith(email)
 	}
-	console.log(chatWith)
+
 
     return (
       <BuyerDashboardContent>
 				<PageContent className={`${classes.PageContentClasses}`}>
 					<Row className="h-100">
 						<Col lg={4} md={6} className={`${classes.chatList} ${scollbarStyle.scollbar}`} >
-							<ChatHistory chatWith={getChatWith}/>
+							<ChatHistory chatWith={getChatWith}  />
 						</Col>
 						<Col lg={8} md={6} className={`${classes.ChatContent} ${scollbarStyle.scollbar} ps-0 `}>
-							<ChatContent socket={socket} getChatWithEmail= {chatWith && chatWith}/>
+							<ChatContent socket={socket} getChatWithEmail= {chatWith && chatWith} />
 						</Col>
 					</Row>
 				</PageContent>

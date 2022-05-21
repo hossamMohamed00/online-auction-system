@@ -1,10 +1,13 @@
 .ChatHistoryContent{
 	display: flex;
 	flex-direction: row;
-	margin-top: 20px;
+	margin-top: 5px;
 	transition: all 0.5s;
 	padding: 5px ;
 	cursor: pointer;
+}
+.ChatHistoryContent:first-of-type{
+	margin-top: 20px;
 }
 .ChatHistoryContent:hover{
 	background-color: #191c20;
@@ -23,7 +26,6 @@
 	margin-left: 10px;
 	font-weight: bold!important;
 	display: inline-block;
-
 }
 
 .MessageContent {
