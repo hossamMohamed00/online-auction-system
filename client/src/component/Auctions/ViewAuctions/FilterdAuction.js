@@ -8,13 +8,15 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getAllCategories } from '../../../Api/CategoryApi';
 
 import classes from './ViewAllAuctions.module.css'
+import { useSelector } from 'react-redux';
 
 function FilterdAuctions(props) {
 
-	const {sendRequest , status , data , error } = useHttp(getAllCategories);
+	const {sendRequest , status , data } = useHttp(getAllCategories);
+	const idToken = useSelector(store=>store.AuthData.idToken)
 
 	useEffect(()=>{
-		sendRequest()
+		sendRequest(idToken)
 	},[sendRequest])
 
 	const CategoryList = data && data.map((Category)=> Category.name)

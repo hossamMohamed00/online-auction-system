@@ -12,6 +12,7 @@ import ChatHistory from './ChatHistory';
 import scollbarStyle from '../../UI/ScrollBar.module.css'
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
+import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
 
 const  Chat = () => {
 
@@ -32,7 +33,6 @@ const  Chat = () => {
 
 
     return (
-      <BuyerDashboardContent>
 				<PageContent className={`${classes.PageContentClasses}`}>
 					<Row className="h-100">
 						<Col lg={4} md={6} className={`${classes.chatList} ${scollbarStyle.scollbar}`} >
@@ -43,7 +43,8 @@ const  Chat = () => {
 						</Col>
 					</Row>
 				</PageContent>
-			</BuyerDashboardContent>
+
+
      );
 }
 

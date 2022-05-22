@@ -14,11 +14,11 @@ const Categories = () => {
 
 	const getCategories = role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
 
-	const { sendRequest, status, data, error } = useHttp(getCategories);
+	const {sendRequest , status , data , error} = useHttp(getAllCategories);
 
-	useEffect(() => {
-		sendRequest(idToken);
-	}, [sendRequest]);
+	useEffect(()=>{
+		sendRequest(idToken)
+	},[sendRequest])
 
 	const showAllCategories =
 		!error &&

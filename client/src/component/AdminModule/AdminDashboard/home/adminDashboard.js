@@ -5,9 +5,7 @@ import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
-import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 

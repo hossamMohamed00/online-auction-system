@@ -13,9 +13,21 @@ import './component/UI/Layout.css';
 import './component/UI/Layout.css';
 
 // pages
+
+// start home Pages
 import Register from './Pages/Register';
 import LoginPage from './Pages/Login';
 import HomePage from './Pages/HomePage';
+import AboutUsPage from './Pages/AboutUsPage';
+import ContactUsPage from './Pages/ContactUsPage';
+import HowBidPage from './Pages/HowBidPage';
+import PageNotFound from './Pages/PageNotFound';
+import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
+import ViewAuctions from './Pages/ViewAuctions';
+// end home Pages
+
+
+// start admin pages
 import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
@@ -25,20 +37,21 @@ import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/prof
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
 import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
-import AboutUsPage from './Pages/AboutUsPage';
-import ContactUsPage from './Pages/ContactUsPage';
-import HowBidPage from './Pages/HowBidPage';
-import PageNotFound from './Pages/PageNotFound';
-import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
-import ViewAuctions from './Pages/ViewAuctions';
+import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
+// end admin pages
+
+
+// buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
-import SellerDashboard from './Pages/SellerDashboard';
-
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
-import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 
+// seller pages
+import SellerDashboard from './Pages/SellerDashboard';
+import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
+import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
+import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
@@ -103,7 +116,7 @@ function App() {
 
 				{ isLoggedIn &&	role=== 'buyer' && <>
 					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-					<Route path="/buyer-dashboard/chat" element={<Chat />} />
+					<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
 					{/* Buyer Auctions */}
 					<Route path="/buyer-dashboard/saved-auctions" element={<SavedAuctions />} />
 					<Route path="/buyer-dashboard/participating-auctions" element={<ViewParticipatingAuctions />} />
@@ -117,7 +130,13 @@ function App() {
 				{isLoggedIn && role === 'seller' && (
 					<>
 						<Route path="/seller-dashboard" element={<SellerDashboard />} />
-						{/* <Route path="/seller-dashboard/chat" element={<Chat />} /> */}
+						<Route
+							path="/seller-dashboard/viewAllAuctions"
+							element={<ViewAllAuctions />}
+						/>
+						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
+
+
 					</>
 				)}
 				{/* end seller routes  */}

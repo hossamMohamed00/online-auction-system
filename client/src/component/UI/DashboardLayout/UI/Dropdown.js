@@ -5,6 +5,8 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 const Dropdown = props => {
+	console.log(props)
+
 	return (
 		<div className={classes.dropdown}>
 			<div
@@ -29,7 +31,6 @@ const Dropdown = props => {
 
 			{/* <!-- Collapsible Element HTML --> */}
 			{props.list.map((item, index) => {
-				
 				return (
 					<div className="collapse" id={props.id} key={index} style={{transition: 'all 0.8s'}}>
 						<div className={classes.linkIcon}>

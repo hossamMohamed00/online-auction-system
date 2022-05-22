@@ -1,14 +1,8 @@
 import React from 'react';
+import SellerModule from '../component/Modules/SellerModule/SellerModule';
 
-import AdminDashboard from '../component/AdminModule/AdminDashboard/home/adminDashboard'
+const SellerDashboard = () => {
+	return <SellerModule></SellerModule>;
+};
 
-const SellerDashboard=()=>{
-
-
-	return(
-
-		<AdminDashboard></AdminDashboard>
-	)
-}
-
-export default SellerDashboard
+export default SellerDashboard;
