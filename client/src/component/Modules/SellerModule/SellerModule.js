@@ -7,11 +7,10 @@ import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
-const BuyerDashboardContent = props => {
+const SellerDashboardContent = props => {
+	const email = localStorage.getItem('email');
 
-	const email = localStorage.getItem('email')
-
-	console.log(email)
+	console.log(email);
 
 	const dropdownListProfile = [
 		{
@@ -31,25 +30,17 @@ const BuyerDashboardContent = props => {
 		},
 	];
 
-	const dropdownListViewAuctions = [
+	const dropdownListAuctions = [
 		{
-			title: 'View Saved Auctions',
+			title: 'My Auctions',
 			icon: faGavel,
-			path: '/buyer-dashboard/saved-auctions',
+			path: '/seller-dashboard/viewAllAuctions',
 		},
 		{
-			title: 'View Participating Auctions',
+			title: 'Add New Auction',
 			icon: faGavel,
-			path: '/buyer-dashboard/participating-auctions',
-		}
-	];
-
-	const dropdownListChat = [
-		{
-			title: 'View Chats',
-			icon: faCommentDots,
-			path: '/buyer-dashboard/chat',
-		}
+			path: '/adminDashboard/ongoingAuctions',
+		},
 	];
 
 	const dropdownListPayment = [
@@ -67,28 +58,39 @@ const BuyerDashboardContent = props => {
 			title: 'Display Wallet Info',
 			icon: faGavel,
 			path: '/adminDashboard/currentAuctions',
-		}
+		},
 	];
+
+	const dropdownListChat = [
+		{
+			title: 'View Chat ',
+			icon: faGavel,
+			path: '/seller-dashboard/chat',
+		},
+
+	];
+
 	const contentExist = props.children;
-	console.log(contentExist)
+
 	return (
 		<DashboardLayout
-			buyer					= {{ name: `${email}` }}
-			profile				= {{ name: 'Profile', list: dropdownListProfile }}
-			viewAuctions	= {{ name: 'View Auctions', list: dropdownListViewAuctions }}
-			chat					= {{ name: 'Chat', list: dropdownListChat }}
-			payment				= {{ name: 'Payment', list: dropdownListPayment }}
+			seller={{ name: `${email}` }}
+			profile={{ name: 'Profile', list: dropdownListProfile }}
+			viewAuctions={{ name: 'Auctions', list: dropdownListAuctions }}
+			payment={{ name: 'Payment', list: dropdownListPayment }}
+			SellerChat={{ name: 'SellerChat', list: dropdownListChat }}
+
 
 		>
 			{contentExist ? (
 				props.children
 			) : (
 				<PageContent>
-					<h1> hello </h1>
+					<h1> hello Seller </h1>
 				</PageContent>
 			)}
 		</DashboardLayout>
 	);
 };
 
-export default BuyerDashboardContent;
+export default SellerDashboardContent;

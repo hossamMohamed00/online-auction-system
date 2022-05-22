@@ -21,31 +21,36 @@ const ModalUi = props => {
 		} else {
 			setIsBidValid(true);
 		}
-	};
+	}
+	const btnSavedHandeler = () => {
+		props.btnSaved('Saved') ;
+		props.onHide()
+	}
+
 	return (
 		<Modal
-			{...props}
+			show={props.show}
+			onHide={props.onHide}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
 			className={classes.BiddingModal}
 		>
 			{/* Modal Header */}
+
 			<Modal.Header closeButton className={classes.BiddingModalHeader}>
 				<Modal.Title id="contained-modal-title-vcenter">
-					{isLoggedIn && !props.UpgoingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<h2 className="fw-bold">Place a Bid </h2>
 					)}
 					{!isLoggedIn && (
 						<h5 className="text-center pt-3">
-							{' '}
-							Please Login in First, before placing a bid{' '}
+							Please Login in First, before placing a bid
 						</h5>
 					)}
-					{isLoggedIn && props.UpgoingAuction && role === 'buyer' && (
+					{isLoggedIn && props.UpComingAuction && role === 'buyer' && (
 						<h5 className="text-center pt-3">
-							{' '}
-							We will Notify you when Auction be ongoing{' '}
+							We will Notify you when Auction be ongoing
 						</h5>
 					)}
 					{props.btnReject && role === 'admin' && (
@@ -119,14 +124,14 @@ const ModalUi = props => {
 
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
+
 					{/* buyer modal */}
-					{isLoggedIn && !props.UpgoingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
 							type="button"
 						>
-							{' '}
-							Place My Bid{' '}
+						Place My Bid
 						</button>
 					)}
 					{!isLoggedIn && (
@@ -138,10 +143,12 @@ const ModalUi = props => {
 							Login
 						</Link>
 					)}
-					{isLoggedIn && props.UpgoingAuction && role === 'buyer' && (
+					{isLoggedIn && props.UpComingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"
+							onClick={btnSavedHandeler}
+
 						>
 							Save
 						</button>
@@ -162,8 +169,7 @@ const ModalUi = props => {
 						type="button"
 						onClick={props.onHide}
 					>
-						{' '}
-						Close{' '}
+						Close
 					</button>
 				</div>
 			</Modal.Footer>

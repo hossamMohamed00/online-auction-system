@@ -1,17 +1,17 @@
 import React ,{ Fragment, useEffect} from "react";
 
-import { getCurrentAuctions } from "../../../Api/AuctionsApi";
+import { getOnGoingAuctions } from "../../../Api/AuctionsApi";
 import ViewAuctionDetails from "../../UI/ViewAuctionDetails/ViewAuctionDetails";
 import useHttp from '../../../CustomHooks/useHttp'
 
-import classes from './CurrentAuctions.module.css'
+import classes from './OnGoingAuctions.module.css'
 
 import NoData from "../../UI/NoData";
 import AuctionHeader from "../../UI/AuctionHeader/AuctionHeader";
 
-const CurrentAuctions = () => {
+const OnGoingAuctions = () => {
 
-	const {sendRequest , status , data , error } = useHttp(getCurrentAuctions);
+	const {sendRequest , status , data , error } = useHttp(getOnGoingAuctions);
 	const FirstThreeItems =  data && data.slice(0,3)
 
 	useEffect(()=>{
@@ -21,14 +21,14 @@ const CurrentAuctions = () => {
 	return (
 		<Fragment>
 			<div className={`${classes.CurrentAuctions} container-fluied`}>
-				<AuctionHeader text="Current Auctions" showLink={true} />
+				<AuctionHeader text="OnGoing  Auctions" showLink={true} />
 				{data && status==='completed' && data.length > 0  && <ViewAuctionDetails AuctionData={FirstThreeItems} /> }
 
-				<NoData text="No Current Auctions Now" data={data && data} error= {error && error} />
+				<NoData text="No On Going Auctions Now" data={data && data} error= {error && error} />
 			</div>
 
 		</Fragment>
 	);
 }
 
-export default CurrentAuctions;
+export default OnGoingAuctions;

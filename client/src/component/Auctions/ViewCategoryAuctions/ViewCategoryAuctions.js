@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowRight} from '@fortawesome/free-solid-svg-icons'
@@ -26,43 +26,28 @@ const  ViewCategoryAuctions = () => {
 	const location = useLocation()
 	const CategoriyId = new URLSearchParams(location.search).get('id')
 
+	const fun = useCallback(async (Categoriyid)=>{
+		console.log(CategoriyId)
+		await sendRequest(Categoriyid && Categoriyid)
+	},[])
 
 	useEffect(()=>{
-		setChangeCategory(false)
 		if(CategoriyId){
-			setChangeCategory(true)
-			console.log(!!location.key)
-			sendRequest(CategoriyId)
+			fun(CategoriyId)
 		}
-	} , [sendRequest])
-
-	console.log(changeCategory)
-
-	useEffect(()=>{
-		if(changeCategory===true){
-			console.log("yes")
-			sendRequest(CategoriyId)
-		}
-	} , [sendRequest])
-
-
-	useEffect(()=>{
-		if(status === 'compelte'){
-			console.log(data)
-		}
-	} , [status])
+	}, [CategoriyId])
 
 	return (
 		<Fragment>
 			<div className= {classes.ViewCategoryAuctions}>
 				<Navbar/>
-				{data && data.length > 0 && <ViewAuctionDetails AuctionData={FirstThreeItems} />}
-				{showRestItems && data && data.length > 0 && <ViewAuctionDetails AuctionData={RestItems} animate={true} /> }
+				{data && data.length > 0 && status === 'completed' && <ViewAuctionDetails AuctionData={FirstThreeItems} />}
+				{showRestItems && data && data.length > 0 && status === 'completed' && <ViewAuctionDetails AuctionData={RestItems} animate={true} /> }
 
 				{ status === 'completed' && (!data || data.length === 0 ) &&
 					<div class="alert alert-danger text-center p-4" role="alert">
-						<h3 className='mb-3'> No Auctions in this Category </h3>
-						<Link className={`text-decoration-none  px-4 ${classes.btnBackHome}`} to='/home-page'> Back To HomePage </Link>
+						<h3 className='mb-4 fw-bold'> No Auctions in this Category </h3>
+						<Link className={`text-decoration-none  p-2 px-4  fw-bold	${classes.btnBackHome}`} to='/home-page'> Back To HomePage </Link>
 					</div>
 				}
 				{!showRestItems && data && data.length > 3 &&

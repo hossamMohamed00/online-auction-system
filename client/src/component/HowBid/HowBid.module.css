@@ -1,5 +1,89 @@
-.HowBid{
-	margin-top: 15vh;
+.HowBid {
+	padding-top: 9vh;
 	color: white;
-	background-color: blue
+	border-radius: 3px;
+	height: 100vh;
+	cursor: pointer;
+}
+
+.header3 {
+	font-size: 50px;
+	padding-top: 5vh !important;
+	color: var(--main-color);
+	text-align: center;
+}
+.pragragh {
+	text-align: center;
+	font-size: 35px !important;
+	color: var(--paragaph-color);
+}
+
+.Step {
+	color: white;
+	text-align: center;
+	font-size: 25px !important;
+	padding-left: 10px;
+	padding-top: 20px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.pragraghS {
+	text-align: center;
+	margin-top: 1px !important;
+	padding-top: 15px;
+	font-size: 19px !important;
+	font-weight: bold;
+	color: var(--paragaph-color);
+}
+
+.pragraghChangeColor {
+	color: #2f3236 !important;
+}
+
+.changeCardColor {
+	background-color: var(--main-color) !important;
+	color: #191c20 !important;
+}
+
+.btnCardDetails {
+	position: relative;
+	width: 100%;
+	margin-top: 20px;
+	transition: all 2s;
+	display: none;
+}
+.btnCardDetails::before {
+	content: '';
+	position: absolute;
+	left: 40%;
+	top: -40px;
+	width: 20px;
+	/* height: 20px; */
+	border-width: 20px;
+	border-color: transparent transparent white transparent;
+	border-style: solid;
+}
+
+.CardDetails{
+	/* display: block;	 */
+	position: relative;
+	padding-top: 55px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.Steps > div > div:hover > .CardDetails,
+.Steps > div > div:hover > .CardDetails > .btnCardDetails {
+	display: block !important;
+}
+
+/* media query for small screens */
+@media (max-width: 767.98px) {
+	.header3 {
+		font-size: 40px !important;
+	}
+	.pragragh {
+		font-size: 20px !important;
+	}
 }

@@ -19,6 +19,7 @@ const Input = React.forwardRef((props , ref) => {
 					onBlur    	= {onBlurHandeler}
 					className 	= {` form-control ${classes['form-control']} ${classes.input} ${hasError ? classes['alarm-input'] : '' } `}
 					ref 				= {ref}
+					id					= {props.id ?  props.id : ''}
 				/>
 				{hasError&& <p className={`${classes['alarm']} mb-2`}>{props.errorMassage}</p>}
 

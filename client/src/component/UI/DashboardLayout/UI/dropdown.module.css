@@ -11,8 +11,8 @@
 .dropdown a:focus {
 	box-shadow: none;
 	color: White;
-
 }
+
 
 .username {
 	margin-left: 5.5%;
@@ -46,15 +46,16 @@
 }
 
 .listLink {
-	width: 200px;
+	/* width: 200px; */
 	background-color: #191c20;
 	color: white;
 	border: none;
 	margin-top: 0 !important;
 	margin-left: 6%;
 	display: inline-block !important;
-	width: 70%;
-	font-size: 16px !important;
+	width: 80%;
+	font-size: 14px !important;
+	font-weight: bold!important;
 	line-height: 2.5;
 	/* transition: all 0.5s; */
 	padding :5px 0 0 !important;

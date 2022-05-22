@@ -30,8 +30,12 @@ const AuthData = createSlice({
         logout(state , action){
           state.isLoggedIn = false
           state.idToken = null
-          localStorage.removeItem('token')
-        }
+
+					localStorage.removeItem('token')
+					localStorage.removeItem('email')
+					localStorage.removeItem('role')
+
+				}
     }
 });
 

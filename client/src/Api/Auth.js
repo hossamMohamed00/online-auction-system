@@ -3,6 +3,8 @@ const url = 'http://localhost:8000'
 const RegisterUrl 		= `${url}/auth/register `;
 const LoginUrl			 	= `${url}/auth/login`;
 const ConfirmEmailUrl = `${url}/email-confirmation/confirm`;
+const LogoutUrl			 	= `${url}/auth/logout`;
+
 
 
 export const Register = async (userDetails) => {
@@ -74,4 +76,19 @@ export const sendConfiramtion = async (idToken) => {
 	}
 
 	return data;
+}
+
+export const Logout = async (idToken) => {
+	const response = await fetch(LogoutUrl, {
+		method : 'POST',
+		headers: {
+			'Authorization' : `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	if (!response.ok) {
+		throw new Error(response.json().message);
+	}
+
+
 }

@@ -4,7 +4,7 @@ import { Row , Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faFilter} from '@fortawesome/free-solid-svg-icons'
 
-import { getAllAuctions, getCurrentAuctions } from '../../../Api/AuctionsApi';
+import { getAllAuctions, getOnGoingAuctions } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
@@ -19,12 +19,14 @@ import Navbar from '../../HomePage/Header/Navbar';
 const ViewAllAuctions = () => {
 
 	const [showFilter , setShowFilter] = useState(null)
+	const [Data , setData] = useState(null)
+
 
 	const [FilterAuction , setFilterAuction] = useState(false)
 	const [FilterdDetails , setFilterdDetails] = useState(null)
 
 	const {sendRequest , status , data , error} = useHttp(getAllAuctions);
-	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getCurrentAuctions);
+	const {sendRequest:sendFilterdRequest , status:FilterdRequestStatus , data:FilterdRequestData } = useHttp(getOnGoingAuctions);
 
 
 	useEffect(()=>{
@@ -38,6 +40,11 @@ const ViewAllAuctions = () => {
 		}
 	} , [sendRequest , FilterAuction])
 
+	useEffect(()=>{
+		if(status ==='completed'){
+			setData(data.filter((data)=> data.status !== 'pending' && data.status !== 'denied'))
+		}
+	}, [status])
 	const showFilterHandler = () => {
 		setShowFilter(true)
 	}
@@ -57,7 +64,7 @@ const ViewAllAuctions = () => {
 		}
 	}
 
-	console.log(showFilter)
+
 	return (
 		<div className={classes.ViewAllAuctions}>
 			<Navbar/>
@@ -84,8 +91,8 @@ const ViewAllAuctions = () => {
 							</div>
 
 							{FilterdRequestData && FilterdRequestStatus==='completed'  &&<ViewAuctionDetails AuctionData = {FilterdRequestData} animate={false} />}
-							{data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {data} animate={false} />}
-							<NoData text="No Auctions Now" data={data && data} error= {error && error} />
+							{Data && !FilterAuction && status==='completed' && <ViewAuctionDetails AuctionData = {Data} animate={false} />}
+							<NoData text="No Auctions Now" data={data && data} error = {error && error} />
 
 						</div>
 					}

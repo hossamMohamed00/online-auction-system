@@ -21,7 +21,7 @@ const LoginForm = () => {
 
 	const {sendRequest , status , data , error } = useHttp(Login);
 	const idToken = useSelector((store)=> store.AuthData.idToken);
-	
+
 
 	const nameRef= useRef();
 	const passwordRef = useRef();
@@ -39,10 +39,12 @@ const LoginForm = () => {
 
 			}else if(data.role === 'admin'){
 				navigate('/adminDashboard');
-
+			}
+			}if(data && data.role==='seller') {
+				navigate('/seller-dashboard');
 			}
 		}
-	},[status])
+	,[status])
 
 
 	const submitHandeler = (e) =>{

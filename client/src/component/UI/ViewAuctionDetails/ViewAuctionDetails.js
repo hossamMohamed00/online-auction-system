@@ -15,13 +15,14 @@ const ViewAuctionDetails = (props) => {
 	const viewAllAuctionPage = location.pathname === '/auctions'
 
 	const getAuctionDetails = (Items , animate) => {
+		console.log(Items)
 		return(
-			Items.map((item , idx) => (
-				<Col key={idx}>
+			Items && Items.map((item , idx) => (
+				<Col key={idx} lg={props.lg && props.lg}>
 					<Card className= {` mb-5 ${classes.CurrentAuctionsCard} ${animate ? 'animation' : ''} `}>
 						{/* Card item category */}
 						<Card.Img className = "position-relative" variant="top" src={item.item.image ? item.item.image : itemImage1 }/>
-						<div className={`${classes.CardItemCategory} ${viewAllAuctionPage ? classes.CardAuctionStatus : ''} `}> {viewAllAuctionPage ? item.status : item.category.name } </div>
+						<div className={`${classes.CardItemCategory} ${viewAllAuctionPage ? classes.CardAuctionStatus : ''} `}> {viewAllAuctionPage ? item.status : item.status } </div>
 						<div className={classes.Timer}>
 							{CountDownTimer(new Date(item.endDate))}
 						</div>

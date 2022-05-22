@@ -2,16 +2,13 @@ import React from 'react';
 
 import classes from './sidebar.module.css';
 import Dropdown from '../UI/Dropdown';
-import adminImg from '../../../../assets/icons8-test-account-40.png';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faGavel, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const Sidebar = props => {
 	let user = props.sidebarContent;
-	// console.log("user" , user)
 	const userName = Object.keys(user)[0];
-	// console.log( userName , Object.entries(user) , Object.entries(user)[0] );
-
 
 	return (
 		<React.Fragment>
@@ -24,7 +21,7 @@ const Sidebar = props => {
 
 				<div className={classes.adminName}>
 					<div className={classes.img}>
-						<img src={adminImg} alt="admin" />
+						<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle mt-2`} />
 					</div>
 					<div className={classes.username}>
 						{user[userName].list ?
@@ -41,7 +38,6 @@ const Sidebar = props => {
 				<ul>
 					{delete user[userName]}
 					{Object.entries(user).map((user , index) => {
-						// console.log(user);
 						return (
 							<li key={index}>
 								<Dropdown
@@ -54,7 +50,7 @@ const Sidebar = props => {
 							</li>
 						);
 					})}
-				
+
 				</ul>
 			</div>
 		</React.Fragment>

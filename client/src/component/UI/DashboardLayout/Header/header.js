@@ -39,7 +39,7 @@ const Header = props => {
   						</span>
 					</div>
 					{/* <img src={adminImg} className={classes.adminImg} /> */}
-					<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle `} />
+					<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle mt-2`} />
 					<Link to='/login'className={`${classes.logout} mx-2 ` }onClick={logoutHandler}>Logout</Link>
 				</div>
 			</div>

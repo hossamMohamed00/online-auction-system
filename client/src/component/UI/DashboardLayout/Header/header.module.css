@@ -50,16 +50,13 @@
 	margin-right: 5px;
 }
 .adminImg {
-	/* margin-left: 15px; */
 	margin-left: 15px;
 	margin-right: 5px;
 	color: var(--main-color);
 	background-color: white ;
 	width: 18px;
 	height: 18px;
-	/* margin-top: 1px; */
 	padding: 3px;
-	/* font-size: 20px; */
 }
 
 

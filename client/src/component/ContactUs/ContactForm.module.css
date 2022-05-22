@@ -27,12 +27,14 @@
 .ContactFormDetails input , .formControl{
 	width: 100%!important;
 	background: none!important;
+	border: 1px solid !important;
 	border-color: #171817!important;
 	padding: 3px;
 }
 .formControl ,.formControl::placeholder {
 	box-shadow: none!important;
 	color: white!important;
+
 }
 
 .formControl:hover{

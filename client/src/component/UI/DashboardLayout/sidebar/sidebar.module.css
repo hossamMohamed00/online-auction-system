@@ -30,6 +30,15 @@
 	display: flex;
 	justify-content: space-evenly;
 }
+.adminImg {
+	margin-left: 15px;
+	margin-right: 5px;
+	color: var(--main-color);
+	background-color: white ;
+	width: 18px;
+	height: 18px;
+	padding: 3px;
+}
 
 .sidebar ul {
 	list-style: none;
