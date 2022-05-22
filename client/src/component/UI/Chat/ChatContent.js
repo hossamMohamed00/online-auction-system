@@ -16,35 +16,44 @@ function ChatContent({socket , getChatWithEmail}) {
 
 	const [joined, setJoined] = useState(false);
 
-	const  sendMessage = useCallback((messgae ,Email ) => {
+	const  sendMessage = (messgae ,Email ) => {
 		if(messgae){
 			setJoined(true)
 			socket.emit('new-message-to-server' ,{
 				message : messgae ,
 				receiverEmail : Email,
 			})
-			socket.emit('get-chat-history' ,{
-				with : getChatWithEmail ,
-			})
 		}
-		})
+		// setMessage((prevState)=> [...prevState , {
+		// 	messgae : messgae ,
+		// 	senderEmail : email
+		// }])
+		}
 
 		useEffect(()=>{
 			if(getChatWithEmail){
-				console.log("getChatWithEmail",  MessageValue)
+				console.log("Load chat history... ",  MessageValue)
 				socket.emit('get-chat-history' ,{
 					with : getChatWithEmail ,
 				})
-				socket.on('chat-history-to-client' , (data =>{
-					console.log("messages" , data)
-					setMessage(data && [...data])
-				}))
 			}
 
-		}, [ joined , getChatWithEmail , socket , MessageValue])
+		}, [getChatWithEmail])
+
+		useEffect(()=>{
+			socket.on('chat-history-to-client' , (data =>{
+				console.log("messages" , data)
+				setMessage(data && [...data])
+			}))
+
+			socket.on('new-message-to-client' , (data =>{
+				console.log("Message to client ->" , data)
+				setMessage((prestate)=> [...prestate , data])
+			}))
+		},[socket])
 
 		const getTime =(time) => {
-			const Time = moment(time , 'LT').format('LT')
+			const Time = moment(time).format('LT')
 			return Time
 		}
 	return (

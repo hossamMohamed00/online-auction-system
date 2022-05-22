@@ -12,12 +12,7 @@ export default function AddEmployee() {
 	const validatePassword = value => value.trim().length > 4;
 	const submitHandeler = e => {
 		e.preventDefault();
-		// const userDetails = {
-		// 	email: nameRef.current.value,
-		// 	password: passwordRef.current.value,
-		// 	idToken,
-		// };
-		// sendRequest(userDetails);
+
 	};
 	return (
 		<AdminDashboard>
@@ -25,22 +20,32 @@ export default function AddEmployee() {
 				<h1>AddEmployee</h1>
 				<div className={`${classes.container}`}>
 					<form onSubmit={submitHandeler}>
-						<div className="d-flex justify-content-between">
-							<label>E-mail</label>
-							<Input
-								type="email"
-								placeholder="Email"
-								validateText={validateEmail}
-								ref={nameRef}
-								errorMassage="please enter your email"
-								inputValue=""
-							/>
-							<Input
+						<div className="row">
+							<div className='col-lg-6'>
+								<label for="name" className='text-light'> Name </label>
+								<Input
+									type="name"
+									placeholder="type your name"
+									validateText={validateEmail}
+									ref={nameRef}
+									errorMassage="please enter your email"
+									inputValue=""
+									id="name"
+								/>
+							</div>
+							<div className='col-lg-6'>
+								<label for="password" className='text-light'> Password</label>
+								<Input
 								type="password"
-								placeholder="Password"
+								placeholder="type your Password"
 								validateText={validatePassword}
 								ref={passwordRef}
-							/>
+								id="password"
+								errorMassage="please enter your password"
+								/>
+							</div>
+
+
 						</div>
 						<div className="w-50"></div>
 					</form>

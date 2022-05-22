@@ -6,12 +6,12 @@ export class Message {
 		this.senderEmail = user1IsSender;
 
 		// Get the current date from moment js
-		this.sentAt = HandleDateService.getCurrentDateFormatted();
+		this.sentAt = new Date();
 	}
 
 	message: string;
 
-	sentAt: string;
+	sentAt: Date;
 
 	senderEmail: string;
 }

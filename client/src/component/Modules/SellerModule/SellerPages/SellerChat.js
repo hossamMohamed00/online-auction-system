@@ -8,7 +8,7 @@ const SellerChat = () => {
 
 	return (
 		<SellerDashboardContent>
-			<Chat/>
+			<Chat />
 		</SellerDashboardContent>
 	);
 };

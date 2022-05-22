@@ -63,20 +63,11 @@ const SellerDashboardContent = props => {
 
 	const dropdownListChat = [
 		{
-			title: 'Charge Wallet ',
+			title: 'View Chat ',
 			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			path: '/seller-dashboard/chat',
 		},
-		{
-			title: 'Recover Money',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
-			title: 'Display Wallet Info',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
+
 	];
 
 	const contentExist = props.children;

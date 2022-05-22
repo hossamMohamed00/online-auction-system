@@ -36,7 +36,7 @@ const ChatHistory = ({chatWith }) => {
 				{
 					email:email ,
 					lastMessage : lastMessage,
-					lastMessageTime : moment(lastMessageTime , 'LLLL').format('LT')
+					lastMessageTime : moment(lastMessageTime).format('LT')
 				}])
 			}})
 		}

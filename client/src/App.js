@@ -41,17 +41,20 @@ import ManageCategories from './component/AdminModule/AdminDashboard/ManageCateg
 // end admin pages
 
 
-// buyer pages
+// start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
+// end buyer pages
 
-// seller pages
+// start seller pages
 import SellerDashboard from './Pages/SellerDashboard';
 import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
+// end seller pages
+
 
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
