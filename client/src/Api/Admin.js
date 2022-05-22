@@ -24,3 +24,5 @@ export const getAllCategoriesForAdmin = async AccessToken =>
 	get(`${url}/category`, AccessToken);
 export const getCategoryAuctions = async id =>
 	get(`${url}/${id}/auctions?populate=true`);
+export const getEmployees = async AccessToken =>
+	get(`${url}/employee`, AccessToken);

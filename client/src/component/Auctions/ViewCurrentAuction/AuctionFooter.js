@@ -101,7 +101,7 @@ function AuctionFooter({ AuctionStatus }) {
 				</div>
 			)}
 
-			{role === 'admin' && AuctionStatus === 'upcoming' && (
+			{role === 'admin' && AuctionStatus === 'ongoing' && (
 				<button
 					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
 					type="button"

@@ -30,6 +30,7 @@ import ViewAuctions from './Pages/ViewAuctions';
 // start admin pages
 import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
+import ListAllEmployees from './component/AdminModule/AdminDashboard/ManageEmployees/ListAllEmployees/listAllEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
 import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers';
 import AdminPage from './Pages/AdminDashboard';
@@ -112,20 +113,30 @@ function App() {
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
-				<Route path="/adminDashboard/manageCategories" element={<ManageCategories />} />
+				<Route path="/adminDashboard/listAllEmployees" element={<ListAllEmployees />} />
+				<Route
+					path="/adminDashboard/manageCategories"
+					element={<ManageCategories />}
+				/>
 				{/* end Admin Routes */}
 
 				{/* start buyer routes  */}
 
-				{ isLoggedIn &&	role=== 'buyer' && <>
-					<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-					<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
-					{/* Buyer Auctions */}
-					<Route path="/buyer-dashboard/saved-auctions" element={<SavedAuctions />} />
-					<Route path="/buyer-dashboard/participating-auctions" element={<ViewParticipatingAuctions />} />
+				{isLoggedIn && role === 'buyer' && (
+					<>
+						<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+						<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
+						{/* Buyer Auctions */}
+						<Route
+							path="/buyer-dashboard/saved-auctions"
+							element={<SavedAuctions />}
+						/>
+						<Route
+							path="/buyer-dashboard/participating-auctions"
+							element={<ViewParticipatingAuctions />}
+						/>
 					</>
-				}
-
+				)}
 
 				{/* end buyer routes  */}
 
@@ -138,8 +149,6 @@ function App() {
 							element={<ViewAllAuctions />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
-
-
 					</>
 				)}
 				{/* end seller routes  */}
