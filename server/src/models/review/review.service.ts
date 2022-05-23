@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { retry } from 'rxjs';
@@ -34,8 +38,16 @@ export class ReviewService {
 
 		return createdReview;
 	}
-	async Edit(updateReviewDto: UpdateReviewDto, ReviewId: string) {
+	async Edit(
+		updateReviewDto: UpdateReviewDto,
+		ReviewId: string,
+		buyerid: string,
+	) {
 		delete updateReviewDto._id;
+		const isExists = await this.isExists(ReviewId, buyerid);
+		if (!isExists) {
+			throw new BadRequestException('not reviewed form You ❌');
+		}
 		const review = await this.ReviewModel.findByIdAndUpdate(
 			ReviewId,
 			updateReviewDto,
@@ -54,5 +66,24 @@ export class ReviewService {
 	async myreviews(seller: Seller) {
 		const review = await this.ReviewModel.find({ seller });
 		return review;
+	}
+	async remove(ReviewId: string, buyerid: string) {
+		const review: ReviewDocument = await this.ReviewModel.findOne({
+			_id: ReviewId,
+			buyer: buyerid,
+		});
+		if (!review) {
+			throw new NotFoundException('review not found❌');
+		}
+		await review.remove();
+		return review;
+	}
+	async isExists(reviewid: string, buyerid: string): Promise<boolean> {
+		const count = await this.ReviewModel.countDocuments({
+			_id: reviewid,
+			buyer: buyerid,
+		});
+
+		return count > 0;
 	}
 }

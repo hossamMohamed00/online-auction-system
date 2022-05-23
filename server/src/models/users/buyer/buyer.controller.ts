@@ -1,12 +1,21 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, IsPublicRoute } from 'src/common/decorators';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
 import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
-import { SellerDocument } from '../seller/schema/seller.schema';
+import { Seller, SellerDocument } from '../seller/schema/seller.schema';
 import { BuyerService } from './buyer.service';
 import { BuyerDocument } from './schema/buyer.schema';
 
@@ -33,18 +42,19 @@ export class BuyerController {
 	): Promise<Review> {
 		return this.buyerService.MakeReviw(data.reviewdto, buyer, data.seller);
 	}
-	@Patch('review')
+	@Patch('review/:id')
 	EditReview(
-		@Body() data: { updatereviewdto: UpdateReviewDto; id: string },
+		@Param() { id }: MongoObjectIdDto,
+		@Body() data: { updatereviewdto: UpdateReviewDto },
+		@GetCurrentUserData('_id') buyerid: string,
 	): Promise<Review> {
-		return this.buyerService.Edit(data.id, data.updatereviewdto);
+		return this.buyerService.Edit(id, data.updatereviewdto, buyerid);
 	}
-	@Get('review')
-	@Serialize(ReviewDto)
-	MyReviewInOne(
-		@Body() data: { seller: SellerDocument },
-		@GetCurrentUserData() buyer: BuyerDocument,
+	@Delete('review/:id')
+	DeleteReview(
+		@Param() { id }: MongoObjectIdDto,
+		@GetCurrentUserData('_id') buyerid: string,
 	): Promise<Review> {
-		return this.buyerService.MyReviewInOne(buyer, data.seller);
+		return this.buyerService.removereview(id, buyerid);
 	}
 }

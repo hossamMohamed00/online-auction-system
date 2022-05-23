@@ -35,13 +35,14 @@ export class BuyerService {
 		this.logger.log('Maked New Review in' + seller + 'from ' + buyer.id);
 		return this.ReviewService.create(createReviewdto, buyer.id, seller);
 	}
-	async Edit(id: string, UpdateReviewDto: UpdateReviewDto): Promise<Review> {
-		return this.ReviewService.Edit(UpdateReviewDto, id);
-	}
-	async MyReviewInOne(
-		buyer: BuyerDocument,
-		seller: SellerDocument,
+	async Edit(
+		id: string,
+		UpdateReviewDto: UpdateReviewDto,
+		buyerid: string,
 	): Promise<Review> {
-		return this.ReviewService.ReviewInSeller(seller, buyer);
+		return this.ReviewService.Edit(UpdateReviewDto, id, buyerid);
+	}
+	async removereview(reviewid: string, buyerid: string): Promise<Review> {
+		return this.ReviewService.remove(reviewid, buyerid);
 	}
 }
