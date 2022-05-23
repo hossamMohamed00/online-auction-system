@@ -5,8 +5,6 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 const Dropdown = props => {
-	console.log(props)
-
 	return (
 		<div className={classes.dropdown}>
 			<div
