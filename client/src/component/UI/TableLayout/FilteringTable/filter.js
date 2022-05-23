@@ -1,8 +1,6 @@
 import React from 'react';
 import { FilterComponent } from './filterComponent';
 const useFilter = items => {
-	console.log(items);
-
 	const [filterText, setFilterText] = React.useState('');
 	const filteredItems = items.filter(
 		item =>

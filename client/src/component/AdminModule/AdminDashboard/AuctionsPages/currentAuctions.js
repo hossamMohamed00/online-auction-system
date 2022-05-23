@@ -23,7 +23,7 @@ const CurrentAuctionsPage = () => {
 	if (statusForGet === 'completed') {
 		neededData = data.map(auction => {
 			return {
-				title: auction.title,
+				name: auction.title,
 				basePrice: auction.basePrice,
 				startDate: auction.startDate,
 				endDate: auction.endDate,
@@ -40,7 +40,7 @@ const CurrentAuctionsPage = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			const ongoingAuctions = neededData.filter(
-				data => data.status === 'ongoing',
+				neededData => neededData.status === 'ongoing',
 			);
 			ongoingAuctions.map(data => {
 				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
@@ -49,6 +49,7 @@ const CurrentAuctionsPage = () => {
 				data.startDate = newStartDate;
 				data.endDate = newEndDate;
 			});
+
 			setOngoingAuctions(ongoingAuctions);
 		}
 	}, [statusForGet]);
@@ -61,27 +62,27 @@ const CurrentAuctionsPage = () => {
 		},
 		{
 			name: 'Base Price',
-			selector: row => row.email,
+			selector: row => row.basePrice,
 		},
 		{
 			name: 'Start Date',
-			selector: row => row.role,
+			selector: row => row.startDate,
 		},
 		{
 			name: 'End Date',
-			selector: row => row.role,
+			selector: row => row.endDate,
 		},
 		{
 			name: 'Seller',
-			selector: row => row.role,
+			selector: row => row.seller,
 		},
 		{
 			name: 'Status',
-			selector: row => row.role,
+			selector: row => row.status,
 		},
 		{
 			name: 'Actions',
-			selector: row => row.action,
+			// selector: row => row.action,
 			cell: props => {
 				return (
 					<span className="text-info">
@@ -92,7 +93,7 @@ const CurrentAuctionsPage = () => {
 		},
 	];
 	//filter
-	const items = neededData ? neededData : [];
+	const items = ongoingAuctions ? ongoingAuctions : [];
 	const { filterFun, filteredItems } = useFilter(items);
 
 	console.log({ filteredItems });
@@ -102,7 +103,7 @@ const CurrentAuctionsPage = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<PageHeader text="Sellers" showLink={false} />{' '}
+					<PageHeader text="Current Auctions" showLink={false} />{' '}
 					{neededData && (
 						<DataTable
 							columns={columns}
