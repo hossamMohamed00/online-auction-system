@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import io from 'socket.io-client'
 
 import PageContent from '../DashboardLayout/Pagecontant/pageContent';
-import BuyerDashboardContent from '../../Modules/BuyerModule/BuyerDashboard';
 import classes from './Chat.module.css'
 import { Col, Row } from 'react-bootstrap';
 
