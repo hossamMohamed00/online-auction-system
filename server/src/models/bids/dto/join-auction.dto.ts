@@ -1,6 +1,6 @@
 import { IsMongoId } from 'class-validator';
 
-export class JoinAuctionDto {
+export class JoinOrLeaveAuctionDto {
 	@IsMongoId({ message: 'Invalid auction id ❌' })
 	auctionId: string;
 }

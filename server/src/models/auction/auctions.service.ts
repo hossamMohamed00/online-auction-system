@@ -330,6 +330,7 @@ export class AuctionsService {
 		//? Get the count of auctions with given id
 		const count = await this.auctionModel.countDocuments({
 			_id: auctionId,
+			status: AuctionStatus.OnGoing,
 		});
 
 		return count > 0;

@@ -16,7 +16,7 @@ import { BidService } from './bid.service';
 import { SocketAuthGuard } from 'src/common/guards';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { GetCurrentUserFromSocket } from 'src/common/decorators';
-import { JoinAuctionDto, PlaceBidDto } from './dto';
+import { JoinOrLeaveAuctionDto, PlaceBidDto } from './dto';
 import { AuctionRoomService } from './auction-room.service';
 import { AuctionsService } from '../auction/auctions.service';
 
@@ -59,41 +59,21 @@ export class BidGateway
 	 * Fires when the client be connected
 	 */
 	async handleConnection(@ConnectedSocket() client: Socket, ...args: any[]) {
-		console.log('New bidder connected to the bidding ws 🤘🏻');
+		this.logger.debug('Bidder connected to the bidding ws 🤘🏻');
 	}
 
 	handleDisconnect(client: Socket) {
-		//* Remove the bidder from the list
-		const removedBidder = this.auctionRoomService.removeBidder(client.id);
-
-		//? Ensure that the bidder removed from the room
-		if (removedBidder) {
-			this.logger.log(
-				'Bidder Disconnected 👎🏻, with email: ' + removedBidder.email,
-			);
-
-			this.server
-				.to(removedBidder.room)
-				.emit('message-to-client', 'With sorry, bidder disconnected 😑');
-
-			//* Send the current list of bidders
-			this.server.to(removedBidder.room).emit('room-data', {
-				room: removedBidder.room,
-				bidders: this.auctionRoomService.getBiddersInAuctionRoom(
-					removedBidder.room,
-				),
-			});
-		}
+		this.logger.warn('Bidder disconnected from the bidding ws 🤔');
 	}
 
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('join-auction')
 	handleJoinAuction(
 		@ConnectedSocket() client: Socket,
-		@MessageBody() { auctionId }: JoinAuctionDto,
+		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		if (!auctionId || this.auctionService.isValidAuction(auctionId)) {
+		if (!auctionId || !this.auctionService.isValidAuction(auctionId)) {
 			throw new WsException('You must provide valid auction id 😉');
 		}
 
@@ -121,12 +101,14 @@ export class BidGateway
 		//* Send greeting messages
 		client.emit('message-to-client', {
 			message: 'Welcome ' + bidder.name + ', now you can start bidding 🐱‍🏍💲',
+			system: true, // To be used to identify the message as system message
 		});
 
 		//* Send message to all room members except this client
-		client.broadcast
-			.to(addedBidder.room)
-			.emit('message-to-client', 'Ooh, new bidder joined the auction 👏🏻⚡⚡');
+		client.broadcast.to(addedBidder.room).emit('message-to-client', {
+			message: 'Ooh, new bidder joined the auction 👏🏻⚡⚡',
+			system: true, // To be used to identify the message as system message
+		});
 
 		//* Send the current list of bidders
 		this.server.to(addedBidder.room).emit('room-data', {
@@ -170,5 +152,51 @@ export class BidGateway
 		this.logger.log(
 			"'" + bidder.email + "' placed bid of '" + bidValue + "' 💰",
 		);
+	}
+
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('leave-auction')
+	handleLeaveAuction(
+		@ConnectedSocket() client: Socket,
+		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
+		@GetCurrentUserFromSocket() bidder: Buyer,
+	) {
+		if (!auctionId || !this.auctionService.isValidAuction(auctionId)) {
+			throw new WsException('You must provide valid auction id 😉');
+		}
+
+		this.logger.debug(
+			"'" +
+				bidder.email +
+				"' want to leave auction with id '" +
+				auctionId +
+				"'",
+		);
+
+		//* Remove the bidder from the list
+		const removedBidder = this.auctionRoomService.removeBidder(client.id);
+
+		//? Ensure that the bidder removed from the room
+		if (removedBidder) {
+			this.logger.log(
+				'Bidder left auction 👎🏻, with email: ' + removedBidder.email,
+			);
+
+			this.server.to(removedBidder.room).emit('message-to-client', {
+				message: 'With sorry, a bidder left 😑',
+				system: true, // To be used to identify the message as system message
+			});
+
+			//* Send the current list of bidders
+			this.server.to(removedBidder.room).emit('room-data', {
+				room: removedBidder.room,
+				bidders: this.auctionRoomService.getBiddersInAuctionRoom(
+					removedBidder.room,
+				),
+			});
+
+			//* Leave the bidder from the room
+			client.leave(auctionId);
+		}
 	}
 }
