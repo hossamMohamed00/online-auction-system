@@ -16,8 +16,11 @@ const get = async (url, accessToken) => {
 	return data;
 };
 
-export const getAllAuctions = async AccessToken =>
-	get(`${url}/auction?populate=true`, AccessToken);
+export const getAllAuctions = async ({ idToken, status }) => {
+	return !status
+		? get(`${url}/auction?populate=true`, idToken)
+		: get(`${url}/auction?populate=true&status=${status}`, idToken);
+};
 export const getSingleAuction = async auctionId =>
 	get(`${url}/${auctionId}?populate=true`);
 

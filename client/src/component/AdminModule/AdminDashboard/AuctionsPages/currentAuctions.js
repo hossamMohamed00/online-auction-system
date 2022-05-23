@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useHttp from '../../../../CustomHooks/useHttp';
 import moment from 'moment';
-import TableLayout from '../../../UI/TableLayout/TableLayout';
 import { getAllAuctions } from '../../../../Api/Admin';
-import AuctionDetails from './../../../Auctions/ViewCurrentAuction/AuctionDetails';
 
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
@@ -34,15 +32,13 @@ const CurrentAuctionsPage = () => {
 	}
 
 	useEffect(() => {
-		sendRequest(idToken);
+		sendRequest({ idToken, status: 'ongoing' });
 	}, [sendRequest]);
 	const [ongoingAuctions, setOngoingAuctions] = useState([]);
 	useEffect(() => {
 		if (statusForGet === 'completed') {
-			const ongoingAuctions = neededData.filter(
-				neededData => neededData.status === 'ongoing',
-			);
-			ongoingAuctions.map(data => {
+			//*Format dates
+			neededData.map(data => {
 				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
 				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
 
@@ -50,7 +46,7 @@ const CurrentAuctionsPage = () => {
 				data.endDate = newEndDate;
 			});
 
-			setOngoingAuctions(ongoingAuctions);
+			setOngoingAuctions(neededData);
 		}
 	}, [statusForGet]);
 
