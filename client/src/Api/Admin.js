@@ -1,5 +1,6 @@
 const url = 'http://localhost:8000/admin';
 
+// get
 const get = async (url, accessToken) => {
 	const response = await fetch(url, {
 		method: 'GET',
@@ -26,3 +27,19 @@ export const getCategoryAuctions = async id =>
 	get(`${url}/${id}/auctions?populate=true`);
 export const getEmployees = async AccessToken =>
 	get(`${url}/employee`, AccessToken);
+
+// remove
+export const remove = ({ path, accessToken }) => {
+	fetch(`${url}/${path}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	}).then(response => {
+		if (!response.ok) {
+			console.log('failed');
+			return;
+		}
+	});
+};

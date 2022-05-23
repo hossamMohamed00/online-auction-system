@@ -14,7 +14,7 @@
 .formLabel{
 	color: white !important;
 }
-form input{
+.addInput{
 	background-color: #2E2F32 !important;
 	border: none !important;
 	outline: none !important;

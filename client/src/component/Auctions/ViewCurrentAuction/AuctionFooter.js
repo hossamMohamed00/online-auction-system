@@ -20,8 +20,8 @@ function AuctionFooter({ AuctionStatus }) {
 
 	const UpComingStatus = AuctionStatus === 'upcoming'
 	const OnGoingStatus = AuctionStatus === 'ongoing'
-	const DeniedStatus = AuctionStatus === 'denied'
-	// const SavedStatus = AuctionStatus === 'saved'
+	const DeniedStatus = AuctionStatus === 'pending'
+
 
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);

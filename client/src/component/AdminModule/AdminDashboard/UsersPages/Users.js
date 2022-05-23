@@ -6,6 +6,9 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import PageHeader from '../../../UI/Page Header/pageHeader';
+import { Link } from 'react-router-dom';
+import './users.css'
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -26,6 +29,15 @@ const UsersPage = () => {
 		{
 			name: 'Actions',
 			selector: row => row.action,
+			hyperlink: true,
+			cell: props => {
+				return (
+					<span className='text-info'>
+						<Link to="#">User Profile</Link>
+					</span>
+				);
+
+			}
 		},
 	];
 
@@ -39,8 +51,10 @@ const UsersPage = () => {
 		});
 	}, [sendRequest]);
 
+	// filter data
+	const filteredData = data && data.filter(item => item.role !== 'employee');
 	//filter
-	const items = data ? data : [];
+	const items = filteredData ? filteredData : [];
 	const { filterFun, filteredItems } = useFilter(items);
 	//end filter
 
@@ -51,7 +65,7 @@ const UsersPage = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<h1 className="mt-4 mb-4 ">All Users</h1>
+					<PageHeader text="All users" showLink={false} />
 					{data && (
 						<DataTable
 							// selectableRows

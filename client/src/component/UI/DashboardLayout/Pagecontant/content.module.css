@@ -7,14 +7,14 @@
 	-moz-border-radius: 15px;
 	-ms-border-radius: 15px;
 	-o-border-radius: 15px;
-	padding: 2%;
+	padding: 0 0 2% 0;
+
 	margin: 10% 5% 3% 5%;
 	overflow-x: auto;
 	/* position: relative; */
 }
 @media (max-width: 575.98px) {
-.PageContent{
-	margin-top: 16% !important;
+	.PageContent {
+		margin-top: 16% !important;
+	}
 }
-
- }

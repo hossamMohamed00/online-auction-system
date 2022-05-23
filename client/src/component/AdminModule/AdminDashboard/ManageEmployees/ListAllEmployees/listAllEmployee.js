@@ -1,15 +1,58 @@
 import React, { useEffect, useState } from 'react';
+// toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// end toast
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../../CustomHooks/useHttp';
-import { getEmployees } from '../../../../../Api/Admin';
+import { getEmployees, remove } from '../../../../../Api/Admin';
 import useFilter from '../../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import AdminDashboard from '../../home/adminDashboard';
 import PageContent from '../../../../UI/DashboardLayout/Pagecontant/pageContent';
+import PageHeader from '../../../../UI/Page Header/pageHeader'
 import './allEmployees.css';
+// import { Link } from 'react-router-dom';
 
-const ListAllEmployees = () => {
+// font
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
+const ListAllEmployees = props => {
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const [reloadData, setReloadData] = useState(false);
+
+	const { sendRequest, status, data } = useHttp(getEmployees);
+
+	const {
+		sendRequest: sendRequestForRemove,
+		status: statusForRemove,
+	} = useHttp(remove);
+
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest, reloadData]);
+
+	const removeHandler = employeeId => {
+		const result = window.confirm('Are you sure to delete this category ?');
+		if (result) {
+			sendRequestForRemove({
+				path: `employee/${employeeId}`,
+				accessToken: idToken,
+			});
+			setReloadData(true);
+		}
+	};
+
+	useEffect(() => {
+		if (statusForRemove === 'completed') {
+			console.log('deleted');
+			toast.success('Deleted Successfully 💖🐱‍👤');
+			// props.onReload(true);
+		}
+	}, [statusForRemove]);
+
 	const columns = [
 		{
 			name: 'Name',
@@ -27,14 +70,23 @@ const ListAllEmployees = () => {
 		{
 			name: 'Actions',
 			selector: row => row.action,
+			cell: props => {
+				return (
+					<>
+						<button className="btn btn-success mx-1 my-2">
+							<FontAwesomeIcon icon={faEdit} />
+						</button>
+						<button
+							className="btn btn-danger my-2 "
+							onClick={() => removeHandler(props._id)}
+						>
+							<FontAwesomeIcon icon={faXmark} />
+						</button>
+					</>
+				);
+			},
 		},
 	];
-
-	const { sendRequest, status, data } = useHttp(getEmployees);
-
-	useEffect(() => {
-		sendRequest(idToken);
-	}, [sendRequest]);
 
 	//filter
 	const items = data ? data : [];
@@ -48,7 +100,8 @@ const ListAllEmployees = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<h1 className="mt-4 mb-4 ">All Employees</h1>
+					<PageHeader text="Employees" showLink={false}/>
+					<ToastContainer theme="dark" />
 					{data && (
 						<DataTable
 							// selectableRows

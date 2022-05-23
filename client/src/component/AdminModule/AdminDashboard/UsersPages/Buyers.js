@@ -6,6 +6,9 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import PageHeader from '../../../UI/Page Header/pageHeader';
+import './users.css';
+import {Link} from 'react-router-dom'
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -26,6 +29,13 @@ const UsersPage = () => {
 		{
 			name: 'Actions',
 			selector: row => row.action,
+			cell: props => {
+				return (
+					<span className="text-info">
+						<Link to="#">User Profile</Link>
+					</span>
+				);
+			},
 		},
 	];
 
@@ -50,7 +60,7 @@ const UsersPage = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<h1 className="mt-4 mb-4 ">Buyers</h1>
+					<PageHeader text='Buyers' showLink={false}/>
 					{data && (
 						<DataTable
 							// selectableRows

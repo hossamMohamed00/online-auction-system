@@ -49,12 +49,14 @@ html {
 
 /* start table style */
 /* table */
-.gelpCx{
+.gelpCx {
 	border-radius: 10px !important;
 	-webkit-border-radius: 10px !important;
 	-moz-border-radius: 10px !important;
 	-ms-border-radius: 10px !important;
 	-o-border-radius: 10px !important;
+	margin: 0 2%;
+	width: 96% !important;
 }
 .rdt_TableHeadRow {
 	background-color: black !important;
@@ -64,17 +66,27 @@ html {
 /* table rows */
 .CjiV {
 	font-size: 16px !important;
+	background-color: #262525 !important;
 }
 /* pagination */
 .cvYaNh {
 	border-radius: 10px !important;
+	margin-top: 1% !important;
+	background-color: #262525 !important;
+	margin: 0 2%;
+	width: 96% !important;
 
 	/* background-color: black !important; */
+}
+/* pagination btn */
+.fWdVFl:disabled {
+	background: none !important;
 }
 /* table subHeader */
 .tnECc {
 	background-color: #191c20 !important;
 }
+
 /* end table style */
 
 /* ************************************** */
