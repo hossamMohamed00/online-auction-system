@@ -27,7 +27,7 @@ function Services() {
 
 	const showServiceCard = servicesData.map((data , index) => (
 		<Col lg={4}>
-			<Card className={classes._card} key = {index}>
+			<Card className={classes._card} key = {index} >
 				<Card.Body>
 					<Card.Title>
 						<FontAwesomeIcon icon={data.icon} className={classes._cardIcon} />
