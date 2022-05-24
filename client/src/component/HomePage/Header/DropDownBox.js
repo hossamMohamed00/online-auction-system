@@ -41,7 +41,7 @@ const DropDownBox = () => {
 	}
 
 
-	const showAllLinks = <ul className= {`list-group  d-md-block  text-start`} >
+	const showAllLinks = <ul className= {`list-group  d-md-block text-start`} >
 		<li>
 			<Link className="px-1 fs-6 text-decoration-none text-light" to={profileLink()} >
 				<FontAwesomeIcon icon={faAddressCard} className="pe-2"  />
