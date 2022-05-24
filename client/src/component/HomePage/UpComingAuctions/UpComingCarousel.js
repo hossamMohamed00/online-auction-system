@@ -11,7 +11,7 @@ const UpComingCarousel = ({UogoingAuctionData}) => {
 	const ShowCarouselItems = UogoingAuctionData.map((Item , index)=> {
 		return(
 			<div className="row" key={index}>
-				<div className='col-md-12 col-lg-6 pe-0 '>
+				<div className='col-md-6 col-lg-6 pe-0 '>
 					<div className={classes.itemImage}>
 						<img
 							src={Item.item.image}
@@ -21,10 +21,10 @@ const UpComingCarousel = ({UogoingAuctionData}) => {
 					</div>
 				</div>
 
-				<div className=	{`col-md-12 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}>
+				<div className=	{`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}>
 					<h2 className="fw-bold text-center pb-1"> { Item.item.name } </h2>
 					{/* start Upgoing Auciton details */}
-					<div className="ps-4 pt-4">
+					<div className="ps-3 pt-4">
 						<p className={` lead ${classes.ItemDescription} `}> {  Item.item.shortDescription 	 } </p>
 						<div>
 							<div>
@@ -43,7 +43,7 @@ const UpComingCarousel = ({UogoingAuctionData}) => {
 							</div>
 							<div>
 								<h6 className="fw-bold d-inline-block">Auction Start in :</h6>
-								<div className="d-inline-block px-2"> {CountDownTimer(new Date(Item.endDate))} </div>
+								<div className="d-inline-block px-0"> {CountDownTimer(new Date(Item.endDate))} </div>
 							</div>
 						</div>
 					</div>

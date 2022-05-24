@@ -8,6 +8,8 @@ import {faArrowDown , faArrowUp , faBars , faUser} from '@fortawesome/free-solid
 import Categories from "../Categories/Categories";
 import classes from './Navbar.module.css'
 import DropDownBox from "./DropDownBox";
+import Search from "./Seach";
+import { Col, Row } from "react-bootstrap";
 
 const activeLink = navData => `${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `
 
@@ -63,19 +65,31 @@ const Navbar = ()=> {
 	return (
 	<nav className= {`${classes.nav} navbar navbar-dark fixed-top px-1  `}>
 			<div className="container-fluid">
-				<Link className={` ${classes.navbarBrand} navbar-brand fw-bold `} to="/home-page">
-					<span> Online </span> Auction</Link>
+				<Row className="w-100 m-0 p-0">
+					<Col lg={2} md={3} className="p-0">
+						<Link className={` ${classes.navbarBrand} navbar-brand fw-bold `} to="/home-page">
+							<span> Online </span> Auction
+						</Link>
 
-				<FontAwesomeIcon icon={faBars} className= {` ${classes.faBars} float-end text-light d-xs d-md-none pt-1` }
-					onClick = {showNavContentHandeler}
-				/>
+						<FontAwesomeIcon icon={faBars} className= {` ${classes.faBars} float-end text-light d-xs d-md-none pt-1` } onClick = {showNavContentHandeler} />
+					</Col>
 
-				<div className={`${classes.navLinks} d-md-flex pt-1 position-relative ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
-					{NavLinks}
-					{showCategories}
-					{isNotLoggedIn}
-					{isLoggedInUser}
-				</div>
+					<Col lg={4} md={9}>
+						<Search/>
+					</Col>
+
+					<Col className={classes.HeaderLinks} lg={6} md={12}>
+						<div className={`${classes.navLinks} d-md-flex pt-1 position-relative ${isShownNavContent ? 'd-flex' : 'd-xs-none'} `}>
+							{NavLinks}
+							{showCategories}
+							{isNotLoggedIn}
+							{isLoggedInUser}
+						</div>
+					</Col>
+				</Row>
+
+
+
 
 			</div>
 	</nav>
