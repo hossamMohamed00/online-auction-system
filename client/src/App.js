@@ -74,7 +74,7 @@ function App() {
 
 			{/* <Elements stripe={stripePromise}>
 			<PaymentForm />
-		</Elements> */}
+			</Elements> */}
 			<Routes>
 				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />
