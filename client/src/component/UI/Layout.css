@@ -1,8 +1,8 @@
-:root {
-	--dark-color: #191a19;
-	--semiDark-color: #4f4e4c;
-	--nav-color: #262726;
-	--overlay-dark: rgba(0, 0, 0, 0.68);
+:root{
+	--dark-color 			: #191A19 ;
+	--semiDark-color 	: #4f4e4c;
+	--nav-color 			: #262726;
+	--overlay-dark 		: rgba(0, 0, 0, 0.78);
 
 	--paragaph-color: #a2a2a2;
 	/* --input-dark-color: #707070; */
@@ -17,6 +17,7 @@
 * {
 	/* font-family:  'Nunito', sans-serif; */
 	font-family: 'Lato', sans-serif;
+	
 
 	box-sizing: border-box;
 }

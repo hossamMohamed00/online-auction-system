@@ -16,7 +16,7 @@ function Footer() {
 		{text:'Company Address'  , icon :faLocationDot }
 	]
 	const ContactUs = contactUsData.map((data , index)=> (
-		<Col lg={4} sm={6} xs={12} key={index} className="mb-3">
+		<Col md={4} sm={6} xs={12} key={index} className="mb-3">
 			<FontAwesomeIcon icon={data.icon} className={classes.ContactIcon} />
 				<p>  {data.text} </p>
 		</Col>
@@ -48,7 +48,7 @@ function Footer() {
 	const FooterMoreDetails = FooterMoreDetailsData.map((data , index) => (
 		<Col lg={3} sm={4} xs={12} key={index} >
 			<FontAwesomeIcon icon={data.icon} className={classes.ContactIcon} />
-			<h5 className={data.text === 'Contact Us' && 'mx-4'}>  {data.text} </h5>
+			<h5 className={data.text === 'Contact Us' && classes.ContactStyle}>  {data.text} </h5>
 			{data.text === 'Contact Us' && <p className={classes.Support}> Questition? We've got answers. </p>}
 			<ul>
 				{data.links.map((_link, index)  => (

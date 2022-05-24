@@ -5,14 +5,18 @@
 
 .navbarBrand{	font-size: 20px!important}
 
-.navbarBrand > span {
-	color: var(--main-color);
-}
+.navbarBrand > span { color: var(--main-color) }
+
+.HeaderLinks {padding: 0;}
+
 
 .navLink{
 	text-decoration: none;
 	color: white!important;
-	padding-left: 30px!important;
+	font-size: 12px;
+	font-weight: bold;
+	padding-left: 20px!important;
+	padding-top: 5px;
 	cursor: pointer;
 }
 .navLinkRegister{border-right: 1px solid white!important; padding-right: 10px!important;}
@@ -37,8 +41,19 @@
 		display: none;
 		transition: all 2s;
 	}
+	.HeaderLinks  .navLinks{
+		float: left!important;
+		text-align: left!important;
+		width: 100%;
+	}
 	.navLink{padding-top: 14px !important; padding-left: 5px !important}
 	.navLinkRegister{border-right: 0!important;}
 }
 /* end navbar */
 
+@media screen and (min-width: 768px){
+	.HeaderLinks  .navLinks{
+		float: right!important;
+		text-align: right!important;
+	}
+}
