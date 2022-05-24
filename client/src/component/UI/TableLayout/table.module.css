@@ -15,7 +15,7 @@ thead tr td {
 	font-weight: bold;
 }
 tr {
-margin-bottom: 2%;
+	margin-bottom: 2%;
 }
 
 .editIcon {
@@ -24,15 +24,16 @@ margin-bottom: 2%;
 }
 .details {
 	text-decoration: underline;
-	color: #07B2EF;
+	color: #07b2ef;
 }
 .details:hover {
-	color: #07B2EF;}
+	color: #07b2ef;
+}
 /* .detailsIcon{
 	background-color: #191c20 !important;
 } */
 .title {
-	color: #07B2EF;
+	color: #07b2ef;
 	margin-bottom: 2%;
 }
 @media screen and (max-width: 575.98px) {

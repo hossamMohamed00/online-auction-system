@@ -4,11 +4,12 @@ import {
 	RejectAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { AdminFilterAuctionQueryDto } from '../dto';
 
 export interface AuctionsBehavior {
 	//* List all auctions for the admin
 	listAllAuctions(
-		filterAuctionQuery: FilterAuctionQueryDto,
+		filterAuctionQuery: AdminFilterAuctionQueryDto,
 	): Promise<Auction[]>;
 
 	//* Approve specific auction

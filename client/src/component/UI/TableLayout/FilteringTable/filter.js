@@ -3,9 +3,11 @@ import { FilterComponent } from './filterComponent';
 const useFilter = items => {
 	const [filterText, setFilterText] = React.useState('');
 	const filteredItems = items.filter(
-		item =>
-			item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
-	);
+		item => {
+			const name = item.name ? item.name : item.title
+return <>{name && name.toLowerCase().includes(filterText.toLowerCase())}</>;
+		}
+	)
 
 	const subHeaderComponentMemo = React.useMemo(() => {
 		return (

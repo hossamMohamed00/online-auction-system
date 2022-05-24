@@ -17,6 +17,7 @@ const CurrentAuctionsPage = () => {
 	const { sendRequest, status: statusForGet, data, error } = useHttp(
 		getAllAuctions,
 	);
+	// ! to be removed
 	let neededData;
 	if (statusForGet === 'completed') {
 		neededData = data.map(auction => {
@@ -41,9 +42,9 @@ const CurrentAuctionsPage = () => {
 			neededData.map(data => {
 				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
 				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+				data.endDate = newEndDate;
 
 				data.startDate = newStartDate;
-				data.endDate = newEndDate;
 			});
 
 			setOngoingAuctions(neededData);
@@ -82,7 +83,7 @@ const CurrentAuctionsPage = () => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to="#">Auction Details</Link>
+						<Link to={`/auctions/id=${props._id}`}>Auction Details</Link>
 					</span>
 				);
 			},

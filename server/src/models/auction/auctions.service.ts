@@ -20,6 +20,7 @@ import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import WalletService from 'src/providers/payment/wallet.service';
+import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 
 @Injectable()
 export class AuctionsService {
@@ -84,7 +85,9 @@ export class AuctionsService {
 	 * @Param filterAuctionQuery - Contains search criteria
 	 * @returns List of all existing auctions
 	 */
-	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
+	async findAll(
+		filterAuctionQuery?: FilterAuctionQueryDto | AdminFilterAuctionQueryDto,
+	) {
 		let populateFields = [];
 
 		//* Check if the user want to populate the nested docs
