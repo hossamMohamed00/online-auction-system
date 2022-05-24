@@ -7,10 +7,10 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 
 
 const ManageCategories = () => {
-	const [showNewCategory, setShowNewCategory] = React.useState(false);
+	const [showNewCategoryList, setShowNewCategoryList] = React.useState(false);
 
 	const ReloadTableHandler = value => {
-		setShowNewCategory(value);
+		setShowNewCategoryList(value);
 	};
 	return (
 		<AdminDashboard>
@@ -19,7 +19,7 @@ const ManageCategories = () => {
 				<PageHeader text="Manage Categories" showLink={false} />
 
 				<AddCategory onReload={ReloadTableHandler} />
-				<AllCategories reload={showNewCategory} onReload={ReloadTableHandler} />
+				<AllCategories reload={showNewCategoryList} onReload={ReloadTableHandler} />
 			</PageContent>
 		</AdminDashboard>
 	);

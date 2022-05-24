@@ -12,6 +12,42 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 const AllCategories = props => {
+
+	//! cols name
+		const columns = [
+			{
+				name: 'Name',
+				selector: row => row.name,
+				sortable: true,
+				center: true,
+			},
+			{
+				name: 'Number of Auctions',
+				selector: row => row.num,
+				center: true,
+			},
+
+			{
+				name: 'Actions',
+				selector: row => row.action,
+				center: true,
+				cell: props => {
+					return (
+						<>
+							<button className="btn btn-success mx-1 my-2">
+								<FontAwesomeIcon icon={faEdit} />
+							</button>
+							<button
+								className="btn btn-danger my-2 "
+								onClick={() => removeHandler(props._id)}
+							>
+								<FontAwesomeIcon icon={faXmark} />
+							</button>
+						</>
+					);
+				},
+			},
+		];
 	const url = 'http://localhost:8000';
 	const { sendRequest, status, data } = useHttp(getAllCategoriesForAdmin);
 	// remove api
@@ -19,47 +55,7 @@ const AllCategories = props => {
 		sendRequest: sendRequestForRemove,
 		status: statusForRemove,
 	} = useHttp(remove);
-
-	const columns = [
-		{
-			name: 'Name',
-			selector: row => row.name,
-			sortable: true,
-			center: true,
-		},
-		{
-			name: 'Number of Auctions',
-			selector: row => row.num,
-			center: true,
-		},
-
-		{
-			name: 'Actions',
-			selector: row => row.action,
-			center: true,
-			cell: props => {
-				return (
-					<>
-						<button className="btn btn-success mx-1 my-2">
-							<FontAwesomeIcon icon={faEdit} />
-						</button>
-						<button
-							className="btn btn-danger my-2 "
-							onClick={() => removeHandler(props._id)}
-						>
-							<FontAwesomeIcon icon={faXmark} />
-						</button>
-					</>
-				);
-			},
-		},
-	];
-	const idToken = useSelector(store => store.AuthData.idToken);
-	useEffect(() => {
-		if (status === 'completed');
-		sendRequest(idToken);
-	}, [sendRequest, props.reload]);
-
+	// ! handle remove
 	const removeHandler = categoryId => {
 		const result = window.confirm('Are you sure to delete this category ?');
 		if (result) {
@@ -76,6 +72,13 @@ const AllCategories = props => {
 			props.onReload(true);
 		}
 	}, [statusForRemove]);
+	// ! end remove
+
+	const idToken = useSelector(store => store.AuthData.idToken);
+	useEffect(() => {
+		if (status === 'completed');
+		sendRequest(idToken);
+	}, [sendRequest, props.reload]);
 
 	//filter
 	const items = data ? data : [];

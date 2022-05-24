@@ -1,9 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux'
+// !for toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// ! end toast
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import AdminDashboard from '../home/adminDashboard';
 import Input from '../../../UI/Input/input';
 import classes from './addEmployee.module.css';
+import PageHeader from '../../../UI/Page Header/pageHeader';
 
 export default function AddEmployee() {
 	const nameRef = useRef();
@@ -36,14 +41,16 @@ const idToken = useSelector(store => store.AuthData.idToken);
 			},
 		}).then(response => {
 			if (!response.ok) {
-				setFailedMessage('Employee with that name already exists ❌');
+				toast.error('Employee with that name already exists ❌');
 				console.log(response);
 
 				return;
 			}
 			nameRef.current.value = '';
+			emailRef.current.value = '';
+			passwordRef.current.value = '';
+			toast.success('Done, new Employee added successfully 💖🐱‍👤');
 
-			setMessage('Done, new Employee added successfully 💖🐱‍👤');
 
 		});
 	};
@@ -52,7 +59,9 @@ const idToken = useSelector(store => store.AuthData.idToken);
 	return (
 		<AdminDashboard>
 			<PageContent>
-				<h1>AddEmployee</h1>
+				{/*! to show toast */}
+				<ToastContainer theme="dark"/>
+				<PageHeader text='Add employee' showLink={false}/>
 				<h3 className={`text-center ${messageClasses} mt-4 fw-bold`}>
 					{successMessage ? successMessage : failedMessage}
 				</h3>
