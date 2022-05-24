@@ -1,15 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Types, ObjectId } from 'mongoose';
 import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { Transform } from 'class-transformer';
 
 export type AuctionDocument = Auction & Document;
 
 @Schema()
 export class Auction {
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
+
 	@Prop({ required: true, trim: true })
 	title: string;
 

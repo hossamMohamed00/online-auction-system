@@ -18,7 +18,6 @@ export class AuctionRoomService {
 
 		// Clean data
 		email = email.trim().toLowerCase();
-		room = room.trim().toLowerCase();
 
 		//? Check if already exists in the room
 		const existingBidder = this.onlineBidders.find(

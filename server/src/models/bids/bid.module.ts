@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuctionsModule } from '../auction/auctions.module';
 import { AuthModule } from '../auth/auth.module';
+import { BuyerModule } from '../users/buyer/buyer.module';
 import { AuctionRoomService } from './auction-room.service';
 import { BidController } from './bid.controller';
 import { BidGateway } from './bid.gateway';
@@ -24,6 +25,7 @@ import { Bid, BidSchema } from './schema/bid.schema';
 		AuthModule,
 		AuctionRoomService,
 		AuctionsModule,
+		BuyerModule,
 	],
 	controllers: [BidController],
 	providers: [BidService, BidGateway, AuctionRoomService],

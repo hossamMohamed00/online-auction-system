@@ -11,5 +11,6 @@ import { CategoryModule } from 'src/models/category/category.module';
 	imports: [WalletModule, AuctionsModule, CategoryModule],
 	controllers: [BuyerController],
 	providers: [BuyerService, AuctionValidationService],
+	exports: [BuyerService],
 })
 export class BuyerModule {}

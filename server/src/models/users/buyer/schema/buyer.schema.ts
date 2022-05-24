@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { User } from '../../shared-user/schema/user.schema';
@@ -19,10 +18,7 @@ export class Buyer extends User {
 	stripeCustomerId: string;
 
 	//* To keep track of joined auctions
-	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
-		ref: Auction.name,
-	})
+	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name, unique: true }] }) //* This syntax is very important as the last was not populating all array
 	joinedAuctions: [Auction];
 }
 

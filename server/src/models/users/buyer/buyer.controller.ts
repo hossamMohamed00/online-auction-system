@@ -14,7 +14,8 @@ import {
 	Roles,
 } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
-import { CreateAuctionDto } from 'src/models/auction/dto';
+import { Serialize } from 'src/common/interceptors';
+import { AuctionDto, CreateAuctionDto } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Role } from '../shared-user/enums';
 import { User } from '../shared-user/schema/user.schema';
@@ -38,7 +39,15 @@ export class BuyerController implements BuyerAuctionsBehaviors {
 		return this.buyerService.joinAuction(buyer, id);
 	}
 
+	@Get('auctions')
+	listMyAuctions(
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<Auction[]> {
+		return this.buyerService.listMyAuctions(buyerId);
+	}
+
 	@Post('auction/:id')
+	@Serialize(AuctionDto)
 	retreatFromAuction(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
