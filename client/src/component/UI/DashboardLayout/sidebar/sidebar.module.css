@@ -65,8 +65,8 @@
 	color: white;
 }
 
-@media screen and (max-width: 991px) {
+/* @media screen and (max-width: 991px) {
 	.sidebar {
 		visibility: hidden !important;
 	}
-}
+} */

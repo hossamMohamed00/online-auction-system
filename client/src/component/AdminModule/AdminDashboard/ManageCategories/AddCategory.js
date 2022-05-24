@@ -17,6 +17,7 @@ const AddCategory = props => {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		let count = Math.random();
 		fetch(`${url}/admin/category/`, {
 			method: 'POST',
 			body: JSON.stringify({ name: nameRef.current.value }),
@@ -32,11 +33,13 @@ const AddCategory = props => {
 				return;
 			}
 			nameRef.current.value = '';
+
 			setShowAddCategory(false);
 			toast.success('Done, new category added successfully 💖🐱‍👤');
-			props.onReload(true);
+			props.onReload(count);
 		});
 	};
+
 	return (
 		<>
 			<div className={`${classes.container1}`}>
@@ -46,7 +49,7 @@ const AddCategory = props => {
 				>
 					Add Category
 				</button>
-				<ToastContainer theme='dark' />
+				<ToastContainer theme="dark" />
 				{showAddCategoryForm && (
 					<div className={`${classes.container2}`}>
 						<form onSubmit={submitHandler}>

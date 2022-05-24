@@ -5,21 +5,22 @@ import AddCategory from './AddCategory';
 import AllCategories from './allCategory';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 
-
 const ManageCategories = () => {
-	const [showNewCategoryList, setShowNewCategoryList] = React.useState(false);
+	const [showNewCategoryList, setShowNewCategoryList] = React.useState('');
 
 	const ReloadTableHandler = value => {
 		setShowNewCategoryList(value);
 	};
 	return (
 		<AdminDashboard>
-			<PageContent >
-
+			<PageContent>
 				<PageHeader text="Manage Categories" showLink={false} />
 
 				<AddCategory onReload={ReloadTableHandler} />
-				<AllCategories reload={showNewCategoryList} onReload={ReloadTableHandler} />
+				<AllCategories
+					reload={showNewCategoryList}
+					// onReload={setReloadWhenRemoveCategory}
+				/>
 			</PageContent>
 		</AdminDashboard>
 	);

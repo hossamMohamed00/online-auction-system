@@ -10,7 +10,7 @@ import useFilter from '../../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import AdminDashboard from '../../home/adminDashboard';
 import PageContent from '../../../../UI/DashboardLayout/Pagecontant/pageContent';
-import PageHeader from '../../../../UI/Page Header/pageHeader'
+import PageHeader from '../../../../UI/Page Header/pageHeader';
 import './allEmployees.css';
 // import { Link } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const ListAllEmployees = props => {
 	const idToken = useSelector(store => store.AuthData.idToken);
-	const [reloadData, setReloadData] = useState(false);
+	const [reloadData, setReloadData] = useState('');
 
 	const { sendRequest, status, data } = useHttp(getEmployees);
 
@@ -35,23 +35,22 @@ const ListAllEmployees = props => {
 	}, [sendRequest, reloadData]);
 
 	const removeHandler = employeeId => {
-		const result = window.confirm('Are you sure to delete this category ?');
+		const result = window.confirm('Are you sure to delete this Employee ?');
 		if (result) {
 			sendRequestForRemove({
 				path: `employee/${employeeId}`,
 				accessToken: idToken,
 			});
-			setReloadData(true);
 		}
+		setReloadData(employeeId);
 	};
 
 	useEffect(() => {
 		if (statusForRemove === 'completed') {
 			console.log('deleted');
 			toast.success('Deleted Successfully 💖🐱‍👤');
-			// props.onReload(true);
 		}
-	}, [statusForRemove]);
+	}, [statusForRemove, reloadData]);
 
 	const columns = [
 		{
@@ -100,7 +99,7 @@ const ListAllEmployees = props => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<PageHeader text="Employees" showLink={false}/>
+					<PageHeader text="Employees" showLink={false} />
 					<ToastContainer theme="dark" />
 					{data && (
 						<DataTable
