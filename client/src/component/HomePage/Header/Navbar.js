@@ -19,7 +19,7 @@ import { Col, Row } from 'react-bootstrap';
 const activeLink = navData =>
 	`${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `;
 
-const Navbar = () => {
+const Navbar = (props) => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [isShownNavContent, setisShownNavContent] = useState(false);
@@ -106,7 +106,7 @@ const Navbar = () => {
 			onClick={showProfileContentHandeler}
 		>
 			<FontAwesomeIcon icon={faUser} className="px-1" /> {emailName}
-			{isShownProfileContent && <DropDownBox />}
+			{isShownProfileContent && <DropDownBox showWalletHandeler = {props.showWalletHandeler} />}
 		</div>
 	);
 

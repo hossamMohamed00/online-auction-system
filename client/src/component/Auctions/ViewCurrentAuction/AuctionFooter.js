@@ -74,7 +74,7 @@ function AuctionFooter({ AuctionStatus }) {
 			{role === 'buyer' && (
 				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
 					{OnGoingStatus && "Place on Bid" }
-					{UpComingStatus && btnSavedValue ? btnSavedValue : "Notify me" }
+					{UpComingStatus && btnSavedValue ? btnSavedValue : "" }
 				</button>
 			)}
 

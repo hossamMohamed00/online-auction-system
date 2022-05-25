@@ -1,18 +1,23 @@
-import React ,{ Fragment} from "react";
-
-import Search from "./Seach";
+import React ,{ Fragment, useState} from "react";
 import Navbar from "./Navbar";
 
 import classes from './Header.module.css'
 import Services from "./Services";
+import Wallet from "../../Modules/BuyerModule/Payment/Wallet.";
 
 const  Header = () => {
+
+	const [showWallet , setShowWallet] = useState(false)
+
+	const showWalletHandeler = () => {
+		setShowWallet(true)
+	}
 	return (
 		<Fragment>
 
 			<div className="position-relative">
 
-				<Navbar/>
+				<Navbar showWalletHandeler = {showWalletHandeler} />
 				{/* start Header  */}
 				<div className= {classes.Header}>
 				</div>
@@ -31,15 +36,14 @@ const  Header = () => {
 
 					</div>
 				</div>
-				{/* end Header content  */}
-
-
-				{/* end Header  */}
 			</div>
+			{/* end Header  */}
 
 			{/* start services */}
 			<Services/>
-			{/* end services */}
+
+			{/* wallet */}
+			{ showWallet && <Wallet show={showWallet} onHide={()=>setShowWallet(false)} /> }
 
 		</Fragment>
 	);
