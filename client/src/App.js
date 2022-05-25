@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import toast
 
-
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
@@ -28,7 +27,6 @@ import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/View
 import ViewAuctions from './Pages/ViewAuctions';
 // end home Pages
 
-
 // start admin pages
 import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
@@ -43,7 +41,6 @@ import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPage
 import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 // end admin pages
 
-
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import Chat from './component/UI/Chat/Chat';
@@ -54,20 +51,19 @@ import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/
 // start seller pages
 import SellerDashboard from './Pages/SellerDashboard';
 import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
-import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
+import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
+import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
 // end seller pages
-
 
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(role)
+	console.log(role);
 
 	return (
 		<React.Fragment>
@@ -116,7 +112,10 @@ function App() {
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
-				<Route path="/adminDashboard/listAllEmployees" element={<ListAllEmployees />} />
+				<Route
+					path="/adminDashboard/listAllEmployees"
+					element={<ListAllEmployees />}
+				/>
 				<Route
 					path="/adminDashboard/manageCategories"
 					element={<ManageCategories />}
@@ -150,6 +149,10 @@ function App() {
 						<Route
 							path="/seller-dashboard/viewAllAuctions"
 							element={<ViewAllAuctions />}
+						/>
+						<Route
+							path="/seller-dashboard/AddAuction"
+							element={<AddAuction />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
 					</>
