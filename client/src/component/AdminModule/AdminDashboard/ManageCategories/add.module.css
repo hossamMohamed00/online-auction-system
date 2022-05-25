@@ -1,6 +1,7 @@
 .container1{
 	margin: 0 auto !important;
 	width: 50%;
+	margin-bottom: 3% !important;
 }
 .container2{
 /* position: relative; */
@@ -13,11 +14,12 @@
 .formLabel{
 	color: white !important;
 }
-form input{
+.addInput{
 	background-color: #2E2F32 !important;
 	border: none !important;
 	outline: none !important;
 	color: white !important;
+	margin: 0 !important;
 
 }
 form input::placeholder{

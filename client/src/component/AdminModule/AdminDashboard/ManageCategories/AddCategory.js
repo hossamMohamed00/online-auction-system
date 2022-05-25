@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import classes from './add.module.css';
-const AddCategory = () => {
+
+// start component
+
+const AddCategory = props => {
 	const [showAddCategoryForm, setShowAddCategory] = useState(false);
-	const [successMessage, setMessage] = useState('');
-	const [failedMessage, setFailedMessage] = useState('');
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const url = 'http://localhost:8000';
 	const nameRef = useRef();
@@ -14,6 +17,7 @@ const AddCategory = () => {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		let count = Math.random();
 		fetch(`${url}/admin/category/`, {
 			method: 'POST',
 			body: JSON.stringify({ name: nameRef.current.value }),
@@ -23,30 +27,29 @@ const AddCategory = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				setFailedMessage('Category with that name already exists ❌');
+				toast.error('Category with that name already exists ❌');
 				console.log(response);
-					setShowAddCategory(false);
+				setShowAddCategory(false);
 				return;
 			}
 			nameRef.current.value = '';
+
 			setShowAddCategory(false);
-			setMessage('Done, new category added successfully 💖🐱‍👤');
-			window.location.reload(true)
+			toast.success('Done, new category added successfully 💖🐱‍👤');
+			props.onReload(count);
 		});
 	};
-	const messageClasses = successMessage ?'text-success':'text-danger'
+
 	return (
 		<>
 			<div className={`${classes.container1}`}>
-				<h3 className={`text-center ${messageClasses} mt-4 fw-bold`}>
-					{ successMessage ? successMessage : failedMessage}
-				</h3>
 				<button
 					className="btn btn-danger text-center mb-4 mt-4 w-100 fw-bolder"
 					onClick={toggleHandler}
 				>
 					Add Category
 				</button>
+				<ToastContainer theme="dark" />
 				{showAddCategoryForm && (
 					<div className={`${classes.container2}`}>
 						<form onSubmit={submitHandler}>
@@ -61,7 +64,7 @@ const AddCategory = () => {
 								id="add"
 								placeholder="type category name here ..."
 								ref={nameRef}
-								className={`form-control`}
+								className={`form-control ${classes.addInput}`}
 							/>
 							<button
 								className={`btn btn-danger text-center mb-4 mt-4  ${classes.submit}`}

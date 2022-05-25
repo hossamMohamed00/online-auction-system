@@ -11,5 +11,5 @@ export enum AuctionStatusForSearch {
 	UpComing = 'upcoming',
 	OnGoing = 'ongoing',
 	Closed = 'closed',
-	// normal users not allowed to see denied auctions
+	// normal users not allowed to see denied or pending auctions
 }

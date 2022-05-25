@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 
 import classes from './UpComingAuctions.module.css'
 
-const UpComingCarousel = ({UogoingAuctionData}) => {
+const UpComingCarousel = ({UogoingAuctionData: ongoingAuctionData}) => {
 
-	const ShowCarouselItems = UogoingAuctionData.map((Item , index)=> {
+	const ShowCarouselItems = ongoingAuctionData.map((Item , index)=> {
+		console.log(Item)
 		return(
 			<div className="row" key={index}>
 				<div className='col-md-6 col-lg-6 pe-0 '>
@@ -29,7 +30,7 @@ const UpComingCarousel = ({UogoingAuctionData}) => {
 						<div>
 							<div>
 								<h6 className="fw-bold d-inline-block"> Category :  </h6>
-								<p className="d-inline-block px-2">  {Item.category.name} </p>
+								<p className="d-inline-block px-2">  {Item.category && Item.category.name} </p>
 							</div>
 
 							<div>
