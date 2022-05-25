@@ -196,12 +196,12 @@ export class AdminController
 	listAllComplaint() {
 		return this.adminService.listAllComplaint();
 	}
-	@Patch('Read/:id')
-	MarkAsRead(@Param() { id }: MongoObjectIdDto) {
-		return this.adminService.MarkRead(id);
+	@Patch('complaint/:id')
+	markAsRead(@Param() { id }: MongoObjectIdDto) {
+		return this.adminService.markComplaintRead(id);
 	}
-	@Delete('delete/:id')
-	deletecomplaint(@Param() { id }: MongoObjectIdDto) {
-		return this.adminService.Delete(id);
+	@Delete('complaint/:id')
+	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
+		return this.adminService.deleteComplaint(id);
 	}
 }

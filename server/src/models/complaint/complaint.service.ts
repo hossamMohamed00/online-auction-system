@@ -18,23 +18,36 @@ export class ComplaintService {
 	/**
 	 * Create new Complaint
 	 * @param createComplaintDto
+	 * @param from
+	 * @returns complaint
 	 */
 	async create(createComplaintDto: CreateComplaintDto, from: User) {
+		this.logger.log('in' + createComplaintDto.in);
 		const createdComplaint: ComplaintDocument = new this.complaintModel({
-			...createComplaintDto,
+			reason: createComplaintDto.reason,
+			in: createComplaintDto.in,
 			from,
 		});
 
 		await createdComplaint.save();
-		this.logger.log('Creat complaint' + createdComplaint);
+		// this.logger.log('Creat complaint' + createdComplaint);
 
 		return createdComplaint.populate('in');
 	}
+	/**
+	 *
+	 * @returns all complaint
+	 */
 	async FindAll() {
 		let complaint = await this.complaintModel.find();
 		return complaint;
 	}
-	async MarkAsRead(id: String) {
+	/**
+	 *
+	 * @param id
+	 * @returns complaint is readied
+	 */
+	async markComplaintAsRead(id: String) {
 		const isReadied = await this.complaintModel.findByIdAndUpdate(id, {
 			IsRead: true,
 		});
@@ -44,7 +57,12 @@ export class ComplaintService {
 			return { read: false };
 		}
 	}
-	async Delete(id: String) {
+	/**
+	 *
+	 * @param id
+	 * @returns deleted complaint
+	 */
+	async deleteComplaint(id: String) {
 		const deleted = await this.complaintModel.findByIdAndDelete(id);
 		if (deleted) {
 			return {

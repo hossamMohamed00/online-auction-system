@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, IsPublicRoute } from 'src/common/decorators';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
-import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
+import { CreateComplaintDto } from 'src/models/complaint/dto';
 import { UserDocument } from '../shared-user/schema/user.schema';
 import { BuyerService } from './buyer.service';
 
@@ -22,7 +23,13 @@ export class BuyerController {
 	findAll() {
 		return this.buyerService.findAll();
 	}
-	@Serialize(ComplaintDto)
+	/**
+	 *
+	 * @param body
+	 * @param user
+	 * @returns Created Complaint
+	 */
+	// @Serialize(ComplaintDto)
 	@Post('complaint')
 	CreateCompliant(
 		@Body() body: CreateComplaintDto,

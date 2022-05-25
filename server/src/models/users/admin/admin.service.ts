@@ -167,10 +167,10 @@ export class AdminService {
 	listAllComplaint(): Promise<ComplaintDocument[]> {
 		return this.ComplaintService.FindAll();
 	}
-	MarkRead(id: String) {
-		return this.ComplaintService.MarkAsRead(id);
+	markComplaintRead(id: String) {
+		return this.ComplaintService.markComplaintAsRead(id);
 	}
-	Delete(id: String) {
-		return this.ComplaintService.Delete(id);
+	deleteComplaint(id: String) {
+		return this.ComplaintService.deleteComplaint(id);
 	}
 }

@@ -7,7 +7,4 @@ import {
 export interface ComplaintBehavior {
 	//* List all Complaint for the admin
 	listAllComplaint(): Promise<ComplaintDocument[]>;
-
-	markAsRead(id: MongoObjectIdDto);
-	deleteComplaint(id: MongoObjectIdDto);
 }

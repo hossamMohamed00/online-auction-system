@@ -1,13 +1,11 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { CreateComplaintDto } from 'src/models/complaint/dto';
 import {
 	Complaint,
 	ComplaintDocument,
 } from 'src/models/complaint/schema/complaint.schema';
+import { UserDocument } from '../../shared-user/schema/user.schema';
 
 export interface ComplaintBehavior {
-	//* List all Complaint for the admin
-	listAllComplaint(): Promise<ComplaintDocument[]>;
-
-	markAsRead(id: MongoObjectIdDto);
-	deleteComplaint(id: MongoObjectIdDto);
+	CreateCompliant(body: CreateComplaintDto, user: UserDocument);
 }

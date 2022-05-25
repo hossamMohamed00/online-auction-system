@@ -24,14 +24,15 @@ import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
 import { Role } from '../shared-user/enums';
 import { User, UserDocument } from '../shared-user/schema/user.schema';
-import { AuctionsBehaviors } from './interfaces';
+import { AuctionsBehaviors } from './interfaces/manage-auctions.interface';
+import { ComplaintBehavior } from './interfaces/manage-complaint.interface';
 import { SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
 @ApiTags('Seller')
 @Roles(Role.Seller)
 @Controller('seller')
-export class SellerController implements AuctionsBehaviors {
+export class SellerController implements AuctionsBehaviors, ComplaintBehavior {
 	constructor(private readonly sellerService: SellerService) {}
 
 	/* Handle Auctions Functions */
@@ -73,7 +74,13 @@ export class SellerController implements AuctionsBehaviors {
 		return this.sellerService.removeAuction(id, sellerId);
 	}
 
-	@Serialize(ComplaintDto)
+	// @Serialize(ComplaintDto)
+	/**
+	 *
+	 * @param body
+	 * @param user
+	 * @returns Created Complaint
+	 */
 	@Post('complaint')
 	CreateCompliant(
 		@Body() body: CreateComplaintDto,

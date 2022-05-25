@@ -97,4 +97,7 @@ export class SellerService {
 	createComplaint(body: CreateComplaintDto, User: UserDocument) {
 		return this.complaintService.create(body, User);
 	}
+	deleteComplaint(id: string) {
+		return this.complaintService.deleteComplaint(id);
+	}
 }
