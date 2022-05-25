@@ -91,7 +91,15 @@ export class SellerService {
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
 	}
-	async ReviewOnMe(seller: SellerDocument) {
-		return this.ReviewService.myreviews(seller);
+
+	/* Handle Reviews Functions logic */
+
+	/**
+	 * List all seller reviews
+	 * @param sellerId
+	 * @returns Array of reviews for that seller
+	 */
+	async getMyReviews(sellerId: string) {
+		return this.ReviewService.getSellerReviews(sellerId);
 	}
 }

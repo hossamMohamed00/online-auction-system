@@ -13,7 +13,7 @@ export class BuyerService {
 	constructor(
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
-		private readonly ReviewService: ReviewService,
+		private readonly reviewService: ReviewService,
 	) {}
 	private logger: Logger = new Logger('BuyerService 👋🏻');
 
@@ -23,26 +23,46 @@ export class BuyerService {
 
 		return buyer;
 	}
+
 	async findAll() {
 		const buyers = await this.buyerModel.find().exec();
 		return buyers;
 	}
-	async MakeReviw(
-		createReviewdto: CreateReviewDto,
-		buyer: BuyerDocument,
-		seller: SellerDocument,
+
+	/*------------------------------*/
+	/**
+	 * Create new review in seller
+	 * @param createReviewDto
+	 * @param buyerId
+	 * @param sellerId
+	 * @returns created review
+	 */
+	async makeReview(
+		createReviewDto: CreateReviewDto,
+		buyerId: string,
 	): Promise<Review> {
-		this.logger.log('Maked New Review in' + seller + 'from ' + buyer.id);
-		return this.ReviewService.create(createReviewdto, buyer.id, seller);
+		this.logger.log(
+			'Creating new review in' + createReviewDto.seller + ' from ' + buyerId,
+		);
+
+		return this.reviewService.create(createReviewDto, buyerId);
 	}
-	async Edit(
+
+	async editReview(
 		id: string,
 		UpdateReviewDto: UpdateReviewDto,
-		buyerid: string,
+		buyerId: string,
 	): Promise<Review> {
-		return this.ReviewService.Edit(UpdateReviewDto, id, buyerid);
+		return this.reviewService.updateReview(UpdateReviewDto, id, buyerId);
 	}
-	async removereview(reviewid: string, buyerid: string): Promise<Review> {
-		return this.ReviewService.remove(reviewid, buyerid);
+
+	/**
+	 * Remove review by buyer
+	 * @param reviewId
+	 * @param buyerId
+	 * @returns removed review
+	 */
+	async removeReview(reviewId: string, buyerId: string): Promise<Review> {
+		return this.reviewService.remove(reviewId, buyerId);
 	}
 }

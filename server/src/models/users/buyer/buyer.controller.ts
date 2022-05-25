@@ -35,26 +35,34 @@ export class BuyerController {
 	findAll() {
 		return this.buyerService.findAll();
 	}
+
+	/*--------------------*/
+	// Review Behaviors
+	@Serialize(ReviewDto)
 	@Post('review')
-	makereview(
-		@Body() data: { reviewdto: CreateReviewDto; seller: SellerDocument },
-		@GetCurrentUserData() buyer: BuyerDocument,
+	makeReview(
+		@Body() createReviewDto: CreateReviewDto,
+		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
-		return this.buyerService.MakeReviw(data.reviewdto, buyer, data.seller);
+		return this.buyerService.makeReview(createReviewDto, buyerId);
 	}
+
+	@Serialize(ReviewDto)
 	@Patch('review/:id')
-	EditReview(
+	editReview(
 		@Param() { id }: MongoObjectIdDto,
-		@Body() data: { updatereviewdto: UpdateReviewDto },
-		@GetCurrentUserData('_id') buyerid: string,
+		@Body() updateReviewDto: UpdateReviewDto,
+		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
-		return this.buyerService.Edit(id, data.updatereviewdto, buyerid);
+		return this.buyerService.editReview(id, updateReviewDto, buyerId);
 	}
+
+	@Serialize(ReviewDto)
 	@Delete('review/:id')
-	DeleteReview(
+	deleteReview(
 		@Param() { id }: MongoObjectIdDto,
-		@GetCurrentUserData('_id') buyerid: string,
+		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
-		return this.buyerService.removereview(id, buyerid);
+		return this.buyerService.removeReview(id, buyerId);
 	}
 }

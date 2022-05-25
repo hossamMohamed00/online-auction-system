@@ -6,10 +6,7 @@ import {
 	Post,
 	Delete,
 	Param,
-	UseInterceptors,
-	UploadedFile,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
@@ -72,9 +69,11 @@ export class SellerController implements AuctionsBehaviors {
 	): Promise<Auction> {
 		return this.sellerService.removeAuction(id, sellerId);
 	}
+
+	/** */
 	@Get('review')
 	@Serialize(ReviewDto)
-	MyReview(@GetCurrentUserData() seller: SellerDocument) {
-		return this.sellerService.ReviewOnMe(seller);
+	listSellerReviews(@GetCurrentUserData('_id') sellerId: string) {
+		return this.sellerService.getMyReviews(sellerId);
 	}
 }

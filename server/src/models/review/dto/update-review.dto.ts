@@ -1,9 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsMongoId } from 'class-validator';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { CreateReviewDto } from './create-review.dto';
 
-export class UpdateReviewDto extends PartialType(CreateReviewDto) {
-	@IsNotEmpty()
-	@IsMongoId()
-	_id: string;
-}
+export class UpdateReviewDto extends PartialType(
+	OmitType(CreateReviewDto, [`seller`]),
+) {}
