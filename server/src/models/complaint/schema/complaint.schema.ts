@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { User } from 'src/models/users/shared-user/schema/user.schema';
 
 export type ComplaintDocument = Complaint & Document;
 
@@ -8,11 +10,19 @@ export class Complaint {
 	@Prop({ required: true })
 	reason: string;
 
-	@Prop({ required: true })
-	from: string;
+	@Prop({
+		type: Types.ObjectId,
+		ref: User.name,
+		required: true,
+	})
+	from: User;
 
-	@Prop({ required: true })
-	in: string;
+	@Prop({
+		type: Types.ObjectId,
+		ref: User.name,
+		required: true,
+	})
+	in: User;
 
 	@Prop({ default: false })
 	IsRead: boolean;

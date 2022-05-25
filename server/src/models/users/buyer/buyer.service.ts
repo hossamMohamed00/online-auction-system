@@ -25,6 +25,6 @@ export class BuyerService {
 		return buyers;
 	}
 	createComplaint(body: CreateComplaintDto, User: UserDocument) {
-		return this.complaintService.create(body, User.email);
+		return this.complaintService.create(body, User);
 	}
 }

@@ -19,27 +19,26 @@ export class ComplaintService {
 	 * Create new Complaint
 	 * @param createComplaintDto
 	 */
-	async create(createComplaintDto: CreateComplaintDto, from: String) {
+	async create(createComplaintDto: CreateComplaintDto, from: User) {
 		const createdComplaint: ComplaintDocument = new this.complaintModel({
-			reason: createComplaintDto.reason,
-			in: createComplaintDto.in,
+			...createComplaintDto,
 			from,
 		});
 
 		await createdComplaint.save();
 		this.logger.log('Creat complaint' + createdComplaint);
 
-		return createdComplaint;
+		return createdComplaint.populate('in');
 	}
 	async FindAll() {
 		let complaint = await this.complaintModel.find();
 		return complaint;
 	}
 	async MarkAsRead(id: String) {
-		const isreaded = await this.complaintModel.findByIdAndUpdate(id, {
+		const isReadied = await this.complaintModel.findByIdAndUpdate(id, {
 			IsRead: true,
 		});
-		if (isreaded) {
+		if (isReadied) {
 			return { read: true };
 		} else {
 			return { read: false };
