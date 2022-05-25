@@ -35,8 +35,8 @@ const AddCategory = props => {
 			nameRef.current.value = '';
 
 			setShowAddCategory(false);
-			toast.success('Done, new category added successfully 💖🐱‍👤');
 			props.onReload(count);
+			toast.success('Done, new category added successfully 💖🐱‍👤');
 		});
 	};
 

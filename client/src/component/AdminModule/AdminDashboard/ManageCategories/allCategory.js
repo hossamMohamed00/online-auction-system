@@ -36,7 +36,6 @@ const AllCategories = props => {
 			selector: row => row.action,
 			center: true,
 			cell: props => {
-				console.log(props._id);
 				return (
 					<>
 						<button className="btn btn-success mx-1 my-2">
@@ -80,9 +79,11 @@ const AllCategories = props => {
 			path: `category/${categoryId}`,
 			accessToken: idToken,
 		});
+		setReloadWhenRemoveCategory(categoryId);
+		console.log('remve succskkdk');
+
 		setModalShow(false);
 
-		setReloadWhenRemoveCategory(categoryId);
 	};
 
 	useEffect(() => {
@@ -105,7 +106,7 @@ const AllCategories = props => {
 	console.log(categoryId);
 	return (
 		<>
-			<ToastContainer theme="da" />
+			<ToastContainer theme="dark" />
 			{data && (
 				<DataTable
 					// selectableRows
@@ -123,8 +124,9 @@ const AllCategories = props => {
 					show={ModalShow}
 					onHide={() => setModalShow(false)}
 					btnHandler={removeHandler}
-					categoryId={categoryId && categoryId}
+					Id={categoryId && categoryId}
 					title='Are you sure to Delete this category?'
+					btnName = "Confirm"
 				/>
 			)}
 		</>
