@@ -104,9 +104,11 @@ html {
 /* end table style */
 
 .bg-danger,
-.btn-danger {
+.btn-danger
+{
 	background-color: var(--alert-color) !important;
 }
+.text-danger {color: var(--alert-color) !important;}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

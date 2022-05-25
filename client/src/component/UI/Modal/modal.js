@@ -16,13 +16,17 @@ const Modal_ = props => {
 				<Modal.Title id="contained-modal-title-vcenter">
 					{props.title && props.title}
 				</Modal.Title>
+				<button className='btn btn-danger align-items-end btn-close-modal' onClick={props.onHide}> X </button>
 			</Modal.Header>
 			{props.body && <Modal.Body>{props.body}</Modal.Body>}
 			<Modal.Footer>
-				<button onClick={props.onHide}>Close</button>
-				<button onClick={() => props.btnHandler(props.categoryId)}>
+				{/* btn show only when delete */}
+				{props.Id && <button onClick={() => props.btnHandler(props.Id)} className="btn-success btn">
 					{props.btnName}
 				</button>
+				}
+				<button onClick={props.onHide} className="btn-danger btn">Close</button>
+
 			</Modal.Footer>
 		</Modal>
 	);
