@@ -7,7 +7,9 @@ import {
 	Auction,
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
+import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
+import { ReviewService } from 'src/models/review/review.service';
 
 @Injectable()
 export class SellerService {
@@ -18,6 +20,7 @@ export class SellerService {
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
 		private readonly auctionsService: AuctionsService,
+		private readonly ReviewService: ReviewService,
 	) {}
 
 	/* Handle Auctions Functions logic*/
@@ -87,5 +90,16 @@ export class SellerService {
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
+	}
+
+	/* Handle Reviews Functions logic */
+
+	/**
+	 * List all seller reviews
+	 * @param sellerId
+	 * @returns Array of reviews for that seller
+	 */
+	async getMyReviews(sellerId: string) {
+		return this.ReviewService.getSellerReviews(sellerId);
 	}
 }
