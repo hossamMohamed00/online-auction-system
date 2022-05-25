@@ -32,17 +32,135 @@ export const getEmployees = async AccessToken =>
 	get(`${url}/employee`, AccessToken);
 
 // remove
-export const remove = ({ path, accessToken }) => {
-	fetch(`${url}/${path}`, {
+export const remove = async ({ path, accessToken }) => {
+	const response = await fetch(`${url}/${path}`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${accessToken}`,
 			'content-type': 'application/json',
 		},
-	}).then(response => {
-		if (!response.ok) {
+	})
+  const data = await response.json()
+
+	if (!response.ok) {
 			console.log('failed');
-			return;
+			throw new Error(data.message);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		}
-	});
+
 };
