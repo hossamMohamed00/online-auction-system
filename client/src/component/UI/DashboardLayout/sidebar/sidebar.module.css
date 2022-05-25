@@ -6,7 +6,7 @@
 	transition: all 0.5s;
 	/* overflow-y: auto; */
 
-	z-index: 10000;
+	z-index: 1000;
 }
 .logo {
 	background-color: #191c24;
@@ -15,8 +15,8 @@
 	margin: 0 auto;
 	width: 25%;
 }
-.logo span{
-	color:#07B2EF;
+.logo span {
+	color: #07b2ef;
 }
 .adminName .username {
 	margin-left: -3% !important;
@@ -34,7 +34,7 @@
 	margin-left: 15px;
 	margin-right: 5px;
 	color: var(--main-color);
-	background-color: white ;
+	background-color: white;
 	width: 18px;
 	height: 18px;
 	padding: 3px;
@@ -65,8 +65,8 @@
 	color: white;
 }
 
-@media screen and (max-width: 991px) {
+/* @media screen and (max-width: 991px) {
 	.sidebar {
 		visibility: hidden !important;
 	}
-}
+} */

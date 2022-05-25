@@ -12,7 +12,7 @@ import { faIdBadge, faUsers , faGavel , faTh, faListAlt, faComment, faCreditCard
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log("role2" , role , props)
+	// console.log("role2" , role , props)
 	const sidebarAdmin = role ==='admin' && {
 		admin: { list: props.admin.list, name: props.admin.name },
 		employees: {

@@ -1,51 +1,103 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-import useHttp from '../../../../CustomHooks/useHttp';
 import moment from 'moment';
-import TableLayout from '../../../UI/TableLayout/TableLayout';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import useHttp from '../../../../CustomHooks/useHttp';
 import { getAllAuctions } from '../../../../Api/Admin';
+import PageHeader from '../../../UI/Page Header/pageHeader';
+import AdminDashboard from '../home/adminDashboard';
+import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import DataTable from 'react-data-table-component';
+import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 
-const UpcomingAuctions = () => {
+const PendingAuctions = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
 
+	// columns
+	const columns = [
+		{
+			name: 'Title',
+			selector: row => row.title,
+			sortable: true,
+		},
+		{
+			name: 'Base Price',
+			selector: row => row.basePrice,
+		},
+		{
+			name: 'Start Date',
+			selector: row => row.startDate,
+		},
+		{
+			name: 'End Date',
+			selector: row => row.endDate,
+		},
+		{
+			name: 'Seller',
+			selector: row => row.seller.name,
+		},
+		{
+			name: 'Status',
+			selector: row => row.status,
+		},
+		{
+			name: 'Actions',
+			// selector: row => row.action,
+			cell: props => {
+				return (
+					<span className="text-info">
+						<Link to={`/auctions/id=${props._id}`}>Auction Details</Link>
+					</span>
+				);
+			},
+		},
+	];
 	useEffect(() => {
-		sendRequest(idToken);
+		sendRequest({
+			idToken: idToken,
+			status: 'upcoming',
+		});
 	}, [sendRequest]);
-	const [upComingAuctions, setUpcomingAuctions] = useState([]);
+	const [upcomingData, setUpcomingData] = useState([]);
 	useEffect(() => {
 		if (status === 'completed') {
-			const upComingAuctions = data.filter(data => data.status === 'upcoming');
-			upComingAuctions.map(data => {
-			const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
-			const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
-
-			data.startDate = newStartDate;
-			data.endDate = newEndDate;
+			data.map(data => {
+				const newDate = moment(data.startDate).format(' DD / MM / YYYY');
+				data.startDate = newDate;
+				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+				data.endDate = newEndDate;
 			});
-			setUpcomingAuctions(upComingAuctions);
+			setUpcomingData(data);
 		}
 	}, [status]);
 
-	const columNames = [
-		'title',
-		'basePrice',
-		'startDate',
-		'endDate',
-		'seller',
-		'status',
-	];
+	//filter
+	const items = upcomingData ? upcomingData : [];
+	const { filterFun, filteredItems } = useFilter(items);
 
+	console.log({ filteredItems });
+	//end filter
 	return (
-		<TableLayout
-			columNames={columNames}
-			records={{ name: upComingAuctions }}
-			title="Upcoming Auctions "
-			path=""
-		/>
+		<React.Fragment>
+			<AdminDashboard>
+				<PageContent>
+					<PageHeader text="Upcoming Auctions" showLink={false} />{' '}
+					{upcomingData && (
+						<DataTable
+							columns={columns}
+							data={filteredItems}
+							subHeader
+							subHeaderComponent={filterFun}
+							theme="dark"
+							pagination
+						/>
+					)}
+				</PageContent>
+			</AdminDashboard>
+		</React.Fragment>
 	);
 };
 
-export default UpcomingAuctions;
+export default PendingAuctions;

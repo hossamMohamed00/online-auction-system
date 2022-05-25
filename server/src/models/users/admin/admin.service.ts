@@ -14,6 +14,7 @@ import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { UsersService } from '../shared-user/users.service';
+import { AdminFilterAuctionQueryDto } from './dto';
 import { Admin, AdminDocument } from './schema/admin.schema';
 
 @Injectable()
@@ -41,7 +42,7 @@ export class AdminService {
 	 * List all auctions available
 	 * @param filterAuctionQuery - Contains search criteria to search for specific auctions
 	 */
-	listAllAuctions(filterAuctionQuery: FilterAuctionQueryDto) {
+	listAllAuctions(filterAuctionQuery: AdminFilterAuctionQueryDto) {
 		return this.auctionService.findAll(filterAuctionQuery);
 	}
 

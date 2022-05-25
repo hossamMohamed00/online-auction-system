@@ -37,6 +37,7 @@ import {
 import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
+import { AdminFilterAuctionQueryDto } from './dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
@@ -70,7 +71,7 @@ export class AdminController
 	@Serialize(AuctionDto)
 	@Get('auction')
 	listAllAuctions(
-		@Query() filterAuctionQuery: FilterAuctionQueryDto,
+		@Query() filterAuctionQuery: AdminFilterAuctionQueryDto,
 	): Promise<Auction[]> {
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}

@@ -2,35 +2,83 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
-import TableLayout from '../../../UI/TableLayout/TableLayout';
-
+import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
+import DataTable from 'react-data-table-component';
+import AdminDashboard from '../home/adminDashboard';
+import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import PageHeader from '../../../UI/Page Header/pageHeader';
+import { Link } from 'react-router-dom';
+import './users.css'
 
 const UsersPage = () => {
-
 	const idToken = useSelector(store => store.AuthData.idToken);
-	const columNames = ['name', 'email', 'role'];
+	const columns = [
+		{
+			name: 'Name',
+			selector: row => row.name,
+			sortable: true,
+		},
+		{
+			name: 'E-mail',
+			selector: row => row.email,
+		},
+		{
+			name: 'Role',
+			selector: row => row.role,
+		},
+		{
+			name: 'Actions',
+			selector: row => row.action,
+			hyperlink: true,
+			cell: props => {
+				return (
+					<span className='text-info'>
+						<Link to="#">User Profile</Link>
+					</span>
+				);
+
+			}
+		},
+	];
+
 
 	const { sendRequest, status, data } = useHttp(getUsers);
 
 	useEffect(() => {
-		sendRequest({idToken: idToken , path:'admin/users'});
+		sendRequest({
+			idToken: idToken,
+			path: 'admin/users',
+		});
 	}, [sendRequest]);
 
-
+	// filter data
+	const filteredData = data && data.filter(item => item.role !== 'employee');
+	//filter
+	const items = filteredData ? filteredData : [];
+	const { filterFun, filteredItems } = useFilter(items);
+	//end filter
 
 	const failed = status !== 'completed';
 	console.log(failed);
 
 	return (
 		<React.Fragment>
-			{data && (
-				<TableLayout
-					columNames={columNames}
-					records={{ name: data }}
-					title="All Users"
-					failed={failed}
-				/>
-			)}
+			<AdminDashboard>
+				<PageContent>
+					<PageHeader text="All users" showLink={false} />
+					{data && (
+						<DataTable
+							// selectableRows
+							columns={columns}
+							data={filteredItems}
+							subHeader
+							subHeaderComponent={filterFun}
+							theme="dark"
+							pagination
+						/>
+					)}
+				</PageContent>
+			</AdminDashboard>
 		</React.Fragment>
 	);
 };

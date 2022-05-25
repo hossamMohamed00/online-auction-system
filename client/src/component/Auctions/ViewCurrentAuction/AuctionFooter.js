@@ -20,8 +20,8 @@ function AuctionFooter({ AuctionStatus }) {
 
 	const UpComingStatus = AuctionStatus === 'upcoming'
 	const OnGoingStatus = AuctionStatus === 'ongoing'
-	const DeniedStatus = AuctionStatus === 'denied'
-	// const SavedStatus = AuctionStatus === 'saved'
+	const DeniedStatus = AuctionStatus === 'pending'
+
 
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
@@ -101,7 +101,7 @@ function AuctionFooter({ AuctionStatus }) {
 				</div>
 			)}
 
-			{role === 'admin' && AuctionStatus === 'upcoming' && (
+			{role === 'admin' && AuctionStatus === 'ongoing' && (
 				<button
 					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
 					type="button"

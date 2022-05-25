@@ -17,7 +17,7 @@ const AdminDashboard = props => {
 		{
 			title: 'ListAllEmployees',
 			icon: faUser,
-			path: '/adminDashboard/chatPage',
+			path: '/adminDashboard/listAllEmployees',
 		},
 		{
 			title: 'AddEmployee',
