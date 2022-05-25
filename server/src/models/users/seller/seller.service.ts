@@ -100,4 +100,12 @@ export class SellerService {
 	deleteComplaint(id: string) {
 		return this.complaintService.deleteComplaint(id);
 	}
+	/**
+	 *
+	 * @param User
+	 * @returns list of complaint
+	 */
+	listMyComplaint(User: string) {
+		return this.complaintService.listMyComplaint(User);
+	}
 }

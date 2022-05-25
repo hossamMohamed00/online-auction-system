@@ -72,4 +72,14 @@ export class ComplaintService {
 			return { Deleted: false };
 		}
 	}
+	/**
+	 *
+	 * @param user
+	 * @return all complaint of this usr
+	 */
+	async listMyComplaint(from: string) {
+		const MyComplaint = await this.complaintModel.find({ from });
+		this.logger.log(MyComplaint);
+		return MyComplaint;
+	}
 }

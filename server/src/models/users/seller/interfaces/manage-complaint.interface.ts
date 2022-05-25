@@ -8,4 +8,6 @@ import { UserDocument } from '../../shared-user/schema/user.schema';
 
 export interface ComplaintBehavior {
 	CreateCompliant(body: CreateComplaintDto, user: UserDocument);
+	deleteComplaint(id: MongoObjectIdDto);
+	listMyComplaint(user: string);
 }

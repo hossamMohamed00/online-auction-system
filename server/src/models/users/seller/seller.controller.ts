@@ -88,4 +88,22 @@ export class SellerController implements AuctionsBehaviors, ComplaintBehavior {
 	) {
 		return this.sellerService.createComplaint(body, user);
 	}
+	/**
+	 *
+	 * @param user
+	 * @returns list of user
+	 */
+	@Get('complaint')
+	listMyComplaint(@GetCurrentUserData('_id') user: string) {
+		return this.sellerService.listMyComplaint(user);
+	}
+	/**
+	 *
+	 * @param param0 id of complaint
+	 * @returns true or false
+	 */
+	@Delete('complaint/:id')
+	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
+		return this.sellerService.deleteComplaint(id);
+	}
 }

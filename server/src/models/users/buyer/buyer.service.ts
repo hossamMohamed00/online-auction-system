@@ -24,7 +24,24 @@ export class BuyerService {
 		const buyers = await this.buyerModel.find().exec();
 		return buyers;
 	}
+	/**
+	 *
+	 * @param body
+	 * @param User
+	 * @returns created complaint
+	 */
 	createComplaint(body: CreateComplaintDto, User: UserDocument) {
 		return this.complaintService.create(body, User);
+	}
+	/**
+	 *
+	 * @param User
+	 * @returns list of complaint
+	 */
+	listMyComplaint(User: string) {
+		return this.complaintService.listMyComplaint(User);
+	}
+	deleteComplaint(id: string) {
+		return this.complaintService.deleteComplaint(id);
 	}
 }

@@ -37,4 +37,12 @@ export class BuyerController {
 	) {
 		return this.buyerService.createComplaint(body, user);
 	}
+	@Get('complaint')
+	listMyComplaint(@GetCurrentUserData('_id') user: string) {
+		return this.buyerService.listMyComplaint(user);
+	}
+	@Delete('complaint/:id')
+	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
+		return this.buyerService.deleteComplaint(id);
+	}
 }
