@@ -1,8 +1,8 @@
-:root{
-	--dark-color 			: #191A19 ;
-	--semiDark-color 	: #4f4e4c;
-	--nav-color 			: #262726;
-	--overlay-dark 		: rgba(0, 0, 0, 0.78);
+:root {
+	--dark-color: #191a19;
+	--semiDark-color: #4f4e4c;
+	--nav-color: #262726;
+	--overlay-dark: rgba(0, 0, 0, 0.78);
 
 	--paragaph-color: #a2a2a2;
 	/* --input-dark-color: #707070; */
@@ -11,13 +11,12 @@
 	--main-color: #5595b7;
 	--overlay-blue: #164da8;
 
-	--alert-color: #dd523b;
+	--alert-color: #da452a;
 }
 
 * {
 	/* font-family:  'Nunito', sans-serif; */
 	font-family: 'Lato', sans-serif;
-	
 
 	box-sizing: border-box;
 }
@@ -58,8 +57,20 @@ html {
 	-o-border-radius: 10px !important;
 	margin: 0 2%;
 	width: 96% !important;
-	overflow-x:scroll ;
+	overflow-x: scroll;
+	scrollbar-width: thin;
+	scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }
+
+/* .gelpCx::-webkit-scrollbar-track {
+	background: var(--scrollbarBG);
+}
+
+.gelpCx::-webkit-scrollbar-thumb {
+	background-color: var(--thumbBG);
+	border-radius: 6px;
+	border: 3px solid var(--scrollbarBG);
+} */
 .rdt_TableHeadRow {
 	background-color: black !important;
 	font-size: 16px;
@@ -92,6 +103,10 @@ html {
 
 /* end table style */
 
+.bg-danger,
+.btn-danger {
+	background-color: var(--alert-color) !important;
+}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

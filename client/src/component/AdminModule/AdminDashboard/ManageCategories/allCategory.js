@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 // toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,7 +11,12 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
+import Modal_ from '../../../UI/Modal/modal';
+
 const AllCategories = props => {
+	const [ModalShow, setModalShow] = useState(false);
+	const [categoryId, setCategoryId] = useState('');
+
 	//! cols name
 	const columns = [
 		{
@@ -31,6 +36,7 @@ const AllCategories = props => {
 			selector: row => row.action,
 			center: true,
 			cell: props => {
+				console.log(props._id);
 				return (
 					<>
 						<button className="btn btn-success mx-1 my-2">
@@ -38,7 +44,7 @@ const AllCategories = props => {
 						</button>
 						<button
 							className="btn btn-danger my-2 "
-							onClick={() => removeHandler(props._id)}
+							onClick={() => showModel(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />
 						</button>
@@ -61,14 +67,21 @@ const AllCategories = props => {
 	] = React.useState('');
 	// ! handle remove
 	//
+	const showModel = category_Id => {
+		console.log(category_Id);
+		setCategoryId(category_Id);
+
+		setModalShow(true);
+	};
 	const removeHandler = categoryId => {
-		const result = window.confirm('Are you sure to delete this category ?');
-		if (result) {
-			sendRequestForRemove({
-				path: `category/${categoryId}`,
-				accessToken: idToken,
-			});
-		}
+		console.log(categoryId);
+
+		sendRequestForRemove({
+			path: `category/${categoryId}`,
+			accessToken: idToken,
+		});
+		setModalShow(false);
+
 		setReloadWhenRemoveCategory(categoryId);
 	};
 
@@ -89,6 +102,7 @@ const AllCategories = props => {
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items);
 	//end filter
+	console.log(categoryId);
 	return (
 		<>
 			<ToastContainer theme="da" />
@@ -101,6 +115,16 @@ const AllCategories = props => {
 					subHeaderComponent={filterFun}
 					theme="dark"
 					pagination
+				/>
+			)}
+
+			{ModalShow && (
+				<Modal_
+					show={ModalShow}
+					onHide={() => setModalShow(false)}
+					btnHandler={removeHandler}
+					categoryId={categoryId && categoryId}
+					title='Are you sure to Delete this category?'
 				/>
 			)}
 		</>
