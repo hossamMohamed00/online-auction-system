@@ -1,8 +1,8 @@
 .Header {
-	height: 70vh;
 	background-image: url('.././../../assets/pexels-abhilash-sahoo-4413295.jpg');
 	background-size: cover;
 	background-position: center;
+	height: 70vh;
 }
 
 .overlay {
@@ -15,7 +15,7 @@
 }
 
 .HeaderContent {
-	height: 70vh;
+	/* height: 70vh; */
 	margin: 20vh auto;
 	width: 80%;
 	z-index: 100;
@@ -89,10 +89,10 @@
 
 @media screen and (max-width: 992px) {
 	.Header {
-		height: 50vh;
+		height: 40vh;
 	}
 	.HeaderContent {
-		margin-top: 20vh !important;
+		margin-top: 15vh !important;
 	}
 
 	.Search {
@@ -106,11 +106,15 @@
 }
 
 @media screen and (max-width: 768px) {
+	.Header{height: 50vh;}
 	.HeaderContent {
 		width: 100%;
-		margin-top: 25vh !important;
-		font-size: 15px;
+		margin-top: 20vh !important;
+
 	}
+	.HeaderContent h2 { font-size: 20px!important}
+	.HeaderContent h4 { font-size: 16px!important}
+
 
 	nav {
 		padding: 0 !important;
@@ -133,3 +137,10 @@
 		padding: 1px;
 	}
 }
+
+@media (min-width: 992px) and (max-width : 1200px) {
+	.Header{
+		height: 70vh;
+	}
+}
+

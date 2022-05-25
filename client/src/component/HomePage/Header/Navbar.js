@@ -89,15 +89,13 @@ const Navbar = () => {
 				to="/register"
 				className={`fw-bold ${classes.navLink} ${classes.navLinkRegister} `}
 			>
-				{' '}
-				Register{' '}
+				Register
 			</NavLink>
 			<NavLink
 				to="/login"
 				className={`fw-bold text-light ${classes.navLink} ${classes.navLinkLogin} `}
 			>
-				{' '}
-				Login{' '}
+				Login
 			</NavLink>
 		</>
 	);
@@ -116,22 +114,21 @@ const Navbar = () => {
 		<nav className={`${classes.nav} navbar navbar-dark fixed-top px-1  `}>
 			<div className="container-fluid">
 				<Row className="w-100 m-0 p-0">
-					<Col lg={2} md={3} sm={3} className="p-0">
+					<Col lg={2} xs={8} md={4}  className= {`p-1`} >
+						<FontAwesomeIcon
+							icon={faBars}
+							className={` ${classes.faBars} text-light d-inline-block d-xs d-lg-none pt-1 px-2  `}
+							onClick={showNavContentHandeler}
+						/>
 						<Link
 							className={` ${classes.navbarBrand} navbar-brand fw-bold `}
 							to="/home-page"
 						>
 							<span> Online </span> Auction
 						</Link>
-
-						<FontAwesomeIcon
-							icon={faBars}
-							className={` ${classes.faBars} float-end text-light d-xs d-md-none pt-1`}
-							onClick={showNavContentHandeler}
-						/>
 					</Col>
 
-					<Col lg={4} md={9} sm={6}>
+					<Col lg={4}  md={8} xs={12}>
 						<Search />
 					</Col>
 
@@ -140,7 +137,7 @@ const Navbar = () => {
 							className={`${
 								classes.navLinks
 							} d-md-flex pt-1 position-relative ${
-								isShownNavContent ? 'd-flex' : 'd-xs-none'
+								isShownNavContent ? 'd-lg-flex' : 'd-md-none'
 							} `}
 						>
 							{NavLinks}
@@ -148,6 +145,7 @@ const Navbar = () => {
 							{isNotLoggedIn}
 							{isLoggedInUser}
 						</div>
+
 					</Col>
 				</Row>
 			</div>
