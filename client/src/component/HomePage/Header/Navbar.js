@@ -121,7 +121,7 @@ const Navbar = (props) => {
 							onClick={showNavContentHandeler}
 						/>
 						<Link
-							className={` ${classes.navbarBrand} navbar-brand fw-bold `}
+							className={` ${classes.navbarBrand} navbar-brand fw-bold pt-3`}
 							to="/home-page"
 						>
 							<span> Online </span> Auction
@@ -137,7 +137,7 @@ const Navbar = (props) => {
 							className={`${
 								classes.navLinks
 							} d-md-flex pt-1 position-relative ${
-								isShownNavContent ? 'd-lg-flex' : 'd-md-none'
+								isShownNavContent ? 'd-flex' : 'd-md-none'
 							} `}
 						>
 							{NavLinks}

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from './component/PaymentForm';
+import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
 
 // css files
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,8 +76,9 @@ function App() {
 			{/* //* TEMPORARY Payment code */}
 
 			{/* <Elements stripe={stripePromise}>
-			<PaymentForm />
+				<PaymentForm />
 			</Elements> */}
+
 			<Routes>
 				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />

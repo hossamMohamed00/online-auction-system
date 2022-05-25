@@ -1,0 +1,17 @@
+.paymentInput{
+	background-color: var(--overlay-dark)!important;
+	border: 0!important;
+	padding: 10px !important;
+	color: white!important;
+}
+
+.paymentInput:focus ,.paymentInput::placeholder{
+	color: white!important;
+}
+
+
+.paymentBtn{
+	width: 40%;
+	font-weight: bold!important;
+	margin: 30px 0px -15px 0px ;
+}
