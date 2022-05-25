@@ -22,6 +22,7 @@ import { AuctionsService } from '../auction/auctions.service';
 import { BuyerService } from '../users/buyer/buyer.service';
 import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
+import { NewBid } from './types/new-bid.type';
 
 /**
  * Its job is to handle the bidding process.
@@ -108,13 +109,8 @@ export class BidGateway
 					system: true, // To be used to identify the message as system message
 				});
 
-				//* Send the current list of bidders
-				this.server.to(auctionId.toString()).emit('room-data', {
-					room: auctionId,
-					bidders: this.auctionRoomService.getBiddersInAuctionRoom(
-						auctionId.toString(),
-					),
-				});
+				//* Handle the room data to be sent to the client
+				this.handleRoomData(auctionId);
 			});
 
 			this.logger.debug(
@@ -143,15 +139,18 @@ export class BidGateway
 		@MessageBody() { bidValue }: PlaceBidDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
+		//* Ensure that the bid value provided
+		if (!bidValue) {
+			throw new WsException('Bid value is required');
+		}
+
 		const savedBidder = this.auctionRoomService.getBidder(client.id);
 		if (!savedBidder) {
 			throw new WsException('You are not in this auction room ❌');
 		}
 
-		//TODO: Check if valid bid
-
-		//TODO: Save the bid
-		const createdBid = await this.bidService.creatBid(
+		//* Handle the bid and update auction details
+		const createdBid: NewBid = await this.bidService.HandleBid(
 			savedBidder.room,
 			bidder._id,
 			bidValue,
@@ -159,6 +158,9 @@ export class BidGateway
 
 		//* Emit the bid to the client-side
 		this.server.to(savedBidder.room).emit('new-bid', createdBid);
+
+		//* Handle the room data to be sent to the client
+		this.handleRoomData(savedBidder.room);
 
 		//* Log bid to the console
 		this.logger.log(
@@ -199,16 +201,32 @@ export class BidGateway
 				system: true, // To be used to identify the message as system message
 			});
 
-			//* Send the current list of bidders
-			this.server.to(removedBidder.room).emit('room-data', {
-				room: removedBidder.room,
-				bidders: this.auctionRoomService.getBiddersInAuctionRoom(
-					removedBidder.room,
-				),
-			});
+			//* Handle the room data to be sent to the client
+			this.handleRoomData(removedBidder.room);
 
 			//* Leave the bidder from the room
 			client.leave(auctionId);
 		}
+	}
+
+	/*--------------------------*/
+	private async handleRoomData(auctionId: ObjectId) {
+		//* Get auction current bidders list
+		const bidders = this.auctionRoomService.getBiddersInAuctionRoom(
+			auctionId.toString(),
+		);
+
+		//* Get auction details (current bid, numOfBids etc)
+		const auctionDetails =
+			await this.auctionService.getCurrentAuctionDetailsForBidding(
+				auctionId.toString(),
+			);
+
+		//* Emit room data to the client-side
+		this.server.to(auctionId.toString()).emit('room-data', {
+			room: auctionId,
+			bidders,
+			auctionDetails,
+		});
 	}
 }

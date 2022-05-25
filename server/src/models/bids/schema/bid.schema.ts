@@ -27,6 +27,9 @@ export class Bid {
 
 	@Prop({ required: true, min: 0 })
 	amount: number;
+
+	@Prop({ required: true, default: new Date() })
+	createdAt: Date;
 }
 
 export const BidSchema = SchemaFactory.createForClass(Bid);

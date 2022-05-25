@@ -20,6 +20,7 @@ import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import WalletService from 'src/providers/payment/wallet.service';
+import { Bid } from '../bids/schema/bid.schema';
 
 @Injectable()
 export class AuctionsService {
@@ -365,6 +366,12 @@ export class AuctionsService {
 		return count > 0;
 	}
 
+	/**
+	 * Check if the bidder has the minimum assurance for an auction
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns true if he has, false otherwise
+	 */
 	async hasMinAssurance(auctionId: string, bidderId: ObjectId) {
 		//* Get the auction
 		const auction = await this.auctionModel.findById(auctionId);
@@ -394,6 +401,56 @@ export class AuctionsService {
 		);
 
 		return auction != null;
+	}
+
+	/**
+	 * Check if the bid value is greater than the current bid value or not
+	 * @param auctionId - Auction that the bid in
+	 * @param bidValue - Incoming bid value
+	 * @returns true if bid is greater than current bid, false otherwise
+	 */
+	async isValidBid(auctionId: string, bidValue: number) {
+		//* Get the auction
+		const auction = await this.auctionModel.findById(auctionId);
+
+		//* Extract the current bid value
+		const currentBidValue = auction.currentBid;
+
+		//* Check if the bid is greater than the current bid
+		return bidValue > currentBidValue;
+	}
+
+	/**
+	 * Handle new bid (increment bid number on the auction and add the current bid value)
+	 * @param auctionId
+	 * @param bid
+	 */
+	async handleNewBid(auctionId: string, bid: Bid): Promise<boolean> {
+		//* Find the auction and update it
+		const auction = await this.auctionModel.findByIdAndUpdate(auctionId, {
+			$inc: { numOfBids: 1 }, // Increment the number of bids
+			currentBid: bid.amount, // Set the current bid to bid value
+		});
+
+		if (!auction) {
+			throw new NotFoundException('Auction not found❌');
+		}
+
+		return auction ? true : false;
+	}
+
+	/**
+	 * Return some of auction details used to be displayed in bidding room
+	 * @param auctionId
+	 * @returns Auction details
+	 */
+	async getCurrentAuctionDetailsForBidding(auctionId: string) {
+		//* Select specific fields from the auction document
+		const auctionDetails = await this.auctionModel
+			.findById(auctionId)
+			.select('numOfBids currentBid bidIncrement');
+
+		return auctionDetails;
 	}
 
 	/**
