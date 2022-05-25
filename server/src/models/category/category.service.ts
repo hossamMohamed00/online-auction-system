@@ -132,7 +132,9 @@ export class CategoryService {
 	async remove(categoryId: string) {
 		//? Ensure before remove that there is no upcoming or ongoing auctions related to this category
 		const isExists =
-			this.auctionService.isThereAnyRunningAuctionRelatedToCategory(categoryId);
+			await this.auctionService.isThereAnyRunningAuctionRelatedToCategory(
+				categoryId,
+			);
 		if (isExists) {
 			throw new BadRequestException(
 				'There are ongoing or upcoming auctions related to this category ❌.',
