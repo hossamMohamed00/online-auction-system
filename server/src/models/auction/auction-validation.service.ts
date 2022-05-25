@@ -17,6 +17,7 @@ export class AuctionValidationService {
 	constructor(
 		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionService: AuctionsService,
+		@Inject(forwardRef(() => CategoryService)) // To avoid Circular dependency between the two services
 		private readonly categoryService: CategoryService,
 	) {}
 

@@ -32,7 +32,7 @@ export class AuctionsService {
 		private readonly walletService: WalletService,
 	) {}
 
-	private logger: Logger = new Logger('AuctionsService 👋🏻');
+	private logger: Logger = new Logger('Auctions Service 👋🏻');
 	/**
 	 * Create new auction
 	 * @param createAuctionDto
@@ -319,6 +319,22 @@ export class AuctionsService {
 		});
 
 		return count > 0;
+	}
+
+	/**
+	 * Check if there is any auctions that has status ongoing or upcoming in category
+	 * @param categoryId
+	 * @return true / false
+	 */
+	async isThereAnyRunningAuctionRelatedToCategory(
+		categoryId: string,
+	): Promise<boolean> {
+		const auctions = await this.auctionModel.countDocuments({
+			category: categoryId,
+			status: { $in: [AuctionStatus.OnGoing, AuctionStatus.UpComing] },
+		});
+
+		return auctions > 0;
 	}
 
 	/**
