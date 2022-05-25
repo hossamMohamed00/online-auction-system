@@ -12,10 +12,14 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import Modal_ from '../../../UI/Modal/modal';
+import { eo } from 'date-fns/locale';
 
 const AllCategories = props => {
 	const [ModalShow, setModalShow] = useState(false);
 	const [categoryId, setCategoryId] = useState('');
+
+	const [ModalTitle, setModalTitle] = useState('Are you sure to Delete this category?');
+	const [ModalBtn, setModalBtn] = useState('Confirm');
 
 	//! cols name
 	const columns = [
@@ -58,6 +62,7 @@ const AllCategories = props => {
 	const {
 		sendRequest: sendRequestForRemove,
 		status: statusForRemove,
+		error : errorForRemove
 	} = useHttp(remove);
 
 	const [
@@ -67,31 +72,34 @@ const AllCategories = props => {
 	// ! handle remove
 	//
 	const showModel = category_Id => {
-		console.log(category_Id);
 		setCategoryId(category_Id);
-
 		setModalShow(true);
 	};
 	const removeHandler = categoryId => {
-		console.log(categoryId);
-
 		sendRequestForRemove({
 			path: `category/${categoryId}`,
 			accessToken: idToken,
 		});
 		setReloadWhenRemoveCategory(categoryId);
-		console.log('remve succskkdk');
-
-		setModalShow(false);
-
 	};
 
 	useEffect(() => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
-			// props.onReload(true);
+			setModalShow(false)
 		}
 	}, [statusForRemove, reloadWhenRemoveCategory]);
+
+
+	useEffect(() => {
+		if (errorForRemove && statusForRemove === 'error') {
+			console.log(errorForRemove , typeof(errorForRemove))
+			toast.error(`${errorForRemove} 💖🐱‍👤`);
+			setModalTitle(errorForRemove)
+			setModalBtn("")
+			// setModalShow(false)
+		}
+	}, [errorForRemove , statusForRemove]);
 	// ! end remove
 
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -106,7 +114,7 @@ const AllCategories = props => {
 	console.log(categoryId);
 	return (
 		<>
-			<ToastContainer theme="dark" />
+			{/* <ToastContainer theme="dark" /> */}
 			{data && (
 				<DataTable
 					// selectableRows
@@ -125,8 +133,9 @@ const AllCategories = props => {
 					onHide={() => setModalShow(false)}
 					btnHandler={removeHandler}
 					Id={categoryId && categoryId}
-					title='Are you sure to Delete this category?'
-					btnName = "Confirm"
+					title= {ModalTitle}
+					btnName = {ModalBtn}
+					// error = {error && error}
 				/>
 			)}
 		</>
