@@ -5,6 +5,7 @@ import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { Transform } from 'class-transformer';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
 export type AuctionDocument = Auction & Document;
 
@@ -66,7 +67,7 @@ export class Auction {
 		ref: User.name,
 		default: null,
 	})
-	winningBuyer: Types.ObjectId;
+	winningBuyer: Buyer;
 
 	@Prop({
 		type: Types.ObjectId,

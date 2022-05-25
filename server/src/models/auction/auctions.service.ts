@@ -430,6 +430,7 @@ export class AuctionsService {
 		const auction = await this.auctionModel.findByIdAndUpdate(auctionId, {
 			$inc: { numOfBids: 1 }, // Increment the number of bids
 			currentBid: bid.amount, // Set the current bid to bid value
+			winningBuyer: bid.user, // Set the winning bidder
 		});
 
 		if (!auction) {
@@ -448,9 +449,24 @@ export class AuctionsService {
 		//* Select specific fields from the auction document
 		const auctionDetails = await this.auctionModel
 			.findById(auctionId)
-			.select('numOfBids currentBid bidIncrement');
+			.select('numOfBids currentBid bidIncrement winningBuyer')
+			.populate('winningBuyer');
 
-		return auctionDetails;
+		//* Return custom data to the client-side
+		const { _id, currentBid, bidIncrement, numOfBids, winningBuyer } =
+			auctionDetails;
+
+		return {
+			_id,
+			currentBid,
+			bidIncrement,
+			numOfBids,
+			winningBuyer: {
+				_id: winningBuyer._id,
+				name: winningBuyer.name,
+				email: winningBuyer.email,
+			},
+		};
 	}
 
 	/**
