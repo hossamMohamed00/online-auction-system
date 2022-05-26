@@ -110,7 +110,7 @@ export class BidGateway
 				});
 
 				//* Handle the room data to be sent to the client
-				this.handleRoomData(auctionId);
+				this.handleRoomData(auctionId.toString());
 			});
 
 			this.logger.debug(
@@ -136,31 +136,32 @@ export class BidGateway
 	@SubscribeMessage('place-bid')
 	async handleIncomingBid(
 		@ConnectedSocket() client: Socket,
-		@MessageBody() { bidValue }: PlaceBidDto,
+		@MessageBody() { room, bidValue }: PlaceBidDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
 		//* Ensure that the bid value provided
-		if (!bidValue) {
-			throw new WsException('Bid value is required');
+		if (!bidValue || !room) {
+			throw new WsException('Room and Bid value are required');
 		}
 
-		const savedBidder = this.auctionRoomService.getBidder(client.id);
+		//* Get the bidder from the room
+		const savedBidder = this.auctionRoomService.getBidder(client.id, room);
 		if (!savedBidder) {
 			throw new WsException('You are not in this auction room ❌');
 		}
 
 		//* Handle the bid and update auction details
 		const createdBid: NewBid = await this.bidService.HandleBid(
-			savedBidder.room,
+			room,
 			bidder._id,
 			bidValue,
 		);
 
 		//* Emit the bid to the client-side
-		this.server.to(savedBidder.room).emit('new-bid', createdBid);
+		this.server.to(room).emit('new-bid', createdBid);
 
 		//* Handle the room data to be sent to the client
-		this.handleRoomData(savedBidder.room);
+		this.handleRoomData(room);
 
 		//* Log bid to the console
 		this.logger.log(
@@ -210,7 +211,11 @@ export class BidGateway
 	}
 
 	/*--------------------------*/
-	private async handleRoomData(auctionId: ObjectId) {
+	/**
+	 * Get auction details and emit the data to all room members
+	 * @param auctionId - Auction id (room)
+	 */
+	private async handleRoomData(auctionId: string) {
 		//* Get auction current bidders list
 		const bidders = this.auctionRoomService.getBiddersInAuctionRoom(
 			auctionId.toString(),

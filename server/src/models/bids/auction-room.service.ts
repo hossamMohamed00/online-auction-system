@@ -59,10 +59,11 @@ export class AuctionRoomService {
 	 * @param filter Member email
 	 * @returns bidder
 	 */
-	getBidder(socketId: string) {
+	getBidder(socketId: string, room: string) {
 		const member = this.onlineBidders.find(
-			member => member.socketId === socketId,
+			member => member.socketId === socketId && member.room === room,
 		);
+
 		return member;
 	}
 
