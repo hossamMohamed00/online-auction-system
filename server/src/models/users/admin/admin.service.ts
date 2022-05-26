@@ -30,6 +30,10 @@ export class AdminService {
 	) {}
 
 	/* Handle Dashboard Functions */
+
+	/**
+	 * @returns all auctions, categories and users count for dashboard
+	 */
 	async getDashboardData(): Promise<AdminDashboardData> {
 		//* Get auctions count
 		const {
@@ -73,6 +77,13 @@ export class AdminService {
 				buyers: buyersCount,
 			},
 		};
+	}
+
+	/**
+	 * @returns list of all winner's bidders
+	 */
+	async getWinnersBidders(): Promise<any[]> {
+		return this.auctionService.getWinnersBiddersForDashboard();
 	}
 	/* Handle Users Functions */
 
