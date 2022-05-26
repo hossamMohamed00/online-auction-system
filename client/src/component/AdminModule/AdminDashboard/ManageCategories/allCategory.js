@@ -93,13 +93,12 @@ const AllCategories = props => {
 
 	useEffect(() => {
 		if (errorForRemove && statusForRemove === 'error') {
-			console.log(errorForRemove , typeof(errorForRemove))
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
-			setModalTitle(errorForRemove)
-			setModalBtn("")
-			// setModalShow(false)
+			setModalTitle(errorForRemove);
+			setModalBtn('');
+
 		}
-	}, [errorForRemove , statusForRemove]);
+	}, [errorForRemove, statusForRemove]);
 	// ! end remove
 
 	const idToken = useSelector(store => store.AuthData.idToken);

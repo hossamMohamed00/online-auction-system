@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import toast
 
-
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
@@ -28,7 +27,6 @@ import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/View
 import ViewAuctions from './Pages/ViewAuctions';
 // end home Pages
 
-
 // start admin pages
 import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
@@ -42,7 +40,8 @@ import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/Auctions
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 // end admin pages
-
+// profile pages
+import BuyerProfile from './Pages/buyerProilePage';
 
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
@@ -54,20 +53,18 @@ import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/
 // start seller pages
 import SellerDashboard from './Pages/SellerDashboard';
 import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
-import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
+import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 // end seller pages
 
-
 //* Payment
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(role)
+	console.log(role);
 
 	return (
 		<React.Fragment>
@@ -94,6 +91,7 @@ function App() {
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
+				<Route path="/buyerProfile" element={<BuyerProfile />} />
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
@@ -116,7 +114,10 @@ function App() {
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
-				<Route path="/adminDashboard/listAllEmployees" element={<ListAllEmployees />} />
+				<Route
+					path="/adminDashboard/listAllEmployees"
+					element={<ListAllEmployees />}
+				/>
 				<Route
 					path="/adminDashboard/manageCategories"
 					element={<ManageCategories />}
