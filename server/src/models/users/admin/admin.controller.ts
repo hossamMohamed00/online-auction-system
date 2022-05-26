@@ -4,6 +4,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	ParseIntPipe,
 	Patch,
 	Post,
 	Query,
@@ -37,7 +38,7 @@ import {
 import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
-import { AdminFilterAuctionQueryDto } from './dto';
+import { AdminFilterAuctionQueryDto, GetTopAuctionsDto } from './dto';
 import { ManageDashboardBehavior } from './interfaces/manage-dashboard.interface';
 import { AdminDashboardData } from './types/dashboard-data.type';
 
@@ -63,6 +64,11 @@ export class AdminController
 	@Get('dashboard/winners')
 	listAllWinnersBidders(): Promise<any[]> {
 		return this.adminService.getWinnersBidders();
+	}
+
+	@Get('dashboard/auctions')
+	getTopAuctions(@Query() { top }: GetTopAuctionsDto): Promise<Auction[]> {
+		return this.adminService.getTopAuctions(top);
 	}
 
 	/* Handle Users Behaviors */

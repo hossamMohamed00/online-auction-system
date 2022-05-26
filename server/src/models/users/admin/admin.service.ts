@@ -85,6 +85,14 @@ export class AdminService {
 	async getWinnersBidders(): Promise<any[]> {
 		return this.auctionService.getWinnersBiddersForDashboard();
 	}
+
+	/**
+	 * @param top - How many auctions to return
+	 * @returns List of top auctions
+	 */
+	async getTopAuctions(top?: number): Promise<Auction[]> {
+		return this.auctionService.getTopAuctionsForDashboard(top);
+	}
 	/* Handle Users Functions */
 
 	/**
