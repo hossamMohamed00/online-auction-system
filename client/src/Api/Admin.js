@@ -93,3 +93,17 @@ export const getTopAuctions = async accessToken => {
 	}
 	return data;
 };
+export const getProfileData = async accessToken => {
+	const response = await fetch(`http://localhost:8000/auth/profile`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};

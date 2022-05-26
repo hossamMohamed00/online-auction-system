@@ -21,7 +21,7 @@
 .card_container_1 h2,
 .card_container_2 h2 {
 	padding-right: 70px !important;
-	font-weight: 600;
+	font-weight: 700 !important;
 }
 .card_1:hover,
 .card_2:hover {

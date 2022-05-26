@@ -7,6 +7,8 @@ import useHttp from '../../../../CustomHooks/useHttp';
 import { getDashboardData } from '../../../../Api/Admin';
 import { getWinners } from '../../../../Api/Admin';
 import { getTopAuctions } from '../../../../Api/Admin';
+import { getProfileData } from '../../../../Api/Admin';
+
 import './admin.css';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
@@ -24,12 +26,18 @@ const AdminDashboardContent = () => {
 		data: dataForAuctions,
 		status: statusForAuctions,
 	} = useHttp(getTopAuctions);
+	const {
+		sendRequest: sendRequestForProfile,
+		data: dataForProfile,
+		status: statusForProfile,
+	} = useHttp(getProfileData);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	// const [winnersData,setWinnersData]= useState([]);
 	useEffect(() => {
 		sendRequest(idToken);
 		sendRequestForWinners(idToken);
 		sendRequestForAuctions(idToken);
+		sendRequestForProfile(idToken);
 	}, [sendRequest, sendRequestForWinners]);
 
 	const cardTitlesForAuctions = [
@@ -114,7 +122,10 @@ const AdminDashboardContent = () => {
 	//end filter
 	return (
 		<>
-			<PageHeader text="Welcome back Admin" showLink={false} />
+			<PageHeader
+				text={`Welcome back ${dataForProfile && dataForProfile.name}`}
+				showLink={false}
+			/>
 			<div className="container_">
 				{/* start top 5 Auctions */}
 				<h2 className="text-light mt-2 fw-border">Top ongoing Auctions</h2>
