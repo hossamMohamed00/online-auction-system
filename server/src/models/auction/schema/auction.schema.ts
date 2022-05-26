@@ -63,7 +63,7 @@ export class Auction {
 		ref: User.name,
 		default: null,
 	})
-	winningBuyer: Types.ObjectId;
+	winningBuyer: Buyer;
 
 	@Prop({
 		type: Types.ObjectId,

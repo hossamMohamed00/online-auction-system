@@ -220,6 +220,38 @@ export class AuctionsService {
 	}
 
 	/**
+	 * Return all winners bidders to be displayed in admin dashboard
+	 */
+	async getWinnersBiddersForDashboard(): Promise<any[]> {
+		//* Get all auctions with status 'closed'
+		const closedAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer')
+			.sort({ startDate: -1 });
+
+		const winnersBidders = [];
+
+		//* return only winningBuyer _id, email, auction title and winningPrice
+		closedAuctions.forEach(auction => {
+			winnersBidders.push({
+				winningBuyer: {
+					_id: auction.winningBuyer._id,
+					email: auction.winningBuyer.email,
+				},
+				auction: {
+					_id: auction._id,
+					title: auction.title,
+				},
+				winningPrice: auction.currentBid,
+			});
+		});
+
+		return winnersBidders;
+	}
+
+	/**
 	 * Get the end date of given auction
 	 * @param auctionId - Auction id
 	 */

@@ -60,6 +60,11 @@ export class AdminController
 		return this.adminService.getDashboardData();
 	}
 
+	@Get('dashboard/winners')
+	listAllWinnersBidders(): Promise<any[]> {
+		return this.adminService.getWinnersBidders();
+	}
+
 	/* Handle Users Behaviors */
 	/**
 	 * List all system users
