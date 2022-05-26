@@ -1,0 +1,25 @@
+/* .card_container{
+	height: 200px;
+} */
+
+.card_1 , .card_2{
+	font-size:20px;
+	box-shadow: 2px 2px 10px var(--nav-color);
+	border-radius: 10px;
+	padding: 5% 5% !important;
+	color: white;
+	background-color: black;
+
+}
+
+.card_2{
+	margin-right: 6% !important;
+}
+.card_1{
+	margin-right: 4% !important;
+
+
+}
+.container{
+	margin-left: 2% !important;
+}
