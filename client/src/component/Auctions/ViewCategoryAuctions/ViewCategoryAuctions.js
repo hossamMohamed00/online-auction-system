@@ -26,19 +26,20 @@ const  ViewCategoryAuctions = () => {
 	const location = useLocation()
 	const CategoriyId = new URLSearchParams(location.search).get('id')
 
-	const fun = useCallback(async (Categoriyid)=>{
-		console.log(CategoriyId)
-		await sendRequest(Categoriyid && Categoriyid)
-	},[])
-
 	useEffect(()=>{
 		if(CategoriyId){
-			fun(CategoriyId)
+			console.log("change ca1")
+			setChangeCategory(Math.random())
 		}
 	}, [CategoriyId])
 
+	useEffect(()=>{
+		console.log("change ca2")
+		sendRequest(CategoriyId && CategoriyId)
+	}, [sendRequest , changeCategory])
+
 	return (
-		<Fragment>
+	<Fragment>
 			<div className= {classes.ViewCategoryAuctions}>
 				<Navbar/>
 				{data && data.length > 0 && status === 'completed' && <ViewAuctionDetails AuctionData={FirstThreeItems} />}

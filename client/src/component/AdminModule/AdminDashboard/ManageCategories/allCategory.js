@@ -87,6 +87,7 @@ const AllCategories = props => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false)
+			setReloadWhenRemoveCategory(categoryId);
 		}
 	}, [statusForRemove, reloadWhenRemoveCategory]);
 

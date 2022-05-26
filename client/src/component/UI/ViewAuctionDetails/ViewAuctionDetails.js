@@ -13,7 +13,6 @@ const ViewAuctionDetails = props => {
 	const viewAllAuctionPage = location.pathname === '/auctions';
 
 	const getAuctionDetails = (Items, animate) => {
-		console.log(Items);
 		return (
 			Items &&
 			Items.map((item, idx) => (
