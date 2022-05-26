@@ -40,7 +40,7 @@ const AdminDashboard = props => {
 		{
 			title: 'Upcoming Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/adminDashboard/upcomingAuctions',
 		},
 	];
 

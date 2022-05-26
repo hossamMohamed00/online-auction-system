@@ -36,7 +36,7 @@ import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers
 import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
-import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
+import UpcomingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 // end admin pages
@@ -100,8 +100,8 @@ function App() {
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
-					path="/adminDashboard/ongoingAuctions"
-					element={<OngoingAuctionsPage />}
+					path="/adminDashboard/upcomingAuctions"
+					element={<UpcomingAuctionsPage />}
 				/>
 				<Route
 					path="/adminDashboard/currentAuctions"

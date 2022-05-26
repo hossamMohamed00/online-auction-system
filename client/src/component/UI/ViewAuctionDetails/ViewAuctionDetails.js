@@ -34,8 +34,8 @@ const ViewAuctionDetails = props => {
 								viewAllAuctionPage ? classes.CardAuctionStatus : ''
 							} `}
 						>
-							{' '}
-							{viewAllAuctionPage ? item.status : item.status}{' '}
+							
+							{viewAllAuctionPage ? item.status : item.status}
 						</div>
 						<div className={classes.Timer}>
 							{CountDownTimer(new Date(item.endDate))}
@@ -79,7 +79,7 @@ const ViewAuctionDetails = props => {
 								to={`/auctions?id=${item._id}`}
 							>
 								{' '}
-								View Details{' '}
+								View Details
 							</Link>
 						</Card.Body>
 					</Card>
