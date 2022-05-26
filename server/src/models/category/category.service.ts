@@ -146,4 +146,14 @@ export class CategoryService {
 
 		return category;
 	}
+
+	/**
+	 * Return categories count to be displayed in admin dashboard
+	 */
+	async getCategoriesCount() {
+		//* Get all categories count
+		const categoriesCount = await this.categoryModel.countDocuments();
+
+		return categoriesCount;
+	}
 }
