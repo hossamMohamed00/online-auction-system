@@ -3,6 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { CreateReviewDto, UpdateReviewDto } from 'src/models/review/dto';
+import { ReviewService } from 'src/models/review/review.service';
+import { Review } from 'src/models/review/schema/review.schema';
 import WalletService from 'src/providers/payment/wallet.service';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
 
@@ -15,6 +18,7 @@ export class BuyerService {
 		private readonly walletService: WalletService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
+		private readonly reviewService: ReviewService,
 	) {}
 
 	/**
@@ -61,5 +65,47 @@ export class BuyerService {
 
 	async saveAuctionForLater(buyer: Buyer, id: string): Promise<boolean> {
 		throw new Error('Method not implemented.');
+	}
+
+	async findAll() {
+		const buyers = await this.buyerModel.find().exec();
+		return buyers;
+	}
+
+	/*------------------------------*/
+	/**
+	 * Create new review in seller
+	 * @param createReviewDto
+	 * @param buyerId
+	 * @param sellerId
+	 * @returns created review
+	 */
+	async makeReview(
+		createReviewDto: CreateReviewDto,
+		buyerId: string,
+	): Promise<Review> {
+		this.logger.log(
+			'Creating new review in' + createReviewDto.seller + ' from ' + buyerId,
+		);
+
+		return this.reviewService.create(createReviewDto, buyerId);
+	}
+
+	async editReview(
+		id: string,
+		UpdateReviewDto: UpdateReviewDto,
+		buyerId: string,
+	): Promise<Review> {
+		return this.reviewService.updateReview(UpdateReviewDto, id, buyerId);
+	}
+
+	/**
+	 * Remove review by buyer
+	 * @param reviewId
+	 * @param buyerId
+	 * @returns removed review
+	 */
+	async removeReview(reviewId: string, buyerId: string): Promise<Review> {
+		return this.reviewService.remove(reviewId, buyerId);
 	}
 }

@@ -39,7 +39,7 @@ const SellerDashboardContent = props => {
 		{
 			title: 'Add New Auction',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/seller-dashboard/AddAuction',
 		},
 	];
 
@@ -67,7 +67,6 @@ const SellerDashboardContent = props => {
 			icon: faGavel,
 			path: '/seller-dashboard/chat',
 		},
-
 	];
 
 	const contentExist = props.children;
@@ -79,8 +78,6 @@ const SellerDashboardContent = props => {
 			viewAuctions={{ name: 'Auctions', list: dropdownListAuctions }}
 			payment={{ name: 'Payment', list: dropdownListPayment }}
 			SellerChat={{ name: 'SellerChat', list: dropdownListChat }}
-
-
 		>
 			{contentExist ? (
 				props.children

@@ -6,10 +6,7 @@ import {
 	Post,
 	Delete,
 	Param,
-	UseInterceptors,
-	UploadedFile,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
@@ -21,6 +18,8 @@ import {
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ReviewDto } from 'src/models/review/dto/review.dto';
+import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { SellerAuctionsBehaviors } from './interfaces';
 import { SellerDocument } from './schema/seller.schema';
@@ -69,5 +68,12 @@ export class SellerController implements SellerAuctionsBehaviors {
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.removeAuction(id, sellerId);
+	}
+
+	/** */
+	@Get('review')
+	@Serialize(ReviewDto)
+	listSellerReviews(@GetCurrentUserData('_id') sellerId: string) {
+		return this.sellerService.getMyReviews(sellerId);
 	}
 }
