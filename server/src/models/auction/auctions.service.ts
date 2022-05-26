@@ -252,6 +252,24 @@ export class AuctionsService {
 	}
 
 	/**
+	 * List auctions with highest number of bids
+	 * @param top - How many documents to return (default: 5)
+	 */
+	async getTopAuctionsForDashboard(top?: number): Promise<Auction[]> {
+		const topAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.OnGoing,
+			})
+			.populate('category')
+			.limit(top || 5)
+			.sort({
+				numOfBids: -1,
+			});
+
+		return topAuctions;
+	}
+
+	/**
 	 * Get the end date of given auction
 	 * @param auctionId - Auction id
 	 */
