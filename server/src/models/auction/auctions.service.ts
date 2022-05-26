@@ -21,6 +21,7 @@ import { AuctionValidationService } from './auction-validation.service';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import WalletService from 'src/providers/payment/wallet.service';
 import { Bid } from '../bids/schema/bid.schema';
+import { BiddingIncrementRules } from 'src/providers/bids';
 
 @Injectable()
 export class AuctionsService {
@@ -28,6 +29,7 @@ export class AuctionsService {
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
+		private readonly biddingIncrementRules: BiddingIncrementRules,
 		private readonly itemService: ItemService,
 		private readonly startAuctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
@@ -404,20 +406,19 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Check if the bid value is greater than the current bid value or not
+	 * Check if the bid value is greater than the minimum allowed bid value or not
 	 * @param auctionId - Auction that the bid in
 	 * @param bidValue - Incoming bid value
 	 * @returns true if bid is greater than current bid, false otherwise
 	 */
-	async isValidBid(auctionId: string, bidValue: number) {
+	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
 		//* Get the auction
 		const auction = await this.auctionModel.findById(auctionId);
 
-		//* Extract the current bid value
-		const currentBidValue = auction.currentBid;
+		console.log(auction.minimumBidAllowed);
 
-		//* Check if the bid is greater than the current bid
-		return bidValue > currentBidValue;
+		//* Check if the bid is greater than the current bid and the opening bid
+		return bidValue >= auction.minimumBidAllowed;
 	}
 
 	/**
@@ -426,12 +427,25 @@ export class AuctionsService {
 	 * @param bid
 	 */
 	async handleNewBid(auctionId: string, bid: Bid): Promise<boolean> {
+		//* Calculate the new bid increment
+		const bidIncrement =
+			this.biddingIncrementRules.calcBidIncrementBasedOnValue(bid.amount);
+
+		//* Calculate the new minimum bid
+		const newMinimumBid = bid.amount + bidIncrement;
+
 		//* Find the auction and update it
-		const auction = await this.auctionModel.findByIdAndUpdate(auctionId, {
-			$inc: { numOfBids: 1 }, // Increment the number of bids
-			currentBid: bid.amount, // Set the current bid to bid value
-			winningBuyer: bid.user, // Set the winning bidder
-		});
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$inc: { numOfBids: 1 }, // Increment the number of bids
+				currentBid: bid.amount, // Set the current bid to bid value
+				bidIncrement, // Set the bid increment
+				minimumBidAllowed: newMinimumBid, // Set the new minimum bid
+				winningBuyer: bid.user, // Set the winning bidder
+			},
+			{ new: true },
+		);
 
 		if (!auction) {
 			throw new NotFoundException('Auction not found❌');
@@ -449,22 +463,33 @@ export class AuctionsService {
 		//* Select specific fields from the auction document
 		const auctionDetails = await this.auctionModel
 			.findById(auctionId)
-			.select('numOfBids currentBid bidIncrement winningBuyer')
+			.select(
+				'basePrice numOfBids currentBid bidIncrement minimumBidAllowed winningBuyer',
+			)
 			.populate('winningBuyer');
 
 		//* Return custom data to the client-side
-		const { _id, currentBid, bidIncrement, numOfBids, winningBuyer } =
-			auctionDetails;
+		const {
+			_id,
+			basePrice,
+			currentBid,
+			bidIncrement,
+			minimumBidAllowed,
+			numOfBids,
+			winningBuyer,
+		} = auctionDetails;
 
 		return {
 			_id,
+			basePrice,
 			currentBid,
 			bidIncrement,
+			minimumBidAllowed,
 			numOfBids,
 			winningBuyer: {
-				_id: winningBuyer._id,
-				name: winningBuyer.name,
-				email: winningBuyer.email,
+				_id: winningBuyer?._id,
+				name: winningBuyer?.name,
+				email: winningBuyer?.email,
 			},
 		};
 	}

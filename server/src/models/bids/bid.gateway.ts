@@ -134,7 +134,7 @@ export class BidGateway
 
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('place-bid')
-	async handlePaceBid(
+	async handleIncomingBid(
 		@ConnectedSocket() client: Socket,
 		@MessageBody() { bidValue }: PlaceBidDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
