@@ -78,7 +78,7 @@ html {
 }
 /* table rows */
 .CjiV {
-	font-size: 14px !important;
+	font-size: 15px !important;
 	background-color: #262525 !important;
 	font-weight: bold;
 }
@@ -104,12 +104,16 @@ html {
 /* end table style */
 
 .bg-danger,
-.btn-danger
-{
+.btn-danger {
 	background-color: var(--alert-color) !important;
 }
-.text-danger {color: var(--alert-color) !important;}
-.bg-none {background: none; border: 0!important;}
+.text-danger {
+	color: var(--alert-color) !important;
+}
+.bg-none {
+	background: none;
+	border: 0 !important;
+}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

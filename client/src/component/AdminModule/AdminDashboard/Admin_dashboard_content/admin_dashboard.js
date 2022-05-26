@@ -72,11 +72,33 @@ const AdminDashboardContent = () => {
 			name: 'WinnerEmail',
 			selector: row => row.winningBuyer.email,
 			center: true,
+			hyperlink: true,
+			cell: props => {
+				console.log(props);
+				return (
+					<span className="text-decoration-none fw-bold">
+						<Link to={`/buyers?id=${props.auction._id}`}>
+							{props.winningBuyer.email}
+						</Link>
+					</span>
+				);
+			},
 		},
 		{
 			name: 'Auction Title',
 			selector: row => row.auction.title,
 			center: true,
+			hyperlink: true,
+			cell: props => {
+				console.log(props);
+				return (
+					<span className="text-decoration-none fw-bold">
+						<Link to={`/auctions?id=${props.auction._id}`}>
+							{props.auction.title}
+						</Link>
+					</span>
+				);
+			},
 		},
 		{
 			name: 'Winning Price',
@@ -111,7 +133,8 @@ const AdminDashboardContent = () => {
 											</div>
 											<h4 className="d-inline-block ms-2 ">{item.title}</h4>
 											<div className="bidders">
-												Number of bidders : <span className='text-light'>{item.__v}</span>
+												Number of bidders :{' '}
+												<span className="text-light">{item.__v}</span>
 											</div>
 										</div>
 									</div>
