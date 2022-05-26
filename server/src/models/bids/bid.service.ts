@@ -67,7 +67,7 @@ export class BidService {
 		if (!isValidBid) {
 			this.logger.error('Bid rejected (Invalid value) 🤷‍♂️');
 			throw new WsException(
-				'Bid value must be greater than current highest bid and opening bid as well👀',
+				'Bid value must be match with minimum bid value 👀',
 			);
 		}
 
