@@ -34,7 +34,7 @@ export class SellerService {
 		createAuctionDto: CreateAuctionDto,
 		seller: SellerDocument,
 	): Promise<Auction> {
-		return this.auctionsService.create(createAuctionDto, seller);
+		return this.auctionsService.createNewAuction(createAuctionDto, seller);
 	}
 
 	/**

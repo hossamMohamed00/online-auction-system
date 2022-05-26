@@ -38,18 +38,27 @@ import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { AdminFilterAuctionQueryDto } from './dto';
+import { ManageDashboardBehavior } from './interfaces/manage-dashboard.interface';
+import { AdminDashboardData } from './types/dashboard-data.type';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
 @Controller('admin')
 export class AdminController
 	implements
+		ManageDashboardBehavior,
 		UsersBehaviors,
 		AuctionsBehavior,
 		EmployeeBehaviors,
 		CategoryBehaviors
 {
 	constructor(private readonly adminService: AdminService) {}
+
+	/* Handle Dashboard Behaviors */
+	@Get('dashboard')
+	listDashboardData(): Promise<AdminDashboardData> {
+		return this.adminService.getDashboardData();
+	}
 
 	/* Handle Users Behaviors */
 	/**

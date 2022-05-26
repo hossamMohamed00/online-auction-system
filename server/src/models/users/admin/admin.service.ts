@@ -16,6 +16,7 @@ import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { UsersService } from '../shared-user/users.service';
 import { AdminFilterAuctionQueryDto } from './dto';
 import { Admin, AdminDocument } from './schema/admin.schema';
+import { AdminDashboardData } from './types/dashboard-data.type';
 
 @Injectable()
 export class AdminService {
@@ -27,6 +28,52 @@ export class AdminService {
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
 	) {}
+
+	/* Handle Dashboard Functions */
+	async getDashboardData(): Promise<AdminDashboardData> {
+		//* Get auctions count
+		const {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		} = await this.auctionService.getAuctionsCount();
+
+		//* Get all categories count
+		const totalCategories = await this.categoryService.getCategoriesCount();
+
+		//* Get users count
+		const {
+			totalUsers,
+			adminsCount,
+			employeesCount,
+			sellersCount,
+			buyersCount,
+		} = await this.usersService.getUsersCount();
+
+		return {
+			auctions: {
+				total: totalAuctions,
+				pending: pendingAuctionsCount,
+				ongoing: ongoingAuctionsCount,
+				upcoming: upcomingAuctionsCount,
+				closed: closedAuctionsCount,
+				denied: deniedAuctionsCount,
+			},
+			categories: {
+				total: totalCategories,
+			},
+			users: {
+				total: totalUsers,
+				admins: adminsCount,
+				employees: employeesCount,
+				sellers: sellersCount,
+				buyers: buyersCount,
+			},
+		};
+	}
 	/* Handle Users Functions */
 
 	/**
