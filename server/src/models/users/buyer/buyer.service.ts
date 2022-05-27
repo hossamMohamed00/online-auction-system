@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CreateReviewDto, UpdateReviewDto } from 'src/models/review/dto';
 import { ReviewService } from 'src/models/review/review.service';
 import { Review } from 'src/models/review/schema/review.schema';
@@ -21,6 +22,18 @@ export class BuyerService {
 		private readonly reviewService: ReviewService,
 	) {}
 
+	/* Profile Functions Logic */
+	async getProfile(buyerId: string): Promise<Buyer> {
+		//* Find buyer and populate his joined auctions
+		const buyer = await this.buyerModel.findById(buyerId).populate({
+			path: 'joinedAuctions',
+			populate: ['category', 'seller'],
+		});
+
+		return buyer;
+	}
+
+	/* Auctions Functions Logic */
 	/**
 	 * Add the bidder to the list of auction's bidders
 	 * @param buyer - Bidder object
@@ -67,12 +80,9 @@ export class BuyerService {
 		throw new Error('Method not implemented.');
 	}
 
-	async findAll() {
-		const buyers = await this.buyerModel.find().exec();
-		return buyers;
-	}
-
 	/*------------------------------*/
+	/* Review Functions Logic */
+
 	/**
 	 * Create new review in seller
 	 * @param createReviewDto

@@ -5,7 +5,7 @@ import { Buyer } from '../schema/buyer.schema';
 
 export interface BuyerReviewsBehaviors {
 	//* Submit new review
-	makeReview(
+	submitReviewOnSeller(
 		createReviewDto: CreateReviewDto,
 		buyerId: string,
 	): Promise<Review>;

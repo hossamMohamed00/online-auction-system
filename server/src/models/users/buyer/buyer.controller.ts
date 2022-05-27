@@ -10,29 +10,43 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-	GetCurrentUserData,
-	IsPublicRoute,
-	Roles,
-} from 'src/common/decorators';
+import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { BuyerService } from './buyer.service';
-import { BuyerAuctionsBehaviors, BuyerReviewsBehaviors } from './interfaces';
+import { BuyerDto } from './dto';
+import {
+	BuyerAuctionsBehaviors,
+	BuyerProfileBehaviors,
+	BuyerReviewsBehaviors,
+} from './interfaces';
 import { Buyer } from './schema/buyer.schema';
 
 @ApiTags('Buyer')
 @Roles(Role.Buyer)
 @Controller('buyer')
 export class BuyerController
-	implements BuyerAuctionsBehaviors, BuyerReviewsBehaviors
+	implements
+		BuyerAuctionsBehaviors,
+		BuyerReviewsBehaviors,
+		BuyerProfileBehaviors
 {
 	constructor(private readonly buyerService: BuyerService) {}
+
+	/* Handle Profile Functions */
+
+	@Get('profile')
+	@Serialize(BuyerDto)
+	@HttpCode(HttpStatus.OK)
+	async getProfile(@GetCurrentUserData('_id') buyerId: string): Promise<Buyer> {
+		return this.buyerService.getProfile(buyerId);
+	}
 
 	/* Handle Auctions Functions */
 	@Post('auction/:id')
@@ -61,10 +75,11 @@ export class BuyerController
 	}
 
 	/*--------------------*/
-	// Review Behaviors
+
+	/* Review Behaviors */
 	@Serialize(ReviewDto)
 	@Post('review')
-	makeReview(
+	submitReviewOnSeller(
 		@Body() createReviewDto: CreateReviewDto,
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
