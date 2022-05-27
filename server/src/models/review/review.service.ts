@@ -35,10 +35,9 @@ export class ReviewService {
 			buyer,
 		});
 
-		//*TODO: Remove following comment
-		// if (isAlreadyReviewed) {
-		// 	throw new BadRequestException('You Have reviewed this Seller before 😁.');
-		// }
+		if (isAlreadyReviewed) {
+			throw new BadRequestException('You Have reviewed this Seller before 😁.');
+		}
 
 		//? Create New Review
 		const createdReview: ReviewDocument = new this.reviewModel({

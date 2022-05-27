@@ -9,8 +9,6 @@ import { SellerDto } from './seller-dto';
 export class SellerProfileDto {
 	@Expose()
 	@Transform(({ obj }) => {
-		console.log(obj.seller);
-
 		return SerializeIt(SellerDto, obj.seller);
 	})
 	seller: SellerDto;
