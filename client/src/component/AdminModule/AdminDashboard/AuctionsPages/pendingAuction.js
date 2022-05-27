@@ -61,7 +61,7 @@ const PendingAuctions = () => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/auctions/id=${props._id}`}>Auction Details</Link>
+						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
 					</span>
 				);
 			},

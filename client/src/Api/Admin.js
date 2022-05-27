@@ -39,128 +39,71 @@ export const remove = async ({ path, accessToken }) => {
 			Authorization: `Bearer ${accessToken}`,
 			'content-type': 'application/json',
 		},
-	})
-  const data = await response.json()
+	});
+	const data = await response.json();
 
 	if (!response.ok) {
-			console.log('failed');
-			throw new Error(data.message);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		}
-
+		console.log('failed');
+		throw new Error(data.message);
+	}
+};
+
+
+// get dashboard data
+
+export const getDashboardData = async (accessToken) => {
+	const response = await fetch(`${url}/dashboard`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+export const getWinners = async accessToken => {
+	const response = await fetch(`${url}/dashboard/winners`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+export const getTopAuctions = async accessToken => {
+	const response = await fetch(`${url}/dashboard/auctions?top=3`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+export const getProfileData = async accessToken => {
+	const response = await fetch(`http://localhost:8000/auth/profile`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
 };

@@ -7,6 +7,7 @@ import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import AdminDashboardContent from '../Admin_dashboard_content/admin_dashboard';
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const AdminDashboard = props => {
@@ -39,7 +40,7 @@ const AdminDashboard = props => {
 		{
 			title: 'Upcoming Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/adminDashboard/upcomingAuctions',
 		},
 	];
 
@@ -84,7 +85,7 @@ const AdminDashboard = props => {
 				props.children
 			) : (
 				<PageContent>
-					<h1>Welcome Admin</h1>
+					<AdminDashboardContent/>
 				</PageContent>
 			)}
 		</DashboardLayout>
