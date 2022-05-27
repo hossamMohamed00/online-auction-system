@@ -4,7 +4,6 @@ import {
 	Delete,
 	Get,
 	Param,
-	ParseIntPipe,
 	Patch,
 	Post,
 	Query,
@@ -20,38 +19,42 @@ import {
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
 import {
-	AuctionsBehavior,
-	CategoryBehaviors,
-	EmployeeBehaviors,
-	UsersBehaviors,
+	AdminAuctionsBehavior,
+	AdminCategoryBehaviors,
+	AdminEmployeeBehaviors,
+	AdminUsersBehaviors,
 } from './interfaces';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auction } from 'src/models/auction/schema/auction.schema';
-import {
-	AuctionDto,
-	FilterAuctionQueryDto,
-	RejectAuctionDto,
-} from 'src/models/auction/dto';
+import { AuctionDto, RejectAuctionDto } from 'src/models/auction/dto';
 import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
-import { AdminFilterAuctionQueryDto, GetTopAuctionsDto } from './dto';
-import { ManageDashboardBehavior } from './interfaces/manage-dashboard.interface';
+import { AdminComplaintsBehavior } from './interfaces/manage-complaint.interface';
+import {
+	AdminFilterAuctionQueryDto,
+	AdminFilterComplaintQueryDto,
+	GetTopAuctionsDto,
+} from './dto';
+import { AdminDashboardBehavior } from './interfaces/manage-dashboard.interface';
 import { AdminDashboardData } from './types/dashboard-data.type';
+import { ComplaintDto } from 'src/models/complaint/dto';
+import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 
 @ApiTags('Admin')
-@Roles(Role.Admin)
+@Roles(Role.Admin, Role.Employee)
 @Controller('admin')
 export class AdminController
 	implements
-		ManageDashboardBehavior,
-		UsersBehaviors,
-		AuctionsBehavior,
-		EmployeeBehaviors,
-		CategoryBehaviors
+		AdminDashboardBehavior,
+		AdminUsersBehaviors,
+		AdminAuctionsBehavior,
+		AdminEmployeeBehaviors,
+		AdminCategoryBehaviors,
+		AdminComplaintsBehavior
 {
 	constructor(private readonly adminService: AdminService) {}
 
@@ -204,5 +207,26 @@ export class AdminController
 	@Delete('category/:id')
 	deleteCategory(@Param() { id }: MongoObjectIdDto) {
 		return this.adminService.removeCategory(id);
+	}
+
+	/*----------------------------*/
+	/* Handle Category Functions */
+
+	@Serialize(ComplaintDto)
+	@Get('complaints')
+	listAllComplaint(
+		@Query() adminFilterComplaintQueryDto: AdminFilterComplaintQueryDto,
+	): Promise<Complaint[]> {
+		return this.adminService.listAllComplaint(adminFilterComplaintQueryDto);
+	}
+
+	@Patch('complaints/:id')
+	markAsRead(@Param() { id }: MongoObjectIdDto): Promise<{ success: boolean }> {
+		return this.adminService.markComplaintRead(id);
+	}
+
+	@Delete('complaints/:id')
+	deleteComplaint(@Param() { id }: MongoObjectIdDto): Promise<Complaint> {
+		return this.adminService.deleteComplaint(id);
 	}
 }

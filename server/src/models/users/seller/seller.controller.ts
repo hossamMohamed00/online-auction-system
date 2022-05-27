@@ -18,18 +18,40 @@ import {
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
+import { User, UserDocument } from '../shared-user/schema/user.schema';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
-import { SellerAuctionsBehaviors } from './interfaces';
-import { SellerDocument } from './schema/seller.schema';
+import { SellerDto, SellerProfileDto } from './dto';
+import {
+	SellerAuctionsBehaviors,
+	SellerProfileBehaviors,
+	SellerReviewsBehaviors,
+} from './interfaces';
+import { Seller, SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
 @ApiTags('Seller')
 @Roles(Role.Seller)
 @Controller('seller')
-export class SellerController implements SellerAuctionsBehaviors {
+export class SellerController
+	implements
+		SellerAuctionsBehaviors,
+		SellerProfileBehaviors,
+		SellerReviewsBehaviors
+{
 	constructor(private readonly sellerService: SellerService) {}
+
+	/* Handle Profile Functions */
+
+	@Serialize(SellerProfileDto)
+	@Get('profile')
+	getProfile(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
+		return this.sellerService.getProfile(sellerId);
+	}
 
 	/* Handle Auctions Functions */
 
@@ -70,10 +92,13 @@ export class SellerController implements SellerAuctionsBehaviors {
 		return this.sellerService.removeAuction(id, sellerId);
 	}
 
-	/** */
-	@Get('review')
+	/* Handle Reviews Functions */
+
 	@Serialize(ReviewDto)
-	listSellerReviews(@GetCurrentUserData('_id') sellerId: string) {
-		return this.sellerService.getMyReviews(sellerId);
+	@Get('review')
+	listSellerReviews(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<Review[]> {
+		return this.sellerService.listSellerReviews(sellerId);
 	}
 }

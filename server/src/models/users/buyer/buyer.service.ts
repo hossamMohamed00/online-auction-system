@@ -1,8 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ComplaintService } from 'src/models/complaint/complaint.service';
+import { CreateComplaintDto } from 'src/models/complaint/dto';
+import { UserDocument } from '../shared-user/schema/user.schema';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CreateReviewDto, UpdateReviewDto } from 'src/models/review/dto';
 import { ReviewService } from 'src/models/review/review.service';
 import { Review } from 'src/models/review/schema/review.schema';
@@ -15,12 +19,25 @@ export class BuyerService {
 	constructor(
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
+		private readonly complaintService: ComplaintService,
 		private readonly walletService: WalletService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
 	) {}
 
+	/* Profile Functions Logic */
+	async getProfile(buyerId: string): Promise<Buyer> {
+		//* Find buyer and populate his joined auctions
+		const buyer = await this.buyerModel.findById(buyerId).populate({
+			path: 'joinedAuctions',
+			populate: ['category', 'seller'],
+		});
+
+		return buyer;
+	}
+
+	/* Auctions Functions Logic */
 	/**
 	 * Add the bidder to the list of auction's bidders
 	 * @param buyer - Bidder object
@@ -67,12 +84,9 @@ export class BuyerService {
 		throw new Error('Method not implemented.');
 	}
 
-	async findAll() {
-		const buyers = await this.buyerModel.find().exec();
-		return buyers;
-	}
-
 	/*------------------------------*/
+	/* Review Functions Logic */
+
 	/**
 	 * Create new review in seller
 	 * @param createReviewDto
@@ -108,4 +122,6 @@ export class BuyerService {
 	async removeReview(reviewId: string, buyerId: string): Promise<Review> {
 		return this.reviewService.remove(reviewId, buyerId);
 	}
+
+	/*------------------------------*/
 }
