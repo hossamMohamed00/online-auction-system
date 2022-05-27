@@ -31,7 +31,7 @@ const Categories = () => {
 						className="p-2 text-decoration-none text-light"
 						to={`/categories?id=${category._id}`}
 					>
-						{category.name}{' '}
+						{category.name}
 					</Link>
 				</li>
 			);
@@ -40,7 +40,6 @@ const Categories = () => {
 	const btnShowCategoryHandeler = e => {
 		e.preventDefault();
 		setIsHiddenCategories(true);
-		console.log('yes');
 	};
 
 	return (

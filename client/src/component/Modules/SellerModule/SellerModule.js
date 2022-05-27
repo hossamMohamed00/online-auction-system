@@ -10,8 +10,6 @@ import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 const SellerDashboardContent = props => {
 	const email = localStorage.getItem('email');
 
-	console.log(email);
-
 	const dropdownListProfile = [
 		{
 			title: 'View Info',
