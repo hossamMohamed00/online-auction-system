@@ -24,4 +24,11 @@ export type AdminDashboardData = {
 		sellers: number;
 		buyers: number;
 	};
+
+	/*---------------------*/
+	//* Complaints
+	complaints: {
+		total: number;
+		notReadYet: number;
+	};
 };

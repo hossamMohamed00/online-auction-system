@@ -132,4 +132,28 @@ export class ComplaintService {
 
 		return complaints;
 	}
+
+	/**
+	 * Get complaints count for admin dashboard
+	 */
+	async getComplaintsCount(): Promise<{
+		totalComplaints: any;
+		notReadYetComplaints: any;
+	}> {
+		//* Get all complaints
+		const complaints = await this.complaintModel.find();
+
+		//* Get the length
+		const totalComplaints = complaints.length;
+
+		//* Get not read complaints count
+		const notReadYetComplaints = complaints.filter(
+			complaint => complaint.markedAsRead === false,
+		).length;
+
+		return {
+			totalComplaints,
+			notReadYetComplaints,
+		};
+	}
 }

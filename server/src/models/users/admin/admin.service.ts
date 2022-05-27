@@ -69,6 +69,9 @@ export class AdminService {
 			buyersCount,
 		} = await this.usersService.getUsersCount();
 
+		const { totalComplaints, notReadYetComplaints } =
+			await this.complaintService.getComplaintsCount();
+
 		return {
 			auctions: {
 				total: totalAuctions,
@@ -87,6 +90,10 @@ export class AdminService {
 				employees: employeesCount,
 				sellers: sellersCount,
 				buyers: buyersCount,
+			},
+			complaints: {
+				total: totalComplaints,
+				notReadYet: notReadYetComplaints,
 			},
 		};
 	}
