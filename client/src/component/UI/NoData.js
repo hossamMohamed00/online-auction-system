@@ -2,7 +2,6 @@ import React from 'react';
 
 
 const NoData = ({text , data , error}) => {
-	console.log(error)
 	return (
 		<>
 

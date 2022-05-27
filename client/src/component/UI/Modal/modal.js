@@ -4,8 +4,6 @@ import Modal from 'react-bootstrap/Modal';
 import './modal.css'
 
 const Modal_ = props => {
-	console.log(props.categoryId);
-
 	const btnHandler = () => {
 		if(props.Id){
 			console.log(props.Id)

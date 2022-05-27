@@ -1,16 +1,24 @@
 import React, { useState , useEffect } from 'react';
 import Modal_ from '../../../UI/Modal/modal';
 
+import { useSelector } from 'react-redux';
+import useHttp from '../../../../CustomHooks/useHttp'
+
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from './PaymentForm/index';
+import { getWalletBalance } from '../../../../Api/BuyerApi';
 
 
 const Wallet = (props) => {
+
 	const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 	const [chargeWallet , setChargeWallet] = useState(false)
 	const [ModalName , setModalName] = useState('Wallet')
 	const [btnFooterStyle , setBtnFooterStyle] = useState('')
+
+	const idToken = useSelector(store=>store.AuthData.idToken)
+	const {sendRequest , status , data} = useHttp(getWalletBalance);
 
 
 	const chargeWalletHandler = () => {
@@ -19,11 +27,18 @@ const Wallet = (props) => {
 		setBtnFooterStyle('justify-content-start mx-2')
 	}
 
+	// get wallet balance
+	useEffect(()=>{
+		sendRequest(idToken)
+	},[sendRequest])
+
+
+
 	const PaymentContent =
 	<>
-		{!chargeWallet && <div className='d-flex  flex-column'>
-			<h4 className='fw-bold pt-2'> Your Balance </h4>
-			<p className='px-1 text-secondary fw-bold	'> $ 50000 </p>
+		{!chargeWallet && <div className='d-flex space-around w-100'>
+			<h4 className='fw-bold pt-2 px-4 '> Your Balance </h4>
+			<h4 className='px-1 pt-2 fw-bolder align-items-end text-end w-50 text-danger'> {status==='completed'  && data && data.balance} </h4>
 			</div>
 		}
 		{chargeWallet &&

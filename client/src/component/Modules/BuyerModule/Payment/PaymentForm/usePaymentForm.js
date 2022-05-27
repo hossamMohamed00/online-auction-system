@@ -1,8 +1,17 @@
+import React from 'react';
+import {useSelector} from 'react-redux'
+
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { toast } from 'react-toastify';
+
 
 const usePaymentForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
+
+	// get email and idToken
+	const email = useSelector(store => store.AuthData.email)
+	const idToken = useSelector(store => store.AuthData.idToken)
 
 	const handleSubmit = async e => {
 		// We don't want to let default form submission happen here,
@@ -27,15 +36,13 @@ const usePaymentForm = () => {
 			type: 'card',
 			card: cardElement,
 			billing_details: {
-				name: 'Hossam',
-				email: 'a01122882174@gmail.com',
-				phone: '01156826636',
-				address: 'cairo',
+				email: email,
 			},
 		});
 
 		if (stripeError || !paymentMethod) {
 			console.log({ stripeError });
+			toast.error(stripeError.message)
 			return;
 		}
 
@@ -51,34 +58,20 @@ const usePaymentForm = () => {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjdmZWI3MDlkNmIxMDgwZGI4ZGI0MDgiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MjU1MDY5MCwiZXhwIjoxMDY1MjU1MDY5MH0.EeAvFyRIN9TS6qGr5ua4ciKlral4xq057LefDz4IRZ8`,
+					Authorization: `Bearer ${idToken}`,
 				},
 			},
 			).then(res => res.json());
 
 			if (success === false) {
 				console.log({ message });
+				toast.error({message})
 				return;
 		}
 
 		console.log('Charge wallet done successfully ✔✔✔, status is ' + message);
+		toast.success('Charge wallet done successfully ✔✔✔, status is ' + message)
 
-		// //? Confirm the payment on the client
-		// const { error, paymentIntent } = await stripe.confirmCardPayment(
-		// 	clientSecret,
-		// 	{
-		// 		payment_method: paymentMethod.id,
-		// 	},
-		// );
-
-		// if (error) {
-		// 	// Show error to customer (e.g., insufficient funds)
-		// 	console.log({ error: error.message });
-		// 	return;
-		// }
-
-		// // Show a success message to your customer
-		// console.log(`Payment ${paymentIntent.id}: ${paymentIntent.status}`);
 	};
 
 	return {
