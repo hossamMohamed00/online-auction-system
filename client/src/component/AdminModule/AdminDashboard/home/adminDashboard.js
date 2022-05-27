@@ -84,9 +84,8 @@ const AdminDashboard = props => {
 			{contentExist ? (
 				props.children
 			) : (
-				<PageContent>
+
 					<AdminDashboardContent/>
-				</PageContent>
 			)}
 		</DashboardLayout>
 	);

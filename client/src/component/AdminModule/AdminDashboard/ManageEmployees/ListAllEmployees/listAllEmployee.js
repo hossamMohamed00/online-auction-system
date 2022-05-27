@@ -89,7 +89,7 @@ const ListAllEmployees = props => {
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items,'name');
 	//end filter
 
 	const failed = status !== 'completed';

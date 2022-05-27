@@ -8,7 +8,7 @@ export const FilterComponent = props => {
 			className="filter"
 			value={props.filterText || ''}
 			onChange={props.onFilter}
-			placeholder="Filter by name ..."
+			placeholder="Filter Table data ..."
 		/>
 	);
 };

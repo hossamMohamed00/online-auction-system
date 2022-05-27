@@ -1,14 +1,32 @@
-.container_ .card_container {
-	/* height: 200px; */
+.container_ {
+	width: 90%;
 	margin: 0 5% !important;
+	/* background-color: aliceblue; */
+}
+.card_container_1,
+.card_container_2,
+.winners,
+.top_auctions {
+	background-color: #191c20;
+	/* width: 84%; */
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
+	padding: 2% 3%;
+	/* margin-left: 5%; */
+	margin-top: 4% !important;
+	/* margin: 3% 10% !important; */
 }
 
 .card_1,
 .card_2 {
+	width: 31.3% !important;
 	font-size: 20px;
 	box-shadow: 2px 2px 10px var(--nav-color);
 	border-radius: 10px;
-	padding: 3% 3% !important;
+	padding: 3% 0 !important;
 	background-color: #262525;
 	color: white;
 	margin-right: 2%;
@@ -18,30 +36,21 @@
 	-ms-border-radius: 10px;
 	-o-border-radius: 10px;
 }
+
 .card_container_1 h2,
 .card_container_2 h2 {
-	padding-right: 70px !important;
-	font-weight: 700 !important;
+	font-weight: bold !important;
 }
 .card_1:hover,
 .card_2:hover {
-	transform: scale(1.2);
-	-webkit-transform: scale(1.2);
-	-moz-transform: scale(1.2);
-	-ms-transform: scale(1.2);
-	-o-transform: scale(1.2);
+	transform: scale(1.08);
+	-webkit-transform: scale(1.08);
+	-moz-transform: scale(1.08);
+	-ms-transform: scale(1.08);
+	-o-transform: scale(1.08);
 }
-.card_container_1:nth-child(3) {
-	margin-left: 10% !important;
-}
-.card_container_2:nth-child(4) {
-	margin-left: 10% !important;
-}
-
-.container_ {
-	width: 90%;
-	margin: 0 5% !important;
-	/* background-color: aliceblue; */
+.card_container_1:nth-child(2) {
+	/* margin-left: 9% !important; */
 }
 
 .icon {
