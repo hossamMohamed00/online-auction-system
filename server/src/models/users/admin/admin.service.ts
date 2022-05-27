@@ -20,7 +20,9 @@ import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { UsersService } from '../shared-user/users.service';
+import { AdminFilterAuctionQueryDto } from './dto';
 import { Admin, AdminDocument } from './schema/admin.schema';
+import { AdminDashboardData } from './types/dashboard-data.type';
 
 @Injectable()
 export class AdminService {
@@ -35,6 +37,71 @@ export class AdminService {
 		private readonly employeeService: EmployeeService,
 		private readonly ComplaintService: ComplaintService,
 	) {}
+
+	/* Handle Dashboard Functions */
+
+	/**
+	 * @returns all auctions, categories and users count for dashboard
+	 */
+	async getDashboardData(): Promise<AdminDashboardData> {
+		//* Get auctions count
+		const {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		} = await this.auctionService.getAuctionsCount();
+
+		//* Get all categories count
+		const totalCategories = await this.categoryService.getCategoriesCount();
+
+		//* Get users count
+		const {
+			totalUsers,
+			adminsCount,
+			employeesCount,
+			sellersCount,
+			buyersCount,
+		} = await this.usersService.getUsersCount();
+
+		return {
+			auctions: {
+				total: totalAuctions,
+				pending: pendingAuctionsCount,
+				ongoing: ongoingAuctionsCount,
+				upcoming: upcomingAuctionsCount,
+				closed: closedAuctionsCount,
+				denied: deniedAuctionsCount,
+			},
+			categories: {
+				total: totalCategories,
+			},
+			users: {
+				total: totalUsers,
+				admins: adminsCount,
+				employees: employeesCount,
+				sellers: sellersCount,
+				buyers: buyersCount,
+			},
+		};
+	}
+
+	/**
+	 * @returns list of all winner's bidders
+	 */
+	async getWinnersBidders(): Promise<any[]> {
+		return this.auctionService.getWinnersBiddersForDashboard();
+	}
+
+	/**
+	 * @param top - How many auctions to return
+	 * @returns List of top auctions
+	 */
+	async getTopAuctions(top?: number): Promise<Auction[]> {
+		return this.auctionService.getTopAuctionsForDashboard(top);
+	}
 	/* Handle Users Functions */
 
 	/**
@@ -50,7 +117,7 @@ export class AdminService {
 	 * List all auctions available
 	 * @param filterAuctionQuery - Contains search criteria to search for specific auctions
 	 */
-	listAllAuctions(filterAuctionQuery: FilterAuctionQueryDto) {
+	listAllAuctions(filterAuctionQuery: AdminFilterAuctionQueryDto) {
 		return this.auctionService.findAll(filterAuctionQuery);
 	}
 

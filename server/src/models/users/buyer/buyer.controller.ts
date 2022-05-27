@@ -1,46 +1,130 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Patch,
+	Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GetCurrentUserData, IsPublicRoute } from 'src/common/decorators';
+import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { Auction } from 'src/models/auction/schema/auction.schema';
+import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
+import { ReviewDto } from 'src/models/review/dto/review.dto';
+import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
+import { Review } from 'src/models/review/schema/review.schema';
+import { Role } from '../shared-user/enums';
+import { BuyerService } from './buyer.service';
+import { BuyerDto } from './dto';
 import { CreateComplaintDto } from 'src/models/complaint/dto';
 import { UserDocument } from '../shared-user/schema/user.schema';
-import { BuyerService } from './buyer.service';
+import {
+	BuyerAuctionsBehaviors,
+	BuyerProfileBehaviors,
+	BuyerReviewsBehaviors,
+} from './interfaces';
+import { Buyer } from './schema/buyer.schema';
 
 @ApiTags('Buyer')
+@Roles(Role.Buyer)
 @Controller('buyer')
-export class BuyerController {
+export class BuyerController
+	implements
+		BuyerAuctionsBehaviors,
+		BuyerReviewsBehaviors,
+		BuyerProfileBehaviors
+{
 	constructor(private readonly buyerService: BuyerService) {}
 
-	@Post()
-	@IsPublicRoute()
-	createBuyer(@Body() body: any) {
-		return this.buyerService.create(body);
+	/* Handle Profile Functions */
+
+	@Get('profile')
+	@Serialize(BuyerDto)
+	@HttpCode(HttpStatus.OK)
+	async getProfile(@GetCurrentUserData('_id') buyerId: string): Promise<Buyer> {
+		return this.buyerService.getProfile(buyerId);
 	}
 
-	@Get()
-	@IsPublicRoute()
-	findAll() {
-		return this.buyerService.findAll();
+	/* Handle Auctions Functions */
+	@Post('auction/:id')
+	@HttpCode(HttpStatus.OK)
+	joinAuction(
+		@GetCurrentUserData() buyer: Buyer,
+		@Param() { id }: MongoObjectIdDto,
+	) {
+		return this.buyerService.joinAuction(buyer, id);
 	}
-	/**
-	 *
-	 * @param body
-	 * @param user
-	 * @returns Created Complaint
-	 */
+
+	@Post('auction/:id')
+	retreatFromAuction(
+		@GetCurrentUserData() buyer: Buyer,
+		@Param() { id }: MongoObjectIdDto,
+	): Promise<boolean> {
+		return this.buyerService.retreatFromAuction(buyer, id);
+	}
+
+	@Post('auction/:id')
+	saveAuctionForLater(
+		@GetCurrentUserData() buyer: Buyer,
+		@Param() { id }: MongoObjectIdDto,
+	): Promise<boolean> {
+		return this.buyerService.saveAuctionForLater(buyer, id);
+	}
+
+	/*--------------------*/
+
+	/* Review Behaviors */
+	@Serialize(ReviewDto)
+	@Post('review')
+	submitReviewOnSeller(
+		@Body() createReviewDto: CreateReviewDto,
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<Review> {
+		return this.buyerService.makeReview(createReviewDto, buyerId);
+	}
+
+	@Serialize(ReviewDto)
+	@Patch('review/:id')
+	editReview(
+		@Param() { id }: MongoObjectIdDto,
+		@Body() updateReviewDto: UpdateReviewDto,
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<Review> {
+		return this.buyerService.editReview(id, updateReviewDto, buyerId);
+	}
+
+	@Serialize(ReviewDto)
+	@Delete('review/:id')
+	deleteReview(
+		@Param() { id }: MongoObjectIdDto,
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<Review> {
+		return this.buyerService.removeReview(id, buyerId);
+	}
+
+	/* Complaints Behaviors */
+
 	// @Serialize(ComplaintDto)
 	@Post('complaint')
-	CreateCompliant(
-		@Body() body: CreateComplaintDto,
+	createCompliant(
+		@Body() createComplaintDto: CreateComplaintDto,
 		@GetCurrentUserData() user: UserDocument,
 	) {
-		return this.buyerService.createComplaint(body, user);
+		return this.buyerService.createComplaint(createComplaintDto, user);
 	}
+
+	// @Serialize(ComplaintDto)
 	@Get('complaint')
 	listMyComplaint(@GetCurrentUserData('_id') user: string) {
 		return this.buyerService.listMyComplaint(user);
 	}
+
+	// @Serialize(ComplaintDto)
 	@Delete('complaint/:id')
 	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
 		return this.buyerService.deleteComplaint(id);

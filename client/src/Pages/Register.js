@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "../component/Register/Layout/Layout";
 
-const Register = () => {
+const Register = (props) => {
 
 	return(
-		<Layout/>
+		<Layout />
 	)
 }
 

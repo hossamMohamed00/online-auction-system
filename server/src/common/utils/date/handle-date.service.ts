@@ -35,7 +35,7 @@ export class HandleDateService {
 		// return moment(auctionStartDate).add(this.auctionEndDateDifference, 'days');
 
 		//* JUST FOR TESTING PURPOSE
-		return moment(auctionStartDate).add(30, 'seconds');
+		return moment(auctionStartDate).add(5, 'minutes');
 	}
 
 	/**

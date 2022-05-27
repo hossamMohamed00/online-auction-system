@@ -5,7 +5,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -18,9 +18,9 @@ import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
 import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
-import { SchedulerRegistry } from '@nestjs/schedule';
-import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
-import * as moment from 'moment';
+import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
+import WalletService from 'src/providers/payment/wallet.service';
+import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 
 @Injectable()
 export class AuctionsService {
@@ -29,16 +29,17 @@ export class AuctionsService {
 		private readonly auctionModel: Model<AuctionDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly itemService: ItemService,
-		private startAuctionSchedulingService: StartAuctionSchedulingService,
+		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		private readonly walletService: WalletService,
 	) {}
 
-	private logger: Logger = new Logger('AuctionsService 👋🏻');
+	private logger: Logger = new Logger('Auctions Service 👋🏻');
 	/**
 	 * Create new auction
 	 * @param createAuctionDto
 	 * @param seller - Seller who created the auction
 	 */
-	async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
+	async createNewAuction(createAuctionDto: CreateAuctionDto, seller: Seller) {
 		//? Validate the data first
 		const validationResult =
 			await this.auctionValidationService.validateCreateAuctionData(
@@ -84,13 +85,21 @@ export class AuctionsService {
 	 * @Param filterAuctionQuery - Contains search criteria
 	 * @returns List of all existing auctions
 	 */
-	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
+	async findAll(
+		filterAuctionQuery?: FilterAuctionQueryDto | AdminFilterAuctionQueryDto,
+	) {
 		let populateFields = [];
 
 		//* Check if the user want to populate the nested docs
 		const wantToPopulate = filterAuctionQuery?.populate;
 		if (wantToPopulate) {
-			populateFields = ['seller', 'category', 'item', 'winningBuyer'];
+			populateFields = [
+				'seller',
+				'category',
+				'item',
+				'winningBuyer',
+				'bidders',
+			];
 
 			// Delete the populate fields from the filterAuctionQuery
 			delete filterAuctionQuery.populate;
@@ -118,18 +127,6 @@ export class AuctionsService {
 		if (!auction) throw new NotFoundException('Auction not found ❌');
 
 		return auction;
-	}
-
-	/**
-	 * Get the end date of given auction
-	 * @param auctionId - Auction id
-	 */
-	async getAuctionEndDate(auctionId: string) {
-		const endDate = await this.auctionModel
-			.findById(auctionId)
-			.select('endDate');
-
-		return endDate;
 	}
 
 	/**
@@ -166,6 +163,122 @@ export class AuctionsService {
 		);
 
 		return auction;
+	}
+
+	/**
+	 * Return auctions count to be displayed into admin dashboard
+	 */
+	async getAuctionsCount(): Promise<{
+		totalAuctions: number;
+		pendingAuctionsCount: number;
+		ongoingAuctionsCount: number;
+		upcomingAuctionsCount: number;
+		closedAuctionsCount: number;
+		deniedAuctionsCount: number;
+	}> {
+		//* Get total count of all auctions
+		const totalAuctions: number = await this.auctionModel.countDocuments();
+
+		//* Get count of pending auctions only
+		const pendingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.Pending,
+			},
+		);
+
+		//* Get count of ongoing auctions only
+		const ongoingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.OnGoing,
+			},
+		);
+
+		//* Get count of upcoming auctions only
+		const upcomingAuctionsCount: number =
+			await this.auctionModel.countDocuments({
+				status: AuctionStatus.UpComing,
+			});
+
+		//* Get count of closed auctions only
+		const closedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Closed,
+		});
+
+		//* Get count of denied auctions only
+		const deniedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Denied,
+		});
+
+		return {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		};
+	}
+
+	/**
+	 * Return all winners bidders to be displayed in admin dashboard
+	 */
+	async getWinnersBiddersForDashboard(): Promise<any[]> {
+		//* Get all auctions with status 'closed'
+		const closedAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer')
+			.sort({ startDate: -1 });
+
+		const winnersBidders = [];
+
+		//* return only winningBuyer _id, email, auction title and winningPrice
+		closedAuctions.forEach(auction => {
+			winnersBidders.push({
+				winningBuyer: {
+					_id: auction.winningBuyer._id,
+					email: auction.winningBuyer.email,
+				},
+				auction: {
+					_id: auction._id,
+					title: auction.title,
+				},
+				winningPrice: auction.currentBid,
+			});
+		});
+
+		return winnersBidders;
+	}
+
+	/**
+	 * List auctions with highest number of bids
+	 * @param top - How many documents to return (default: 5)
+	 */
+	async getTopAuctionsForDashboard(top?: number): Promise<Auction[]> {
+		const topAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.OnGoing,
+			})
+			.populate('category')
+			.limit(top || 5)
+			.sort({
+				numOfBids: -1,
+			});
+
+		return topAuctions;
+	}
+
+	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string) {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
 	}
 
 	/**
@@ -313,6 +426,82 @@ export class AuctionsService {
 		});
 
 		return count > 0;
+	}
+
+	/**
+	 * Check if there is any auctions that has status ongoing or upcoming in category
+	 * @param categoryId
+	 * @return true / false
+	 */
+	async isThereAnyRunningAuctionRelatedToCategory(
+		categoryId: string,
+	): Promise<boolean> {
+		const auctions = await this.auctionModel.countDocuments({
+			category: categoryId,
+			status: { $in: [AuctionStatus.OnGoing, AuctionStatus.UpComing] },
+		});
+
+		return auctions > 0;
+	}
+
+	/**
+	 * Check if the auction is available for bidding or not
+	 * @param auctionId - Auction id
+	 * @returns true or false
+	 */
+	async isAvailableToJoin(auctionId: string): Promise<boolean> {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			status: AuctionStatus.OnGoing,
+		});
+
+		return count > 0;
+	}
+
+	/**
+	 * Check if the bidder exists in the auction bidder list or not
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async isAlreadyJoined(auctionId: string, bidderId: ObjectId) {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			bidders: bidderId,
+		});
+
+		return count > 0;
+	}
+
+	async hasMinAssurance(auctionId: string, bidderId: ObjectId) {
+		//* Get the auction
+		const auction = await this.auctionModel.findById(auctionId);
+
+		//* Extract the chair cost
+		const auctionChairCost = auction.chairCost;
+
+		//* Get buyer wallet balance
+		const { balance } = await this.walletService.getWalletBalance(bidderId);
+
+		return balance >= auctionChairCost;
+	}
+
+	/**
+	 * Add new bidder to the list of auction's bidders
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async appendBidder(auctionId: string, bidderId: ObjectId): Promise<boolean> {
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$push: { bidders: bidderId },
+			},
+			{ new: true },
+		);
+
+		return auction != null;
 	}
 
 	/**

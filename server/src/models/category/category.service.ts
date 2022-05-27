@@ -1,5 +1,7 @@
 import {
 	BadRequestException,
+	forwardRef,
+	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
@@ -10,12 +12,14 @@ import { AuctionDocument } from '../auction/schema/auction.schema';
 import { UpdateCategoryDto } from './dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category, CategoryDocument } from './schema/category.schema';
+import { AuctionsService } from 'src/models/auction/auctions.service';
 
 @Injectable()
 export class CategoryService {
 	constructor(
 		@InjectModel(Category.name)
 		private readonly categoryModel: Model<CategoryDocument>,
+		private readonly auctionService: AuctionsService,
 	) {}
 
 	/**
@@ -126,10 +130,32 @@ export class CategoryService {
 	 * @param categoryId: string
 	 */
 	async remove(categoryId: string) {
+		//? Ensure before remove that there is no upcoming or ongoing auctions related to this category
+		const isExists =
+			await this.auctionService.isThereAnyRunningAuctionRelatedToCategory(
+				categoryId,
+			);
+		if (isExists) {
+			throw new BadRequestException(
+				'There are ongoing or upcoming auctions related to this category ❌.',
+			);
+		}
+
+		//* Find the category and delete it
 		const category = await this.categoryModel.findByIdAndRemove(categoryId);
 
 		if (!category) throw new NotFoundException('Category not found ❌');
 
 		return category;
+	}
+
+	/**
+	 * Return categories count to be displayed in admin dashboard
+	 */
+	async getCategoriesCount() {
+		//* Get all categories count
+		const categoriesCount = await this.categoryModel.countDocuments();
+
+		return categoriesCount;
 	}
 }

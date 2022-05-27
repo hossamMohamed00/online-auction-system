@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialToken = localStorage.getItem('token')
+const initialRole = localStorage.getItem('role')
+const email = localStorage.getItem('email')
+
 const initialState = {
     isLoggedIn : !!initialToken ,
-    idToken : initialToken
+    idToken : initialToken,
+		role:initialRole,
+		email: email
+
 }
 
 const AuthData = createSlice({
@@ -13,13 +19,23 @@ const AuthData = createSlice({
         login(state , action){
           state.isLoggedIn = !!action.payload.idToken
           state.idToken = action.payload.idToken
-          localStorage.setItem('token' , state.idToken)
+					state.role=action.payload.role
+					state.email=action.payload.email
+
+					localStorage.setItem('token' , state.idToken)
+					localStorage.setItem('email' , state.email)
+					localStorage.setItem('role' , state.role)
+
         },
         logout(state , action){
           state.isLoggedIn = false
           state.idToken = null
-          localStorage.removeItem('token')
-        }
+
+					localStorage.removeItem('token')
+					localStorage.removeItem('email')
+					localStorage.removeItem('role')
+
+				}
     }
 });
 

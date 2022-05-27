@@ -4,6 +4,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	ParseIntPipe,
 	Patch,
 	Post,
 	Query,
@@ -29,26 +30,21 @@ import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auction } from 'src/models/auction/schema/auction.schema';
-import {
-	AuctionDto,
-	FilterAuctionQueryDto,
-	RejectAuctionDto,
-} from 'src/models/auction/dto';
+import { AuctionDto, RejectAuctionDto } from 'src/models/auction/dto';
 import { UserDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { ComplaintBehavior } from './interfaces/manage-complaint.interface';
-import { ComplaintDto } from 'src/models/complaint/dto';
-import {
-	Complaint,
-	ComplaintDocument,
-} from 'src/models/complaint/schema/complaint.schema';
+import { AdminFilterAuctionQueryDto, GetTopAuctionsDto } from './dto';
+import { ManageDashboardBehavior } from './interfaces/manage-dashboard.interface';
+import { AdminDashboardData } from './types/dashboard-data.type';
 
 @ApiTags('Admin')
 @Roles(Role.Admin)
 @Controller('admin')
 export class AdminController
 	implements
+		ManageDashboardBehavior,
 		UsersBehaviors,
 		AuctionsBehavior,
 		EmployeeBehaviors,
@@ -56,6 +52,22 @@ export class AdminController
 		ComplaintBehavior
 {
 	constructor(private readonly adminService: AdminService) {}
+
+	/* Handle Dashboard Behaviors */
+	@Get('dashboard')
+	listDashboardData(): Promise<AdminDashboardData> {
+		return this.adminService.getDashboardData();
+	}
+
+	@Get('dashboard/winners')
+	listAllWinnersBidders(): Promise<any[]> {
+		return this.adminService.getWinnersBidders();
+	}
+
+	@Get('dashboard/auctions')
+	getTopAuctions(@Query() { top }: GetTopAuctionsDto): Promise<Auction[]> {
+		return this.adminService.getTopAuctions(top);
+	}
 
 	/* Handle Users Behaviors */
 	/**
@@ -77,7 +89,7 @@ export class AdminController
 	@Serialize(AuctionDto)
 	@Get('auction')
 	listAllAuctions(
-		@Query() filterAuctionQuery: FilterAuctionQueryDto,
+		@Query() filterAuctionQuery: AdminFilterAuctionQueryDto,
 	): Promise<Auction[]> {
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}

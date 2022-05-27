@@ -31,10 +31,9 @@ const Search = () => {
 
 	return (
 		<Fragment>
-			<div className="">
-
+			<div className="float-right ">
 				<div className={classes.Search}>
-					<div className={` ${classes.SearchInputGroup} input-group position-relative w-75 m-auto `}>
+					<div className={` ${classes.SearchInputGroup} input-group position-relative w-100 m-auto `}>
 						<input type="text" className={` ${classes.SearchInput} form-control `} value={SearchContent} onChange={changeHandeler} onFocus={focusHandeler} onBlur={blurHandeler}/>
 						<span className={` ${classes.SearchIcon} input-group-text `}>
 							<FontAwesomeIcon icon={faMagnifyingGlass}  />

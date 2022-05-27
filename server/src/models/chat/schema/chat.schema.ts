@@ -16,8 +16,8 @@ export class Chat {
 	@Prop({ required: [true, 'user2 is required'] })
 	user2: string;
 
-	@Prop({ default: HandleDateService.getCurrentDateFormatted() })
-	createdAt: string;
+	@Prop({ default: new Date() })
+	createdAt: Date;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

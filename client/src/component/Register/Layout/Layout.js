@@ -1,33 +1,38 @@
-import React, { Fragment } from "react";
-import RegisterContent from "../RegisterContent/RegisterContent";
-import RegisterHeader from "../RegisterHeader/RegisterHeader";
+import React, { Fragment } from 'react';
+import RegisterContent from '../RegisterContent/RegisterContent';
+import RegisterHeader from '../RegisterHeader/RegisterHeader';
 
-import classes from './Layout.module.css'
-import scollbarStyle from '../../UI/ScrollBar.module.css'
+import classes from './Layout.module.css';
+import scollbarStyle from '../../UI/ScrollBar.module.css';
 
-
-const Layout = () => {
+const Layout = props => {
 	return (
-			<Fragment>
-				<div className={`${classes.Register} ${scollbarStyle.scollbar} text-center h-100`}>
-					<div className="container-fluid p-0" >
-							<div className="row m-0 p-0 h-100">
+		<Fragment>
+			<div
+				className={`${classes.Register} ${scollbarStyle.scollbar} text-center h-100`}
+			>
+				<div className="container-fluid p-0">
+					<div className="row m-0 p-0 h-100">
+						<div
+							className={` ${classes['register-bg']} col-lg-7 col-xs-12 position-relative pl-0 px-0`}
+						>
+							<div
+								className={` ${classes['register-bg-overlay']}  w-100 h-100 position-absolute `}
+							></div>
+							<div className={classes.background}> </div>
+						</div>
 
-								<div className={` ${classes['register-bg']} col-lg-7 col-xs-12 position-relative pl-0 px-0`}>
-									<div className={` ${classes['register-bg-overlay']}  w-100 h-100 position-absolute `}></div>
-									<div className={classes.background}> </div>
-								</div>
-
-								<div className={` ${classes['register-content']} col-lg-5 col-xs-12 pl-0 px-0 `}>
-										<RegisterHeader  />
-										<RegisterContent />
-								</div>
-							</div>
+						<div
+							className={` ${classes['register-content']} col-lg-5 col-xs-12 pl-0 px-0 `}
+						>
+							<RegisterHeader />
+							<RegisterContent  />
+						</div>
 					</div>
 				</div>
+			</div>
+		</Fragment>
+	);
+};
 
-			</Fragment>
-	)
-}
-
-export default Layout ;
+export default Layout;

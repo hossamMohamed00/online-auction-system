@@ -78,6 +78,13 @@ export class ChatService {
 			return chat.messages;
 		}
 	}
+	async getMyChat(clientEmail: string): Promise<any> {
+		// Find the all chat document
+		const chat = await this.findChats(clientEmail);
+		if (chat) {
+			return chat;
+		}
+	}
 
 	/**
 	 * Handle the new incoming message by saving it
@@ -152,23 +159,45 @@ export class ChatService {
 		user2Email: string,
 	): Promise<ChatDocument | null> {
 		// Find the chat from DB
-		const chat = await this.chatModel.findOne({
-			$and: [
-				{
-					$or: [{ user1: user1Email }, { user1: user2Email }],
-				},
-				{
-					$or: [{ user2: user1Email }, { user2: user2Email }],
-				},
-			],
-		});
+		// frist check if user is employee
+		if (
+			user1Email == 'Support@email.com' ||
+			user2Email == 'Support@email.com'
+		) {
+			const chat = await this.chatModel.findOne({
+				$and: [
+					{
+						$or: [{ user1: 'Support@email.com' }, { user1: user2Email }],
+					},
+					{
+						$or: [{ user2: 'Support@email.com' }, { user2: user2Email }],
+					},
+				],
+			});
+			if (!chat) {
+				return null;
+			}
 
-		//? If the chat not exists, return null
-		if (!chat) {
-			return null;
+			return chat;
+		} else {
+			const chat = await this.chatModel.findOne({
+				$and: [
+					{
+						$or: [{ user1: user1Email }, { user1: user2Email }],
+					},
+					{
+						$or: [{ user2: user1Email }, { user2: user2Email }],
+					},
+				],
+			});
+			if (!chat) {
+				return null;
+			}
+
+			return chat;
 		}
 
-		return chat;
+		//? If the chat not exists, return null;
 	}
 
 	/**

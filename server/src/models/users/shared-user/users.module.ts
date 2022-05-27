@@ -6,7 +6,7 @@ import { CategoryModule } from 'src/models/category/category.module';
 
 @Module({
 	//* Load schema module to load all database schemas
-	imports: [SchemaModule, CategoryModule],
+	imports: [SchemaModule],
 	controllers: [UsersController],
 	providers: [UsersService],
 	exports: [UsersService],

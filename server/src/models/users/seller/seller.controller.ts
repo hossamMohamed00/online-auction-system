@@ -6,10 +6,7 @@ import {
 	Post,
 	Delete,
 	Param,
-	UseInterceptors,
-	UploadedFile,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
@@ -22,23 +19,45 @@ import {
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
-import { Role } from '../shared-user/enums';
 import { User, UserDocument } from '../shared-user/schema/user.schema';
-import { AuctionsBehaviors } from './interfaces/manage-auctions.interface';
-import { ComplaintBehavior } from './interfaces/manage-complaint.interface';
-import { SellerDocument } from './schema/seller.schema';
+import { SellerComplaintBehavior } from './interfaces/seller-manage-complaint.interface';
+import { ReviewDto } from 'src/models/review/dto/review.dto';
+import { Review } from 'src/models/review/schema/review.schema';
+import { Role } from '../shared-user/enums';
+import { SellerDto, SellerProfileDto } from './dto';
+import {
+	SellerAuctionsBehaviors,
+	SellerProfileBehaviors,
+	SellerReviewsBehaviors,
+} from './interfaces';
+import { Seller, SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
 @ApiTags('Seller')
 @Roles(Role.Seller)
 @Controller('seller')
-export class SellerController implements AuctionsBehaviors, ComplaintBehavior {
-	constructor(private readonly sellerService: SellerService) {}
+export class SellerController
+	implements
+	SellerAuctionsBehaviors,
+	SellerProfileBehaviors,
+	SellerReviewsBehaviors,
+	SellerComplaintBehavior {
+	constructor(private readonly sellerService: SellerService) { }
+
+	/* Handle Profile Functions */
+
+	@Serialize(SellerProfileDto)
+	@Get('profile')
+	getProfile(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
+		return this.sellerService.getProfile(sellerId);
+	}
 
 	/* Handle Auctions Functions */
 
 	@Serialize(AuctionDto)
-	@FormDataRequest() // Comes from NestjsFormDataModule
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Post('auction')
 	addAuction(
 		@Body() createAuctionDto: CreateAuctionDto,
@@ -74,36 +93,44 @@ export class SellerController implements AuctionsBehaviors, ComplaintBehavior {
 		return this.sellerService.removeAuction(id, sellerId);
 	}
 
+	/* Handle Complaints Functions */
+
 	// @Serialize(ComplaintDto)
-	/**
-	 *
-	 * @param body
-	 * @param user
-	 * @returns Created Complaint
-	 */
 	@Post('complaint')
-	CreateCompliant(
+	createCompliant(
 		@Body() body: CreateComplaintDto,
 		@GetCurrentUserData() user: UserDocument,
 	) {
 		return this.sellerService.createComplaint(body, user);
 	}
-	/**
-	 *
-	 * @param user
-	 * @returns list of user
-	 */
+
+	// @Serialize(ComplaintDto)
 	@Get('complaint')
 	listMyComplaint(@GetCurrentUserData('_id') user: string) {
 		return this.sellerService.listMyComplaint(user);
 	}
-	/**
-	 *
-	 * @param param0 id of complaint
-	 * @returns true or false
-	 */
+
+	// @Serialize(ComplaintDto)
 	@Delete('complaint/:id')
 	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
 		return this.sellerService.deleteComplaint(id);
+		/* Handle Reviews Functions */
+		@Serialize(ReviewDto)
+		@Get('review')
+		listSellerReviews(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise < Review[] > {
+			return this.sellerService.listSellerReviews(sellerId);
+		}
+	}
+
+	/* Handle Reviews Functions */
+
+	@Serialize(ReviewDto)
+	@Get('review')
+	listSellerReviews(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<Review[]> {
+		return this.sellerService.listSellerReviews(sellerId);
 	}
 }
