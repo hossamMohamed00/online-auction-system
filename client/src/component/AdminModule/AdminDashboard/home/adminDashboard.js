@@ -69,7 +69,7 @@ const AdminDashboard = props => {
 
 	return (
 		<DashboardLayout
-			admin={{ name: 'Safa Ramadan  ', list: dropdownListForAdmin }}
+			admin={{ name: 'Safa Ramadan', list: dropdownListForAdmin }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
 			auctions={{ name: 'Manage Auctions', list: dropdownListManageAuctions }}
