@@ -7,6 +7,7 @@ import OnGoingAuctions from "../component/HomePage/OnGoingAuctions/OnGoingAuctio
 import Footer from "../component/HomePage/Footer/Footer";
 
 import scollbarStyle from '../component/UI/ScrollBar.module.css'
+import HowBid from "../component/HowBid/HowBid";
 
 
 const HomePage = () => {
@@ -18,6 +19,7 @@ const HomePage = () => {
 				<Header/>
 				<OnGoingAuctions/>
 				<UpComingAuctions/>
+				<HowBid/>
 				<Footer/>
 			</div>
 

@@ -82,12 +82,7 @@ const AdminDashboard = props => {
 				list: dropdownListManageCategories,
 			}}
 		>
-			{contentExist ? (
-				props.children
-			) : (
-
-					<AdminDashboardContent/>
-			)}
+			{contentExist ? props.children : <AdminDashboardContent />}
 		</DashboardLayout>
 	);
 };
