@@ -19,9 +19,14 @@ import {
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
+import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { SellerDto, SellerProfileDto } from './dto';
-import { SellerAuctionsBehaviors, SellerProfileBehaviors } from './interfaces';
+import {
+	SellerAuctionsBehaviors,
+	SellerProfileBehaviors,
+	SellerReviewsBehaviors,
+} from './interfaces';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
@@ -29,16 +34,19 @@ import { SellerService } from './seller.service';
 @Roles(Role.Seller)
 @Controller('seller')
 export class SellerController
-	implements SellerAuctionsBehaviors, SellerProfileBehaviors
+	implements
+		SellerAuctionsBehaviors,
+		SellerProfileBehaviors,
+		SellerReviewsBehaviors
 {
 	constructor(private readonly sellerService: SellerService) {}
 
 	/* Handle Profile Functions */
 	@Serialize(SellerProfileDto)
 	@Get('profile')
-	profile(
+	getProfile(
 		@GetCurrentUserData('_id') sellerId: string,
-	): Promise<{ seller: Seller; auctions: Auction[] }> {
+	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
 		return this.sellerService.getProfile(sellerId);
 	}
 
@@ -81,10 +89,12 @@ export class SellerController
 		return this.sellerService.removeAuction(id, sellerId);
 	}
 
-	/** */
-	@Get('review')
+	/* Handle Reviews Functions */
 	@Serialize(ReviewDto)
-	listSellerReviews(@GetCurrentUserData('_id') sellerId: string) {
-		return this.sellerService.getMyReviews(sellerId);
+	@Get('review')
+	listSellerReviews(
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<Review[]> {
+		return this.sellerService.listSellerReviews(sellerId);
 	}
 }

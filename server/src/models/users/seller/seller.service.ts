@@ -20,20 +20,23 @@ export class SellerService {
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
 		private readonly auctionsService: AuctionsService,
-		private readonly ReviewService: ReviewService,
+		private readonly reviewService: ReviewService,
 	) {}
 
 	/* Handle Profile Functions logic*/
 	async getProfile(
 		sellerId: string,
-	): Promise<{ seller: Seller; auctions: Auction[] }> {
+	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
 		//* Find seller
 		const seller = await this.sellerModel.findById(sellerId);
 
-		//* Find seller auctions
+		//* Get seller auctions
 		const auctions: Auction[] = await this.listAuctions(seller);
 
-		return { seller, auctions };
+		//* Get seller reviews
+		const reviews: Review[] = await this.listSellerReviews(sellerId);
+
+		return { seller, auctions, reviews };
 	}
 	/* Handle Auctions Functions logic*/
 
@@ -114,7 +117,7 @@ export class SellerService {
 	 * @param sellerId
 	 * @returns Array of reviews for that seller
 	 */
-	async getMyReviews(sellerId: string) {
-		return this.ReviewService.getSellerReviews(sellerId);
+	async listSellerReviews(sellerId: string) {
+		return this.reviewService.getSellerReviews(sellerId);
 	}
 }

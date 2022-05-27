@@ -1,6 +1,9 @@
 import { Expose, Transform } from 'class-transformer';
 import { SerializeIt } from 'src/common/utils';
 import { AuctionDto } from 'src/models/auction/dto';
+import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ReviewDto } from 'src/models/review/dto/review.dto';
+import { Review } from 'src/models/review/schema/review.schema';
 import { SellerDto } from './seller-dto';
 
 export class SellerProfileDto {
@@ -16,5 +19,11 @@ export class SellerProfileDto {
 	@Transform(({ obj }) => {
 		return SerializeIt(AuctionDto, obj.auctions);
 	})
-	auctions: any;
+	auctions: Auction[];
+
+	@Expose()
+	@Transform(({ obj }) => {
+		return SerializeIt(ReviewDto, obj.reviews);
+	})
+	reviews: Review[];
 }
