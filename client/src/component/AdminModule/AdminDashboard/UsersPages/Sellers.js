@@ -10,8 +10,7 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
 import { Link } from 'react-router-dom';
 
-
-const UsersPage = () => {
+const UsersPage = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const columns = [
 		{
@@ -47,11 +46,12 @@ const UsersPage = () => {
 			idToken: idToken,
 			path: 'admin/users?role=seller',
 		});
+		props.reloadFun(Math.random())
 	}, [sendRequest]);
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
 	const failed = status !== 'completed';

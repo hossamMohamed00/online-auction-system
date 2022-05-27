@@ -86,7 +86,7 @@ const PendingAuctions = () => {
 
 	//filter
 	const items = pendingData ? pendingData : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items,'title');
 
 	console.log({ filteredItems });
 	//end filter

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import toast
@@ -65,7 +65,7 @@ function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(role);
+
 
 	return (
 		<React.Fragment>
@@ -82,7 +82,10 @@ function App() {
 				<Route path="/home-page" element={<HomePage />} />
 				<Route path="/" element={<Navigate to="/home-page" />} />
 
-				<Route path="/register" element={<Register />} />
+				<Route
+					path="/register"
+					element={<Register />}
+				/>
 				<Route path="/login" element={<LoginPage />} />
 
 				<Route path="/how-bid" element={<HowBidPage />} />
@@ -96,7 +99,10 @@ function App() {
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
-					<Route path="/adminDashboard" element={<AdminPage />} />
+					<Route
+						path="/adminDashboard"
+						element={<AdminPage  />}
+					/>
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
@@ -112,7 +118,11 @@ function App() {
 					element={<PendingAuctions />}
 				/>
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
-				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
+				<Route
+					path="/adminDashboard/sellersPage"
+					element={<SellersPage />}
+
+				/>
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
 				<Route
