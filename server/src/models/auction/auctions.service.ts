@@ -41,7 +41,10 @@ export class AuctionsService {
 	 * @param createAuctionDto
 	 * @param seller - Seller who created the auction
 	 */
-	async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
+	async create(
+		createAuctionDto: CreateAuctionDto,
+		seller: Seller,
+	): Promise<Auction> {
 		//? Validate the data first
 		const validationResult =
 			await this.auctionValidationService.validateCreateAuctionData(
@@ -130,18 +133,6 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Get the end date of given auction
-	 * @param auctionId - Auction id
-	 */
-	async getAuctionEndDate(auctionId: string) {
-		const endDate = await this.auctionModel
-			.findById(auctionId)
-			.select('endDate');
-
-		return endDate;
-	}
-
-	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -175,6 +166,18 @@ export class AuctionsService {
 		);
 
 		return auction;
+	}
+
+	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string) {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
 	}
 
 	/**
