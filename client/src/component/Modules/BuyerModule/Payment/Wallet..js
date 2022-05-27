@@ -37,7 +37,7 @@ const Wallet = (props) => {
 	const PaymentContent =
 	<>
 		{!chargeWallet && <div className='d-flex space-around w-100'>
-			<h4 className='fw-bold pt-2 px-4 '> Your Balance </h4>
+			<h4 className='fw-bold pt-2 px-4'> Your Balance </h4>
 			<h4 className='px-1 pt-2 fw-bolder align-items-end text-end w-50 text-danger'> {status==='completed'  && data && data.balance} </h4>
 			</div>
 		}

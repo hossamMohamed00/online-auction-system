@@ -22,7 +22,6 @@ const DropDownBox = (props) => {
 	const idToken = useSelector((store)=> store.AuthData.idToken)
 	const role = useSelector((store)=> store.AuthData.role)
 
-	console.log(idToken)
 	const profileLink = () => {
 		if(role === 'admin'){
 			return '/adminDashboard'

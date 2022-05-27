@@ -147,7 +147,7 @@ const AddAuction = () => {
 						<div className="container">
 							<div className="row">
 								{/* start Product Title */}
-								<div className={`${classes.PrdName} col-lg-6 `}>
+								<div className={`col-lg-6 `}>
 									<label htmlFor="Title" className={'text-light fw-bold fs-6 py-2'}>
 										Titel
 									</label>
@@ -163,7 +163,7 @@ const AddAuction = () => {
 								</div>
 
 								{/* start Product Name */}
-								<div className={`${classes.PrdName} col-lg`}>
+								<div className={`col-lg`}>
 									<label
 										htmlFor="PrudectName"
 										className={'text-light fw-bold fs-6 py-2'}

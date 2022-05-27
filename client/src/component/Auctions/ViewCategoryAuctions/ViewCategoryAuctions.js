@@ -47,7 +47,7 @@ const  ViewCategoryAuctions = () => {
 
 				{ status === 'completed' && (!data || data.length === 0 ) &&
 					<div class="alert alert-danger text-center p-4" role="alert">
-						<h3 className='mb-4 fw-bold'> No Auctions in this Category </h3>
+						<h3 className='mb-4 fw-bold text-light'> No Auctions in this Category </h3>
 						<Link className={`text-decoration-none  p-2 px-4  fw-bold	${classes.btnBackHome}`} to='/home-page'> Back To HomePage </Link>
 					</div>
 				}

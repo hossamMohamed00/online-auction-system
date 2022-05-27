@@ -13,11 +13,11 @@ const usePaymentForm = () => {
 	const email = useSelector(store => store.AuthData.email)
 	const idToken = useSelector(store => store.AuthData.idToken)
 
-	const handleSubmit = async e => {
+	const handleSubmit = async (e , amount) => {
 		// We don't want to let default form submission happen here,
 		// which would refresh the page.
 		e.preventDefault();
-
+		console.log(amount)
 		if (!stripe || !elements) {
 			// Stripe.js has not yet loaded.
 			// Make sure to disable form submission until Stripe.js has loaded.
@@ -53,7 +53,7 @@ const usePaymentForm = () => {
 				method: 'POST',
 				body: JSON.stringify({
 					paymentMethodId: paymentMethod.id,
-					amount: 100,
+					amount: parseInt(amount),
 				}),
 				credentials: 'include',
 				headers: {

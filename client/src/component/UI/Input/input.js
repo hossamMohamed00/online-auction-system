@@ -17,7 +17,7 @@ const Input = React.forwardRef((props , ref) => {
 					placeholder = {props.placeholder}
 					onChange  	= {onChangeValueHandeler}
 					onBlur    	= {onBlurHandeler}
-					className 	= {` form-control ${classes['form-control']} ${classes.input} ${hasError ? classes['alarm-input'] : '' } `}
+					className 	= {` form-control ${classes['form-control'] } ${props.className ? props.className : ''} ${classes.input} ${hasError ? classes['alarm-input'] : '' } `}
 					ref 				= {ref}
 					id					= {props.id ?  props.id : ''}
 					multiple 		= {props.multiple && props.multiple }

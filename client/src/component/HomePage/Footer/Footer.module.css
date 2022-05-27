@@ -14,7 +14,7 @@
 .SocialMediaIcons{padding-top: 15px;}
 .ContactStyle{ margin: 0px 10px;}
 .ContactIcon{
-	background-color: var(--alert-color);
+	background-color: var(--main-color);
 	padding: 10px;
 	border-radius: 50%;
 }
@@ -58,7 +58,7 @@
 }
 
 .SupportLink{
-	background-color: var(--alert-color);
+	background-color: var(--main-color);
 	color: white;
 	padding: 10px 40px;
 	border-radius: 5px;

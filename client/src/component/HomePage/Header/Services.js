@@ -26,7 +26,7 @@ function Services() {
 	]
 
 	const showServiceCard = servicesData.map((data , index) => (
-		<Col lg={4}>
+		<Col lg={4} key={index}>
 			<Card className={classes._card} key = {index} >
 				<Card.Body>
 					<Card.Title>

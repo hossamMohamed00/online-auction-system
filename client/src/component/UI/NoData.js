@@ -12,7 +12,7 @@ const NoData = ({text , data , error}) => {
 		}
 		{!data &&
 			<div>
-				<div className="alert alert-dangertext-light text-center col-md-9 col-xs-12 mx-auto my-5  " role="alert"> <h5> {error && error} </h5>  </div>
+				<div className="alert alert-danger text-light text-center col-md-9 col-xs-12 mx-auto my-5  " role="alert"> <h5> {error && error} </h5>  </div>
 			</div>
 		}
 		</>

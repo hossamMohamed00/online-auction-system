@@ -17,9 +17,10 @@
 }
 
 .btnBackHome{
-	background-color: #a74035;
+	background-color: var(--dark-color);
 	color: white;
 	border-radius: 5px;
+	padding: 10px;
 }
 
 .btnBackHome:hover{
