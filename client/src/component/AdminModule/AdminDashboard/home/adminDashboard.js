@@ -28,15 +28,16 @@ const AdminDashboard = props => {
 	];
 	const dropdownListManageAuctions = [
 		{
+			title: 'All Auctions',
+			icon: faGavel,
+			path: '/adminDashboard/allAuctions',
+		},
+		{
 			title: 'Current Auctions',
 			icon: faGavel,
 			path: '/adminDashboard/currentAuctions',
 		},
-		{
-			title: 'All Auctions',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
+
 		{
 			title: 'Upcoming Auctions',
 			icon: faGavel,

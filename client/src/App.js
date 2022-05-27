@@ -56,6 +56,7 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 // end seller pages
 
 //* Payment
@@ -82,10 +83,7 @@ function App() {
 				<Route path="/home-page" element={<HomePage />} />
 				<Route path="/" element={<Navigate to="/home-page" />} />
 
-				<Route
-					path="/register"
-					element={<Register />}
-				/>
+				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<LoginPage />} />
 
 				<Route path="/how-bid" element={<HowBidPage />} />
@@ -99,12 +97,13 @@ function App() {
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
-					<Route
-						path="/adminDashboard"
-						element={<AdminPage  />}
-					/>
+					<Route path="/adminDashboard" element={<AdminPage />} />
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
+				<Route
+					path="/adminDashboard/allAuctions"
+					element={<AllAuctions />}
+				/>
 				<Route
 					path="/adminDashboard/upcomingAuctions"
 					element={<UpcomingAuctionsPage />}
@@ -118,11 +117,7 @@ function App() {
 					element={<PendingAuctions />}
 				/>
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
-				<Route
-					path="/adminDashboard/sellersPage"
-					element={<SellersPage />}
-
-				/>
+				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
 				<Route

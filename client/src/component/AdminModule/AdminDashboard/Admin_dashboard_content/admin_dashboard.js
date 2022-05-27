@@ -16,6 +16,7 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import auctionImg from '../../../../assets/gavel.png';
 const AdminDashboardContent = props => {
 	const { sendRequest, data, error } = useHttp(getDashboardData);
+	const [loading, setLoading] = useState(false);
 	const {
 		sendRequest: sendRequestForWinners,
 		data: dataForWinners,
@@ -38,12 +39,18 @@ const AdminDashboardContent = props => {
 		sendRequestForWinners(idToken);
 		sendRequestForAuctions(idToken);
 		sendRequestForProfile(idToken);
+		setInterval(() => {
+			setLoading(true);
+			sendRequest(idToken);
+			sendRequestForWinners(idToken);
+			sendRequestForAuctions(idToken);
+			sendRequestForProfile(idToken);
+		}, 60000);
 	}, [
 		sendRequest,
 		sendRequestForWinners,
 		sendRequestForAuctions,
 		sendRequestForProfile,
-
 	]);
 
 	const cardTitlesForAuctions = [
@@ -121,7 +128,8 @@ const AdminDashboardContent = props => {
 			center: true,
 		},
 	];
-
+	const items = dataForWinners ? dataForWinners : [];
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	return (
 		<>
 			<div className="mt-5 ">
@@ -200,7 +208,7 @@ const AdminDashboardContent = props => {
 						return (
 							<>
 								<div
-									className={` col-lg-3 col-md-3 fw-bolder text-center   card_2 mx-2 h-100 mb-3`}
+									className={` col-lg-4  fw-bolder text-center  card_2 h-100 mb-3`}
 								>
 									{card.name}
 									<h1 className="text-center text-danger mt-2 fw-border">
@@ -226,7 +234,9 @@ const AdminDashboardContent = props => {
 					{dataForWinners && (
 						<DataTable
 							columns={columns}
-							data={dataForWinners}
+							data={filteredItems}
+							subHeader
+							subHeaderComponent={filterFun}
 							theme="dark"
 							pagination
 						/>
