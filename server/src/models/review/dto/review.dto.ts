@@ -1,8 +1,13 @@
 import { Expose, Transform } from 'class-transformer';
+import { ExposeObjectId } from 'src/common/decorators';
 import { SerializeIt } from 'src/common/utils';
 import { BuyerDto } from 'src/models/users/buyer/dto';
 
 export class ReviewDto {
+	@Expose()
+	@ExposeObjectId()
+	_id: string;
+
 	@Expose()
 	message: string;
 

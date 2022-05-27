@@ -120,4 +120,29 @@ export class SellerService {
 	async listSellerReviews(sellerId: string) {
 		return this.reviewService.getSellerReviews(sellerId);
 	}
+
+	/**
+	 * Accept seller rate and update the rating in db
+	 * @param sellerId - Seller id
+	 * @param rate - new calculated rating
+	 * @returns void
+	 */
+	async updateSellerRating(sellerId: string | Seller, rate: number) {
+		const seller = await this.sellerModel.findByIdAndUpdate(
+			sellerId,
+			{
+				rating: rate,
+			},
+			{ new: true },
+		);
+
+		if (!seller) {
+			this.logger.error(`Cannot update ${seller.name} rate.`);
+			return;
+		}
+
+		this.logger.log(
+			`Seller ${seller.name} rating successfully update and become ${seller.rating}`,
+		);
+	}
 }
