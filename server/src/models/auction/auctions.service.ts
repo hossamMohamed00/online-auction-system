@@ -427,12 +427,14 @@ export class AuctionsService {
 	 * @param bid
 	 */
 	async handleNewBid(auctionId: string, bid: Bid): Promise<boolean> {
-		//* Calculate the new bid increment
-		const bidIncrement =
-			this.biddingIncrementRules.calcBidIncrementBasedOnValue(bid.amount);
+		//* Calculate the bid increment
+		const bidIncrement = this.calcBidIncrement(bid.amount);
 
 		//* Calculate the new minimum bid
-		const newMinimumBid = bid.amount + bidIncrement;
+		const newMinimumBid = this.calculateMinimumBidAllowed(
+			bid.amount,
+			bidIncrement,
+		);
 
 		//* Find the auction and update it
 		const auction = await this.auctionModel.findByIdAndUpdate(
@@ -517,16 +519,35 @@ export class AuctionsService {
 		}
 		return true;
 	}
+	/*-------------------------*/
 	/* Helper functions */
 
 	/**
-	//TODO Calculate the minimum bid allowed for that auction
+	 * Get the bid increment based on the current bid value from BiddingIncrementRules
+	 * @param bidValue - Current bid value
+	 * @returns calculated bid increment based on the current bid
 	 */
-	private calculateMinimumBidAllowed() {}
+	private calcBidIncrement(bidValue: number) {
+		//* Calculate the new bid increment
+		return this.biddingIncrementRules.calcBidIncrementBasedOnValue(bidValue);
+	}
 
 	/**
-	 //TODO Calculate the amount of money needed to join the auction
-	 @param basePrice: The opening price for the auction
+	 * Calculate the minimum bid allowed for that auction
+	 * @param bidValue - Current bid amount
+	 * @returns minimum bid allowed based on given bid value
+	 */
+	private calculateMinimumBidAllowed(bidValue: number, bidIncrement: number) {
+		//* Calculate the new minimum bid by adding the current bid value with the calculated bid increment
+		const newMinimumBid = bidValue + bidIncrement;
+
+		return newMinimumBid;
+	}
+
+	/**
+	 *Calculate the amount of money needed to join the auction
+	 * @param basePrice : The opening price for the auction
+	 * @returns
 	 */
 	private calculateChairCost(basePrice: number) {
 		//* The chair cost will be 25% of the base price
