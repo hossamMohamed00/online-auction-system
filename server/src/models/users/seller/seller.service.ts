@@ -23,6 +23,18 @@ export class SellerService {
 		private readonly ReviewService: ReviewService,
 	) {}
 
+	/* Handle Profile Functions logic*/
+	async getProfile(
+		sellerId: string,
+	): Promise<{ seller: Seller; auctions: Auction[] }> {
+		//* Find seller
+		const seller = await this.sellerModel.findById(sellerId);
+
+		//* Find seller auctions
+		const auctions: Auction[] = await this.listAuctions(seller);
+
+		return { seller, auctions };
+	}
 	/* Handle Auctions Functions logic*/
 
 	/**
@@ -56,6 +68,9 @@ export class SellerService {
 				},
 				{
 					path: 'category',
+				},
+				{
+					path: 'winningBuyer',
 				},
 			],
 		});
