@@ -45,7 +45,7 @@ import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 
 @ApiTags('Admin')
-@Roles(Role.Admin)
+@Roles(Role.Admin, Role.Employee)
 @Controller('admin')
 export class AdminController
 	implements
