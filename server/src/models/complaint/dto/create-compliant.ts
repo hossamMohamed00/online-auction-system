@@ -1,12 +1,23 @@
-import { IsEmail, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
-import { ObjectId } from 'mongoose';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
+import {
+	IsMongoId,
+	IsNotEmpty,
+	IsString,
+	MaxLength,
+	MinLength,
+} from 'class-validator';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { Seller } from 'src/models/users/seller/schema/seller.schema';
 
 export class CreateComplaintDto {
 	@IsNotEmpty()
 	@IsString()
+	@MinLength(5)
+	@MaxLength(100)
 	reason: string;
+
+	//* From field will determined by the current logged in user
+
 	@IsNotEmpty()
 	@IsMongoId()
-	in: User;
+	in: Seller | Buyer;
 }

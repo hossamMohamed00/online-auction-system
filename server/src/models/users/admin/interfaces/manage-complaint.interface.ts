@@ -3,11 +3,17 @@ import {
 	Complaint,
 	ComplaintDocument,
 } from 'src/models/complaint/schema/complaint.schema';
+import { AdminFilterComplaintQueryDto } from '../dto';
 
-export interface ComplaintBehavior {
+export interface AdminComplaintsBehavior {
 	//* List all Complaint for the admin
-	listAllComplaint(): Promise<ComplaintDocument[]>;
+	listAllComplaint(
+		adminFilterComplaintQueryDto: AdminFilterComplaintQueryDto,
+	): Promise<Complaint[]>;
 
-	markAsRead(id: MongoObjectIdDto);
-	deleteComplaint(id: MongoObjectIdDto);
+	//* Mark an complaint as read
+	markAsRead(complaintId: MongoObjectIdDto): Promise<{ success: boolean }>;
+
+	//* Delete single complaint
+	deleteComplaint(complaintId: MongoObjectIdDto): Promise<Complaint>;
 }

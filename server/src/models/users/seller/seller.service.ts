@@ -115,36 +115,6 @@ export class SellerService {
 		return this.auctionsService.remove(auctionId, sellerId);
 	}
 
-	/* Handle Complaints Functions logic */
-
-	/**
-	 * Create new complaint
-	 * @param createComplaintDto
-	 * @param User
-	 * @returns created complaint
-	 */
-	createComplaint(createComplaintDto: CreateComplaintDto, User: UserDocument) {
-		return this.complaintService.create(createComplaintDto, User);
-	}
-
-	/**
-	 * Delete specific complaint
-	 * @param complaintId
-	 * @returns deleted complaint
-	 */
-	deleteComplaint(complaintId: string) {
-		return this.complaintService.deleteComplaint(complaintId);
-	}
-
-	/**
-	 * List all seller complaints
-	 * @param User
-	 * @returns list of seller complaint
-	 */
-	listMyComplaint(User: string) {
-		return this.complaintService.listMyComplaint(User);
-	}
-
 	/* Handle Reviews Functions logic */
 
 	/**

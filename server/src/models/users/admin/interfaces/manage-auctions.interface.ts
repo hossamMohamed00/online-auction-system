@@ -6,7 +6,7 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { AdminFilterAuctionQueryDto } from '../dto';
 
-export interface AuctionsBehavior {
+export interface AdminAuctionsBehavior {
 	//* List all auctions for the admin
 	listAllAuctions(
 		filterAuctionQuery: AdminFilterAuctionQueryDto,

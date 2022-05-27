@@ -21,8 +21,6 @@ import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { BuyerService } from './buyer.service';
 import { BuyerDto } from './dto';
-import { CreateComplaintDto } from 'src/models/complaint/dto';
-import { UserDocument } from '../shared-user/schema/user.schema';
 import {
 	BuyerAuctionsBehaviors,
 	BuyerProfileBehaviors,
@@ -105,28 +103,5 @@ export class BuyerController
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
 		return this.buyerService.removeReview(id, buyerId);
-	}
-
-	/* Complaints Behaviors */
-
-	// @Serialize(ComplaintDto)
-	@Post('complaint')
-	createCompliant(
-		@Body() createComplaintDto: CreateComplaintDto,
-		@GetCurrentUserData() user: UserDocument,
-	) {
-		return this.buyerService.createComplaint(createComplaintDto, user);
-	}
-
-	// @Serialize(ComplaintDto)
-	@Get('complaint')
-	listMyComplaint(@GetCurrentUserData('_id') user: string) {
-		return this.buyerService.listMyComplaint(user);
-	}
-
-	// @Serialize(ComplaintDto)
-	@Delete('complaint/:id')
-	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
-		return this.buyerService.deleteComplaint(id);
 	}
 }

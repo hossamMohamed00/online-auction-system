@@ -1,7 +1,7 @@
 import { GetTopAuctionsDto } from '../dto';
 import { AdminDashboardData } from '../types/dashboard-data.type';
 
-export interface ManageDashboardBehavior {
+export interface AdminDashboardBehavior {
 	//* List dashboard needed data
 	listDashboardData(): Promise<AdminDashboardData>;
 

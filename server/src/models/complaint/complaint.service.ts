@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ComplaintDocument, Complaint } from './schema/complaint.schema';
 import { CreateComplaintDto } from './dto';
 import { Model } from 'mongoose';
@@ -6,80 +6,130 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../users/shared-user/schema/user.schema';
 import { from } from 'rxjs';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { Seller } from '../users/seller/schema/seller.schema';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
+import { AdminFilterComplaintQueryDto } from '../users/admin/dto';
 
 @Injectable()
 export class ComplaintService {
-	private logger: Logger = new Logger('ComplaintService');
+	private logger: Logger = new Logger(ComplaintService.name);
 
 	constructor(
 		@InjectModel(Complaint.name)
 		private readonly complaintModel: Model<ComplaintDocument>,
 	) {}
+
 	/**
-	 * Create new Complaint
+	 * Create new complaint
 	 * @param createComplaintDto
 	 * @param from
-	 * @returns complaint
+	 * @returns created complaint
 	 */
-	async create(createComplaintDto: CreateComplaintDto, from: User) {
-		this.logger.log('in' + createComplaintDto.in);
+	async create(
+		createComplaintDto: CreateComplaintDto,
+		from: string,
+	): Promise<Complaint> {
 		const createdComplaint: ComplaintDocument = new this.complaintModel({
 			reason: createComplaintDto.reason,
 			in: createComplaintDto.in,
 			from,
 		});
 
-		await createdComplaint.save();
-		// this.logger.log('Creat complaint' + createdComplaint);
+		if (!createdComplaint) {
+			throw new BadRequestException(
+				'Complaint cannot be submitted right now 😑',
+			);
+		}
 
-		return createdComplaint.populate('in');
+		await createdComplaint.save();
+
+		this.logger.log(
+			`New complaint recieved from ${createdComplaint.from} in ${createdComplaint.in}.`,
+		);
+
+		await createdComplaint.populate(['from', 'in']);
+
+		return createdComplaint;
 	}
+
 	/**
-	 *
+	 * List all complaints from db, sorted by date
 	 * @returns all complaint
 	 */
-	async FindAll() {
-		let complaint = await this.complaintModel.find();
-		return complaint;
+	async findAll(
+		adminFilterComplaintQueryDto?: AdminFilterComplaintQueryDto,
+	): Promise<Complaint[]> {
+		let complaints: Complaint[] = await this.complaintModel
+			.find(adminFilterComplaintQueryDto)
+			.populate(['from', 'in'])
+			.sort({
+				createdAt: -1,
+			});
+
+		this.logger.debug('Retrieving all submitted complaints...');
+
+		return complaints;
 	}
+
 	/**
-	 *
-	 * @param id
-	 * @returns complaint is readied
+	 * Mark complaint as read by admin
+	 * @param complaintId
+	 * @returns true or false
 	 */
-	async markComplaintAsRead(id: String) {
-		const isReadied = await this.complaintModel.findByIdAndUpdate(id, {
-			IsRead: true,
-		});
-		if (isReadied) {
-			return { read: true };
-		} else {
-			return { read: false };
+	async markComplaintAsRead(
+		complaintId: String,
+	): Promise<{ success: boolean }> {
+		//* Set markedAsRead field to true
+		const updatedComplaint = await this.complaintModel.findByIdAndUpdate(
+			complaintId,
+			{
+				markedAsRead: true,
+			},
+			{
+				new: true,
+			},
+		);
+
+		if (!updatedComplaint) {
+			throw new BadRequestException(
+				'Cannot update this complaint right now 😑',
+			);
 		}
+
+		this.logger.log('New complaint marked as read by admin ✔✔');
+
+		return { success: true };
 	}
+
 	/**
 	 *
 	 * @param id
 	 * @returns deleted complaint
 	 */
-	async deleteComplaint(id: String) {
-		const deleted = await this.complaintModel.findByIdAndDelete(id);
-		if (deleted) {
-			return {
-				Deleted: true,
-			};
-		} else {
-			return { Deleted: false };
+	async deleteComplaint(id: String): Promise<Complaint> {
+		const deletedComplaint = await this.complaintModel.findByIdAndDelete(id);
+		if (!deletedComplaint) {
+			throw new BadRequestException('Complaint not found ❌');
 		}
+
+		this.logger.warn('Complaint deleted successfully 🤘🏻');
+
+		return deletedComplaint;
 	}
+
 	/**
-	 *
-	 * @param user
-	 * @return all complaint of this usr
+	 * Get list of complaints for specific user
+	 * @param from - User id that submit complaints in another one
+	 * @return all complaint of this user
 	 */
-	async listMyComplaint(from: string) {
-		const MyComplaint = await this.complaintModel.find({ from });
-		this.logger.log(MyComplaint);
-		return MyComplaint;
+	async listUserComplaint(from: string): Promise<Complaint[]> {
+		this.logger.debug(`Retrieving complaints related to ${from}`);
+
+		const complaints: Complaint[] = await this.complaintModel
+			.find({ from })
+			.populate(['from', 'in'])
+			.sort({ createdAt: -1 });
+
+		return complaints;
 	}
 }

@@ -124,32 +124,4 @@ export class BuyerService {
 	}
 
 	/*------------------------------*/
-	/* Complaints Functions Logic */
-
-	/**
-	 *
-	 * @param createComplaintDto
-	 * @param user
-	 * @returns created complaint
-	 */
-	createComplaint(createComplaintDto: CreateComplaintDto, user: UserDocument) {
-		return this.complaintService.create(createComplaintDto, user);
-	}
-	/**
-	 * List all buyer complaints
-	 * @param User
-	 * @returns list of complaint
-	 */
-	listMyComplaint(User: string) {
-		return this.complaintService.listMyComplaint(User);
-	}
-
-	/**
-	 * Delete specific complaint
-	 * @param id
-	 * @returns
-	 */
-	deleteComplaint(id: string) {
-		return this.complaintService.deleteComplaint(id);
-	}
 }

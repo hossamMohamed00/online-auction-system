@@ -20,7 +20,10 @@ import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { UsersService } from '../shared-user/users.service';
-import { AdminFilterAuctionQueryDto } from './dto';
+import {
+	AdminFilterAuctionQueryDto,
+	AdminFilterComplaintQueryDto,
+} from './dto';
 import { Admin, AdminDocument } from './schema/admin.schema';
 import { AdminDashboardData } from './types/dashboard-data.type';
 
@@ -35,7 +38,7 @@ export class AdminService {
 		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
-		private readonly ComplaintService: ComplaintService,
+		private readonly complaintService: ComplaintService,
 	) {}
 
 	/* Handle Dashboard Functions */
@@ -231,13 +234,35 @@ export class AdminService {
 	removeCategory(id: string) {
 		return this.categoryService.remove(id);
 	}
-	listAllComplaint(): Promise<ComplaintDocument[]> {
-		return this.ComplaintService.FindAll();
+
+	/*------------------------------------------*/
+	/* Handle Complaints Functions */
+
+	/**
+	 * List all submitted complaints
+	 * @returns array of complaints
+	 */
+	listAllComplaint(
+		adminFilterComplaintQueryDto?: AdminFilterComplaintQueryDto,
+	): Promise<Complaint[]> {
+		return this.complaintService.findAll(adminFilterComplaintQueryDto);
 	}
-	markComplaintRead(id: String) {
-		return this.ComplaintService.markComplaintAsRead(id);
+
+	/**
+	 * Mark a complaint as read
+	 * @param complaintId
+	 * @returns true or false
+	 */
+	markComplaintRead(complaintId: String): Promise<{ success: boolean }> {
+		return this.complaintService.markComplaintAsRead(complaintId);
 	}
-	deleteComplaint(id: String) {
-		return this.ComplaintService.deleteComplaint(id);
+
+	/**
+	 * Delete complaint by id
+	 * @param complaintId
+	 * @returns
+	 */
+	deleteComplaint(complaintId: String) {
+		return this.complaintService.deleteComplaint(complaintId);
 	}
 }

@@ -20,7 +20,6 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
 import { User, UserDocument } from '../shared-user/schema/user.schema';
-import { SellerComplaintBehavior } from './interfaces/seller-manage-complaint.interface';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
@@ -38,11 +37,11 @@ import { SellerService } from './seller.service';
 @Controller('seller')
 export class SellerController
 	implements
-	SellerAuctionsBehaviors,
-	SellerProfileBehaviors,
-	SellerReviewsBehaviors,
-	SellerComplaintBehavior {
-	constructor(private readonly sellerService: SellerService) { }
+		SellerAuctionsBehaviors,
+		SellerProfileBehaviors,
+		SellerReviewsBehaviors
+{
+	constructor(private readonly sellerService: SellerService) {}
 
 	/* Handle Profile Functions */
 
@@ -91,37 +90,6 @@ export class SellerController
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.removeAuction(id, sellerId);
-	}
-
-	/* Handle Complaints Functions */
-
-	// @Serialize(ComplaintDto)
-	@Post('complaint')
-	createCompliant(
-		@Body() body: CreateComplaintDto,
-		@GetCurrentUserData() user: UserDocument,
-	) {
-		return this.sellerService.createComplaint(body, user);
-	}
-
-	// @Serialize(ComplaintDto)
-	@Get('complaint')
-	listMyComplaint(@GetCurrentUserData('_id') user: string) {
-		return this.sellerService.listMyComplaint(user);
-	}
-
-	// @Serialize(ComplaintDto)
-	@Delete('complaint/:id')
-	deleteComplaint(@Param() { id }: MongoObjectIdDto) {
-		return this.sellerService.deleteComplaint(id);
-		/* Handle Reviews Functions */
-		@Serialize(ReviewDto)
-		@Get('review')
-		listSellerReviews(
-		@GetCurrentUserData('_id') sellerId: string,
-	): Promise < Review[] > {
-			return this.sellerService.listSellerReviews(sellerId);
-		}
 	}
 
 	/* Handle Reviews Functions */
