@@ -59,7 +59,7 @@ const BuyerDashboardContent = props => {
 		{
 			title: 'Display Wallet Transactions',
 			icon: faCreditCardAlt,
-			path: '/adminDashboard/currentAuctions',
+			path: '/buyer-dashboard/viewWalletTransaction',
 		}
 	];
 	const contentExist = props.children;
