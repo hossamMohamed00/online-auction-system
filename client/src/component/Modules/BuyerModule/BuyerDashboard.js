@@ -11,8 +11,6 @@ const BuyerDashboardContent = props => {
 
 	const email = localStorage.getItem('email')
 
-	console.log(email)
-
 	const dropdownListProfile = [
 		{
 			title: 'View Info',
@@ -65,7 +63,6 @@ const BuyerDashboardContent = props => {
 		}
 	];
 	const contentExist = props.children;
-	console.log(contentExist)
 	return (
 		<DashboardLayout
 			buyer					= {{ name: `${email}` }}

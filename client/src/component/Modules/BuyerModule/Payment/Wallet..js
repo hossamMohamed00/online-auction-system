@@ -78,9 +78,8 @@ const Wallet = (props) => {
 
 						{/* start view balance */}
 						<div className='BalanceCard mx-auto my-4 pt-4 d-flex flex-column justify-content-center bg-dark text-light text-center rounded-3'>
-							<h5 className='fw-bold pb-2'> Your Balance </h5>
+							<h5 className='fw-bold pb-2'>  Your Balance </h5>
 							<h5 className='bg-primary py-2 m-0'> {status==='completed'  && data && data.balance} </h5>
-
 						</div>
 						{/* end view balance */}
 

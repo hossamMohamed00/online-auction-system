@@ -147,10 +147,10 @@ function App() {
 							element={<Wallet />}
 						/>
 
-						<Route
+						{/* <Route
 							path="/buyer-dashboard/recoverMoney"
 							element={<RecoverMoney/>}
-						/>
+						/> */}
 						{/* end Payment */}
 
 					</>

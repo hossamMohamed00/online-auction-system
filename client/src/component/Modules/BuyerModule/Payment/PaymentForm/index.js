@@ -6,9 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import Input from '../../../../UI/Input/input'
 
 import './PaymentForm.css'
-import Modal_ from '../../../../UI/Modal/modal.js';
-import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../../../UI/Loading/LoadingSpinner.js';
+import RecoverMoney from '../RecoverMoney.js';
 
 
 const PaymentForm = (props) => {
@@ -17,7 +16,8 @@ const PaymentForm = (props) => {
 	const [AmountErrorMessage , setAmountErrorMessage] = useState('please enter Amount To charge your wallet ❌')
 	const { handleSubmit , PaymentIntentId , Loading} = usePaymentForm(props.onReload);
 
-	const [showModal , setShowModal] = useState(false)
+	const [showRecoverModal , setShowRecoverModal] = useState(false)
+
 
 	// start validate Amount num [Amount must be less than 100]
 	const validateAmout = value => value.trim().length !== 0 && value > 100
@@ -26,14 +26,20 @@ const PaymentForm = (props) => {
 		e.preventDefault();
 		if(validateAmout(AmountRef.current.value)){
 			handleSubmit(e , AmountRef.current.value)
-			setShowModal(true)
 		}
 		else {
 			setAmountErrorMessage('Amount must\'nt be less than 100 ❌')
 			toast.error('Please Fill All Details Required For Charge Your Wallet ❌ ')
-			setShowModal(true)
 		}
 	}
+
+
+	// recover money handeler usin paymentintentid
+	const RecoverMoneyHandler = () => {
+		setShowRecoverModal(true)
+	}
+
+
 	//* Return the form that responsible for payment
 	return (
 		<>
@@ -59,18 +65,19 @@ const PaymentForm = (props) => {
 
 				{/* Charge Wallet Now 💲 */}
 				<button type="submit" className={`btn paymentBtn btn-success  ${props.className ? 'col-md-5 col-sm-12 chargeWalletBtn bg-primary' : 'float-left btn-success'} `}> Charge Wallet Now  </button>
-				{props.showAllBtns && <Link  className={`btn paymentBtn  ${props.className ? 'col-md-5 col-sm-12 recoverMoneyBtn btn-danger' : 'float-left btn-success'} `} to={`/buyer-dashboard/recoverMoney?paymentIntentId=${PaymentIntentId}`}> Recover Your Money </Link>
+				{props.showAllBtns && <button type="button" onClick={()=> RecoverMoneyHandler(PaymentIntentId)} className={`btn paymentBtn  ${props.className ? 'col-md-5 col-sm-12 recoverMoneyBtn btn-danger' : 'float-left btn-success'} `} > Recover Your Money </button>
 				}
 
 			</form>
 
-			{/* show success modal when charge wallet is done successfully */}
-			{/* {showModal && props.showModal && <Modal_
-				show={showModal}
-				onHide={()=> setShowModal(false)}
-				title= {<h2> Charge Wallet Successfully </h2>}
-				btnName = ""
-			/>} */}
+			{showRecoverModal &&
+				<RecoverMoney
+					PaymentIntentId = {PaymentIntentId}
+					show = {showRecoverModal}
+					onHide = {()=>setShowRecoverModal(false)}
+					onReload = {props.onReload}
+				/>
+			}
 		</>
 	);
 };

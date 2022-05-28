@@ -113,6 +113,7 @@ html {
 .text-primary {color:var(--main-color)!important ; }
 .text-danger {color: var(--alert-color) !important}
 .bg-none {background: none; border: 0!important}
+/* .bg-dark {background-color: var(--dark-color)!important} */
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

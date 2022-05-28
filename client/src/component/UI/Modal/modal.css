@@ -17,7 +17,7 @@
 	width: 100%!important;
 	text-align: center!important;
 	font-weight: bold!important;
-	font-size: 35px!important;
+	font-size: 20px!important;
 }
 .modal-header .hasBorder {
 	border-bottom: 1px solid white!important;
@@ -67,7 +67,9 @@
 		margin-left: 0!important;
 	}
 	.modal-header .modal-title, .modal-body  h4{
-		/* font-weight: bold!important; */
 		font-size: 18px!important;
+	}
+	.BalanceCard{
+		width: 80%;
 	}
 }
