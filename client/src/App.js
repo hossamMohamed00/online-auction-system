@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -31,10 +31,12 @@ import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers
 import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
-import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
+import UpcomingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 // end admin pages
+// profile pages
+import BuyerProfile from './Pages/buyerProilePage';
 
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
@@ -55,8 +57,6 @@ import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
-
-	console.log(role);
 
 	return (
 		<React.Fragment>
@@ -83,6 +83,7 @@ function App() {
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
+				<Route path="/buyerProfile" element={<BuyerProfile />} />
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
@@ -90,8 +91,8 @@ function App() {
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
-					path="/adminDashboard/ongoingAuctions"
-					element={<OngoingAuctionsPage />}
+					path="/adminDashboard/upcomingAuctions"
+					element={<UpcomingAuctionsPage />}
 				/>
 				<Route
 					path="/adminDashboard/currentAuctions"

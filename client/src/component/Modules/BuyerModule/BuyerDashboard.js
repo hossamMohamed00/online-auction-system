@@ -9,6 +9,7 @@ import {
 	faGavel,
 } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
+import BuyerProfile from './buyerProfile/buyerProfile';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -79,7 +80,7 @@ const BuyerDashboardContent = props => {
 				props.children
 			) : (
 				<PageContent>
-					<h1> hello </h1>
+					<BuyerProfile />
 				</PageContent>
 			)}
 		</DashboardLayout>

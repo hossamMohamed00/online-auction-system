@@ -5,7 +5,7 @@ import RegisterHeader from '../RegisterHeader/RegisterHeader';
 import classes from './Layout.module.css';
 import scollbarStyle from '../../UI/ScrollBar.module.css';
 
-const Layout = () => {
+const Layout = props => {
 	return (
 		<Fragment>
 			<div

@@ -116,7 +116,7 @@ const Wrapper = props => {
 							showSideBar ? classes.showSideBarSmallMedia : ''
 						} col-lg-3 col-md-3 p-0 m-0  `}
 					>
-						<Sidebar sidebarContent={sidebarContent[role]} />
+						<Sidebar sidebarContent={sidebarContent[role]} role={role} />
 					</div>
 				)}
 

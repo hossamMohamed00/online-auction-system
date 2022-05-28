@@ -9,7 +9,7 @@ import Step2 from '../Steps/Step2';
 import Step3 from '../Steps/Step3';
 import Step4 from '../Steps/Step4';
 
-const RegisterContent = () => {
+const RegisterContent = props => {
 	const step1 = useSelector(store => store.RegisterSteps.step1);
 	const step2 = useSelector(store => store.RegisterSteps.step2);
 	const step3 = useSelector(store => store.RegisterSteps.step3);

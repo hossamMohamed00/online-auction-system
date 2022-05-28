@@ -32,7 +32,7 @@ const UsersPage = () => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to="#">User Profile</Link>
+						<Link to="/buyerProfile">User Profile</Link>
 					</span>
 				);
 			},
@@ -50,7 +50,7 @@ const UsersPage = () => {
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
 	const failed = status !== 'completed';

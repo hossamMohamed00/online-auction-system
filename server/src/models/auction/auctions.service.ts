@@ -39,7 +39,7 @@ export class AuctionsService {
 	 * @param createAuctionDto
 	 * @param seller - Seller who created the auction
 	 */
-	async create(createAuctionDto: CreateAuctionDto, seller: Seller) {
+	async createNewAuction(createAuctionDto: CreateAuctionDto, seller: Seller) {
 		//? Validate the data first
 		const validationResult =
 			await this.auctionValidationService.validateCreateAuctionData(
@@ -130,18 +130,6 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Get the end date of given auction
-	 * @param auctionId - Auction id
-	 */
-	async getAuctionEndDate(auctionId: string) {
-		const endDate = await this.auctionModel
-			.findById(auctionId)
-			.select('endDate');
-
-		return endDate;
-	}
-
-	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -175,6 +163,122 @@ export class AuctionsService {
 		);
 
 		return auction;
+	}
+
+	/**
+	 * Return auctions count to be displayed into admin dashboard
+	 */
+	async getAuctionsCount(): Promise<{
+		totalAuctions: number;
+		pendingAuctionsCount: number;
+		ongoingAuctionsCount: number;
+		upcomingAuctionsCount: number;
+		closedAuctionsCount: number;
+		deniedAuctionsCount: number;
+	}> {
+		//* Get total count of all auctions
+		const totalAuctions: number = await this.auctionModel.countDocuments();
+
+		//* Get count of pending auctions only
+		const pendingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.Pending,
+			},
+		);
+
+		//* Get count of ongoing auctions only
+		const ongoingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.OnGoing,
+			},
+		);
+
+		//* Get count of upcoming auctions only
+		const upcomingAuctionsCount: number =
+			await this.auctionModel.countDocuments({
+				status: AuctionStatus.UpComing,
+			});
+
+		//* Get count of closed auctions only
+		const closedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Closed,
+		});
+
+		//* Get count of denied auctions only
+		const deniedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Denied,
+		});
+
+		return {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		};
+	}
+
+	/**
+	 * Return all winners bidders to be displayed in admin dashboard
+	 */
+	async getWinnersBiddersForDashboard(): Promise<any[]> {
+		//* Get all auctions with status 'closed'
+		const closedAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer')
+			.sort({ startDate: -1 });
+
+		const winnersBidders = [];
+
+		//* return only winningBuyer _id, email, auction title and winningPrice
+		closedAuctions.forEach(auction => {
+			winnersBidders.push({
+				winningBuyer: {
+					_id: auction.winningBuyer._id,
+					email: auction.winningBuyer.email,
+				},
+				auction: {
+					_id: auction._id,
+					title: auction.title,
+				},
+				winningPrice: auction.currentBid,
+			});
+		});
+
+		return winnersBidders;
+	}
+
+	/**
+	 * List auctions with highest number of bids
+	 * @param top - How many documents to return (default: 5)
+	 */
+	async getTopAuctionsForDashboard(top?: number): Promise<Auction[]> {
+		const topAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.OnGoing,
+			})
+			.populate('category')
+			.limit(top || 5)
+			.sort({
+				numOfBids: -1,
+			});
+
+		return topAuctions;
+	}
+
+	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string) {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
 	}
 
 	/**
@@ -437,5 +541,28 @@ export class AuctionsService {
 	private calculateChairCost(basePrice: number) {
 		//* The chair cost will be 25% of the base price
 		return basePrice * 0.25;
+	}
+
+	/*--------------------------*/
+	/**
+	 * Remove all auctions related to specific category
+	 * @param categoryId - category id
+	 */
+	async removeAllCategoryAuctions(categoryId: string) {
+		const auctions = await this.auctionModel.deleteMany({
+			category: categoryId.toString(),
+		});
+
+		if (!auctions) {
+			throw new BadRequestException(
+				'Cannot remove auctions related to that category ❌',
+			);
+		}
+
+		this.logger.log('All auctions related to the category deleted ✔✔ ');
+
+		console.log({ auctions });
+
+		return { success: true };
 	}
 }

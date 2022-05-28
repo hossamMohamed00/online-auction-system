@@ -93,11 +93,9 @@ const AllCategories = props => {
 
 	useEffect(() => {
 		if (errorForRemove && statusForRemove === 'error') {
-			console.log(errorForRemove, typeof errorForRemove);
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
 			setModalTitle(errorForRemove);
 			setModalBtn('');
-			// setModalShow(false)
 		}
 	}, [errorForRemove, statusForRemove]);
 	// ! end remove
@@ -109,7 +107,7 @@ const AllCategories = props => {
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 	console.log(categoryId);
 	return (

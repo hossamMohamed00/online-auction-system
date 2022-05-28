@@ -53,11 +53,11 @@ const UsersPage = () => {
 	const filteredData = data && data.filter(item => item.role !== 'employee');
 	//filter
 	const items = filteredData ? filteredData : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	console.log(items && items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
 	const failed = status !== 'completed';
-	console.log(failed);
 
 	return (
 		<React.Fragment>

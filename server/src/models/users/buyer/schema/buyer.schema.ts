@@ -19,8 +19,7 @@ export class Buyer extends User {
 	stripeCustomerId: string;
 
 	//* To keep track of joined auctions
-	@Prop({ type: [{type: mongoose.Schema.Types.ObjectId,
-		ref: Auction.name}]})
+	@Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Auction.name }] })
 	joinedAuctions: Auction[];
 }
 

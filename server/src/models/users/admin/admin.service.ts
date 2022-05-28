@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import {
 	FilterAuctionQueryDto,
@@ -9,16 +10,27 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
+import { ComplaintService } from 'src/models/complaint/complaint.service';
+import {
+	Complaint,
+	ComplaintDocument,
+} from 'src/models/complaint/schema/complaint.schema';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { UsersService } from '../shared-user/users.service';
-import { AdminFilterAuctionQueryDto } from './dto';
+import {
+	AdminFilterAuctionQueryDto,
+	AdminFilterComplaintQueryDto,
+} from './dto';
 import { Admin, AdminDocument } from './schema/admin.schema';
+import { AdminDashboardData } from './types/dashboard-data.type';
 
 @Injectable()
 export class AdminService {
+	private logger: Logger = new Logger('admin');
+
 	constructor(
 		@InjectModel(Admin.name)
 		private readonly AdminModel: Model<AdminDocument>,
@@ -26,7 +38,80 @@ export class AdminService {
 		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
+		private readonly complaintService: ComplaintService,
 	) {}
+
+	/* Handle Dashboard Functions */
+
+	/**
+	 * @returns all auctions, categories and users count for dashboard
+	 */
+	async getDashboardData(): Promise<AdminDashboardData> {
+		//* Get auctions count
+		const {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		} = await this.auctionService.getAuctionsCount();
+
+		//* Get all categories count
+		const totalCategories = await this.categoryService.getCategoriesCount();
+
+		//* Get users count
+		const {
+			totalUsers,
+			adminsCount,
+			employeesCount,
+			sellersCount,
+			buyersCount,
+		} = await this.usersService.getUsersCount();
+
+		const { totalComplaints, notReadYetComplaints } =
+			await this.complaintService.getComplaintsCount();
+
+		return {
+			auctions: {
+				total: totalAuctions,
+				pending: pendingAuctionsCount,
+				ongoing: ongoingAuctionsCount,
+				upcoming: upcomingAuctionsCount,
+				closed: closedAuctionsCount,
+				denied: deniedAuctionsCount,
+			},
+			categories: {
+				total: totalCategories,
+			},
+			users: {
+				total: totalUsers,
+				admins: adminsCount,
+				employees: employeesCount,
+				sellers: sellersCount,
+				buyers: buyersCount,
+			},
+			complaints: {
+				total: totalComplaints,
+				notReadYet: notReadYetComplaints,
+			},
+		};
+	}
+
+	/**
+	 * @returns list of all winner's bidders
+	 */
+	async getWinnersBidders(): Promise<any[]> {
+		return this.auctionService.getWinnersBiddersForDashboard();
+	}
+
+	/**
+	 * @param top - How many auctions to return
+	 * @returns List of top auctions
+	 */
+	async getTopAuctions(top?: number): Promise<Auction[]> {
+		return this.auctionService.getTopAuctionsForDashboard(top);
+	}
 	/* Handle Users Functions */
 
 	/**
@@ -155,5 +240,36 @@ export class AdminService {
 	 */
 	removeCategory(id: string) {
 		return this.categoryService.remove(id);
+	}
+
+	/*------------------------------------------*/
+	/* Handle Complaints Functions */
+
+	/**
+	 * List all submitted complaints
+	 * @returns array of complaints
+	 */
+	listAllComplaint(
+		adminFilterComplaintQueryDto?: AdminFilterComplaintQueryDto,
+	): Promise<Complaint[]> {
+		return this.complaintService.findAll(adminFilterComplaintQueryDto);
+	}
+
+	/**
+	 * Mark a complaint as read
+	 * @param complaintId
+	 * @returns true or false
+	 */
+	markComplaintRead(complaintId: String): Promise<{ success: boolean }> {
+		return this.complaintService.markComplaintAsRead(complaintId);
+	}
+
+	/**
+	 * Delete complaint by id
+	 * @param complaintId
+	 * @returns
+	 */
+	deleteComplaint(complaintId: String) {
+		return this.complaintService.deleteComplaint(complaintId);
 	}
 }

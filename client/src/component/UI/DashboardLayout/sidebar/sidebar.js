@@ -4,6 +4,7 @@ import classes from './sidebar.module.css';
 import Dropdown from '../UI/Dropdown';
 import { faGavel, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 const Sidebar = props => {
 	let user = props.sidebarContent;
@@ -15,9 +16,14 @@ const Sidebar = props => {
 				className={`${classes.sidebar}  position-relative animation-from-left`}
 			>
 				<div className={`${classes.logo}  text-center `}>
-					<h2 className="text-light  mt-3  ">
-						On<span>Line Auction</span>
-					</h2>
+					<Link
+						to="/home-page"
+						className="text-light  mt-3 fw-bolder text-decoration-none "
+					>
+						<h2>
+							On<span>Line Auction</span>
+						</h2>
+					</Link>
 				</div>
 
 				<div className={classes.adminName}>
