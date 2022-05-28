@@ -1,11 +1,11 @@
-import React from 'react'
-import {useSelector} from 'react-redux';
-import PageHeader from '../../UI/Page Header/pageHeader'
-import './profile.css'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import PageHeader from '../../UI/Page Header/pageHeader';
+import './profile.css';
 import { Col, Row } from 'react-bootstrap';
 
- const UserProfile = (props) => {
-	 const role = useSelector(store=> store.AuthData.role)
+const UserProfile = props => {
+	const role = useSelector(store => store.AuthData.role);
 	return (
 		<>
 			<PageHeader text={`Welcome ${props.name}`} showLink={false} />
@@ -37,5 +37,5 @@ import { Col, Row } from 'react-bootstrap';
 			</div>
 		</>
 	);
-}
+};
 export default UserProfile;

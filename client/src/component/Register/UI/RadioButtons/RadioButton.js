@@ -1,34 +1,42 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 /* Arguments [props] to RadioButton
-	** name
-	** values[]
-*/
+ ** name
+ ** values[]
+ */
 
-const inputClasses = 'form-check-input '
-const labelClasses = 'form-check-label fw-bold text-muted'
+const inputClasses = 'form-check-input ';
+const labelClasses = 'form-check-label fw-bold text-muted';
 
-const RadioButton = (props) => {
-	const [Value , setValue] = useState()
+const RadioButton = props => {
+	const [Value, setValue] = useState();
 
+	const onChangeHandeler = e => {
+		setValue(e.target.value);
+	};
 
-	const onChangeHandeler = (e) => {
-		setValue(e.target.value)
-	}
+	props.getValue(Value);
 
-	props.getValue(Value)
-
-	return(
-		<div className={`pb-3 mx-3`} style={{textAlign:'left'}}>
-				{props.values.map(btn => (
-				<div className="form-check" key={btn} onChange={onChangeHandeler}  >
-					<input className={inputClasses} name={props.name} type="radio" id={btn} value={btn} defaultChecked = {btn === props.changeValue } />
-					<label className={labelClasses} htmlFor={btn}> {btn} </label>
+	return (
+		<div className={`pb-3 mx-3`} style={{ textAlign: 'left' }}>
+			{props.values.map(btn => (
+				<div className="form-check" key={btn} onChange={onChangeHandeler}>
+					<input
+						className={inputClasses}
+						name={props.name}
+						type="radio"
+						id={btn}
+						value={btn}
+						defaultChecked={btn === props.changeValue}
+					/>
+					<label className={labelClasses} htmlFor={btn}>
+						{' '}
+						{btn}{' '}
+					</label>
 				</div>
-				)) }
-
+			))}
 		</div>
-	)
-}
+	);
+};
 
-export default RadioButton ;
+export default RadioButton;

@@ -75,7 +75,7 @@ const PendingAuctions = () => {
 
 	//filter
 	const items = upcomingData ? upcomingData : [];
-	const { filterFun, filteredItems } = useFilter(items,'title');
+	const { filterFun, filteredItems } = useFilter(items, 'title');
 
 	console.log({ filteredItems });
 	//end filter

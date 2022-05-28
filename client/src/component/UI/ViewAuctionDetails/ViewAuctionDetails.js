@@ -13,7 +13,6 @@ const ViewAuctionDetails = props => {
 	const viewAllAuctionPage = location.pathname === '/auctions';
 
 	const getAuctionDetails = (Items, animate) => {
-		console.log(Items);
 		return (
 			Items &&
 			Items.map((item, idx) => (
@@ -34,7 +33,6 @@ const ViewAuctionDetails = props => {
 								viewAllAuctionPage ? classes.CardAuctionStatus : ''
 							} `}
 						>
-							
 							{viewAllAuctionPage ? item.status : item.status}
 						</div>
 						<div className={classes.Timer}>

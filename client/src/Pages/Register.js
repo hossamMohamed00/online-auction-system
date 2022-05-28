@@ -1,11 +1,8 @@
-import React from "react";
-import Layout from "../component/Register/Layout/Layout";
+import React from 'react';
+import Layout from '../component/Register/Layout/Layout';
 
-const Register = (props) => {
+const Register = () => {
+	return <Layout />;
+};
 
-	return(
-		<Layout />
-	)
-}
-
-export default Register ;
+export default Register;

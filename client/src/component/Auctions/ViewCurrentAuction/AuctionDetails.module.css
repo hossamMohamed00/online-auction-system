@@ -1,27 +1,37 @@
-
-.CreatorName , .CategoryName{	color: var(--paragaph-color );}
-.CreatorName:hover , .CategoryName:hover{	color: var(--main-color );}
+.CreatorName,
+.CategoryName {
+	color: var(--paragaph-color);
+}
+.CreatorName:hover,
+.CategoryName:hover {
+	color: var(--main-color);
+}
 
 .ItemsDetails > p {
-	color : var(--paragaph-color )!important;
+	color: var(--paragaph-color) !important;
 }
-.MinimumBidValue , .AuctionDate{
-	color : var(--alert-color )!important;
+.MinimumBidValue,
+.AuctionDate {
+	color: var(--alert-color) !important;
 }
 
 /* start timer style */
-.timer{
+.timer {
 	display: flex;
 	justify-content: center;
 	margin-top: 2%;
 }
 
 .timer > span {
-	color: 	white;
+	color: white;
 	border-radius: 5px;
-	padding: 5px ;
+	padding: 5px;
 	text-align: center;
 	cursor: pointer;
 }
 
-.hrRight{border-right: 1.7px solid var(--paragaph-color ); margin-top: -24px; opacity: 0.25;}
+.hrRight {
+	border-right: 1.7px solid var(--paragaph-color);
+	margin-top: -24px;
+	opacity: 0.25;
+}

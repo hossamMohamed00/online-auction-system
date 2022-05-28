@@ -22,7 +22,12 @@ const BuyerProfile = () => {
 	}, []);
 
 	return (
-		<UserProfile name={buyerData.name} email={buyerData.email} img={buyerImg} dataName='Participating Auctions' />
+		<UserProfile
+			name={buyerData.name}
+			email={buyerData.email}
+			img={buyerImg}
+			dataName="Participating Auctions"
+		/>
 	);
 };
 export default BuyerProfile;

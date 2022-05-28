@@ -21,7 +21,7 @@ const Step1 = props => {
 
 	/************  start Validation  ************** */
 
-	// to check [password] with [checkpassword]
+	// to check [password] with [check password]
 	let password = '';
 	let roleValue = '';
 	let errorNameMessage = 'Please Enter Your Name';
@@ -32,8 +32,8 @@ const Step1 = props => {
 	const emailRef = useRef();
 	const confirmPasswordRef = useRef();
 
-	const vaildteText = value => value.trim() !== '';
-	const vaildteEmail = value => value.trim().includes('@');
+	const validateText = value => value.trim() !== '';
+	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
 	const validateConfirm = value => value.trim() === password;
 
@@ -63,14 +63,13 @@ const Step1 = props => {
 				}),
 			);
 			dispatch(RegisterActions.showStep2());
-			
 		}
 	}, [status]);
 
 	const ValidateForm = () => {
 		if (
-			vaildteText(nameRef.current.value) &&
-			vaildteEmail(emailRef.current.value) &&
+			validateText(nameRef.current.value) &&
+			validateEmail(emailRef.current.value) &&
 			validatePassword(passwordRef.current.value) &&
 			validateConfirm(confirmPasswordRef.current.value)
 		) {
@@ -86,7 +85,7 @@ const Step1 = props => {
 		}
 	};
 
-	const submitHadler = e => {
+	const submitHandler = e => {
 		e.preventDefault();
 		console.log(roleValue);
 		ValidateForm();
@@ -100,7 +99,7 @@ const Step1 = props => {
 				type="text"
 				placeholder={userDetails.name ? userDetails.name : 'Name'}
 				name="text"
-				validateText={vaildteText}
+				validateText={validateText}
 				ref={nameRef}
 				errorMassage={errorNameMessage}
 			/>
@@ -108,7 +107,7 @@ const Step1 = props => {
 				type="email"
 				placeholder={userDetails.email ? userDetails.email : 'Email'}
 				name="email"
-				validateText={vaildteEmail}
+				validateText={validateEmail}
 				ref={emailRef}
 				errorMassage={errorEmailMessage}
 			/>
@@ -127,7 +126,7 @@ const Step1 = props => {
 				name="confirmPassword"
 				validateText={validateConfirm}
 				ref={confirmPasswordRef}
-				errorMassage="Your confirm password must mutch password "
+				errorMassage="Your confirm password must match with password "
 			/>
 
 			<div>
@@ -151,7 +150,7 @@ const Step1 = props => {
 			)}
 
 			<button
-				onClick={submitHadler}
+				onClick={submitHandler}
 				className={`${classes['btn-next']} btn w-75 `}
 				type="button"
 			>

@@ -542,4 +542,27 @@ export class AuctionsService {
 		//* The chair cost will be 25% of the base price
 		return basePrice * 0.25;
 	}
+
+	/*--------------------------*/
+	/**
+	 * Remove all auctions related to specific category
+	 * @param categoryId - category id
+	 */
+	async removeAllCategoryAuctions(categoryId: string) {
+		const auctions = await this.auctionModel.deleteMany({
+			category: categoryId.toString(),
+		});
+
+		if (!auctions) {
+			throw new BadRequestException(
+				'Cannot remove auctions related to that category ❌',
+			);
+		}
+
+		this.logger.log('All auctions related to the category deleted ✔✔ ');
+
+		console.log({ auctions });
+
+		return { success: true };
+	}
 }

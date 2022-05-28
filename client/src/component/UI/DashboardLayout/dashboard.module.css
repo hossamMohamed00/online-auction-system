@@ -3,7 +3,6 @@
 	height: 100%;
 }
 
-
 @media screen and (max-width: 991px) {
 	.showSideBarSmallMedia {
 		visibility: visible;
@@ -27,15 +26,13 @@
 	}
 }
 
-
 @media screen and (max-width: 575.98px) {
-	.showSideBarSmallMedia{
-
-		width:65vw !important;
+	.showSideBarSmallMedia {
+		width: 65vw !important;
 		/* top:8%; */
 	}
 
-		.showSideBarSmallMedia > div {
+	.showSideBarSmallMedia > div {
 		visibility: visible;
 		width: 65vw !important;
 		min-height: 102vh !important;
@@ -45,4 +42,3 @@
 		width: 65vw;
 	}
 }
-

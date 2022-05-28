@@ -19,7 +19,7 @@ import { Col, Row } from 'react-bootstrap';
 const activeLink = navData =>
 	`${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `;
 
-const Navbar = (props) => {
+const Navbar = props => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [isShownNavContent, setisShownNavContent] = useState(false);
@@ -106,7 +106,9 @@ const Navbar = (props) => {
 			onClick={showProfileContentHandeler}
 		>
 			<FontAwesomeIcon icon={faUser} className="px-1" /> {emailName}
-			{isShownProfileContent && <DropDownBox showWalletHandeler = {props.showWalletHandeler} />}
+			{isShownProfileContent && (
+				<DropDownBox showWalletHandeler={props.showWalletHandeler} />
+			)}
 		</div>
 	);
 
@@ -114,7 +116,7 @@ const Navbar = (props) => {
 		<nav className={`${classes.nav} navbar navbar-dark fixed-top px-1  `}>
 			<div className="container-fluid">
 				<Row className="w-100 m-0 p-0">
-					<Col lg={2} xs={8} md={4}  className= {`p-1`} >
+					<Col lg={2} xs={8} md={4} className={`p-1`}>
 						<FontAwesomeIcon
 							icon={faBars}
 							className={` ${classes.faBars} text-light d-inline-block d-xs d-lg-none pt-1 px-2  `}
@@ -128,11 +130,11 @@ const Navbar = (props) => {
 						</Link>
 					</Col>
 
-					<Col lg={4}  md={8} xs={12}>
+					<Col lg={4} md={8} xs={12}>
 						<Search />
 					</Col>
 
-					<Col className={classes.HeaderLinks} lg={6} md={12} >
+					<Col className={classes.HeaderLinks} lg={6} md={12}>
 						<div
 							className={`${
 								classes.navLinks
@@ -145,7 +147,6 @@ const Navbar = (props) => {
 							{isNotLoggedIn}
 							{isLoggedInUser}
 						</div>
-
 					</Col>
 				</Row>
 			</div>

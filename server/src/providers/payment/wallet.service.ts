@@ -156,11 +156,18 @@ export default class WalletService {
 			});
 		} catch (error) {
 			this.logger.error(error);
-			return { success: false, message: error.message, data: null };
+			return {
+				success: false,
+				message: 'This transaction already refunded',
+				data: null,
+			};
 		}
 
 		//* Decrement user wallet balance
 		await this.updateWalletBalance(user, amount, true);
+
+		//* Update transaction status to be refunded
+		await this.transactionService.markTransactionAsRefunded(paymentIntentId);
 
 		//* Save the transaction into db
 		await this.transactionService.createTransaction({

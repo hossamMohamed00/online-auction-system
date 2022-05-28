@@ -7,7 +7,6 @@ import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from './ViewCurrentAuction.module.css';
 
-
 function AuctionFooter({ AuctionStatus }) {
 	const location = useLocation();
 
@@ -18,10 +17,9 @@ function AuctionFooter({ AuctionStatus }) {
 
 	const [auctionDenied, setAuctionDenied] = useState(false);
 
-	const UpComingStatus = AuctionStatus === 'upcoming'
-	const OnGoingStatus = AuctionStatus === 'ongoing'
-	const DeniedStatus = AuctionStatus === 'pending'
-
+	const UpComingStatus = AuctionStatus === 'upcoming';
+	const OnGoingStatus = AuctionStatus === 'ongoing';
+	const DeniedStatus = AuctionStatus === 'pending';
 
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
@@ -35,7 +33,9 @@ function AuctionFooter({ AuctionStatus }) {
 		}
 	}, [sendRequest]);
 
-	const btnSaved = (btnSavedValue) => { setBtnSavedValue(btnSavedValue)}
+	const btnSaved = btnSavedValue => {
+		setBtnSavedValue(btnSavedValue);
+	};
 
 	const approveHandler = () => {
 		fetch(`${url}/admin/auction/approve/${AuctionId}`, {
@@ -55,7 +55,7 @@ function AuctionFooter({ AuctionStatus }) {
 		const rejectionMessage = { message: rejectMassage };
 		fetch(`${url}/admin/auction/reject/${AuctionId}`, {
 			method: 'POST',
-			 body: JSON.stringify(rejectionMessage),
+			body: JSON.stringify(rejectionMessage),
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 				'content-type': 'application/json',
@@ -68,13 +68,16 @@ function AuctionFooter({ AuctionStatus }) {
 		});
 	};
 
-
 	return (
 		<>
 			{role === 'buyer' && (
-				<button className={`btn w-100 fw-bold ${classes.btnPlaceBid}`} type="button" onClick={()=> setModalShow(true)}>
-					{OnGoingStatus && "Place on Bid" }
-					{UpComingStatus && btnSavedValue ? btnSavedValue : "" }
+				<button
+					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
+					type="button"
+					onClick={() => setModalShow(true)}
+				>
+					{OnGoingStatus && 'Place on Bid'}
+					{UpComingStatus && btnSavedValue ? btnSavedValue : ''}
 				</button>
 			)}
 
@@ -112,15 +115,14 @@ function AuctionFooter({ AuctionStatus }) {
 			)}
 
 			<ModalUi
-      	show						= {modalShow}
-     	 	onHide					= {() => setModalShow(false)}
-				UpComingAuction = {UpComingStatus}
-				btnReject 			= {DeniedStatus}
+				show={modalShow}
+				onHide={() => setModalShow(false)}
+				UpComingAuction={UpComingStatus}
+				btnReject={DeniedStatus}
 				rejectHandler={rejectHandler}
-				btnSaved 				= {btnSaved}
+				btnSaved={btnSaved}
 				// SavedStatus 		= {SavedStatus}
-    	/>
-
+			/>
 		</>
 	);
 }

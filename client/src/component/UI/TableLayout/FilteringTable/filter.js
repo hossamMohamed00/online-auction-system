@@ -5,7 +5,9 @@ const useFilter = (items, colName) => {
 	const filteredItems = items.filter(
 		item =>
 			item &&
-			JSON.stringify(item).toLowerCase().includes(filterText.toLowerCase()),
+			JSON.stringify(item)
+				.toLowerCase()
+				.includes(filterText.toLowerCase()),
 	);
 
 	const subHeaderComponentMemo = React.useMemo(() => {

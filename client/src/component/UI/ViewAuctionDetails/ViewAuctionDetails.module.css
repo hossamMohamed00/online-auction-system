@@ -1,25 +1,25 @@
-
-.CurrentAuctionsCard{
-	background: none!important;
+.CurrentAuctionsCard {
+	background: none !important;
 	color: white;
 	box-shadow: 0px 3px 4px #889090;
 	padding-bottom: 10px;
 	transition: all 0.5s;
-	border-radius: 15px!important;
+	border-radius: 15px !important;
 	transition: all 1s;
 	cursor: pointer;
 }
-.CurrentAuctionsCard:hover{
-	transform: scale(1.05)
+.CurrentAuctionsCard:hover {
+	transform: scale(1.05);
 }
 
-.CurrentAuctionsCard img{
+.CurrentAuctionsCard img {
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
-	height: 200px!important;
+	height: 200px !important;
 }
 
-.CardItemCategory , .CardAuctionStatus {
+.CardItemCategory,
+.CardAuctionStatus {
 	min-width: 40%;
 	padding: 5px;
 	font-weight: bold;
@@ -27,53 +27,48 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	border-top-left-radius: 15px!important;
+	border-top-left-radius: 15px !important;
 	text-align: center;
 }
 
-.MinmumBid{
-	color: #ade8f4!important;
-	font-size: 15px!important;
+.MinmumBid {
+	color: #ade8f4 !important;
+	font-size: 15px !important;
 }
-.Description{
-	font-size: 12px!important;
+.Description {
+	font-size: 12px !important;
 	color: var(--paragaph-color);
 	/* text-indent: 10px; */
 }
 
-
-
-.Timer{
+.Timer {
 	position: relative;
 	margin-top: -25px;
 }
-.CardFooter{
-	background-color: #264653!important;
-	color: white!important;
+.CardFooter {
+	background-color: #264653 !important;
+	color: white !important;
 	border-radius: 15px;
 	position: absolute;
 	bottom: -15px;
 	padding: 2px;
 	left: 25%;
-	font-weight: bold!important;
+	font-weight: bold !important;
 }
 
-.CardFooter:hover{
-	background-color: var(--overlay-dark)!important;
-	color: white!important;
+.CardFooter:hover {
+	background-color: var(--overlay-dark) !important;
+	color: white !important;
 	left: 25.5%;
 	transition: all 0.5s;
 }
 
-.btnGetAuctions{
-	float: right!important;
+.btnGetAuctions {
+	float: right !important;
 	background: none;
 	border: 0;
 	transition: all 0.5s;
-
 }
-.btnGetAuctions:hover{
+.btnGetAuctions:hover {
 	padding-right: 10px;
 }
-
-

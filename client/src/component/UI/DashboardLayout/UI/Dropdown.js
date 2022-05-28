@@ -21,9 +21,7 @@ const Dropdown = props => {
 				data-bs-toggle="collapse"
 				aria-expanded="true"
 			>
-				<span  className={classes.name}>
-					{props.username}
-				</span>
+				<span className={classes.name}>{props.username}</span>
 				<span className={classes.dropIcon}>
 					<FontAwesomeIcon icon={faCaretDown} />
 				</span>

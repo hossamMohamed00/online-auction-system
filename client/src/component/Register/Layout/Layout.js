@@ -26,7 +26,7 @@ const Layout = props => {
 							className={` ${classes['register-content']} col-lg-5 col-xs-12 pl-0 px-0 `}
 						>
 							<RegisterHeader />
-							<RegisterContent  />
+							<RegisterContent />
 						</div>
 					</div>
 				</div>

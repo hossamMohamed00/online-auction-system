@@ -104,8 +104,15 @@ html {
 /* end table style */
 
 .bg-danger,
-.btn-danger {
+.alert-danger .btn-danger {
 	background-color: var(--alert-color) !important;
+	border-color: var(--alert-color) !important;
+}
+.btn-primary {
+	background-color: var(--main-color) !important ;
+}
+.text-primary {
+	color: var(--main-color) !important ;
 }
 .text-danger {
 	color: var(--alert-color) !important;

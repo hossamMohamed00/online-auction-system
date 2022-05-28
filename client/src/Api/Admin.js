@@ -48,10 +48,9 @@ export const remove = async ({ path, accessToken }) => {
 	}
 };
 
-
 // get dashboard data
 
-export const getDashboardData = async (accessToken) => {
+export const getDashboardData = async accessToken => {
 	const response = await fetch(`${url}/dashboard`, {
 		method: 'GET',
 		headers: {

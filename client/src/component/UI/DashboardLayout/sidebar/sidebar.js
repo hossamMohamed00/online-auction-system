@@ -6,7 +6,6 @@ import { faGavel, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
-
 const Sidebar = props => {
 	let user = props.sidebarContent;
 	const userName = Object.keys(user)[0];

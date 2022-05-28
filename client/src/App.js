@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import toast
-
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
 
 // css files
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,7 +40,6 @@ import BuyerProfile from './Pages/buyerProilePage';
 
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
-import Chat from './component/UI/Chat/Chat';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
 // end buyer pages
@@ -60,9 +54,6 @@ import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/Al
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 // end seller pages
-
-//* Payment
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
@@ -145,7 +136,7 @@ function App() {
 					<>
 						<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
 						<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
-						{/* Buyer Auctions */}
+						{/* start Buyer Auctions */}
 						<Route
 							path="/buyer-dashboard/saved-auctions"
 							element={<SavedAuctions />}
@@ -154,6 +145,16 @@ function App() {
 							path="/buyer-dashboard/participating-auctions"
 							element={<ViewParticipatingAuctions />}
 						/>
+						{/* end Buyer Auctions */}
+
+						{/* start Payment */}
+						<Route path="/buyer-dashboard/chargeWallet" element={<Wallet />} />
+
+						<Route
+							path="/buyer-dashboard/viewWalletTransaction"
+							element={<WalletTransaction />}
+						/>
+						{/* end Payment */}
 					</>
 				)}
 

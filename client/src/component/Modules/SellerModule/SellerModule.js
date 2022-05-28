@@ -2,15 +2,13 @@ import React from 'react';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
 // import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
-import { faCommentDots, faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const SellerDashboardContent = props => {
 	const email = localStorage.getItem('email');
-
-	console.log(email);
 
 	const dropdownListProfile = [
 		{
