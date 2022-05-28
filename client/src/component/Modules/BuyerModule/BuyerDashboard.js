@@ -2,14 +2,18 @@ import React from 'react';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
 // import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
-import { faCoins, faCommentDots, faCommentsDollar, faCreditCardAlt, faGavel } from '@fortawesome/free-solid-svg-icons';
+import {
+	faCoins,
+	faCommentDots,
+	faCreditCardAlt,
+	faGavel,
+} from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const BuyerDashboardContent = props => {
-
-	const email = localStorage.getItem('email')
+	const email = localStorage.getItem('email');
 
 	const dropdownListProfile = [
 		{
@@ -39,7 +43,7 @@ const BuyerDashboardContent = props => {
 			title: 'View Participating Auctions',
 			icon: faGavel,
 			path: '/buyer-dashboard/participating-auctions',
-		}
+		},
 	];
 
 	const dropdownListChat = [
@@ -47,30 +51,29 @@ const BuyerDashboardContent = props => {
 			title: 'View Chats',
 			icon: faCommentDots,
 			path: '/buyer-dashboard/chat',
-		}
+		},
 	];
 
 	const dropdownListPayment = [
 		{
 			title: 'Charge Wallet ',
 			icon: faCoins,
-			path: "/buyer-dashboard/chargeWallet",
+			path: '/buyer-dashboard/chargeWallet',
 		},
 		{
 			title: 'Display Wallet Transactions',
 			icon: faCreditCardAlt,
 			path: '/buyer-dashboard/viewWalletTransaction',
-		}
+		},
 	];
 	const contentExist = props.children;
 	return (
 		<DashboardLayout
-			buyer					= {{ name: `${email}` }}
-			profile				= {{ name: 'Profile', list: dropdownListProfile }}
-			viewAuctions	= {{ name: 'View Auctions', list: dropdownListViewAuctions }}
-			chat					= {{ name: 'Chat', list: dropdownListChat }}
-			payment				= {{ name: 'Payment', list: dropdownListPayment }}
-
+			buyer={{ name: `${email}` }}
+			profile={{ name: 'Profile', list: dropdownListProfile }}
+			viewAuctions={{ name: 'View Auctions', list: dropdownListViewAuctions }}
+			chat={{ name: 'Chat', list: dropdownListChat }}
+			payment={{ name: 'Payment', list: dropdownListPayment }}
 		>
 			{contentExist ? (
 				props.children

@@ -22,7 +22,9 @@ const Login = () => {
 							<LoginForm />
 							<p className="text-center text-light ">
 								Don't have an account ?{' '}
-								<Link to='/register' className=" text-decoration-none">Register Now</Link>
+								<Link to="/register" className=" text-decoration-none">
+									Register Now
+								</Link>
 							</p>
 						</div>
 					</div>

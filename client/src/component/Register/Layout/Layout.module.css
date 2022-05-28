@@ -1,15 +1,14 @@
-
-.Register{
+.Register {
 	background-color: var(--dark-color);
 }
 
-.Register > div{
-	height: 100vh!important;
+.Register > div {
+	height: 100vh !important;
 }
 
 /* start register background */
 
-.register-bg-overlay{
+.register-bg-overlay {
 	background-color: var(--overlay-blue);
 	opacity: 0.1;
 	top: 0;
@@ -17,33 +16,31 @@
 }
 
 .register-bg .background {
-	background-image:url("../../../assets/pexels-sora-shimazaki-5668473.png");
+	background-image: url('../../../assets/pexels-sora-shimazaki-5668473.png');
 	background-position: center;
 	background-size: cover;
 	width: 100%;
 	min-height: 100%;
-
 }
 /* end register background */
 
-
 /*register content*/
-.register-content{
+.register-content {
 	background-color: var(--dark-color);
 }
 
 /*end register content*/
 
-@media screen and (max-width:992px){
-	.register-content{
+@media screen and (max-width: 992px) {
+	.register-content {
 		height: 100vh;
 	}
 	.register-content {
-			background-color: black;
-			opacity: 0.8;
-			position: absolute;
-			top: 0;
-			right: 0;
-			max-height: 100vh !important;
+		background-color: black;
+		opacity: 0.8;
+		position: absolute;
+		top: 0;
+		right: 0;
+		max-height: 100vh !important;
 	}
 }

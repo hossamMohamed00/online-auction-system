@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux';
 
 import classes from './dashboard.module.css';
 import Sidebar from './sidebar/sidebar';
 import Header from './Header/header';
 
 // icons
-import { faIdBadge, faUsers , faGavel , faTh, faListAlt, faComment, faCreditCardAlt} from '@fortawesome/free-solid-svg-icons';
-
+import {
+	faIdBadge,
+	faUsers,
+	faGavel,
+	faTh,
+	faListAlt,
+	faComment,
+	faCreditCardAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
 
 	// console.log("role2" , role , props)
-	const sidebarAdmin = role ==='admin' && {
+	const sidebarAdmin = role === 'admin' && {
 		admin: { list: props.admin.list, name: props.admin.name },
 		employees: {
 			list: props.Employees.list,
@@ -48,12 +55,23 @@ const Wrapper = props => {
 	};
 
 	const sidebarBuyer = role === 'buyer' && {
-		buyer					: { name: props.buyer.name },
-		profile				: { list: props.profile.list, name: props.profile.name , icon:faIdBadge },
-		viewAuctions	: { list: props.viewAuctions.list,  name: props.viewAuctions.name },
-		chat					: { list: props.chat.list,  name: props.chat.name , icon:faComment },
-		payment				: { list: props.payment.list,  name: props.payment.name  , icon:faCreditCardAlt},
-	}
+		buyer: { name: props.buyer.name },
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+		},
+		viewAuctions: {
+			list: props.viewAuctions.list,
+			name: props.viewAuctions.name,
+		},
+		chat: { list: props.chat.list, name: props.chat.name, icon: faComment },
+		payment: {
+			list: props.payment.list,
+			name: props.payment.name,
+			icon: faCreditCardAlt,
+		},
+	};
 
 	const sidebarSeller = role === 'seller' && {
 		seller: { name: props.seller.name },
@@ -71,7 +89,11 @@ const Wrapper = props => {
 			name: props.payment.name,
 			icon: faCreditCardAlt,
 		},
-		SellerChat: { list: props.SellerChat && props.SellerChat.list, name: props.SellerChat && props.SellerChat.name, icon: faComment },
+		SellerChat: {
+			list: props.SellerChat && props.SellerChat.list,
+			name: props.SellerChat && props.SellerChat.name,
+			icon: faComment,
+		},
 	};
 
 	const sidebarContent = {

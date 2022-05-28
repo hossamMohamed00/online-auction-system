@@ -19,11 +19,9 @@ export class Buyer extends User {
 	stripeCustomerId: string;
 
 	//* To keep track of joined auctions
-	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
-		ref: Auction.name,
-	})
-	joinedAuctions: [Auction];
+	@Prop({ type: [{type: mongoose.Schema.Types.ObjectId,
+		ref: Auction.name}]})
+	joinedAuctions: Auction[];
 }
 
 export const BuyerSchema = SchemaFactory.createForClass(Buyer);

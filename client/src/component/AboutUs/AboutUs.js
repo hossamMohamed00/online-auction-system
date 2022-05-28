@@ -1,16 +1,15 @@
-import React from "react";
-import Navbar from "../HomePage/Header/Navbar";
+import React from 'react';
+import Navbar from '../HomePage/Header/Navbar';
 
 const AboutUs = () => {
-	return(
+	return (
 		<React.Fragment>
-			<Navbar/>
-			<div className="container" style={{marginTop:"5%"}}>
+			<Navbar />
+			<div className="container" style={{ marginTop: '5%' }}>
 				<p> About us </p>
-
 			</div>
 		</React.Fragment>
-	)
-}
+	);
+};
 
-export default AboutUs ;
+export default AboutUs;

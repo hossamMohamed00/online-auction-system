@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
@@ -8,7 +8,7 @@ import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -44,7 +44,7 @@ const UsersPage = () => {
 	useEffect(() => {
 		sendRequest({
 			idToken: idToken,
-			path: 'admin/users?role=buyer'
+			path: 'admin/users?role=buyer',
 		});
 	}, [sendRequest]);
 
@@ -60,7 +60,7 @@ const UsersPage = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<PageHeader text='Buyers' showLink={false}/>
+					<PageHeader text="Buyers" showLink={false} />
 					{data && (
 						<DataTable
 							// selectableRows

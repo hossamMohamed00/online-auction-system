@@ -8,7 +8,7 @@ import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import { Link } from 'react-router-dom';
-import './users.css'
+import './users.css';
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -32,15 +32,13 @@ const UsersPage = () => {
 			hyperlink: true,
 			cell: props => {
 				return (
-					<span className='text-info'>
+					<span className="text-info">
 						<Link to="#">User Profile</Link>
 					</span>
 				);
-
-			}
+			},
 		},
 	];
-
 
 	const { sendRequest, status, data } = useHttp(getUsers);
 

@@ -14,10 +14,7 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 const CurrentAuctionsPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { sendRequest, status: statusForGet, data, error } = useHttp(
-		getAllAuctions,
-	);
-	// ! to be removed
+	const { sendRequest, status: statusForGet, data } = useHttp(getAllAuctions);
 	let neededData;
 	if (statusForGet === 'completed') {
 		neededData = data.map(auction => {

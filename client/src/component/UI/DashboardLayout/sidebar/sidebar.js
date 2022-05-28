@@ -5,14 +5,15 @@ import Dropdown from '../UI/Dropdown';
 import { faGavel, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
 const Sidebar = props => {
 	let user = props.sidebarContent;
 	const userName = Object.keys(user)[0];
 
 	return (
 		<React.Fragment>
-			<div className={`${classes.sidebar}  position-relative animation-from-left`}>
+			<div
+				className={`${classes.sidebar}  position-relative animation-from-left`}
+			>
 				<div className={`${classes.logo}  text-center `}>
 					<h2 className="text-light  mt-3  ">
 						On<span>Line Auction</span>
@@ -21,23 +22,26 @@ const Sidebar = props => {
 
 				<div className={classes.adminName}>
 					<div className={classes.img}>
-						<FontAwesomeIcon icon={faUser} className={` ${classes.adminImg} rounded-circle mt-2`} />
+						<FontAwesomeIcon
+							icon={faUser}
+							className={` ${classes.adminImg} rounded-circle mt-2`}
+						/>
 					</div>
 					<div className={classes.username}>
-						{user[userName].list ?
-						<Dropdown
-							username={user[userName].name}
-							list={user[userName].list}
-							id="admin"
-						/>
-						: <h5 className='text-light fw-bold'> {user[userName].name}</h5>
-
-						}
+						{user[userName].list ? (
+							<Dropdown
+								username={user[userName].name}
+								list={user[userName].list}
+								id="admin"
+							/>
+						) : (
+							<h5 className="text-light fw-bold"> {user[userName].name}</h5>
+						)}
 					</div>
 				</div>
 				<ul>
 					{delete user[userName]}
-					{Object.entries(user).map((user , index) => {
+					{Object.entries(user).map((user, index) => {
 						return (
 							<li key={index}>
 								<Dropdown
@@ -50,7 +54,6 @@ const Sidebar = props => {
 							</li>
 						);
 					})}
-
 				</ul>
 			</div>
 		</React.Fragment>

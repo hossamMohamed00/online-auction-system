@@ -1,58 +1,63 @@
-import React, { Fragment, useEffect, useState } from "react";
-import {FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import React, { Fragment, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import classes from './Header.module.css'
-import scollbarStyle from '../../UI/ScrollBar.module.css'
-
+import classes from './Header.module.css';
+import scollbarStyle from '../../UI/ScrollBar.module.css';
 
 const Search = () => {
+	const [ResultSearch, setResultSearch] = useState([]);
+	const [SearchContent, setSearchContent] = useState('');
+	const [searchFocus, setsearchFocus] = useState(false);
 
-	const [ResultSearch , setResultSearch ] = useState([])
-	const [SearchContent , setSearchContent ] = useState('')
-	const [searchFocus 	, setsearchFocus ] = useState(false)
+	useEffect(() => {
+		setResultSearch(items => [...items, SearchContent]);
+	}, [SearchContent]);
 
-	useEffect(()=>{
-		setResultSearch(items=> [...items, SearchContent])
-
-	},[SearchContent])
-
-	const changeHandeler = (e) => {
-		setSearchContent(e.target.value)
-	}
+	const changeHandeler = e => {
+		setSearchContent(e.target.value);
+	};
 
 	const focusHandeler = () => {
-		setsearchFocus(true)
-	}
+		setsearchFocus(true);
+	};
 
-	const blurHandeler = (e) => {
-		setsearchFocus(false)
-	}
+	const blurHandeler = e => {
+		setsearchFocus(false);
+	};
 
 	return (
 		<Fragment>
 			<div className="float-right ">
 				<div className={classes.Search}>
-					<div className={` ${classes.SearchInputGroup} input-group position-relative w-100 m-auto `}>
-						<input type="text" className={` ${classes.SearchInput} form-control `} value={SearchContent} onChange={changeHandeler} onFocus={focusHandeler} onBlur={blurHandeler}/>
+					<div
+						className={` ${classes.SearchInputGroup} input-group position-relative w-100 m-auto `}
+					>
+						<input
+							type="text"
+							className={` ${classes.SearchInput} form-control `}
+							value={SearchContent}
+							onChange={changeHandeler}
+							onFocus={focusHandeler}
+							onBlur={blurHandeler}
+						/>
 						<span className={` ${classes.SearchIcon} input-group-text `}>
-							<FontAwesomeIcon icon={faMagnifyingGlass}  />
+							<FontAwesomeIcon icon={faMagnifyingGlass} />
 						</span>
 					</div>
-					{SearchContent &&
-						<div className={`${classes.SearchResult} ${scollbarStyle.scollbar} `}>
-							{ResultSearch.map((searchItem , index)=> (
+					{SearchContent && (
+						<div
+							className={`${classes.SearchResult} ${scollbarStyle.scollbar} `}
+						>
+							{ResultSearch.map((searchItem, index) => (
 								<p key={index}> {searchItem} </p>
 							))}
 						</div>
-					}
-
+					)}
 				</div>
-
 			</div>
-
 		</Fragment>
 	);
-}
+};
 
 export default Search;

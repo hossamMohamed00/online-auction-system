@@ -1,24 +1,25 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector} from 'react-redux'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../../Api/CategoryApi';
-import{ getAllCategoriesForAdmin} from '../../../Api/Admin'
+import { getAllCategoriesForAdmin } from '../../../Api/Admin';
 import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from '../../UI/DropDownBox.module.css';
 
 const Categories = () => {
 	const [isHiddenCategories, setIsHiddenCategories] = useState(false);
-	const role = useSelector(store => store.AuthData.role)
+	const role = useSelector(store => store.AuthData.role);
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const getCategories = role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
+	const getCategories =
+		role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
 
-	const {sendRequest , status , data , error} = useHttp(getAllCategories);
+	const { sendRequest, status, data, error } = useHttp(getAllCategories);
 
-	useEffect(()=>{
-		sendRequest(idToken)
-	},[sendRequest])
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest]);
 
 	const showAllCategories =
 		!error &&

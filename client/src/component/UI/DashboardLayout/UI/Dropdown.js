@@ -30,9 +30,14 @@ const Dropdown = props => {
 			{/* <!-- Collapsible Element HTML --> */}
 			{props.list.map((item, index) => {
 				return (
-					<div className="collapse" id={props.id} key={index} style={{transition: 'all 0.8s'}}>
+					<div
+						className="collapse"
+						id={props.id}
+						key={index}
+						style={{ transition: 'all 0.8s' }}
+					>
 						<div className={classes.linkIcon}>
-							{item.icon && <FontAwesomeIcon icon={item.icon} /> }
+							{item.icon && <FontAwesomeIcon icon={item.icon} />}
 						</div>
 						<Link
 							to={item.path ? item.path : ''}
@@ -41,7 +46,6 @@ const Dropdown = props => {
 							{item.title}
 						</Link>
 					</div>
-
 				);
 			})}
 		</div>

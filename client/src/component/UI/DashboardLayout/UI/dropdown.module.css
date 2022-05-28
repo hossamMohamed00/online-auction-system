@@ -13,17 +13,16 @@
 	color: White;
 }
 
-
 .username {
 	margin-left: 5.5%;
 	/* margin-right: 1%; */
 	/* width:200px; */
 }
-.name{
+.name {
 	min-width: 70%;
 }
-.dropIcon{
-	margin-left:3%;
+.dropIcon {
+	margin-left: 3%;
 }
 
 .icon {
@@ -55,10 +54,10 @@
 	display: inline-block !important;
 	width: 80%;
 	font-size: 14px !important;
-	font-weight: bold!important;
+	font-weight: bold !important;
 	line-height: 2.5;
 	/* transition: all 0.5s; */
-	padding :5px 0 0 !important;
+	padding: 5px 0 0 !important;
 }
 
 .linkIcon {

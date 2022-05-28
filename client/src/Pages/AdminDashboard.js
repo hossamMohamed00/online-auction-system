@@ -1,14 +1,9 @@
 import React from 'react';
 
-import AdminDashboard from '../component/AdminModule/AdminDashboard/home/adminDashboard'
+import AdminDashboard from '../component/AdminModule/AdminDashboard/home/adminDashboard';
 
-const AdminPage=()=>{
+const AdminPage = () => {
+	return <AdminDashboard></AdminDashboard>;
+};
 
-
-	return(
-
-		<AdminDashboard></AdminDashboard>
-	)
-}
-
-export default AdminPage
+export default AdminPage;

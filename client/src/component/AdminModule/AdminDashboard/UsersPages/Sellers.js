@@ -10,7 +10,6 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
 import { Link } from 'react-router-dom';
 
-
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const columns = [

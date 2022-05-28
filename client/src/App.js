@@ -1,11 +1,6 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import toast
-
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
 
 // css files
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -43,7 +38,6 @@ import ManageCategories from './component/AdminModule/AdminDashboard/ManageCateg
 
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
-import Chat from './component/UI/Chat/Chat';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
 // end buyer pages
@@ -55,12 +49,8 @@ import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
-import RecoverMoney from './component/Modules/BuyerModule/Payment/RecoverMoney';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // end seller pages
-
-//* Payment
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
@@ -143,17 +133,13 @@ function App() {
 						{/* end Buyer Auctions */}
 
 						{/* start Payment */}
-						<Route
-							path="/buyer-dashboard/chargeWallet"
-							element={<Wallet />}
-						/>
+						<Route path="/buyer-dashboard/chargeWallet" element={<Wallet />} />
 
 						<Route
 							path="/buyer-dashboard/viewWalletTransaction"
-							element={<WalletTransaction/>}
+							element={<WalletTransaction />}
 						/>
 						{/* end Payment */}
-
 					</>
 				)}
 
