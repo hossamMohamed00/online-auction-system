@@ -20,7 +20,6 @@ export class BuyerService {
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
 		private readonly complaintService: ComplaintService,
-		private readonly walletService: WalletService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
@@ -103,6 +102,16 @@ export class BuyerService {
 		);
 
 		return this.reviewService.create(createReviewDto, buyerId);
+	}
+
+	/**
+	 * Get review on specific seller
+	 * @param buyerId
+	 * @param sellerId
+	 * @returns - Review if found
+	 */
+	async getReviewOnSeller(buyerId: string, sellerId: string) {
+		return this.reviewService.getReviewInSeller(sellerId, buyerId);
 	}
 
 	async editReview(

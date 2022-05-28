@@ -8,12 +8,12 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
-import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
@@ -27,6 +27,7 @@ import {
 	BuyerReviewsBehaviors,
 } from './interfaces';
 import { Buyer } from './schema/buyer.schema';
+import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto';
 
 @ApiTags('Buyer')
 @Roles(Role.Buyer)
@@ -84,6 +85,15 @@ export class BuyerController
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
 		return this.buyerService.makeReview(createReviewDto, buyerId);
+	}
+
+	@Serialize(ReviewDto)
+	@Get('review')
+	getReviewOnSeller(
+		@Query() { sellerId }: FindReviewInSeller,
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<Review> {
+		return this.buyerService.getReviewOnSeller(buyerId, sellerId);
 	}
 
 	@Serialize(ReviewDto)
