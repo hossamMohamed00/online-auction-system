@@ -4,6 +4,12 @@ import UserProfile from '../../../UI/UserProfile/profile';
 import buyerImg from '../../../../assets/user.png';
 
 const BuyerProfile = () => {
+		const cardTitlesForBuyer = [
+			{
+				name: 'Joined Auctions',
+				number: 10,
+			},
+		];
 	const [buyerData, setBuyerData] = useState('');
 	const url = 'http://localhost:8000';
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -26,7 +32,8 @@ const BuyerProfile = () => {
 			name={buyerData.name}
 			email={buyerData.email}
 			img={buyerImg}
-			dataName="Participating Auctions"
+			cards={cardTitlesForBuyer}
+
 		/>
 	);
 };

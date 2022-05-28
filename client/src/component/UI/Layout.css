@@ -121,6 +121,9 @@ html {
 	background: none;
 	border: 0 !important;
 }
+.btn:focus {
+	box-shadow: none !important;
+}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

@@ -53,6 +53,8 @@ import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAucti
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
+import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
+import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // end seller pages
 
 function App() {

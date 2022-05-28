@@ -20,43 +20,45 @@ const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
 
 	// console.log("role2" , role , props)
-	const sidebarAdmin =
-		role === 'admin' && {
-			admin: { name: props.admin.name , path:'/adminDashboard'},
-			employees: {
-				list: props.Employees.list,
-				name: props.Employees.name,
-				icon: faUsers,
-				class: 'users',
-			},
-			users: {
-				list: props.users.list,
-				name: props.users.name,
-				icon: faUsers,
-				class: 'users',
-			},
-			auctions: {
-				list: props.auctions.list,
-				name: props.auctions.name,
-				icon: faGavel,
-				class: 'auctions',
-			},
-			requests: {
-				list: props.requests.list,
-				name: props.requests.name,
-				icon: faTh,
-				class: 'requests',
-			},
-			categories: {
-				list: props.categories.list,
-				name: props.categories.name,
-				icon: faListAlt,
-				class: 'categories',
-			},
-		};
+	const sidebarAdmin = role === 'admin' && {
+		admin: { name: props.admin.name, path: '/adminDashboard' },
+		employees: {
+			list: props.Employees.list,
+			name: props.Employees.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		users: {
+			list: props.users.list,
+			name: props.users.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		auctions: {
+			list: props.auctions.list,
+			name: props.auctions.name,
+			icon: faGavel,
+			class: 'auctions',
+		},
+		requests: {
+			list: props.requests.list,
+			name: props.requests.name,
+			icon: faTh,
+			class: 'requests',
+		},
+		categories: {
+			list: props.categories.list,
+			name: props.categories.name,
+			icon: faListAlt,
+			class: 'categories',
+		},
+	};
 
 	const sidebarBuyer = role === 'buyer' && {
-		buyer: { name: props.buyer.name , path:'/buyer-dashboard'},
+		buyer: {
+			name: props.buyer.name ? props.buyer.name : 'buyer',
+			path: '/buyer-dashboard',
+		},
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,
@@ -73,7 +75,7 @@ const Wrapper = props => {
 			icon: faCreditCardAlt,
 		},
 	};
-	const sidebarEmployee = {
+	const sidebarEmployee = role ==='employee'&& {
 		admin: { name: props.admin.name, path: '/employeeDashboard' },
 		users: {
 			list: props.users.list,
@@ -108,7 +110,7 @@ const Wrapper = props => {
 	};
 
 	const sidebarSeller = role === 'seller' && {
-		seller: { name: props.seller.name , path:'/seller-dashboard'},
+		seller: { name: props.seller.name, path: '/seller-dashboard' },
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,

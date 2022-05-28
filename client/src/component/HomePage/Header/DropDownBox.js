@@ -26,8 +26,12 @@ const DropDownBox = props => {
 			return '/adminDashboard';
 		} else if (role === 'buyer') {
 			return '/buyer-dashboard';
-		} else {
+		} else if(role === 'seller') {
 			return '/seller-dashboard';
+		}else{
+			return '/employeeDashboard';
+
+
 		}
 	};
 
