@@ -12,6 +12,8 @@ import { ReviewService } from 'src/models/review/review.service';
 import { Review } from 'src/models/review/schema/review.schema';
 import WalletService from 'src/providers/payment/wallet.service';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
+import { ListBidderAuctionsQueryDto } from './dto';
+import { BidderAuctionsEnumQuery } from './enums';
 
 @Injectable()
 export class BuyerService {
@@ -45,14 +47,23 @@ export class BuyerService {
 	 */
 	async listBidderJoinedAuctions(
 		buyer: BuyerDocument,
-	): Promise<{ joinedAuctions: Auction[] }> {
-		//* First populate joinedAuctions field
+		{ populateField }: ListBidderAuctionsQueryDto,
+	): Promise<any> {
+		//* First populate incoming field field
 		await buyer.populate({
-			path: 'joinedAuctions',
+			path: populateField,
 			populate: ['category', 'seller'],
 		});
 
-		return { joinedAuctions: buyer.joinedAuctions };
+		let result;
+		if (populateField == BidderAuctionsEnumQuery.JoinedAuction) {
+			result = buyer.joinedAuctions;
+
+			return { joinedAuctions: result };
+		} else if (populateField == BidderAuctionsEnumQuery.SavedAuctions) {
+			result = buyer.savedAuctions;
+			return { savedAuctions: result };
+		}
 	}
 
 	/**

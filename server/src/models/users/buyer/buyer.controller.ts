@@ -20,7 +20,7 @@ import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { BuyerService } from './buyer.service';
-import { BuyerDto } from './dto';
+import { BuyerDto, ListBidderAuctionsQueryDto } from './dto';
 import {
 	BuyerAuctionsBehaviors,
 	BuyerProfileBehaviors,
@@ -53,10 +53,15 @@ export class BuyerController
 	/* Handle Auctions Functions */
 	@Get('auctions')
 	@Serialize(BuyerDto)
-	listBidderJoinedAuctions(
-		@GetCurrentUserData() buyer: BuyerDocument,
-	): Promise<{ joinedAuctions: Auction[] }> {
-		return this.buyerService.listBidderJoinedAuctions(buyer);
+	listBidderAuctions(
+		@Query() listBidderAuctionsQueryDto: ListBidderAuctionsQueryDto,
+		@GetCurrentUserData()
+		buyer: BuyerDocument,
+	): Promise<any> {
+		return this.buyerService.listBidderJoinedAuctions(
+			buyer,
+			listBidderAuctionsQueryDto,
+		);
 	}
 
 	@Post('auction/join/:id')
@@ -82,7 +87,7 @@ export class BuyerController
 	saveAuctionForLater(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
-	): Promise<{success: boolean, message: string}> {
+	): Promise<{ success: boolean; message: string }> {
 		return this.buyerService.saveAuctionForLater(buyer, id);
 	}
 
