@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 // import Categories from './../../../HomePage/Categories/Categories';
 // import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
@@ -11,9 +12,6 @@ import AdminDashboardContent from '../Admin_dashboard_content/admin_dashboard';
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const AdminDashboard = props => {
-	const dropdownListForAdmin = [
-		{ title: 'Inbox', icon: faMessage, path: '/adminDashboard/chatPage' },
-	];
 	const dropdownListForEmployees = [
 		{
 			title: 'ListAllEmployees',
@@ -64,12 +62,12 @@ const AdminDashboard = props => {
 			path: '/adminDashboard/manageCategories',
 		},
 	];
-
+const email = useSelector(store => store.AuthData.email)
 	const contentExist = props.children;
 
 	return (
 		<DashboardLayout
-			admin={{ name: 'Safa Ramadan', list: dropdownListForAdmin }}
+			admin={{ name: email}}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
 			auctions={{ name: 'Manage Auctions', list: dropdownListManageAuctions }}

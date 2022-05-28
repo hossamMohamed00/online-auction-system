@@ -22,7 +22,7 @@ const Wrapper = props => {
 	// console.log("role2" , role , props)
 	const sidebarAdmin =
 		role === 'admin' && {
-			admin: { list: props.admin.list, name: props.admin.name },
+			admin: { name: props.admin.name , path:'/adminDashboard'},
 			employees: {
 				list: props.Employees.list,
 				name: props.Employees.name,
@@ -56,7 +56,7 @@ const Wrapper = props => {
 		};
 
 	const sidebarBuyer = role === 'buyer' && {
-		buyer: { name: props.buyer.name },
+		buyer: { name: props.buyer.name , path:'/buyer-dashboard'},
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,
@@ -74,7 +74,7 @@ const Wrapper = props => {
 		},
 	};
 	const sidebarEmployee = {
-		admin: { list: props.admin.list, name: props.admin.name },
+		admin: {  name: props.admin.name , path:'/employeeDashboard'},
 
 		users: {
 			list: props.users.list,
@@ -97,7 +97,7 @@ const Wrapper = props => {
 	};
 
 	const sidebarSeller = role === 'seller' && {
-		seller: { name: props.seller.name },
+		seller: { name: props.seller.name , path:'/seller-dashboard'},
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,
