@@ -1,28 +1,32 @@
 .HowBid {
-	padding-top: 9vh;
 	color: white;
-	border-radius: 3px;
-	height: 100vh;
+	border-radius: 15px;
+	background-color: #2e2f32;
+	padding: 2% 0 4% 0;
 	cursor: pointer;
-	margin: 0 auto;
+	margin: 0 2% !important;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
 }
 
 .header3 {
-	font-size: 50px;
-	padding-top: 5vh !important;
+	font-size: 30px;
+	/* padding-top: 5vh !important; */
 	color: var(--main-color);
 	text-align: center;
 }
 .pragragh {
 	text-align: center;
-	font-size: 35px !important;
+	font-size: 20px !important;
 	color: var(--paragaph-color);
 }
 
 .Step {
 	color: white;
 	text-align: center;
-	font-size: 25px !important;
+	font-size: 16px !important;
 	padding-left: 10px;
 	padding-top: 20px;
 	font-weight: bold;
@@ -30,15 +34,18 @@
 }
 .Steps {
 	width: 80% !important;
-	margin-left:10% !important;
+	margin-left: 10% !important;
+}
+.card-content {
+	margin: 20px auto;
 }
 
 .pragraghS {
 	text-align: center;
 	margin-top: 1px !important;
 	padding-top: 15px;
-	font-size: 19px !important;
-	font-weight: bold;
+	font-size: 13px !important;
+	font-weight: bold !important;
 	color: var(--paragaph-color);
 }
 

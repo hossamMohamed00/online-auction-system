@@ -58,6 +58,7 @@ import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
+import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 // end seller pages
 
 //* Payment
@@ -121,7 +122,10 @@ function App() {
 					element={<SellersPage />}
 				/>
 				<Route path="/managersDashboard/buyersPage" element={<BuyersPage />} />
-				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
+				<Route
+					path="/managersDashboard/addEmployee"
+					element={<AddEmployee />}
+				/>
 				<Route
 					path="/managersDashboard/listAllEmployees"
 					element={<ListAllEmployees />}
@@ -133,6 +137,7 @@ function App() {
 				{/* end Admin Routes */}
 				{/* start route Employees */}
 				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
+				<Route path="/managersDashboard/allCompliments" element={<AllCompliments />} />
 
 				{/* start buyer routes  */}
 

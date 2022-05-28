@@ -9,7 +9,7 @@ import HowBidCard from './HowBidCard';
 const CardDetails = ({ Title, Text, btnText, linkTo, CardStyle }) => {
 	return (
 		<HowBidCard className={CardStyle}>
-			<div>
+			<div className={classes['card-content']}>
 				<h3 className={`${classes.Step} text-center `}> {Title}</h3>
 				<p
 					className={`${classes.pragraghS} ${
@@ -78,7 +78,7 @@ const HowBid = () => {
 				{/* start card group */}
 				<div className={`${classes.Steps} row m-0 p-0 `}>
 					{AllCardsDetails.map(card => (
-						<div className="col-lg col-md-6 col-sm-12">
+						<div className="col-lg col-md col-sm-6">
 							{CardDetails({ ...card })}
 						</div>
 					))}

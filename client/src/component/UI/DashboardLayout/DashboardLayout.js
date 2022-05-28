@@ -74,8 +74,7 @@ const Wrapper = props => {
 		},
 	};
 	const sidebarEmployee = {
-		admin: {  name: props.admin.name , path:'/employeeDashboard'},
-
+		admin: { name: props.admin.name, path: '/employeeDashboard' },
 		users: {
 			list: props.users.list,
 			name: props.users.name,
@@ -92,6 +91,18 @@ const Wrapper = props => {
 			list: props.requests.list,
 			name: props.requests.name,
 			icon: faTh,
+			class: 'requests',
+		},
+		compliments: {
+			list: props.compliments.list,
+			name: props.compliments.name,
+			icon: faComment,
+			class: 'auctions',
+		},
+		Inquiries: {
+			list: props.inquiries.list,
+			name: props.inquiries.name,
+			icon: faComment,
 			class: 'requests',
 		},
 	};

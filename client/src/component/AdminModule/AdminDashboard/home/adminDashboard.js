@@ -3,15 +3,26 @@ import { useSelector } from 'react-redux';
 // import Categories from './../../../HomePage/Categories/Categories';
 // import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { faMessage } from '@fortawesome/free-solid-svg-icons';
-import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
-import AdminDashboardContent from '../Admin_dashboard_content/admin_dashboard';
-// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+// import { faMessage } from '@fortawesome/free-solid-svg-icons';
+import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {
+		const dropdownListForCompliments = [
+			{
+				title: 'All Compliments',
+				icon: faComment,
+				path: '/managersDashboard/manageInquiries',
+			}]
+			const dropdownListForInquiries=[
+			{
+				title: 'Inquiries ',
+				icon: faComment,
+				path: '/managersDashboard/allCompliments',
+			},
+		];
 	const dropdownListForEmployees = [
 		{
 			title: 'ListAllEmployees',
@@ -83,8 +94,16 @@ const AdminDashboard = props => {
 				name: 'Manage Categories',
 				list: dropdownListManageCategories,
 			}}
+			compliments={{
+				name: 'Manage Compliments',
+				list: dropdownListForCompliments,
+			}}
+			inquiries={{
+				name: 'Inquiries',
+				list: dropdownListForInquiries,
+			}}
 		>
-			{contentExist ? props.children : <AdminDashboardContent />}
+			{contentExist ? props.children : <DashboardContent />}
 		</DashboardLayout>
 	);
 };

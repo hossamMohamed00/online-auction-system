@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getDashboardData } from '../../../../Api/Admin';
@@ -13,8 +12,8 @@ import './admin.css';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
-import auctionImg from '../../../../assets/gavel.png';
-const AdminDashboardContent = props => {
+import { CardsContainer } from './card_content/CardsContainer';
+const DashboardContent = props => {
 	const { sendRequest, data, error } = useHttp(getDashboardData);
 	const [loading, setLoading] = useState(false);
 	const {
@@ -33,6 +32,7 @@ const AdminDashboardContent = props => {
 		status: statusForProfile,
 	} = useHttp(getProfileData);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const role = useSelector(store => store.AuthData.role);
 	console.log(props.reload);
 	useEffect(() => {
 		sendRequest(idToken);
@@ -87,7 +87,18 @@ const AdminDashboardContent = props => {
 			path: '/managersDashboard/listAllEmployees',
 		},
 	];
-
+	const cardTitlesForCompliments = [
+		{
+			name: 'Compliments',
+			number: data && data.complaints.total,
+			path: '/managersDashboard/allCompliments',
+		},
+		{
+			name: 'Not read',
+			number: data && data.complaints.notReadYet,
+			path: '/managersDashboard/notRead',
+		},
+	];
 	const columns = [
 		{
 			name: 'Auction Title',
@@ -172,65 +183,20 @@ const AdminDashboardContent = props => {
 				{/* end top 5 Auctions */}
 
 				{/* Start Cards */}
-				<div className="card_container_1 row m-0">
-					<h2 className="text-light fw-bolder text-center pb-4 pt-2  ">
-						Auctions💖🔨
-					</h2>
-					{cardTitlesForAuctions.map(card => {
-						const first_card_classes =
-							card.name === 'Current' ? 'first_card' : '';
-
-						return (
-							<>
-								<div
-									className={` col-lg-4  fw-bolder text-center  card_1 h-100 mb-3`}
-								>
-									{card.name}
-									<h1 className="text-center text-danger mt-2 fw-border">
-										{card.number}
-									</h1>
-									<Link to={card.path}>
-										<span className="icon">
-											<FontAwesomeIcon icon={faArrowRight} />
-										</span>
-									</Link>
-								</div>
-							</>
-						);
-					})}
-				</div>
-				<div className="card_container_2  row m-0">
-					<h2 className="text-light text-center pb-4 pt-2  fw-bolder">
-						Users💖👀
-					</h2>
-
-					{cardTitlesForUsers.map(card => {
-						return (
-							<>
-								<div
-									className={` col-lg-4  fw-bolder text-center  card_2 h-100 mb-3`}
-								>
-									{card.name}
-									<h1 className="text-center text-danger mt-2 fw-border">
-										{card.number}
-									</h1>
-									<Link to={card.path}>
-										<span className="text-right icon">
-											<FontAwesomeIcon icon={faArrowRight} />
-										</span>
-									</Link>
-								</div>
-							</>
-						);
-					})}
-				</div>
-
+				<CardsContainer title="Auctions" cards={cardTitlesForAuctions} />
+				<CardsContainer title="Users" cards={cardTitlesForUsers} />
+				{role === 'employee' && (
+					<CardsContainer
+						title="Compliments"
+						cards={cardTitlesForCompliments}
+					/>
+				)}
 				{/* End Cards */}
 
 				{/* start winners */}
 				<div className="winners">
 					{' '}
-					<h2 className="text-light mt-2 fw-bold">Auctions winners💖🏆</h2>
+					<h2 className="text-light mt-2 fw-bold">Auctions winners</h2>
 					{dataForWinners && (
 						<DataTable
 							columns={columns}
@@ -248,4 +214,4 @@ const AdminDashboardContent = props => {
 		</>
 	);
 };
-export default AdminDashboardContent;
+export default DashboardContent;
