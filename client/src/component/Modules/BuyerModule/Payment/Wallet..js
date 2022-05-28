@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import BuyerDashboardContent from '../BuyerDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 
 
 const Wallet = (props) => {
@@ -25,6 +26,7 @@ const Wallet = (props) => {
 	const idToken = useSelector(store=>store.AuthData.idToken)
 	const {sendRequest , status , data} = useHttp(getWalletBalance);
 	const [reloadBalance , setReloadBalance] = useState('')
+	const [loading , setLoading] = useState(false)
 
 	const location = useLocation().pathname === "/buyer-dashboard/chargeWallet"
 
@@ -43,6 +45,17 @@ const Wallet = (props) => {
 		sendRequest(idToken)
 	},[sendRequest , reloadBalance])
 
+	useEffect(()=>{
+		if(status==='pending'){
+			setLoading(true)
+		}
+	},[status , reloadBalance])
+
+	useEffect(()=>{
+		if(status==='completed'){
+			setLoading(false)
+		}
+	},[status])
 
 
 	const PaymentContent =
@@ -61,6 +74,8 @@ const Wallet = (props) => {
 
 	return (
 		<>
+			{loading && <LoadingSpinner></LoadingSpinner> }
+
 			<Modal_
 				show={props.show}
 				onHide={props.onHide}

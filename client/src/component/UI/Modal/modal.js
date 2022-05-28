@@ -38,7 +38,7 @@ const Modal_ = props => {
 						{props.btnName}
 					</button>
 				}
-				<button onClick={props.onHide} className="btn-danger btn">Close</button>
+				<button onClick={props.onHide} className="btn-danger btn ">Close</button>
 
 			</Modal.Footer>
 		</Modal>

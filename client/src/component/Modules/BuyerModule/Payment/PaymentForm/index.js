@@ -64,8 +64,8 @@ const PaymentForm = (props) => {
 				{/* end amount */}
 
 				{/* Charge Wallet Now 💲 */}
-				<button type="submit" className={`btn paymentBtn btn-success  ${props.className ? 'col-md-5 col-sm-12 chargeWalletBtn bg-primary' : 'float-left btn-success'} `}> Charge Wallet Now  </button>
-				{props.showAllBtns && <button type="button" onClick={()=> RecoverMoneyHandler(PaymentIntentId)} className={`btn paymentBtn  ${props.className ? 'col-md-5 col-sm-12 recoverMoneyBtn btn-danger' : 'float-left btn-success'} `} > Recover Your Money  </button>
+				<button type="submit" className={`btn paymentBtn btn-success  ${props.className ? 'col-md-5 col-sm-12 chargeWalletBtn bg-primary' : 'float-left btn-success col-sm-12'} `}> Charge Wallet Now  </button>
+				{props.showAllBtns && <button type="button" onClick={()=> RecoverMoneyHandler(PaymentIntentId)} className={`btn paymentBtn  ${props.className ? 'col-md-5 col-sm-12 recoverMoneyBtn btn-danger' : 'float-left btn-success '} `} > Recover Your Money  </button>
 				}
 
 			</form>
