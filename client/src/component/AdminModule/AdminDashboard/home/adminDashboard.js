@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 // import Categories from './../../../HomePage/Categories/Categories';
 // import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
@@ -16,58 +16,62 @@ const AdminDashboard = props => {
 		{
 			title: 'ListAllEmployees',
 			icon: faUser,
-			path: '/adminDashboard/listAllEmployees',
+			path: '/managersDashboard/listAllEmployees',
 		},
 		{
 			title: 'AddEmployee',
 			icon: faUser,
-			path: '/adminDashboard/addEmployee',
+			path: '/managersDashboard/addEmployee',
 		},
 	];
 	const dropdownListManageAuctions = [
 		{
 			title: 'All Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/allAuctions',
+			path: '/managersDashboard/allAuctions',
 		},
 		{
 			title: 'Current Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			path: '/managersDashboard/currentAuctions',
 		},
 
 		{
 			title: 'Upcoming Auctions',
 			icon: faGavel,
-			path: '/adminDashboard/upcomingAuctions',
+			path: '/managersDashboard/upcomingAuctions',
 		},
 	];
 
 	const dropdownListManageUsers = [
-		{ title: 'All Users', icon: faUser, path: '/adminDashboard/allUsersPage' },
-		{ title: 'Sellers', icon: faUser, path: '/adminDashboard/sellersPage' },
-		{ title: 'Buyers', icon: faUser, path: '/adminDashboard/buyersPage' },
+		{
+			title: 'All Users',
+			icon: faUser,
+			path: '/managersDashboard/allUsersPage',
+		},
+		{ title: 'Sellers', icon: faUser, path: '/managersDashboard/sellersPage' },
+		{ title: 'Buyers', icon: faUser, path: '/managersDashboard/buyersPage' },
 	];
 	const dropdownListAuctionsRequests = [
 		{
 			title: 'Pending auctions',
 			icon: faTh,
-			path: '/adminDashboard/pendingAuctions',
+			path: '/managersDashboard/pendingAuctions',
 		},
 	];
 	const dropdownListManageCategories = [
 		{
 			title: 'Manage Categories',
 			icon: faTh,
-			path: '/adminDashboard/manageCategories',
+			path: '/managersDashboard/manageCategories',
 		},
 	];
-const email = useSelector(store => store.AuthData.email)
+	const email = useSelector(store => store.AuthData.email);
 	const contentExist = props.children;
 
 	return (
 		<DashboardLayout
-			admin={{ name: email}}
+			admin={{ name: email }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
 			auctions={{ name: 'Manage Auctions', list: dropdownListManageAuctions }}

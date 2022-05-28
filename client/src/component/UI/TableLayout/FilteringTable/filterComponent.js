@@ -14,7 +14,7 @@ export const FilterComponent = props => {
 				onChange={props.onFilter}
 				placeholder="Filter Table data ..."
 			/>
-			<button className="btn btn-danger mx-2 clear" onClick={props.onClear}>
+			<button className="btn btn mx-2 clear" onClick={props.onClear}>
 				<FontAwesomeIcon icon={faXmark} />
 			</button>
 		</>

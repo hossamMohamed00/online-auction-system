@@ -57,34 +57,34 @@ const AdminDashboardContent = props => {
 		{
 			name: 'Current ',
 			number: data && data.auctions.ongoing,
-			path: '/adminDashboard/currentAuctions',
+			path: '/managersDashboard/currentAuctions',
 		},
 		{
 			name: '	Upcoming ',
 			number: data && data.auctions.upcoming,
-			path: '/adminDashboard/upcomingAuctions',
+			path: '/managersDashboard/upcomingAuctions',
 		},
 		{
 			name: '	Pending ',
 			number: data && data.auctions.pending,
-			path: '/adminDashboard/pendingAuctions',
+			path: '/managersDashboard/pendingAuctions',
 		},
 	];
 	const cardTitlesForUsers = [
 		{
 			name: 'Sellers',
 			number: data && data.users.sellers,
-			path: '/adminDashboard/sellersPage',
+			path: '/managersDashboard/sellersPage',
 		},
 		{
 			name: 'Buyers',
 			number: data && data.users.buyers,
-			path: '/adminDashboard/buyersPage',
+			path: '/managersDashboard/buyersPage',
 		},
 		{
 			name: 'Employees',
 			number: data && data.users.employees,
-			path: '/adminDashboard/listAllEmployees',
+			path: '/managersDashboard/listAllEmployees',
 		},
 	];
 

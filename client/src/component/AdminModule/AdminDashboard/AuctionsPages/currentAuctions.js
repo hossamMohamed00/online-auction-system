@@ -19,7 +19,6 @@ const CurrentAuctionsPage = () => {
 	);
 	// ! to be removed
 
-
 	useEffect(() => {
 		sendRequest({ idToken, status: 'ongoing' });
 	}, [sendRequest]);
@@ -44,30 +43,36 @@ const CurrentAuctionsPage = () => {
 			name: 'Title',
 			selector: row => row.title,
 			sortable: true,
+			center: true,
 		},
 		{
 			name: 'Base Price',
 			selector: row => row.basePrice,
+			center: true,
 		},
 		{
 			name: 'Start Date',
 			selector: row => row.startDate,
+			center: true,
 		},
 		{
 			name: 'End Date',
 			selector: row => row.endDate,
+			center: true,
 		},
 		{
 			name: 'Seller',
 			selector: row => row.seller.name,
+			center: true,
 		},
 		{
 			name: 'Status',
 			selector: row => row.status,
+			center: true,
 		},
 		{
 			name: 'Actions',
-			// selector: row => row.action,
+			center: true,
 			cell: props => {
 				return (
 					<span className="text-info">
@@ -79,7 +84,7 @@ const CurrentAuctionsPage = () => {
 	];
 	//filter
 	const items = ongoingAuctions ? ongoingAuctions : [];
-	const { filterFun, filteredItems } = useFilter(items,'title');
+	const { filterFun, filteredItems } = useFilter(items, 'title');
 	//end filter
 
 	return (

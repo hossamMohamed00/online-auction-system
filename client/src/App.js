@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import toast
@@ -67,8 +67,6 @@ function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-
-
 	return (
 		<React.Fragment>
 			{/* start Routes of admin*/}
@@ -101,37 +99,40 @@ function App() {
 					<Route path="/adminDashboard" element={<AdminPage />} />
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
-				<Route path="/adminDashboard/allAuctions" element={<AllAuctions />} />
 				<Route
-					path="/adminDashboard/upcomingAuctions"
+					path="/managersDashboard/allAuctions"
+					element={<AllAuctions />}
+				/>
+				<Route
+					path="/managersDashboard/upcomingAuctions"
 					element={<UpcomingAuctionsPage />}
 				/>
 				<Route
-					path="/adminDashboard/currentAuctions"
+					path="/managersDashboard/currentAuctions"
 					element={<CurrentAuctionsPage />}
 				/>
 				<Route
-					path="/adminDashboard/pendingAuctions"
+					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
-				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
-				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
-				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
+				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
+				<Route
+					path="/managersDashboard/sellersPage"
+					element={<SellersPage />}
+				/>
+				<Route path="/managersDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
 				<Route
-					path="/adminDashboard/listAllEmployees"
+					path="/managersDashboard/listAllEmployees"
 					element={<ListAllEmployees />}
 				/>
 				<Route
-					path="/adminDashboard/manageCategories"
+					path="/managersDashboard/manageCategories"
 					element={<ManageCategories />}
 				/>
 				{/* end Admin Routes */}
 				{/* start route Employees */}
-				<Route
-					path="/employeeDashBoard"
-					element={<EmployeeDashBoard />}
-				/>
+				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
 
 				{/* start buyer routes  */}
 
