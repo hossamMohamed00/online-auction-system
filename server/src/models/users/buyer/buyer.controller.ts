@@ -59,7 +59,7 @@ export class BuyerController
 		return this.buyerService.listBidderJoinedAuctions(buyer);
 	}
 
-	@Post('auction/:id')
+	@Post('auction/join/:id')
 	@HttpCode(HttpStatus.OK)
 	joinAuction(
 		@GetCurrentUserData() buyer: Buyer,
@@ -68,7 +68,7 @@ export class BuyerController
 		return this.buyerService.joinAuction(buyer, id);
 	}
 
-	@Post('auction/:id')
+	@Post('auction/retreat/:id')
 	@HttpCode(HttpStatus.OK)
 	retreatFromAuction(
 		@GetCurrentUserData() buyer: Buyer,
@@ -82,7 +82,7 @@ export class BuyerController
 	saveAuctionForLater(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
-	): Promise<boolean> {
+	): Promise<{success: boolean, message: string}> {
 		return this.buyerService.saveAuctionForLater(buyer, id);
 	}
 

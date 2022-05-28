@@ -112,10 +112,53 @@ export class BuyerService {
 	/**
 	 * Save the auction to be notified when start
 	 * @param buyer - buyerId
-	 * @param id
+	 * @param auctionId
 	 */
-	async saveAuctionForLater(buyer: Buyer, id: string): Promise<boolean> {
-		throw new Error('Method not implemented.');
+	async saveAuctionForLater(
+		buyer: Buyer,
+		auctionId: string,
+	): Promise<{ success: boolean; message: string }> {
+		this.logger.debug(`Try to append ${buyer.name} to auction's waiting list!`);
+
+		//? Validate the data first
+		const validationResult =
+			await this.auctionValidationService.validateBidderSaveAuction(
+				auctionId,
+				buyer._id.toString(),
+			);
+
+		//? If there is validation error, throw an exception
+		if (!validationResult.success) {
+			throw new BadRequestException(validationResult.message);
+		}
+
+		//* Add the buyer to the list of auction's bidders
+		let isAdded: boolean = await this.auctionService.addBidderToWaitingList(
+			auctionId,
+			buyer._id.toString(),
+		);
+
+		if (!isAdded) {
+			throw new BadRequestException(
+				"Cannot append this bidder auction's waiting list 😪❌",
+			);
+		}
+
+		//* Add the auction to the list of joined auctions
+		isAdded = await this.appendAuctionInSavedAuctions(
+			auctionId,
+			buyer._id.toString(),
+		);
+
+		if (!isAdded) {
+			throw new BadRequestException('Cannot save this auction right now');
+		}
+
+		return {
+			success: true,
+			message:
+				'Auction saved successfully, you will be notified when auction start.',
+		};
 	}
 
 	/**
@@ -132,6 +175,27 @@ export class BuyerService {
 			bidderId,
 			{
 				$push: { joinedAuctions: auctionId },
+			},
+			{ new: true },
+		);
+
+		return updatedBidder != null;
+	}
+
+	/**
+	 * Save auction to get notified when start
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns Promise<boolean>
+	 */
+	private async appendAuctionInSavedAuctions(
+		auctionId: string,
+		bidderId: string,
+	): Promise<boolean> {
+		const updatedBidder = await this.buyerModel.findByIdAndUpdate(
+			bidderId,
+			{
+				$push: { savedAuctions: auctionId },
 			},
 			{ new: true },
 		);
