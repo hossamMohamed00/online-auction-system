@@ -2,7 +2,7 @@ import React from 'react';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
 // import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
-import { faCommentDots, faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faCommentDots, faCommentsDollar, faCreditCardAlt, faGavel } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
@@ -55,17 +55,12 @@ const BuyerDashboardContent = props => {
 	const dropdownListPayment = [
 		{
 			title: 'Charge Wallet ',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			icon: faCoins,
+			path: "/buyer-dashboard/chargeWallet",
 		},
 		{
-			title: 'Recover Money',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
-			title: 'Display Wallet Info',
-			icon: faGavel,
+			title: 'Display Wallet Transactions',
+			icon: faCreditCardAlt,
 			path: '/adminDashboard/currentAuctions',
 		}
 	];

@@ -54,6 +54,8 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
+import RecoverMoney from './component/Modules/BuyerModule/Payment/RecoverMoney';
 // end seller pages
 
 //* Payment
@@ -128,7 +130,7 @@ function App() {
 					<>
 						<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
 						<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
-						{/* Buyer Auctions */}
+						{/* start Buyer Auctions */}
 						<Route
 							path="/buyer-dashboard/saved-auctions"
 							element={<SavedAuctions />}
@@ -137,6 +139,20 @@ function App() {
 							path="/buyer-dashboard/participating-auctions"
 							element={<ViewParticipatingAuctions />}
 						/>
+						{/* end Buyer Auctions */}
+
+						{/* start Payment */}
+						<Route
+							path="/buyer-dashboard/chargeWallet"
+							element={<Wallet />}
+						/>
+
+						<Route
+							path="/buyer-dashboard/recoverMoney"
+							element={<RecoverMoney/>}
+						/>
+						{/* end Payment */}
+
 					</>
 				)}
 

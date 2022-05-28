@@ -1,41 +1,40 @@
 .modal{
-	background-color: rgba(0, 0, 0, 0.6)
+	background-color: rgba(0, 0, 0, 0.6)!important
 }
 .modal-content {
-	background-color: #111111;
+	background-color: #111111!important;
 	color: white;
-	width: 70%;
-	margin-left: 15%;
-	box-shadow: 1px 2px 9px #2c2a2a;
+	width: 70%!important;
+	margin-left: 15%!important;
+	box-shadow: 1px 2px 9px #2c2a2a!important;
 	min-height: 200px;
 	z-index: 20000 !important;
 	padding: 10px;
 }
 
-.modal-header{border-bottom: 0}
+.modal-header {border-bottom: 0!important;}
 .modal-header .modal-title{
-	width: 100%;
+	width: 100%!important;
 	text-align: center!important;
+	font-weight: bold!important;
+	font-size: 35px!important;
 }
 .modal-header .hasBorder {
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid white!important;
 	width: 100%;
 	padding-bottom: 15px;
-	font-size: 25px;
 	text-align: center;
 }
 
 .modal-header > .btn-close {display: none;}
 .btn-close-modal{
 	position: relative;
-	margin-top: -80px;
+	margin-top: -100px;
 	margin-right: -8%;
 	border-radius: 100px;
 
 }
-.modal-title {
-	font-weight: bold;
-}
+
 
 .btn-close{
 	color: var(--alert-color)!important;
@@ -43,9 +42,9 @@
 
 
 .modal-footer{
-	justify-content: center;
-	padding: 5px 0px 10px 0px ;
-	border-top: 0;
+	justify-content: center!important;;
+	padding: 5px 0px 10px 0px !important;
+	border-top: 0!important;
 }
 
 
@@ -54,9 +53,21 @@
 	margin-top: 10px;
 }
 
+.BalanceCard{
+	width: 40%;
+}
+.BalanceCard h5{
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
 @media screen  and (max-width:991px) {
 	.modal-content {
 		width: 100% !important;
-		margin-left: 0;
+		margin-left: 0!important;
+	}
+	.modal-header .modal-title, .modal-body  h4{
+		/* font-weight: bold!important; */
+		font-size: 18px!important;
 	}
 }

@@ -8,6 +8,11 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from './PaymentForm/index';
 import { getWalletBalance } from '../../../../Api/BuyerApi';
+import { useLocation } from 'react-router-dom';
+
+import BuyerDashboardContent from '../BuyerDashboard';
+import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
+import PageHeader from '../../../UI/Page Header/pageHeader';
 
 
 const Wallet = (props) => {
@@ -19,7 +24,13 @@ const Wallet = (props) => {
 
 	const idToken = useSelector(store=>store.AuthData.idToken)
 	const {sendRequest , status , data} = useHttp(getWalletBalance);
+	const [reloadBalance , setReloadBalance] = useState('')
 
+	const location = useLocation().pathname === "/buyer-dashboard/chargeWallet"
+
+	const reloadBalanceHandler = (value) => {
+		setReloadBalance(value)
+	}
 
 	const chargeWalletHandler = () => {
 		setChargeWallet(true)
@@ -30,7 +41,7 @@ const Wallet = (props) => {
 	// get wallet balance
 	useEffect(()=>{
 		sendRequest(idToken)
-	},[sendRequest])
+	},[sendRequest , reloadBalance])
 
 
 
@@ -59,6 +70,29 @@ const Wallet = (props) => {
 				btnHandler = {!chargeWallet && chargeWalletHandler}
 				btnFooterStyle =  {btnFooterStyle}
 			/>
+			{/* wallet on buyer dashboard */}
+			{location &&
+				<BuyerDashboardContent>
+					<PageContent>
+						<PageHeader text="Charge Wallet" showLink = {false}/>
+
+						{/* start view balance */}
+						<div className='BalanceCard mx-auto my-4 pt-4 d-flex flex-column justify-content-center bg-dark text-light text-center rounded-3'>
+							<h5 className='fw-bold pb-2'> Your Balance </h5>
+							<h5 className='bg-primary py-2 m-0'> {status==='completed'  && data && data.balance} </h5>
+
+						</div>
+						{/* end view balance */}
+
+						{/* start Payment form */}
+						<Elements stripe={stripePromise} >
+							<PaymentForm className="px-5 pt-3"  showAllBtns = {true} onReload = {reloadBalanceHandler} />
+						</Elements>
+						{/* end Payment form */}
+
+					</PageContent>
+				</BuyerDashboardContent>
+			}
 		</>
 	);
 }

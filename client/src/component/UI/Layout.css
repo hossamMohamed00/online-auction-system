@@ -105,14 +105,14 @@ html {
 
 .bg-danger,
 .btn-danger,
-.alert-danger
-{
+.alert-danger{
 	background-color: var(--alert-color) !important;
 	border-color: var(--alert-color) !important;
-
 }
-.text-danger {color: var(--alert-color) !important;}
-.bg-none {background: none; border: 0!important;}
+.btn-primary{background-color: var(--main-color)!important ; }
+.text-primary {color:var(--main-color)!important ; }
+.text-danger {color: var(--alert-color) !important}
+.bg-none {background: none; border: 0!important}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {

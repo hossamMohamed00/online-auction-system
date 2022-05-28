@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useSelector} from 'react-redux'
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
 
 
-const usePaymentForm = () => {
+const usePaymentForm = (onReload) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -13,7 +13,14 @@ const usePaymentForm = () => {
 	const email = useSelector(store => store.AuthData.email)
 	const idToken = useSelector(store => store.AuthData.idToken)
 
+	// get PaymentIntentId to recover money
+	const [PaymentIntentId , setPaymentIntentId] = useState('')
+	const [Loading , setLoading] = useState(false)
+
+
 	const handleSubmit = async (e , amount) => {
+		setLoading(true)
+
 		// We don't want to let default form submission happen here,
 		// which would refresh the page.
 		e.preventDefault();
@@ -47,7 +54,7 @@ const usePaymentForm = () => {
 		}
 
 		//? Create payment intent in the server
-		const { success, message } = await fetch(
+		const { success, message , data} = await fetch(
 			`${process.env.REACT_APP_API_URL}/wallet/charge`,
 			{
 				method: 'POST',
@@ -67,7 +74,14 @@ const usePaymentForm = () => {
 				console.log({ message });
 				toast.error({message})
 				return;
-		}
+
+
+			}
+			if(success === true){
+				setPaymentIntentId(data.paymentIntentId)
+				onReload(Math.random())
+				setLoading(false)
+			}
 
 		console.log('Charge wallet done successfully ✔✔✔, status is ' + message);
 		toast.success('Charge wallet done successfully ✔✔✔, status is ' + message)
@@ -76,6 +90,8 @@ const usePaymentForm = () => {
 
 	return {
 		handleSubmit,
+		PaymentIntentId,
+		Loading
 	};
 };
 
