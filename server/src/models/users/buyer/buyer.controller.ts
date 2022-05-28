@@ -26,8 +26,9 @@ import {
 	BuyerProfileBehaviors,
 	BuyerReviewsBehaviors,
 } from './interfaces';
-import { Buyer } from './schema/buyer.schema';
+import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 
 @ApiTags('Buyer')
 @Roles(Role.Buyer)
@@ -50,6 +51,14 @@ export class BuyerController
 	}
 
 	/* Handle Auctions Functions */
+	@Get('auctions')
+	@Serialize(BuyerDto)
+	listBidderJoinedAuctions(
+		@GetCurrentUserData() buyer: BuyerDocument,
+	): Promise<{ joinedAuctions: Auction[] }> {
+		return this.buyerService.listBidderJoinedAuctions(buyer);
+	}
+
 	@Post('auction/:id')
 	@HttpCode(HttpStatus.OK)
 	joinAuction(
@@ -60,6 +69,7 @@ export class BuyerController
 	}
 
 	@Post('auction/:id')
+	@HttpCode(HttpStatus.OK)
 	retreatFromAuction(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
@@ -67,7 +77,8 @@ export class BuyerController
 		return this.buyerService.retreatFromAuction(buyer, id);
 	}
 
-	@Post('auction/:id')
+	@Post('auction/save/:id')
+	@HttpCode(HttpStatus.OK)
 	saveAuctionForLater(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
