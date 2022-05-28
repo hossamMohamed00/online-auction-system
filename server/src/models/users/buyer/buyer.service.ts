@@ -42,7 +42,7 @@ export class BuyerService {
 		//* Add the buyer to the list of auction's bidders
 		let isAdded: boolean = await this.auctionService.appendBidder(
 			auctionId,
-			buyer._id,
+			buyer._id.toString(),
 		);
 
 		if (!isAdded) {

@@ -22,9 +22,23 @@ import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction
 import WalletService from 'src/providers/payment/wallet.service';
 import { Bid } from '../bids/schema/bid.schema';
 import { BiddingIncrementRules } from 'src/providers/bids';
+import {
+	AdminManageAuctionsBehaviors,
+	BiddingBehaviors,
+	MainAuctionsBehaviors,
+	ScheduleAuctionsBehaviors,
+} from './interfaces';
 
 @Injectable()
-export class AuctionsService {
+export class AuctionsService
+	implements
+		MainAuctionsBehaviors,
+		AdminManageAuctionsBehaviors,
+		ScheduleAuctionsBehaviors,
+		BiddingBehaviors
+{
+	private logger: Logger = new Logger('AuctionsService 👋🏻');
+
 	constructor(
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
@@ -35,7 +49,8 @@ export class AuctionsService {
 		private readonly walletService: WalletService,
 	) {}
 
-	private logger: Logger = new Logger('AuctionsService 👋🏻');
+	/* Handle Main Auctions Methods */
+
 	/**
 	 * Create new auction
 	 * @param createAuctionDto
@@ -121,7 +136,7 @@ export class AuctionsService {
 	 * @param _id - Auction id
 	 * @returns Auction instance if found, NotFoundException thrown otherwise.
 	 */
-	async findById(_id: string) {
+	async findById(_id: string): Promise<Auction> {
 		const auction = await this.auctionModel
 			.findById(_id)
 			.populate(['seller', 'category', 'item', 'winningBuyer'])
@@ -143,7 +158,7 @@ export class AuctionsService {
 		auctionId: string,
 		sellerId: string,
 		{ item: itemNewData, ...updateAuctionDto }: UpdateAuctionDto,
-	) {
+	): Promise<Auction> {
 		//? Check if the auction exists or not
 		const isExists = await this.isExists(auctionId, sellerId);
 		if (!isExists) {
@@ -169,16 +184,44 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Get the end date of given auction
-	 * @param auctionId - Auction id
+	 * Remove auction by id
+	 * @param auctionId
+	 * @param sellerId
+	 * @returns Deleted auction instance
 	 */
-	async getAuctionEndDate(auctionId: string) {
-		const endDate = await this.auctionModel
-			.findById(auctionId)
-			.select('endDate');
+	async remove(auctionId: string, sellerId: string): Promise<Auction> {
+		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
+		const auction: AuctionDocument = await this.auctionModel.findOne({
+			_id: auctionId,
+			seller: sellerId,
+		});
+		if (!auction)
+			throw new NotFoundException('Auction not found for that seller❌');
 
-		return endDate;
+		//* Remove the auction using this approach to fire the pre hook event
+		await auction.remove();
+
+		return auction;
 	}
+
+	/**
+	 * Check if auction exists or not
+	 * @param auctionId
+	 * @param sellerId
+	 * @returns true if auction exists, false otherwise
+	 */
+	async isExists(auctionId: string, sellerId: string): Promise<boolean> {
+		//? Check if the seller owns this auction
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			seller: sellerId,
+		});
+
+		return count > 0;
+	}
+
+	/*---------------------------------------*/
+	/* Handle Admin Manage Auctions Methods */
 
 	/**
 	 * Approve specific auction
@@ -231,7 +274,10 @@ export class AuctionsService {
 	 * @param auctionId
 	 * @param rejectAuctionDto - The rejection message
 	 */
-	async rejectAuction(auctionId: string, rejectAuctionDto: RejectAuctionDto) {
+	async rejectAuction(
+		auctionId: string,
+		rejectAuctionDto: RejectAuctionDto,
+	): Promise<Auction> {
 		const rejectedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
@@ -244,11 +290,14 @@ export class AuctionsService {
 		return rejectedAuction;
 	}
 
+	/*---------------------------------------*/
+	/* Handle Schedule Auction Methods */
+
 	/**
 	 * Set the auction status to started(current auction)
 	 * @param auctionId - Auction id
 	 */
-	async markAuctionAsStarted(auctionId: string) {
+	async markAuctionAsStarted(auctionId: string): Promise<boolean> {
 		//? Update auction and set the status to be OnGoing.
 		const result = await this.updateAuctionStatus(
 			auctionId,
@@ -270,7 +319,7 @@ export class AuctionsService {
 	 * Set the auction status to ended(close auction)
 	 * @param auctionId
 	 */
-	async markAuctionAsEnded(auctionId: string) {
+	async markAuctionAsEnded(auctionId: string): Promise<boolean> {
 		//? Update auction and set the status to be closed.
 		const result = await this.updateAuctionStatus(
 			auctionId,
@@ -291,63 +340,54 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Remove auction by id
-	 * @param auctionId
-	 * @param sellerId
-	 * @returns Deleted auction instance
-	 */
-	async remove(auctionId: string, sellerId: string) {
-		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
-		const auction: AuctionDocument = await this.auctionModel.findOne({
-			_id: auctionId,
-			seller: sellerId,
-		});
-		if (!auction)
-			throw new NotFoundException('Auction not found for that seller❌');
-
-		//* Remove the auction using this approach to fire the pre hook event
-		await auction.remove();
-
-		return auction;
-	}
-
-	/**
-	 * Check if auction exists or not
-	 * @param auctionId
-	 * @param sellerId
-	 * @returns true if auction exists, false otherwise
-	 */
-	async isExists(auctionId: string, sellerId: string): Promise<boolean> {
-		//? Check if the seller owns this auction
-		const count = await this.auctionModel.countDocuments({
-			_id: auctionId,
-			seller: sellerId,
-		});
-
-		return count > 0;
-	}
-
-	/**
-	 * Check if there are an auction with given id
-	 * @param auctionId
-	 * @returns true if auction exists, false otherwise
-	 */
-	async isValidAuction(auctionId: string): Promise<boolean> {
-		//? Get the count of auctions with given id
-		const count = await this.auctionModel.countDocuments({
-			_id: auctionId,
-			status: AuctionStatus.OnGoing,
-		});
-
-		return count > 0;
-	}
-
-	/**
-	 * Check if the auction is available for bidding or not
+	 * Change auction status to specific status
 	 * @param auctionId - Auction id
-	 * @returns true or false
+	 * @param status - Auction status
+	 * @returns boolean
 	 */
-	async isAvailableToJoin(auctionId: string): Promise<boolean> {
+	async updateAuctionStatus(
+		auctionId: string,
+		status: AuctionStatus,
+	): Promise<boolean> {
+		//? Find the auction by id and set the status
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$set: {
+					status: status,
+				},
+			},
+			{ new: true },
+		);
+
+		if (!auction) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get the end date of given auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionEndDate(auctionId: string): Promise<any> {
+		const endDate = await this.auctionModel
+			.findById(auctionId)
+			.select('endDate');
+
+		return endDate;
+	}
+
+	/*-------------------------------*/
+	/* Handle Bidder Related Methods */
+
+	/**
+	 * Check if there are an auction with given id and is still ongoing
+	 * @param auctionId
+	 * @returns true if auction exists, false otherwise
+	 */
+	async isValidAuctionForBidding(auctionId: string): Promise<boolean> {
+		//? Get the count of auctions with given id
 		const count = await this.auctionModel.countDocuments({
 			_id: auctionId,
 			status: AuctionStatus.OnGoing,
@@ -362,7 +402,7 @@ export class AuctionsService {
 	 * @param bidderId - Bidder id
 	 * @returns Promise<boolean>
 	 */
-	async isAlreadyJoined(auctionId: string, bidderId: ObjectId) {
+	async isAlreadyJoined(auctionId: string, bidderId: string): Promise<boolean> {
 		const count = await this.auctionModel.countDocuments({
 			_id: auctionId,
 			bidders: bidderId,
@@ -377,7 +417,7 @@ export class AuctionsService {
 	 * @param bidderId
 	 * @returns true if he has, false otherwise
 	 */
-	async hasMinAssurance(auctionId: string, bidderId: ObjectId) {
+	async hasMinAssurance(auctionId: string, bidderId: string): Promise<boolean> {
 		//* Get the auction
 		const auction = await this.auctionModel.findById(auctionId);
 
@@ -396,7 +436,7 @@ export class AuctionsService {
 	 * @param bidderId - Bidder id
 	 * @returns Promise<boolean>
 	 */
-	async appendBidder(auctionId: string, bidderId: ObjectId): Promise<boolean> {
+	async appendBidder(auctionId: string, bidderId: string): Promise<boolean> {
 		const auction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
@@ -417,8 +457,6 @@ export class AuctionsService {
 	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
 		//* Get the auction
 		const auction = await this.auctionModel.findById(auctionId);
-
-		console.log(auction.minimumBidAllowed);
 
 		//* Check if the bid is greater than the current bid and the opening bid
 		return bidValue >= auction.minimumBidAllowed;
@@ -499,29 +537,6 @@ export class AuctionsService {
 		};
 	}
 
-	/**
-	 * Change auction status to specific status
-	 * @param auctionId - Auction id
-	 * @param status - Auction status
-	 * @returns boolean
-	 */
-	async updateAuctionStatus(auctionId: string, status: AuctionStatus) {
-		//? Find the auction by id and set the status
-		const auction = await this.auctionModel.findByIdAndUpdate(
-			auctionId,
-			{
-				$set: {
-					status: status,
-				},
-			},
-			{ new: true },
-		);
-
-		if (!auction) {
-			return false;
-		}
-		return true;
-	}
 	/*-------------------------*/
 	/* Helper functions */
 

@@ -62,7 +62,9 @@ export class AuctionValidationService {
 		const validationResult = { success: true, message: undefined };
 
 		//? Ensure that auction is available to join (is currently ongoing)
-		const isAvailable = await this.auctionService.isAvailableToJoin(auctionId);
+		const isAvailable = await this.auctionService.isValidAuctionForBidding(
+			auctionId,
+		);
 		if (!isAvailable) {
 			validationResult.success = false;
 			validationResult.message =
@@ -74,7 +76,7 @@ export class AuctionValidationService {
 		//? Ensure that the bidder is not already joined
 		const isAlreadyJoined = await this.auctionService.isAlreadyJoined(
 			auctionId,
-			bidderId,
+			bidderId.toString(),
 		);
 		if (isAlreadyJoined) {
 			validationResult.success = false;
@@ -87,7 +89,7 @@ export class AuctionValidationService {
 		//?Ensure that the buyer has auction's assurance in his wallet
 		const hasMinAssurance = await this.auctionService.hasMinAssurance(
 			auctionId,
-			bidderId,
+			bidderId.toString(),
 		);
 		if (!hasMinAssurance) {
 			validationResult.success = false;

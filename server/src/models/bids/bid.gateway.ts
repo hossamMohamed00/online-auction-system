@@ -176,7 +176,10 @@ export class BidGateway
 		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		if (!auctionId || !this.auctionService.isValidAuction(auctionId)) {
+		if (
+			!auctionId ||
+			!this.auctionService.isValidAuctionForBidding(auctionId)
+		) {
 			throw new WsException('You must provide valid auction id 😉');
 		}
 
