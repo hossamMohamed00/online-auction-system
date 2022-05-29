@@ -15,14 +15,17 @@ const SellerProfile = props => {
 	}, sendRequest);
 	console.log(data);
 
+
 	return (
 		<UserProfile
+		data={data && data}
 			seller={data && data.seller}
 			name={data && data.seller.name}
 			role={data && data.seller.role}
 			auctions={data && data.auctions}
 			reviews={data && data.reviews}
 			img={buyerImg}
+
 		/>
 	);
 };

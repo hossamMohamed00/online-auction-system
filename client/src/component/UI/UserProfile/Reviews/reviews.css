@@ -1,14 +1,13 @@
 .card_container_Profile {
-	/* background-color: white; */
 	border-radius: 15px;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 	-ms-border-radius: 15px;
 	-o-border-radius: 15px;
 	padding: 2% 3%;
-	/* margin-top: 4% !important; */
+
 	width: 80%;
-	margin: 4% 10% 0;
+	margin: 0 10% 0;
 }
 .card_profile{
 	background-color: rgb(160, 71, 71);

@@ -1,6 +1,6 @@
 import React from 'react';
-import ViewAuctionDetails from '../ViewAuctionDetails/ViewAuctionDetails';
-import './profile.css';
+import ViewAuctionDetails from '../../ViewAuctionDetails/ViewAuctionDetails';
+import '../profile.css';
 
 const Auctions = props => {
 	return (
