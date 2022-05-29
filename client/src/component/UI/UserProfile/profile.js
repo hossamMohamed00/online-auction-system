@@ -32,14 +32,20 @@ const UserProfile = props => {
 						</div>
 					</header>
 				</section>
+				<hr className="bg-light profileHr1" />
+
 				<section className="profile_content">
-					<div className="profile_cards">
+					{/* <div className="profile_cards">
 						<CardsContainer
 							title="joined Auctions"
 							cards={props.cards}
+							class="profile_card "
+							card-class="cardP"
 						/>
-					</div>
-					<div className='profile_table'>
+					</div> */}
+					{/* <hr className="bg-light profileHr2" /> */}
+					<div className="profile_table">
+						<h2 className="text-light mt-2 fw-bold">Joined Auctions</h2>
 						{data && (
 							<DataTable
 								// selectableRows

@@ -1,5 +1,5 @@
 .container_profile {
-	background-color: #2e2f32;
+	background-color: #191c20;
 	min-height: 100vh !important;
 	/* margin : 0 5% !important; */
 }
@@ -58,8 +58,23 @@
 }
 .profile_cards {
 	width: 80%;
-	margin: 10% 10% 0;
+	margin: 0 10%;
+	/* background-color: #262525 !important; */
 }
+.profile_card {
+	background-color: #191c20;
+	padding: 2% 3%;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
+}
+.cardP {
+	background-color: #424242 !important;
+	margin-left: 34%;
+}
+/* 424242 */
 .profile_table {
 	width: 80%;
 	background-color: #191c20;
@@ -70,4 +85,10 @@
 	-o-border-radius: 15px;
 	padding: 2% 3%;
 	margin: 5% 10% 0;
+}
+.profileHr1 {
+	margin: 10% 10% 0;
+}
+.profileHr2 {
+	margin: 0 10%;
 }
