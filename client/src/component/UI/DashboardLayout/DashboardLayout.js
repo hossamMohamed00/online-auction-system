@@ -21,7 +21,7 @@ const Wrapper = props => {
 
 	// console.log("role2" , role , props)
 	const sidebarAdmin = role === 'admin' && {
-		admin: { list: props.admin.list, name: props.admin.name },
+		admin: { name: props.admin.name, path: '/adminDashboard' },
 		employees: {
 			list: props.Employees.list,
 			name: props.Employees.name,
@@ -55,7 +55,10 @@ const Wrapper = props => {
 	};
 
 	const sidebarBuyer = role === 'buyer' && {
-		buyer: { name: props.buyer.name },
+		buyer: {
+			name: props.buyer.name ? props.buyer.name : 'buyer',
+			path: '/buyer-dashboard',
+		},
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,
@@ -72,9 +75,42 @@ const Wrapper = props => {
 			icon: faCreditCardAlt,
 		},
 	};
+	const sidebarEmployee = role ==='employee'&& {
+		admin: { name: props.admin.name, path: '/employeeDashboard' },
+		users: {
+			list: props.users.list,
+			name: props.users.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		auctions: {
+			list: props.auctions.list,
+			name: props.auctions.name,
+			icon: faGavel,
+			class: 'auctions',
+		},
+		requests: {
+			list: props.requests.list,
+			name: props.requests.name,
+			icon: faTh,
+			class: 'requests',
+		},
+		compliments: {
+			list: props.compliments.list,
+			name: props.compliments.name,
+			icon: faComment,
+			class: 'auctions',
+		},
+		Inquiries: {
+			list: props.inquiries.list,
+			name: props.inquiries.name,
+			icon: faComment,
+			class: 'requests',
+		},
+	};
 
 	const sidebarSeller = role === 'seller' && {
-		seller: { name: props.seller.name },
+		seller: { name: props.seller.name, path: '/seller-dashboard' },
 		profile: {
 			list: props.profile.list,
 			name: props.profile.name,
@@ -98,6 +134,7 @@ const Wrapper = props => {
 
 	const sidebarContent = {
 		admin: sidebarAdmin,
+		employee: sidebarEmployee,
 		seller: sidebarSeller,
 		buyer: sidebarBuyer,
 	};
@@ -108,8 +145,8 @@ const Wrapper = props => {
 		setShowSideBar(!showSideBar);
 	};
 	return (
-		<div className={`container-fluid   ${classes.wrapper}  `}>
-			<div className="row">
+		<div className={`container-fluid  ${classes.wrapper}  `}>
+			<div className="row  position-relative">
 				{showSideBar && (
 					<div
 						className={` ${

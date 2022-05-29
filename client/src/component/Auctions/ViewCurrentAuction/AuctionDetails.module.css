@@ -1,6 +1,10 @@
 .CreatorName,
 .CategoryName {
+<<<<<<< HEAD
+	color: var(--paragraph-color);
+=======
 	color: var(--paragaph-color);
+>>>>>>> main
 }
 .CreatorName:hover,
 .CategoryName:hover {
@@ -8,7 +12,11 @@
 }
 
 .ItemsDetails > p {
+<<<<<<< HEAD
+	color: var(--paragraph-color) !important;
+=======
 	color: var(--paragaph-color) !important;
+>>>>>>> main
 }
 .MinimumBidValue,
 .AuctionDate {
@@ -31,7 +39,11 @@
 }
 
 .hrRight {
+<<<<<<< HEAD
+	border-right: 1.7px solid var(--paragraph-color);
+=======
 	border-right: 1.7px solid var(--paragaph-color);
+>>>>>>> main
 	margin-top: -24px;
 	opacity: 0.25;
 }

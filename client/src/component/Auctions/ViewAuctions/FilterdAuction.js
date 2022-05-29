@@ -34,14 +34,14 @@ function FilterdAuctions(props) {
 		console.log(value);
 	};
 
-	const filterAuctionHandeler = () => {
+	const filterAuctionHandler = () => {
 		const FilterValues = {
 			AuctionType: AuctionType,
 			AuctionCategory: AuctionCategory,
 			AuctionMinPriceRef: AuctionMinPriceRef.current.value,
 			AuctionMaxPriceRef: AuctionMaxPriceRef.current.value,
 		};
-		props.filterHandeler(FilterValues);
+		props.filterHandler(FilterValues);
 	};
 
 	return (
@@ -100,7 +100,7 @@ function FilterdAuctions(props) {
 
 				<button
 					className={` ${classes.btnFilter} btn w-100 `}
-					onClick={filterAuctionHandeler}
+					onClick={filterAuctionHandler}
 				>
 					{' '}
 					Filter

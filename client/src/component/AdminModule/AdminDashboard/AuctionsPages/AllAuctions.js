@@ -11,15 +11,16 @@ import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 
-const CurrentAuctionsPage = () => {
+const AllAuctions = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const { sendRequest, status: statusForGet, data, error } = useHttp(
 		getAllAuctions,
 	);
+	// ! to be removed
 
 	useEffect(() => {
-		sendRequest({ idToken, status: 'ongoing' });
+		sendRequest({ idToken });
 	}, [sendRequest]);
 	const [ongoingAuctions, setOngoingAuctions] = useState([]);
 	useEffect(() => {
@@ -28,7 +29,11 @@ const CurrentAuctionsPage = () => {
 			data.map(data => {
 				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
 				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
-				data.endDate = newEndDate;
+				if (data.endDate) {
+					data.endDate = newEndDate;
+				} else {
+					data.endDate = <span>NA</span>;
+				}
 
 				data.startDate = newStartDate;
 			});
@@ -42,17 +47,14 @@ const CurrentAuctionsPage = () => {
 			name: 'Title',
 			selector: row => row.title,
 			sortable: true,
-			center: true,
 		},
 		{
 			name: 'Base Price',
 			selector: row => row.basePrice,
-			center: true,
 		},
 		{
 			name: 'Start Date',
 			selector: row => row.startDate,
-			center: true,
 		},
 		{
 			name: 'End Date',
@@ -62,16 +64,14 @@ const CurrentAuctionsPage = () => {
 		{
 			name: 'Seller',
 			selector: row => row.seller.name,
-			center: true,
 		},
 		{
 			name: 'Status',
 			selector: row => row.status,
-			center: true,
 		},
 		{
 			name: 'Actions',
-			center: true,
+			// selector: row => row.action,
 			cell: props => {
 				return (
 					<span className="text-info">
@@ -107,4 +107,4 @@ const CurrentAuctionsPage = () => {
 	);
 };
 
-export default CurrentAuctionsPage;
+export default AllAuctions;

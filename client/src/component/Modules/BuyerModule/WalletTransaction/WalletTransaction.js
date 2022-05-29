@@ -1,6 +1,13 @@
+<<<<<<< HEAD
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+=======
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+>>>>>>> main
 import { Col, Row } from 'react-bootstrap';
 
 import DataTable from 'react-data-table-component';
@@ -45,6 +52,10 @@ const WalletTransaction = () => {
 		status: statusForWalletTrans,
 		data: dataForWalletTrans,
 	} = useHttp(getWalletTransactions);
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
 	useEffect(() => {
 		sendRequestForWalletTrans(idToken);
 	}, [sendRequestForWalletTrans, reload]);
@@ -56,20 +67,38 @@ const WalletTransaction = () => {
 	}, [status]);
 
 	// get num of withdraw and deposit transaction
+<<<<<<< HEAD
+	console.log(dataForWalletTrans&&dataForWalletTrans)
+
 	useEffect(() => {
 		if (statusForWalletTrans === 'completed') {
+			console.log(dataForWalletTrans)
+=======
+	useEffect(() => {
+		if (statusForWalletTrans === 'completed') {
+>>>>>>> main
 			setDepositNum(
 				dataForWalletTrans.filter(trans => trans.transactionType === 'deposit')
 					.length,
 			);
 			setWithdrawNum(
+<<<<<<< HEAD
+			 dataForWalletTrans.filter(
+=======
 				dataForWalletTrans.filter(
+>>>>>>> main
 					trans => trans.transactionType === 'withdrawal',
 				).length,
 			);
 			setLoading(false);
 		}
+<<<<<<< HEAD
+	}, [statusForWalletTrans, reload , dataForWalletTrans]);
+
+
+=======
 	}, [statusForWalletTrans, reload, paymentIntentId]);
+>>>>>>> main
 	// end get wallet transaction
 
 	const columns = [
@@ -89,7 +118,11 @@ const WalletTransaction = () => {
 		},
 		{
 			name: 'Date',
+<<<<<<< HEAD
+			selector: row => moment(row.createdAt).format('L'),
+=======
 			selector: row => row.createdAt,
+>>>>>>> main
 			sortable: true,
 		},
 		{
@@ -100,7 +133,11 @@ const WalletTransaction = () => {
 					<>
 						{props.transactionType === 'deposit' && (
 							<button
+<<<<<<< HEAD
+								className="btn bg-danger text-light my-2 "
+=======
 								className="btn btn-danger my-2 "
+>>>>>>> main
 								onClick={() => showRecoverModalHandler(props.paymentIntentId)}
 							>
 								<FontAwesomeIcon icon={faEdit} />

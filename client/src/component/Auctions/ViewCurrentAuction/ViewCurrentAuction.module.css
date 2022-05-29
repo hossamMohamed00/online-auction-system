@@ -27,7 +27,7 @@
 	font-size: 15px;
 	margin: 2px;
 	margin-bottom: 0;
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 	cursor: pointer;
 	transition: all 0.5;
 	padding: 5px 15px !important;

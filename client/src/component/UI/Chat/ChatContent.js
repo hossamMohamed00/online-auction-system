@@ -7,7 +7,11 @@ import classes from './ChatContent.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
+<<<<<<< HEAD
+function ChatContent({ socket, getChatWithEmail, className }) {
+=======
 function ChatContent({ socket, getChatWithEmail }) {
+>>>>>>> main
 	const email = useSelector(store => store.AuthData.email);
 
 	const [Message, setMessage] = useState([]);
@@ -55,7 +59,11 @@ function ChatContent({ socket, getChatWithEmail }) {
 		return Time;
 	};
 	return (
+<<<<<<< HEAD
+		<div className={`${classes.ChatContent} ${className ? className : ''}`}>
+=======
 		<div className={`${classes.ChatContent}`}>
+>>>>>>> main
 			{Message && Message.length !== 0 && (
 				<>
 					<input
@@ -76,7 +84,11 @@ function ChatContent({ socket, getChatWithEmail }) {
 					</button>
 				</>
 			)}
+<<<<<<< HEAD
+			<div className={` ${className ? className : ''} ${classes.Messages}`}>
+=======
 			<div className={classes.Messages}>
+>>>>>>> main
 				{Message && Message.length !== 0 ? (
 					Message.map((message, index) => (
 						<React.Fragment key={index}>

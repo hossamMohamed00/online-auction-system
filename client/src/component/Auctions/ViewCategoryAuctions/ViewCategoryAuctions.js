@@ -23,6 +23,20 @@ const ViewCategoryAuctions = () => {
 	const RestItems = data && data.slice(3);
 
 	const location = useLocation();
+<<<<<<< HEAD
+	const CategoryId = new URLSearchParams(location.search).get('id');
+
+	useEffect(() => {
+		if (CategoryId) {
+			console.log('change ca1');
+			setChangeCategory(Math.random());
+		}
+	}, [CategoryId]);
+
+	useEffect(() => {
+		console.log('change ca2');
+		sendRequest(CategoryId && CategoryId);
+=======
 	const CategoriyId = new URLSearchParams(location.search).get('id');
 
 	useEffect(() => {
@@ -35,6 +49,7 @@ const ViewCategoryAuctions = () => {
 	useEffect(() => {
 		console.log('change ca2');
 		sendRequest(CategoriyId && CategoriyId);
+>>>>>>> main
 	}, [sendRequest, changeCategory]);
 
 	return (

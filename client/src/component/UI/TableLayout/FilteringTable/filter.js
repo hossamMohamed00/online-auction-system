@@ -11,10 +11,16 @@ const useFilter = (items, colName) => {
 	);
 
 	const subHeaderComponentMemo = React.useMemo(() => {
+		const handleClear = () => {
+			if (filterText) {
+				setFilterText('');
+			}
+		};
 		return (
 			<FilterComponent
 				onFilter={e => setFilterText(e.target.value)} // onchange
 				filterText={filterText} //value
+				onClear={handleClear} //
 			/>
 		);
 	}, [filterText]);

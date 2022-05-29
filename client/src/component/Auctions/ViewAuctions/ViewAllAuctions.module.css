@@ -27,7 +27,11 @@
 
 .AuctionType label,
 .AuctionCategory label {
+<<<<<<< HEAD
+	color: var(--paragraph-color) !important;
+=======
 	color: var(--paragaph-color) !important;
+>>>>>>> main
 	font-weight: lighter !important;
 	cursor: pointer;
 }

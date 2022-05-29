@@ -38,7 +38,7 @@ const Categories = () => {
 			);
 		});
 
-	const btnShowCategoryHandeler = e => {
+	const btnShowCategoryHandler = e => {
 		e.preventDefault();
 		setIsHiddenCategories(true);
 	};
@@ -53,10 +53,10 @@ const Categories = () => {
 				<button
 					type="button"
 					className="btn-close d-md-none float-end m-2 text-dark bg-light"
-					onClick={btnShowCategoryHandeler}
+					onClick={btnShowCategoryHandler}
 					aria-label="Close"
 				></button>
-				<ul className={`list-group d-md-block  `}>{showAllCategories}</ul>
+				<ul className={`list-group d-md-block`}>{showAllCategories}</ul>
 			</div>
 		</Fragment>
 	);

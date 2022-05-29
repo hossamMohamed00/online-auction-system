@@ -42,7 +42,11 @@ function Services() {
 	));
 	return (
 		<>
+<<<<<<< HEAD
+			<div className={classes.ServiceCard}>
+=======
 			<div className={classes.ServeiceCard}>
+>>>>>>> main
 				<Row>{showServiceCard}</Row>
 			</div>
 		</>

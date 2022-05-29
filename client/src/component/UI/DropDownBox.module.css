@@ -36,7 +36,11 @@
 @media (max-width: 768px) {
 	.DropDownBox {
 		width: 100% !important;
+<<<<<<< HEAD
+		min-height: 100% !important;
+=======
 		height: 100% !important;
+>>>>>>> main
 		top: 0px;
 		text-align: left;
 		left: 0;

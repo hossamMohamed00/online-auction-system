@@ -10,10 +10,12 @@ const Sidebar = props => {
 	let user = props.sidebarContent;
 	const userName = Object.keys(user)[0];
 
+
+
 	return (
 		<React.Fragment>
 			<div
-				className={`${classes.sidebar}  position-relative animation-from-left`}
+				className={`${classes.sidebar} position-relative animation-from-left `}
 			>
 				<div className={`${classes.logo}  text-center `}>
 					<Link
@@ -41,7 +43,11 @@ const Sidebar = props => {
 								id="admin"
 							/>
 						) : (
-							<h5 className="text-light fw-bold"> {user[userName].name}</h5>
+							<Link to={user[userName].path}>
+								<h5 className="text-light fw-bold text-decoration-none">
+									{user[userName].name}
+								</h5>
+							</Link>
 						)}
 					</div>
 				</div>

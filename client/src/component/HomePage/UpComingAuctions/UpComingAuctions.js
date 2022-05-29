@@ -17,7 +17,7 @@ const UpComingAuctions = () => {
 
 	return (
 		<Fragment>
-			<div className={` ${classes.UpComingAuctions} container-fluied`}>
+			<div className={` ${classes.UpComingAuctions} container-fluid`}>
 				<PageHeader text="UpComing Auctions" showLink={true} />
 				<div className={classes.UpComingAuctionsContent}>
 					{status === 'completed' && data.length > 0 && (

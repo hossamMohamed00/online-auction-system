@@ -10,7 +10,11 @@
 	max-height: 80vh;
 	overflow-y: auto;
 	background-color: #191c20;
+<<<<<<< HEAD
+	margin-top: 25px !important;
+=======
 	margin-top: 50px !important;
+>>>>>>> main
 	padding-bottom: 50px;
 }
 
@@ -32,3 +36,15 @@
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
+<<<<<<< HEAD
+
+
+@media screen and (max-width:768px)  {
+	.chatList > div, .ChatContent > div {
+		height: 100vh!important;
+		padding-bottom: 5%!important;
+	}
+
+}
+=======
+>>>>>>> main

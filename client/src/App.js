@@ -50,6 +50,12 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+<<<<<<< HEAD
+import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
+import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
+import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
+=======
+>>>>>>> main
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // end seller pages
@@ -91,30 +97,50 @@ function App() {
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
-					path="/adminDashboard/upcomingAuctions"
+					path="/managersDashboard/allAuctions"
+					element={<AllAuctions />}
+				/>
+				<Route
+					path="/managersDashboard/upcomingAuctions"
 					element={<UpcomingAuctionsPage />}
 				/>
 				<Route
-					path="/adminDashboard/currentAuctions"
+					path="/managersDashboard/currentAuctions"
 					element={<CurrentAuctionsPage />}
 				/>
 				<Route
-					path="/adminDashboard/pendingAuctions"
+					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
+<<<<<<< HEAD
+				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
+				<Route
+					path="/managersDashboard/sellersPage"
+					element={<SellersPage />}
+				/>
+				<Route path="/managersDashboard/buyersPage" element={<BuyersPage />} />
+				<Route
+					path="/managersDashboard/addEmployee"
+					element={<AddEmployee />}
+				/>
+=======
 				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
 				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
 				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
 				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
+>>>>>>> main
 				<Route
-					path="/adminDashboard/listAllEmployees"
+					path="/managersDashboard/listAllEmployees"
 					element={<ListAllEmployees />}
 				/>
 				<Route
-					path="/adminDashboard/manageCategories"
+					path="/managersDashboard/manageCategories"
 					element={<ManageCategories />}
 				/>
 				{/* end Admin Routes */}
+				{/* start route Employees */}
+				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
+				<Route path="/managersDashboard/allCompliments" element={<AllCompliments />} />
 
 				{/* start buyer routes  */}
 
