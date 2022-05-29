@@ -29,7 +29,7 @@ const Chat = () => {
 
 	return (
 		<PageContent className={`${classes.PageContentClasses}`}>
-			<Row className="h-100">
+			<Row className="h-100 m-0">
 				<Col
 					lg={4}
 					md={6}

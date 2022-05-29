@@ -77,9 +77,9 @@ const BuyerDashboardContent = props => {
 				chat={{ name: 'Chat', list: dropdownListChat }}
 				payment={{ name: 'Payment', list: dropdownListPayment }}
 			>
-				<PageContent>
-					{contentExist ? props.children : <h1> hello buyer</h1>}
-				</PageContent>
+			{contentExist ? props.children : <h1> hello buyer</h1>}
+				{/* <PageContent className={props.className ? props.className : ''}>
+				</PageContent> */}
 			</DashboardLayout>
 		</>
 	);
