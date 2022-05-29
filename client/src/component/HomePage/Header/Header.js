@@ -8,20 +8,20 @@ import Wallet from '../../Modules/BuyerModule/Payment/Wallet.';
 const Header = () => {
 	const [showWallet, setShowWallet] = useState(false);
 
-	const showWalletHandeler = () => {
+	const showWalletHandler = () => {
 		setShowWallet(true);
 	};
 	return (
 		<Fragment>
 			<div className="position-relative">
-				<Navbar showWalletHandeler={showWalletHandeler} />
+				<Navbar showWalletHandler={showWalletHandler} />
 				{/* start Header  */}
 				<div className={classes.Header}></div>
 
 				{/* start Header content  */}
 				<div className={classes.overlay}>
 					<div className={classes.HeaderContent}>
-						<div className="">
+						<div>
 							<h2 className="fw-bold text-light pt-3 pb-2 fa-1 text-center">
 								Best Place TO Bid Or Sell
 							</h2>

@@ -3,7 +3,6 @@ import { Carousel } from 'react-bootstrap';
 import classes from './Carousel.module.css';
 
 const Slider = props => {
-	console.log(props.children.length);
 	const ShowCarouselItems =
 		props.children && !props.children.length ? (
 			<Carousel.Item interval={200}>{props.children}</Carousel.Item>

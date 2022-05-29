@@ -8,12 +8,12 @@ import HowBidCard from './HowBidCard';
 
 const CardDetails = ({ Title, Text, btnText, linkTo, CardStyle }) => {
 	return (
-		<HowBidCard className={CardStyle}>
+		<HowBidCard className={CardStyle ? CardStyle : '' }>
 			<div className={classes['card-content']}>
 				<h3 className={`${classes.Step} text-center `}> {Title}</h3>
 				<p
-					className={`${classes.pragraghS} ${
-						CardStyle !== '' ? classes.pragraghChangeColor : ''
+					className={`${classes.paragraphS} ${
+						CardStyle !== '' ? classes.paragraphChangeColor : ''
 					} text-center`}
 				>
 					{/* Join to bid you want{' '} */}
@@ -72,13 +72,13 @@ const HowBid = () => {
 				<h3 className={`${classes.header3} text-center fw-bold `}>
 					How Bid ?!
 				</h3>
-				<p className={`${classes.pragragh}`}>
+				<p className={`${classes.paragraph}`}>
 					Let's go on a trip through OnLine Auction
 				</p>
 				{/* start card group */}
 				<div className={`${classes.Steps} row m-0 p-0 `}>
-					{AllCardsDetails.map(card => (
-						<div className="col-lg col-md col-sm-6">
+					{AllCardsDetails.map((card, index) => (
+						<div className="col-lg col-md col-sm-6" key={index}>
 							{CardDetails({ ...card })}
 						</div>
 					))}

@@ -7,7 +7,7 @@ import classes from './Chat.module.css';
 import { Col, Row } from 'react-bootstrap';
 
 import ChatHistory from './ChatHistory';
-import scollbarStyle from '../../UI/ScrollBar.module.css';
+import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
 import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
@@ -40,7 +40,7 @@ const Chat = () => {
 					lg={4}
 					md={6}
 					sm={12}
-					className={`${classes.chatList} ${scollbarStyle.scollbar}`}
+					className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
 				>
 					<ChatHistory
 						chatWith={getChatWith}
@@ -52,16 +52,16 @@ const Chat = () => {
 					lg={8}
 					md={6}
 					sm={12}
-					className={`${classes.ChatContent} ${scollbarStyle.scollbar} `}
+					className={`${classes.ChatContent} ${scrollbarStyle.scrollbar} p-0 `}
 				>
 					<button
-						className={`btn bg-danger text-light ${!showChatHistory ? 'd-block d-xs-block' : 'd-none' }	`}
+						className={`btn bg-danger text-light position-fixed ${!showChatHistory ? 'd-block d-xs-block d-sm-block d-md-none' : 'd-none' }	`}
 						onClick={() => setShowChatHistory(true)}> X
 					</button>
 					<ChatContent
 						socket={socket}
 						getChatWithEmail={chatWith && chatWith}
-						className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } ps-0 `}
+						className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } `}
 					/>
 
 				</Col>

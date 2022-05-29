@@ -32,7 +32,7 @@ const Wallet = props => {
 
 	const reloadBalanceHandler = value => {
 		setReloadBalance(value);
-	};
+};
 
 	const chargeWalletHandler = () => {
 		setChargeWallet(true);

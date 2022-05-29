@@ -42,7 +42,7 @@ function Services() {
 	));
 	return (
 		<>
-			<div className={classes.ServeiceCard}>
+			<div className={classes.ServiceCard}>
 				<Row>{showServiceCard}</Row>
 			</div>
 		</>

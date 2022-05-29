@@ -3,27 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import classes from './Header.module.css';
-import scollbarStyle from '../../UI/ScrollBar.module.css';
+import scrollbarStyle from '../../UI/ScrollBar.module.css';
 
 const Search = () => {
 	const [ResultSearch, setResultSearch] = useState([]);
 	const [SearchContent, setSearchContent] = useState('');
-	const [searchFocus, setsearchFocus] = useState(false);
+	const [searchFocus, setSearchFocus] = useState(false);
 
 	useEffect(() => {
 		setResultSearch(items => [...items, SearchContent]);
 	}, [SearchContent]);
 
-	const changeHandeler = e => {
+	const changeHandler = e => {
 		setSearchContent(e.target.value);
 	};
 
-	const focusHandeler = () => {
-		setsearchFocus(true);
+	const focusHandler = () => {
+		setSearchFocus(true);
 	};
 
-	const blurHandeler = e => {
-		setsearchFocus(false);
+	const blurHandler = e => {
+		setSearchFocus(false);
 	};
 
 	return (
@@ -37,9 +37,9 @@ const Search = () => {
 							type="text"
 							className={` ${classes.SearchInput} form-control `}
 							value={SearchContent}
-							onChange={changeHandeler}
-							onFocus={focusHandeler}
-							onBlur={blurHandeler}
+							onChange={changeHandler}
+							onFocus={focusHandler}
+							onBlur={blurHandler}
 						/>
 						<span className={` ${classes.SearchIcon} input-group-text `}>
 							<FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -47,7 +47,7 @@ const Search = () => {
 					</div>
 					{SearchContent && (
 						<div
-							className={`${classes.SearchResult} ${scollbarStyle.scollbar} `}
+							className={`${classes.SearchResult} ${scrollbarStyle.scrollbar} `}
 						>
 							{ResultSearch.map((searchItem, index) => (
 								<p key={index}> {searchItem} </p>
