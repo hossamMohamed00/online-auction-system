@@ -21,10 +21,6 @@ export class Buyer extends User {
 	//* To keep track of joined auctions
 	@Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Auction.name }] })
 	joinedAuctions: Auction[];
-
-	//* To keep track of saved auctions
-	@Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Auction.name }] })
-	savedAuctions: Auction[];
 }
 
 export const BuyerSchema = SchemaFactory.createForClass(Buyer);

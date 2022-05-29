@@ -8,10 +8,6 @@ import classes from './UpComingAuctions.module.css';
 
 const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 	const ShowCarouselItems = ongoingAuctionData.map((Item, index) => {
-<<<<<<< HEAD
-=======
-		console.log(Item);
->>>>>>> main
 		return (
 			<div className="row" key={index}>
 				<div className="col-md-6 col-lg-6 pe-0 ">
@@ -27,17 +23,10 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 				</div>
 
 				<div
-<<<<<<< HEAD
 					className={`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
 				>
 					<h2 className="fw-bold text-center pb-1"> {Item.item.name} </h2>
 					{/* start Upgoing Auction details */}
-=======
-					className={`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}
-				>
-					<h2 className="fw-bold text-center pb-1"> {Item.item.name} </h2>
-					{/* start Upgoing Auciton details */}
->>>>>>> main
 					<div className="ps-3 pt-4">
 						<p className={` lead ${classes.ItemDescription} `}>
 							{' '}
@@ -82,11 +71,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 							</div>
 						</div>
 					</div>
-<<<<<<< HEAD
 					{/* end Upgoing Auction details */}
-=======
-					{/* end Upgoing Auciton details */}
->>>>>>> main
 
 					<Link
 						className={`${classes.btnViewDetails} btn px-3 py-1 `}

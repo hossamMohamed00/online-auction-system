@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 .ServiceCard {
-=======
-.ServeiceCard {
->>>>>>> main
 	width: 90vw;
 	margin-top: -10vh;
 	margin-bottom: 15vh;
@@ -44,17 +40,10 @@
 	word-spacing: 5px;
 }
 
-<<<<<<< HEAD
 /* start media query for medium screens && small screens */
 
 @media (max-width: 991px) {
 	.ServiceCard {
-=======
-/* start mediaquery for medium screens && small screens */
-
-@media (max-width: 991px) {
-	.ServeiceCard {
->>>>>>> main
 		margin-top: 10vh;
 		margin-bottom: 20vh;
 	}

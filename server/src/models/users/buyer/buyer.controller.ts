@@ -8,27 +8,25 @@ import {
 	Param,
 	Patch,
 	Post,
-	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { Auction } from 'src/models/auction/schema/auction.schema';
 import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { UpdateReviewDto } from 'src/models/review/dto/update-review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
 import { BuyerService } from './buyer.service';
-import { BuyerDto, ListBidderAuctionsQueryDto } from './dto';
+import { BuyerDto } from './dto';
 import {
 	BuyerAuctionsBehaviors,
 	BuyerProfileBehaviors,
 	BuyerReviewsBehaviors,
 } from './interfaces';
-import { Buyer, BuyerDocument } from './schema/buyer.schema';
-import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto';
-import { Auction } from 'src/models/auction/schema/auction.schema';
+import { Buyer } from './schema/buyer.schema';
 
 @ApiTags('Buyer')
 @Roles(Role.Buyer)
@@ -51,20 +49,7 @@ export class BuyerController
 	}
 
 	/* Handle Auctions Functions */
-	@Get('auctions')
-	@Serialize(BuyerDto)
-	listBidderAuctions(
-		@Query() listBidderAuctionsQueryDto: ListBidderAuctionsQueryDto,
-		@GetCurrentUserData()
-		buyer: BuyerDocument,
-	): Promise<any> {
-		return this.buyerService.listBidderJoinedAuctions(
-			buyer,
-			listBidderAuctionsQueryDto,
-		);
-	}
-
-	@Post('auction/join/:id')
+	@Post('auction/:id')
 	@HttpCode(HttpStatus.OK)
 	joinAuction(
 		@GetCurrentUserData() buyer: Buyer,
@@ -73,8 +58,7 @@ export class BuyerController
 		return this.buyerService.joinAuction(buyer, id);
 	}
 
-	@Post('auction/retreat/:id')
-	@HttpCode(HttpStatus.OK)
+	@Post('auction/:id')
 	retreatFromAuction(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
@@ -82,12 +66,11 @@ export class BuyerController
 		return this.buyerService.retreatFromAuction(buyer, id);
 	}
 
-	@Post('auction/save/:id')
-	@HttpCode(HttpStatus.OK)
+	@Post('auction/:id')
 	saveAuctionForLater(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
-	): Promise<{ success: boolean; message: string }> {
+	): Promise<boolean> {
 		return this.buyerService.saveAuctionForLater(buyer, id);
 	}
 
@@ -101,15 +84,6 @@ export class BuyerController
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
 		return this.buyerService.makeReview(createReviewDto, buyerId);
-	}
-
-	@Serialize(ReviewDto)
-	@Get('review')
-	getReviewOnSeller(
-		@Query() { sellerId }: FindReviewInSeller,
-		@GetCurrentUserData('_id') buyerId: string,
-	): Promise<Review> {
-		return this.buyerService.getReviewOnSeller(buyerId, sellerId);
 	}
 
 	@Serialize(ReviewDto)

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-<<<<<<< HEAD
 import './profile.css';
 import coverImg from '../../../assets/fbc2a961bfd0e7b5673a7922cb848cdb.jpg';
 import profileImg from '../../../assets/download.png';
@@ -16,14 +15,6 @@ const UserProfile = props => {
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
-=======
-import PageHeader from '../../UI/Page Header/pageHeader';
-import './profile.css';
-import { Col, Row } from 'react-bootstrap';
-
-const UserProfile = props => {
-	const role = useSelector(store => store.AuthData.role);
->>>>>>> main
 	return (
 		<>
 			<div className="container-fluid container_profile">

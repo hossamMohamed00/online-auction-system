@@ -11,38 +11,22 @@ html {
 	--thumbBG: var(--input-color);
 	background-color: var(--dark-color);
 }
-<<<<<<< HEAD
 .scrollbar::-webkit-scrollbar,
-=======
-.scollbar::-webkit-scrollbar,
->>>>>>> main
 body::-webkit-scrollbar {
 	width: 11px;
 }
 body,
-<<<<<<< HEAD
 .scrollbar {
-=======
-.scollbar {
->>>>>>> main
 	scrollbar-width: thin;
 	scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }
 body::-webkit-scrollbar-track,
-<<<<<<< HEAD
 .scrollbar::-webkit-scrollbar-track {
-=======
-.scollbar::-webkit-scrollbar-track {
->>>>>>> main
 	background: var(--scrollbarBG);
 }
 
 body::-webkit-scrollbar-thumb,
-<<<<<<< HEAD
 .scrollbar::-webkit-scrollbar-thumb {
-=======
-.scollbar::-webkit-scrollbar-thumb {
->>>>>>> main
 	background-color: var(--thumbBG);
 	border-radius: 6px;
 	border: 3px solid var(--scrollbarBG);

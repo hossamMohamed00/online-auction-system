@@ -20,10 +20,7 @@
 	text-align: center !important;
 	font-weight: bold !important;
 	font-size: 20px !important;
-<<<<<<< HEAD
 	padding-top: 15px;
-=======
->>>>>>> main
 }
 .modal-header .hasBorder {
 	border-bottom: 1px solid white !important;
@@ -37,14 +34,11 @@
 }
 .btn-close-modal {
 	position: relative;
-	margin-top: -100px;
+	margin-top: -80px;
 	margin-right: -8%;
 	border-radius: 100px;
-<<<<<<< HEAD
 	font-weight: bold;
 	color: white;
-=======
->>>>>>> main
 }
 
 .btn-close {

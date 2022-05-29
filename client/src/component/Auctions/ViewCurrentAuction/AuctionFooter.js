@@ -9,11 +9,7 @@ import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-<<<<<<< HEAD
 function AuctionFooter({ AuctionStatus, sellerEmail }) {
-=======
-function AuctionFooter({ AuctionStatus }) {
->>>>>>> main
 	const location = useLocation();
 const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
