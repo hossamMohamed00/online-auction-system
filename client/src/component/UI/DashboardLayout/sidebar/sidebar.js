@@ -15,7 +15,7 @@ const Sidebar = props => {
 	return (
 		<React.Fragment>
 			<div
-				className={`${classes.sidebar}  position-relative animation-from-left`}
+				className={`${classes.sidebar} position-relative animation-from-left `}
 			>
 				<div className={`${classes.logo}  text-center `}>
 					<Link

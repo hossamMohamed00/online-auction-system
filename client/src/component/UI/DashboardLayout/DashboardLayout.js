@@ -145,8 +145,8 @@ const Wrapper = props => {
 		setShowSideBar(!showSideBar);
 	};
 	return (
-		<div className={`container-fluid   ${classes.wrapper}  `}>
-			<div className="row">
+		<div className={`container-fluid  ${classes.wrapper}  `}>
+			<div className="row  position-relative">
 				{showSideBar && (
 					<div
 						className={` ${

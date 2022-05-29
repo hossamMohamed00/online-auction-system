@@ -20,7 +20,7 @@ const Header = props => {
 		<nav
 			className={`navbar navbar-light bg-black  p-2 ${navClasses} fixed-top `}
 		>
-			<div className="container-fluid  ">
+			<div className="container-fluid m-0 p-0 ">
 				{/* <div className='d-flex justify-content-between'></div> */}
 				<div className="d-flex">
 					<button onClick={props.toggleSidebar} className={classes.barBtn}>

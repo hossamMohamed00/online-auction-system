@@ -135,6 +135,7 @@ html {
 	}
 }
 
+
 @keyframes slide-from-top {
 	from {
 		transform: translateY(-10%);
