@@ -1,3 +1,4 @@
+import { ResponseResult } from 'src/common/types';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
@@ -32,7 +33,7 @@ export interface MainAuctionsBehaviors {
 	): Promise<boolean>;
 
 	//* Remove all category in one category
-	removeAllCategoryAuctions(categoryId: string): Promise<{ success: boolean }>;
+	removeAllCategoryAuctions(categoryId: string): Promise<ResponseResult>;
 
 	//* Check if auction exists or not
 	isExists(auctionId: string, sellerId: string): Promise<boolean>;

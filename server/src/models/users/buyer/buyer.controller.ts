@@ -34,6 +34,7 @@ import {
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ResponseResult } from 'src/common/types';
 
 @ApiTags('Buyer')
 @Controller('buyer')
@@ -106,7 +107,7 @@ export class BuyerController
 	saveAuctionForLater(
 		@GetCurrentUserData() buyer: Buyer,
 		@Param() { id }: MongoObjectIdDto,
-	): Promise<{ success: boolean; message: string }> {
+	): Promise<ResponseResult> {
 		return this.buyerService.saveAuctionForLater(buyer, id);
 	}
 

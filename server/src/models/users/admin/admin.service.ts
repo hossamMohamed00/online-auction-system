@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import {
 	FilterAuctionQueryDto,
@@ -261,7 +262,7 @@ export class AdminService {
 	 * @param complaintId
 	 * @returns true or false
 	 */
-	markComplaintRead(complaintId: String): Promise<{ success: boolean }> {
+	markComplaintRead(complaintId: String): Promise<ResponseResult> {
 		return this.complaintService.markComplaintAsRead(complaintId);
 	}
 

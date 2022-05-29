@@ -11,6 +11,7 @@ import { Review } from 'src/models/review/schema/review.schema';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { ListBidderAuctionsQueryDto } from './dto';
 import { BidderAuctionsEnumQuery } from './enums';
+import { ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class BuyerService {
@@ -150,7 +151,7 @@ export class BuyerService {
 	async saveAuctionForLater(
 		buyer: Buyer,
 		auctionId: string,
-	): Promise<{ success: boolean; message: string }> {
+	): Promise<ResponseResult> {
 		this.logger.debug(`Try to append ${buyer.name} to auction's waiting list!`);
 
 		//? Validate the data first

@@ -43,6 +43,7 @@ import { AdminDashboardBehavior } from './interfaces/manage-dashboard.interface'
 import { AdminDashboardData } from './types/dashboard-data.type';
 import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
+import { ResponseResult } from 'src/common/types';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -221,7 +222,7 @@ export class AdminController
 	}
 
 	@Patch('complaints/:id')
-	markAsRead(@Param() { id }: MongoObjectIdDto): Promise<{ success: boolean }> {
+	markAsRead(@Param() { id }: MongoObjectIdDto): Promise<ResponseResult> {
 		return this.adminService.markComplaintRead(id);
 	}
 
