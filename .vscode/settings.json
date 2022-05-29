@@ -2,7 +2,6 @@
 	"todo-tree.tree.scanMode": "workspace",
 	"todo-tree.tree.showBadges": true,
 	"cSpell.words": [
-<<<<<<< HEAD
 		"Btns",
 		"Filterd",
 		"fontawesome",
@@ -13,13 +12,6 @@
 		"toastify",
 		"Uogoing",
 		"Upgoing",
-=======
-		"Filterd",
-		"fortawesome",
-		"labelledby",
-		"Pagecontant",
-		"toastify",
->>>>>>> main
 		"Xmark"
 	]
 }

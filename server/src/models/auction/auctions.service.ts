@@ -459,20 +459,6 @@ export class AuctionsService {
 	}
 
 	/**
-	 * Check if the auction is available to save (it is upcoming)
-	 * @param auctionId
-	 * @returns true or false
-	 */
-	async isAvailableToSave(auctionId: string) {
-		const count = await this.auctionModel.countDocuments({
-			_id: auctionId,
-			status: AuctionStatus.UpComing,
-		});
-
-		return count > 0;
-	}
-
-	/**
 	 * Check if the bidder exists in the auction bidder list or not
 	 * @param auctionId - Auction id
 	 * @param bidderId - Bidder id
@@ -511,46 +497,6 @@ export class AuctionsService {
 			auctionId,
 			{
 				$push: { bidders: bidderId },
-			},
-			{ new: true },
-		);
-
-		return auction != null;
-	}
-
-	/**
-	 * Check if the bidder in auction's waiting list
-	 * @param auctionId
-	 * @param bidderId
-	 * @returns Promise<boolean>
-	 */
-	async isAlreadyInWaitingList(
-		auctionId: string,
-		bidderId: string,
-	): Promise<boolean> {
-		const count = await this.auctionModel.countDocuments({
-			_id: auctionId,
-			waitingBidders: bidderId,
-		});
-
-		return count > 0;
-	}
-
-	/**
-	 * Add bidder to the auction's waiting list
-	 * @param auctionId - Auction id
-	 * @param bidderId - Bidder id
-	 * @returns Promise<boolean>
-	 */
-	async addBidderToWaitingList(
-		auctionId: string,
-		bidderId: string,
-	): Promise<boolean> {
-		//* push the bidder to the waiting list
-		const auction = await this.auctionModel.findByIdAndUpdate(
-			auctionId,
-			{
-				$push: { waitingBidders: bidderId },
 			},
 			{ new: true },
 		);

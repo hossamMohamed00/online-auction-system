@@ -69,7 +69,6 @@ const BuyerDashboardContent = props => {
 	];
 	const contentExist = props.children;
 	return (
-<<<<<<< HEAD
 		<>
 			<DashboardLayout
 				buyer={{ name: `${email}` }}
@@ -83,23 +82,6 @@ const BuyerDashboardContent = props => {
 				</PageContent> */}
 			</DashboardLayout>
 		</>
-=======
-		<DashboardLayout
-			buyer={{ name: `${email}` }}
-			profile={{ name: 'Profile', list: dropdownListProfile }}
-			viewAuctions={{ name: 'View Auctions', list: dropdownListViewAuctions }}
-			chat={{ name: 'Chat', list: dropdownListChat }}
-			payment={{ name: 'Payment', list: dropdownListPayment }}
-		>
-			{contentExist ? (
-				props.children
-			) : (
-				<PageContent>
-					<BuyerProfile />
-				</PageContent>
-			)}
-		</DashboardLayout>
->>>>>>> main
 	);
 };
 

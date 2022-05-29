@@ -57,6 +57,7 @@ const Wallet = props => {
 		}
 	}, [status]);
 
+
 	const PaymentContent = (
 		<>
 			{!chargeWallet && (
@@ -88,6 +89,7 @@ const Wallet = props => {
 				btnHandler={!chargeWallet && chargeWalletHandler}
 				btnFooterStyle={btnFooterStyle}
 			/>
+
 			{/* wallet on buyer dashboard */}
 			{location && (
 				<BuyerDashboardContent>

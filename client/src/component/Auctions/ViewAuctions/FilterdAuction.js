@@ -27,11 +27,9 @@ function FilterdAuctions(props) {
 
 	const getAuctionType = value => {
 		AuctionType = value;
-		console.log(value);
 	};
 	const getAuctionCategory = value => {
 		AuctionCategory = value;
-		console.log(value);
 	};
 
 	const filterAuctionHandler = () => {

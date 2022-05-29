@@ -17,6 +17,7 @@ const CurrentAuctionsPage = () => {
 	const { sendRequest, status: statusForGet, data, error } = useHttp(
 		getAllAuctions,
 	);
+	// ! to be removed
 
 	useEffect(() => {
 		sendRequest({ idToken, status: 'ongoing' });

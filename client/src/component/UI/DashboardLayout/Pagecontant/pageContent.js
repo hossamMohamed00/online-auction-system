@@ -5,13 +5,8 @@ const PageContent = props => {
 	return (
 		<React.Fragment>
 			<div
-<<<<<<< HEAD
 				className={`${classes.PageContent} ${props.className ?
 					props.className : ''}`}
-=======
-				className={`${classes.PageContent} ${props.className &&
-					props.className}`}
->>>>>>> main
 			>
 				{/* <h1> PageContent</h1> */}
 				{props.children}

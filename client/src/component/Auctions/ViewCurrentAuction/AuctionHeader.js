@@ -6,30 +6,18 @@ import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-<<<<<<< HEAD
 function AuctionHeader({ AuctionData }) {
-=======
-function AucitonHeader({ AuctionData }) {
->>>>>>> main
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 
 	// const role = useSelector(store => store.AuthData.role);
 
-<<<<<<< HEAD
 	const btnDetailsHandler = () => {
-=======
-	const btnDetailsHandeler = () => {
->>>>>>> main
 		setIsShownDetails(true);
 		setIsShownBids(false);
 	};
 
-<<<<<<< HEAD
 	const btnBidsHandler = () => {
-=======
-	const btnBidsHandeler = () => {
->>>>>>> main
 		setIsShownDetails(false);
 		setIsShownBids(true);
 	};
@@ -41,11 +29,7 @@ function AucitonHeader({ AuctionData }) {
 			<div className={classes.AuctionHeader}>
 				<button
 					className={`btn ${isShownDetails ? classes.ActiveLink : ''}`}
-<<<<<<< HEAD
 					onClick={btnDetailsHandler}
-=======
-					onClick={btnDetailsHandeler}
->>>>>>> main
 				>
 					{' '}
 					Details{' '}
@@ -53,11 +37,7 @@ function AucitonHeader({ AuctionData }) {
 				{AuctionData && AuctionData.status === 'ongoing' && (
 					<button
 						className={`btn ${isShownBids ? classes.ActiveLink : ''}`}
-<<<<<<< HEAD
 						onClick={btnBidsHandler}
-=======
-						onClick={btnBidsHandeler}
->>>>>>> main
 					>
 						Bids
 					</button>
@@ -69,8 +49,4 @@ function AucitonHeader({ AuctionData }) {
 	);
 }
 
-<<<<<<< HEAD
 export default AuctionHeader;
-=======
-export default AucitonHeader;
->>>>>>> main
