@@ -9,7 +9,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
-import { GetCurrentUserData, Roles } from 'src/common/decorators';
+import {
+	GetCurrentUserData,
+	IsPublicRoute,
+	Roles,
+} from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
 import {
@@ -33,7 +37,6 @@ import { Seller, SellerDocument } from './schema/seller.schema';
 import { SellerService } from './seller.service';
 
 @ApiTags('Seller')
-@Roles(Role.Seller)
 @Controller('seller')
 export class SellerController
 	implements
@@ -45,16 +48,18 @@ export class SellerController
 
 	/* Handle Profile Functions */
 
+	@IsPublicRoute()
 	@Serialize(SellerProfileDto)
-	@Get('profile')
+	@Get('profile/:id')
 	getProfile(
-		@GetCurrentUserData('_id') sellerId: string,
+		@Param() { id }: MongoObjectIdDto,
 	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
-		return this.sellerService.getProfile(sellerId);
+		return this.sellerService.getProfile(id);
 	}
 
 	/* Handle Auctions Functions */
 
+	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
 	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Post('auction')
@@ -65,6 +70,7 @@ export class SellerController
 		return this.sellerService.addAuction(createAuctionDto, seller);
 	}
 
+	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
 	@Get('auction')
 	listAuctions(
@@ -73,6 +79,7 @@ export class SellerController
 		return this.sellerService.listAuctions(seller);
 	}
 
+	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
 	@Patch('auction/:id')
 	editAuction(
@@ -83,6 +90,7 @@ export class SellerController
 		return this.sellerService.editAuction(id, sellerId, updateAuctionDto);
 	}
 
+	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
 	@Delete('auction/:id')
 	removeAuction(
@@ -94,6 +102,7 @@ export class SellerController
 
 	/* Handle Reviews Functions */
 
+	@Roles(Role.Seller)
 	@Serialize(ReviewDto)
 	@Get('review')
 	listSellerReviews(
