@@ -32,10 +32,8 @@ const ViewAllAuctions = () => {
 	useEffect(() => {
 		if (!FilterAuction) {
 			sendRequest();
-			console.log('noo');
 		} else {
 			sendFilterdRequest();
-			console.log('yes');
 		}
 	}, [sendRequest, FilterAuction]);
 
@@ -56,7 +54,7 @@ const ViewAllAuctions = () => {
 		setShowFilter(false);
 	};
 
-	const filterHandeler = values => {
+	const filterHandler = values => {
 		if (values) {
 			console.log(values);
 			setFilterAuction(true);
@@ -74,7 +72,7 @@ const ViewAllAuctions = () => {
 					<FilterdAuctions
 						hideFilter={hideFilterHandler}
 						showFilter={showFilter}
-						filterHandeler={filterHandeler}
+						filterHandler={filterHandler}
 					/>
 				</Col>
 

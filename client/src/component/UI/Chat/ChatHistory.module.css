@@ -32,7 +32,7 @@
 	margin-left: 10px;
 	font-weight: bolder !important;
 	font-size: 12px !important;
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 }
 
 .MessageTime {
@@ -60,5 +60,5 @@
 }
 
 .activeChat .MessageTime {
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 }

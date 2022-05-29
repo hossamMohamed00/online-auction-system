@@ -20,7 +20,7 @@
 }
 
 .BiddingModalHeader > div > p {
-	color: var(--paragaph-color) !important;
+	color: var(--paragraph-color) !important;
 }
 .BiddingModalBody > p {
 	color: #e9d8a6;
@@ -31,7 +31,7 @@
 
 .ModalBodyForm {
 	padding-bottom: 30px;
-	border-bottom: 0.2px solid var(--paragaph-color) !important;
+	border-bottom: 0.2px solid var(--paragraph-color) !important;
 }
 .input-group-text {
 	background-color: var(--alert-color);
@@ -43,7 +43,7 @@
 }
 
 .btnLogin {
-	background-color: var(--paragaph-color) !important;
+	background-color: var(--paragraph-color) !important;
 	color: black;
 }
 .btnCloseModal {
@@ -52,12 +52,12 @@
 }
 
 .btnCloseModal:hover {
-	background-color: var(--paragaph-color) !important;
+	background-color: var(--paragraph-color) !important;
 	color: black;
 }
 
 .btnPlaceMyBid {
-	background-color: var(--paragaph-color) !important;
+	background-color: var(--paragraph-color) !important;
 	color: black;
 }
 .reject {

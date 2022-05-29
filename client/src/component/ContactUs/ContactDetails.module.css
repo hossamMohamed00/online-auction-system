@@ -21,7 +21,7 @@
 }
 .ContactDetails p {
 	display: inline-block !important;
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 }
 
 .phoneNumContent > svg {

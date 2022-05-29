@@ -30,10 +30,11 @@ const RecoverMoney = props => {
 		).then(res => res.json());
 
 		if (success === true) {
-			props.onReload(Math.random());
-			setModalTitle(message);
-			setBtnName('');
 			setLoading(false);
+			setModalTitle(message);
+			props.onReload(Math.random());
+			props.onHide()
+
 		} else {
 			setLoading(false);
 			setModalTitle(message);
@@ -51,6 +52,7 @@ const RecoverMoney = props => {
 				title={ModalTitle}
 				btnName={btnName}
 				btnHandler={RecoverMoneyHandler}
+				onReload = {props.onReload}
 			/>
 		</>
 	);

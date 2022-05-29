@@ -7,7 +7,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from './ChatHistory.module.css';
 
-const ChatHistory = ({ chatWith }) => {
+const ChatHistory = ({ chatWith , className , onShow }) => {
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
@@ -46,6 +46,7 @@ const ChatHistory = ({ chatWith }) => {
 	const getChat = email => {
 		setActiveChat(email);
 		chatWith(email);
+		onShow(false)
 	};
 
 	const FilterChats = searchTerm => {
@@ -58,7 +59,7 @@ const ChatHistory = ({ chatWith }) => {
 
 	return (
 		<>
-			<div className={`${classes.ChatHistory} `}>
+			<div className={`${classes.ChatHistory} ${className ? className : '' } `}>
 				<input
 					type="text"
 					placeholder="search"

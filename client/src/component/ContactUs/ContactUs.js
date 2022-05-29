@@ -14,7 +14,7 @@ const ContactUs = () => {
 	return (
 		<React.Fragment>
 			<Navbar />
-			<div className={` ${classes.ContactUs} container-fluied p-0`}>
+			<div className={` ${classes.ContactUs} container-fluid p-0`}>
 				<Row className="h-100 m-0 p-0">
 					{/* start Contact us deatils */}
 					<Col lg={3} md={4} sm={12} className="mb-3">

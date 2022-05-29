@@ -8,7 +8,6 @@ import classes from './UpComingAuctions.module.css';
 
 const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 	const ShowCarouselItems = ongoingAuctionData.map((Item, index) => {
-		console.log(Item);
 		return (
 			<div className="row" key={index}>
 				<div className="col-md-6 col-lg-6 pe-0 ">
@@ -24,10 +23,10 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 				</div>
 
 				<div
-					className={`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAutionData}`}
+					className={`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
 				>
 					<h2 className="fw-bold text-center pb-1"> {Item.item.name} </h2>
-					{/* start Upgoing Auciton details */}
+					{/* start Upgoing Auction details */}
 					<div className="ps-3 pt-4">
 						<p className={` lead ${classes.ItemDescription} `}>
 							{' '}
@@ -72,7 +71,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 							</div>
 						</div>
 					</div>
-					{/* end Upgoing Auciton details */}
+					{/* end Upgoing Auction details */}
 
 					<Link
 						className={`${classes.btnViewDetails} btn px-3 py-1 `}

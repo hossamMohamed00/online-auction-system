@@ -1,18 +1,23 @@
 .sidebar {
-	width: 100%;
+	width: 25vw;
 	height: 100%;
 	background-color: #191c20;
 	margin-right: 10%;
 	transition: all 0.5s;
 	/* overflow-y: auto; */
 	z-index: 1000;
+	top: 0;
+	position: fixed!important;
 }
 .logo {
 	background-color: #191c24;
-	position: fixed;
+	box-shadow: 2px 5px 6px #1f1f1f;
+	/* position: fixed; */
 	z-index: 1000;
-	margin: 0 auto;
-	width: 25%;
+	/* margin: 0 auto; */
+	/* width: 25%; */
+
+	padding: 10px;
 }
 .logo span {
 	color: #07b2ef;
@@ -24,7 +29,9 @@
 	width: 75%;
 }
 .adminName {
-	padding-top: 30%;
+	/* padding-top: 30%; */
+	padding-top: 10%;
+
 	margin-left: 5%;
 	display: flex;
 	justify-content: space-evenly;
@@ -64,8 +71,13 @@
 	color: white;
 }
 
-/* @media screen and (max-width: 991px) {
-	.sidebar {
-		visibility: hidden !important;
-	}
-} */
+.username a{
+	text-decoration: none
+}
+
+@media screen and (max-width: 991px) {
+
+.sidebar{
+	top: 52px;
+}
+}

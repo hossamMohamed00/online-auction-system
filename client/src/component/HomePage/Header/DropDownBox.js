@@ -26,8 +26,10 @@ const DropDownBox = props => {
 			return '/adminDashboard';
 		} else if (role === 'buyer') {
 			return '/buyer-dashboard';
-		} else {
+		} else if(role === 'seller') {
 			return '/seller-dashboard';
+		}else{
+			return '/employeeDashboard';
 		}
 	};
 
@@ -37,6 +39,10 @@ const DropDownBox = props => {
 		Navigate('/login');
 		dispatch(AuthDataActions.logout());
 	};
+	const handleShownWallet = () => {
+		// props.showWalletHandler(true)
+		console.log(props.showWalletHandler)
+	}
 
 	const showAllLinks = (
 		<ul className={`list-group  d-md-block text-start`}>
@@ -52,7 +58,8 @@ const DropDownBox = props => {
 			<li>
 				<button
 					className="px-1 text-light bg-none "
-					onClick={props.showWalletHandeler}
+					type='button'
+					onClick={handleShownWallet}
 				>
 					<FontAwesomeIcon icon={faCartPlus} className="pe-2 text-primary" />
 					Wallet
@@ -73,10 +80,9 @@ const DropDownBox = props => {
 		</ul>
 	);
 
-	const btnShowCategoryHandeler = e => {
+	const btnShowCategoryHandler = e => {
 		e.preventDefault();
 		setIsHiddenDropDownBox(true);
-		console.log('yes');
 	};
 
 	return (
@@ -89,7 +95,7 @@ const DropDownBox = props => {
 				<button
 					type="button"
 					className="btn-close d-md-none float-end m-2 text-dark bg-light"
-					onClick={btnShowCategoryHandeler}
+					onClick={btnShowCategoryHandler}
 					aria-label="Close"
 				></button>
 				{showAllLinks}

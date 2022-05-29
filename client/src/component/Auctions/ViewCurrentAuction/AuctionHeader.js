@@ -6,18 +6,18 @@ import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AucitonHeader({ AuctionData }) {
+function AuctionHeader({ AuctionData }) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 
 	// const role = useSelector(store => store.AuthData.role);
 
-	const btnDetailsHandeler = () => {
+	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
 		setIsShownBids(false);
 	};
 
-	const btnBidsHandeler = () => {
+	const btnBidsHandler = () => {
 		setIsShownDetails(false);
 		setIsShownBids(true);
 	};
@@ -29,7 +29,7 @@ function AucitonHeader({ AuctionData }) {
 			<div className={classes.AuctionHeader}>
 				<button
 					className={`btn ${isShownDetails ? classes.ActiveLink : ''}`}
-					onClick={btnDetailsHandeler}
+					onClick={btnDetailsHandler}
 				>
 					{' '}
 					Details{' '}
@@ -37,7 +37,7 @@ function AucitonHeader({ AuctionData }) {
 				{AuctionData && AuctionData.status === 'ongoing' && (
 					<button
 						className={`btn ${isShownBids ? classes.ActiveLink : ''}`}
-						onClick={btnBidsHandeler}
+						onClick={btnBidsHandler}
 					>
 						Bids
 					</button>
@@ -49,4 +49,4 @@ function AucitonHeader({ AuctionData }) {
 	);
 }
 
-export default AucitonHeader;
+export default AuctionHeader;

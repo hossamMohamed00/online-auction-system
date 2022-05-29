@@ -11,10 +11,10 @@ const ContactForm = props => {
 	const [Messagevalue, setMessagevalue] = useState('');
 	const [isTouched, setIsTouched] = useState(false);
 
-	const vaildteText = value => value.trim() !== '';
-	const vaildteEmail = value => value.trim().includes('@');
+	const validateText = value => value.trim() !== '';
+	const validateEmail = value => value.trim().includes('@');
 
-	const isValid = vaildteText(Messagevalue);
+	const isValid = validateText(Messagevalue);
 	const hasError = isTouched && !isValid;
 
 	let errorNameMessage = 'Please Enter Your Name';
@@ -28,7 +28,7 @@ const ContactForm = props => {
 		setIsTouched(true);
 	};
 
-	const submitHandeler = e => {
+	const submitHandler = e => {
 		e.preventDefault();
 		const values = {
 			name: nameRef.current.value,
@@ -44,16 +44,16 @@ const ContactForm = props => {
 			<div className={` ${classes.ContactForm} p-0`}>
 				<h2 className="text-center">
 					{' '}
-					<span className={classes.AnoutherWay}> Or Send </span> A Complaint
+					<span className={classes.AnotherWay}> Or Send </span> A Complaint
 				</h2>
-				{/* satrt contact form */}
+				{/* start contact form */}
 				<form className={classes.ContactFormDetails}>
 					<div className="d-flex flex-column w-100">
 						<label className="pb-1"> Name </label>
 						<Input
 							type="text"
 							name="text"
-							validateText={vaildteText}
+							validateText={validateText}
 							ref={nameRef}
 							errorMassage={errorNameMessage}
 						/>
@@ -64,7 +64,7 @@ const ContactForm = props => {
 						<Input
 							type="email"
 							name="email"
-							validateText={vaildteEmail}
+							validateText={validateEmail}
 							ref={EmailRef}
 							errorMassage={errorEmailMessage}
 						/>
@@ -82,7 +82,7 @@ const ContactForm = props => {
 							<p className={classes.textAreaError}> {errorMessage} </p>
 						)}
 					</div>
-					<button className={`${classes.btnSubmit} `} onClick={submitHandeler}>
+					<button className={`${classes.btnSubmit} `} onClick={submitHandler}>
 						{' '}
 						Submit{' '}
 					</button>

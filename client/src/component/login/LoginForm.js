@@ -43,10 +43,12 @@ const LoginForm = () => {
 				navigate('/home-page');
 			} else if (data.role === 'admin') {
 				navigate('/adminDashboard');
+			} else if (data && data.role === 'seller') {
+				navigate('/seller-dashboard');
 			}
-		}
-		if (data && data.role === 'seller') {
-			navigate('/seller-dashboard');
+			if (data && data.role === 'employee') {
+				navigate('/employeeDashboard');
+			}
 		}
 	}, [status]);
 
