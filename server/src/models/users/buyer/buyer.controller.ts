@@ -11,7 +11,11 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GetCurrentUserData, Roles } from 'src/common/decorators';
+import {
+	GetCurrentUserData,
+	IsPublicRoute,
+	Roles,
+} from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
 import { CreateReviewDto } from 'src/models/review/dto/create-review.dto';
@@ -31,7 +35,6 @@ import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto
 import { Auction } from 'src/models/auction/schema/auction.schema';
 
 @ApiTags('Buyer')
-@Roles(Role.Buyer)
 @Controller('buyer')
 export class BuyerController
 	implements
@@ -43,14 +46,16 @@ export class BuyerController
 
 	/* Handle Profile Functions */
 
-	@Get('profile')
+	@IsPublicRoute()
+	@Get('profile/:id')
 	@Serialize(BuyerDto)
 	@HttpCode(HttpStatus.OK)
-	async getProfile(@GetCurrentUserData('_id') buyerId: string): Promise<Buyer> {
+	async getProfile(@Param() { id: buyerId }: MongoObjectIdDto): Promise<Buyer> {
 		return this.buyerService.getProfile(buyerId);
 	}
 
 	/* Handle Auctions Functions */
+	@Roles(Role.Buyer)
 	@Get('auctions')
 	@Serialize(BuyerDto)
 	listBidderAuctions(
@@ -64,6 +69,7 @@ export class BuyerController
 		);
 	}
 
+	@Roles(Role.Buyer)
 	@Post('auction/join/:id')
 	@HttpCode(HttpStatus.OK)
 	joinAuction(
@@ -73,6 +79,7 @@ export class BuyerController
 		return this.buyerService.joinAuction(buyer, id);
 	}
 
+	@Roles(Role.Buyer)
 	@Post('auction/retreat/:id')
 	@HttpCode(HttpStatus.OK)
 	retreatFromAuction(
@@ -82,6 +89,7 @@ export class BuyerController
 		return this.buyerService.retreatFromAuction(buyer, id);
 	}
 
+	@Roles(Role.Buyer)
 	@Post('auction/save/:id')
 	@HttpCode(HttpStatus.OK)
 	saveAuctionForLater(
@@ -94,6 +102,7 @@ export class BuyerController
 	/*--------------------*/
 
 	/* Review Behaviors */
+	@Roles(Role.Buyer)
 	@Serialize(ReviewDto)
 	@Post('review')
 	submitReviewOnSeller(
@@ -103,6 +112,7 @@ export class BuyerController
 		return this.buyerService.makeReview(createReviewDto, buyerId);
 	}
 
+	@Roles(Role.Buyer)
 	@Serialize(ReviewDto)
 	@Get('review')
 	getReviewOnSeller(
@@ -112,6 +122,7 @@ export class BuyerController
 		return this.buyerService.getReviewOnSeller(buyerId, sellerId);
 	}
 
+	@Roles(Role.Buyer)
 	@Serialize(ReviewDto)
 	@Patch('review/:id')
 	editReview(
@@ -122,6 +133,7 @@ export class BuyerController
 		return this.buyerService.editReview(id, updateReviewDto, buyerId);
 	}
 
+	@Roles(Role.Buyer)
 	@Serialize(ReviewDto)
 	@Delete('review/:id')
 	deleteReview(

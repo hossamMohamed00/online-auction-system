@@ -30,10 +30,16 @@ export class BuyerService {
 	/* Profile Functions Logic */
 	async getProfile(buyerId: string): Promise<Buyer> {
 		//* Find buyer and populate his joined auctions
-		const buyer = await this.buyerModel.findById(buyerId).populate({
-			path: 'joinedAuctions',
-			populate: ['category', 'seller'],
-		});
+		const buyer = await this.buyerModel.findById(buyerId).populate([
+			{
+				path: 'joinedAuctions',
+				populate: ['category', 'seller'],
+			},
+			{
+				path: 'savedAuctions',
+				populate: ['category', 'seller'],
+			},
+		]);
 
 		return buyer;
 	}
