@@ -45,7 +45,6 @@
 }
 .profile p {
 	top: 110% !important;
-	left: 25.5% !important;
 	color: rgb(224, 216, 216);
 	font-weight: 300 !important;
 }
@@ -83,8 +82,7 @@
 	-moz-border-radius: 15px;
 	-ms-border-radius: 15px;
 	-o-border-radius: 15px;
-	padding: 2% 3%;
-	margin: 5% 10% 0;
+	margin: 0 10%;
 }
 .profileHr1 {
 	margin: 10% 10% 0;

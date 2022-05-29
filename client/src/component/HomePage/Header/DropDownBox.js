@@ -40,7 +40,7 @@ const DropDownBox = props => {
 		dispatch(AuthDataActions.logout());
 	};
 	const handleShownWallet = () => {
-		// props.showWalletHandler(true)
+		props.showWalletHandler(true)
 		console.log(props.showWalletHandler)
 	}
 

@@ -1,6 +1,6 @@
 .wrapper {
 	background-color: #2e2f32;
-	height: 100vh;
+	height: 100%;
 }
 
 @media screen and (max-width: 991px) {
@@ -35,13 +35,12 @@
 		top: 52px;
 
 		/* top:8%; */
-
 	}
 
 	.showSideBarSmallMedia > div {
 		visibility: visible;
 		/* width: 65vw !important; */
-		width: 80vw!important;
+		width: 80vw !important;
 		min-height: 102vh !important;
 
 		/* padding-bottom: 2% !important; */

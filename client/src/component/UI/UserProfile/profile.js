@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './profile.css';
+import './tabs.css';
 import coverImg from '../../../assets/fbc2a961bfd0e7b5673a7922cb848cdb.jpg';
 import profileImg from '../../../assets/download.png';
 import { CardsContainer } from './../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
-import useFilter from '../TableLayout/FilteringTable/filter';
-import DataTable from 'react-data-table-component';
-const UserProfile = props => {
-	const role = useSelector(store => store.AuthData.role);
-	const data=[];
-  const	columns=[]
 
-	//filter
-	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items, 'name');
-	//end filter
+import ProfileDetails from './profileDetails';
+import Auctions from './Auctions';
+import Reviews from './Reviews';
+const UserProfile = props => {
+	// Handle Tabs
+	const [isShownDetails, setIsShownDetails] = useState(true);
+	const [isShownAuctions, setIsShownAuctions] = useState(false);
+	const [isShownReviews, setIsShownReviews] = useState(false);
+
+	const btnDetailsHandler = () => {
+		setIsShownDetails(true);
+		setIsShownAuctions(false);
+		setIsShownReviews(false);
+	};
+
+	const btnBidsHandler = () => {
+		setIsShownDetails(false);
+		setIsShownReviews(false);
+		setIsShownAuctions(true);
+	};
+	const btnSellerReviews = () => {
+		setIsShownDetails(false);
+		setIsShownAuctions(false);
+		setIsShownReviews(true);
+	};
+	// end
+	const role = useSelector(store => store.AuthData.role);
+
 	return (
 		<>
 			<div className="container-fluid container_profile">
@@ -24,43 +43,54 @@ const UserProfile = props => {
 						<div className="profile">
 							<img src={profileImg} />
 							<h5 className="text-light">{props.name}</h5>
-							<p>{role}</p>
-							{role === 'admin' ||
-								(role === 'employee' && (
-									<button className="btn btn-danger">Block</button>
-								))}
+							<p>{props.role}</p>
+							{(role === 'admin' || role === 'employee') && (
+								<button className="btn btn-danger">Block</button>
+							)}
 						</div>
 					</header>
 				</section>
-				<hr className="bg-light profileHr1" />
+				{/* tabs */}
+				<div className={'AuctionHeader'}>
+					<button
+						className={`btn ${isShownDetails ? 'ActiveLink' : ''}`}
+						onClick={btnDetailsHandler}
+					>
+						Details
+					</button>
 
-				<section className="profile_content">
-					{/* <div className="profile_cards">
+					<button
+						className={`btn ${isShownAuctions ? 'ActiveLink' : ''}`}
+						onClick={btnBidsHandler}
+					>
+						Auctions
+					</button>
+					<button
+						className={`btn ${isShownReviews ? 'ActiveLink' : ''}`}
+						onClick={btnSellerReviews}
+					>
+						Reviews
+					</button>
+				</div>
+				{isShownDetails && <ProfileDetails sellerData={props.seller} />}
+				{isShownAuctions && <Auctions auctionsData={props.auctions} />}
+				{isShownReviews && <Reviews reviews={props.reviews} />}
+				{/* end tabs */}
+			</div>
+		</>
+	);
+};
+export default UserProfile;
+{
+	/* <div className="profile_cards">
 						<CardsContainer
 							title="joined Auctions"
 							cards={props.cards}
 							class="profile_card "
 							card-class="cardP"
 						/>
-					</div> */}
-					{/* <hr className="bg-light profileHr2" /> */}
-					<div className="profile_table">
-						<h2 className="text-light mt-2 fw-bold">Joined Auctions</h2>
-						{data && (
-							<DataTable
-								// selectableRows
-								columns={columns}
-								data={filteredItems}
-								subHeader
-								subHeaderComponent={filterFun}
-								theme="dark"
-								pagination
-							/>
-						)}
-					</div>
-				</section>
-			</div>
-		</>
-	);
-};
-export default UserProfile;
+					</div> */
+}
+{
+	/* <hr className="bg-light profileHr2" /> */
+}
