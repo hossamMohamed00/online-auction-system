@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { CreateComplaintDto } from 'src/models/complaint/dto';
 import { UserDocument } from '../shared-user/schema/user.schema';
@@ -12,6 +12,8 @@ import { ReviewService } from 'src/models/review/review.service';
 import { Review } from 'src/models/review/schema/review.schema';
 import WalletService from 'src/providers/payment/wallet.service';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
+import { ListBidderAuctionsQueryDto } from './dto';
+import { BidderAuctionsEnumQuery } from './enums';
 
 @Injectable()
 export class BuyerService {
@@ -20,7 +22,6 @@ export class BuyerService {
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
 		private readonly complaintService: ComplaintService,
-		private readonly walletService: WalletService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
@@ -38,6 +39,33 @@ export class BuyerService {
 	}
 
 	/* Auctions Functions Logic */
+
+	/**
+	 * List all the auctions that the bidder joined
+	 * @param buyer -
+	 * @returns List all joined auctions
+	 */
+	async listBidderJoinedAuctions(
+		buyer: BuyerDocument,
+		{ populateField }: ListBidderAuctionsQueryDto,
+	): Promise<any> {
+		//* First populate incoming field field
+		await buyer.populate({
+			path: populateField,
+			populate: ['category', 'seller'],
+		});
+
+		let result;
+		if (populateField == BidderAuctionsEnumQuery.JoinedAuction) {
+			result = buyer.joinedAuctions;
+
+			return { joinedAuctions: result };
+		} else if (populateField == BidderAuctionsEnumQuery.SavedAuctions) {
+			result = buyer.savedAuctions;
+			return { savedAuctions: result };
+		}
+	}
+
 	/**
 	 * Add the bidder to the list of auction's bidders
 	 * @param buyer - Bidder object
@@ -60,7 +88,7 @@ export class BuyerService {
 		}
 
 		//* Add the buyer to the list of auction's bidders
-		const isAdded: boolean = await this.auctionService.appendBidder(
+		let isAdded: boolean = await this.auctionService.appendBidder(
 			auctionId,
 			buyer._id,
 		);
@@ -68,6 +96,18 @@ export class BuyerService {
 		if (!isAdded) {
 			throw new BadRequestException(
 				"Cannot append this bidder to the list of auction's bidders 😪❌",
+			);
+		}
+
+		//* Add the auction to the list of joined auctions
+		isAdded = await this.appendAuctionInJoinedAuctions(
+			auctionId,
+			buyer._id.toString(),
+		);
+
+		if (!isAdded) {
+			throw new BadRequestException(
+				"Cannot append this auctions to the list of joined auction's 😪❌",
 			);
 		}
 
@@ -80,8 +120,98 @@ export class BuyerService {
 		throw new Error('Method not implemented.');
 	}
 
-	async saveAuctionForLater(buyer: Buyer, id: string): Promise<boolean> {
-		throw new Error('Method not implemented.');
+	/**
+	 * Save the auction to be notified when start
+	 * @param buyer - buyerId
+	 * @param auctionId
+	 */
+	async saveAuctionForLater(
+		buyer: Buyer,
+		auctionId: string,
+	): Promise<{ success: boolean; message: string }> {
+		this.logger.debug(`Try to append ${buyer.name} to auction's waiting list!`);
+
+		//? Validate the data first
+		const validationResult =
+			await this.auctionValidationService.validateBidderSaveAuction(
+				auctionId,
+				buyer._id.toString(),
+			);
+
+		//? If there is validation error, throw an exception
+		if (!validationResult.success) {
+			throw new BadRequestException(validationResult.message);
+		}
+
+		//* Add the buyer to the list of auction's bidders
+		let isAdded: boolean = await this.auctionService.addBidderToWaitingList(
+			auctionId,
+			buyer._id.toString(),
+		);
+
+		if (!isAdded) {
+			throw new BadRequestException(
+				"Cannot append this bidder auction's waiting list 😪❌",
+			);
+		}
+
+		//* Add the auction to the list of joined auctions
+		isAdded = await this.appendAuctionInSavedAuctions(
+			auctionId,
+			buyer._id.toString(),
+		);
+
+		if (!isAdded) {
+			throw new BadRequestException('Cannot save this auction right now');
+		}
+
+		return {
+			success: true,
+			message:
+				'Auction saved successfully, you will be notified when auction start.',
+		};
+	}
+
+	/**
+	 * Add given auctions to list of bidder's joined auctions
+	 * @param auctionId
+	 * @param bidderId
+	 * @return Promise<boolean>
+	 */
+	private async appendAuctionInJoinedAuctions(
+		auctionId: string,
+		bidderId: string,
+	): Promise<boolean> {
+		const updatedBidder = await this.buyerModel.findByIdAndUpdate(
+			bidderId,
+			{
+				$push: { joinedAuctions: auctionId },
+			},
+			{ new: true },
+		);
+
+		return updatedBidder != null;
+	}
+
+	/**
+	 * Save auction to get notified when start
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns Promise<boolean>
+	 */
+	private async appendAuctionInSavedAuctions(
+		auctionId: string,
+		bidderId: string,
+	): Promise<boolean> {
+		const updatedBidder = await this.buyerModel.findByIdAndUpdate(
+			bidderId,
+			{
+				$push: { savedAuctions: auctionId },
+			},
+			{ new: true },
+		);
+
+		return updatedBidder != null;
 	}
 
 	/*------------------------------*/
@@ -103,6 +233,16 @@ export class BuyerService {
 		);
 
 		return this.reviewService.create(createReviewDto, buyerId);
+	}
+
+	/**
+	 * Get review on specific seller
+	 * @param buyerId
+	 * @param sellerId
+	 * @returns - Review if found
+	 */
+	async getReviewOnSeller(buyerId: string, sellerId: string) {
+		return this.reviewService.getReviewInSeller(sellerId, buyerId);
 	}
 
 	async editReview(

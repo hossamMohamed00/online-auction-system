@@ -4,6 +4,7 @@
 	/* margin : 0 5% !important; */
 }
 
+<<<<<<< HEAD
 .header {
 	max-height: 20% !important;
 }
@@ -23,6 +24,12 @@
 	position: absolute;
 	width: 120px !important;
 	height: 120px !important;
+=======
+img {
+	width: 250px;
+	height: 250px;
+	border: none;
+>>>>>>> main
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -92,3 +99,10 @@
 .profileHr2 {
 	margin: 0 10%;
 }
+<<<<<<< HEAD
+=======
+/* .buttons{
+	margin-left: 20% !important;
+	width:30%;
+} */
+>>>>>>> main

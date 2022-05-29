@@ -1,7 +1,15 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
-import { Buyer } from '../schema/buyer.schema';
+import { Auction } from 'src/models/auction/schema/auction.schema';
+import { ListBidderAuctionsQueryDto } from '../dto';
+import { Buyer, BuyerDocument } from '../schema/buyer.schema';
 
 export interface BuyerAuctionsBehaviors {
+	//* List all joined auctions
+	listBidderAuctions(
+		listBidderAuctionsQueryDto: ListBidderAuctionsQueryDto,
+		buyer: BuyerDocument,
+	): Promise<any>;
+
 	//* Try to join auction
 	joinAuction(buyer: Buyer, auctionId: MongoObjectIdDto);
 

@@ -79,6 +79,10 @@ export class Auction {
 
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
 	bidders: [Types.ObjectId];
+
+	//* To keep track of all bidders that should be notified when the auction start
+	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })
+	waitingBidders: [Types.ObjectId];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

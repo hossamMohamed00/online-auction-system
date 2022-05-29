@@ -43,6 +43,7 @@ const LoginForm = () => {
 				navigate('/home-page');
 			} else if (data.role === 'admin') {
 				navigate('/adminDashboard');
+<<<<<<< HEAD
 			} else if (data && data.role === 'seller') {
 				navigate('/seller-dashboard');
 			}
@@ -50,6 +51,13 @@ const LoginForm = () => {
 				navigate('/employeeDashboard');
 			}
 		}
+=======
+			}
+		}
+		if (data && data.role === 'seller') {
+			navigate('/seller-dashboard');
+		}
+>>>>>>> main
 	}, [status]);
 
 	const submitHandeler = e => {

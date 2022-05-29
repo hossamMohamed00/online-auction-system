@@ -32,8 +32,12 @@ const BuyerProfile = () => {
 			name={buyerData.name}
 			email={buyerData.email}
 			img={buyerImg}
+<<<<<<< HEAD
 			cards={cardTitlesForBuyer}
 
+=======
+			dataName="Participating Auctions"
+>>>>>>> main
 		/>
 	);
 };

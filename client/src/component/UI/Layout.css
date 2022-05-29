@@ -105,8 +105,13 @@ html {
 
 .bg-danger,
 .alert-danger .btn-danger {
+<<<<<<< HEAD
 	background-color: var(--alert-color)!important;
 	border-color: var(--alert-color)!important;
+=======
+	background-color: var(--alert-color) !important;
+	border-color: var(--alert-color) !important;
+>>>>>>> main
 }
 .btn-primary {
 	background-color: var(--main-color) !important ;

@@ -4,7 +4,13 @@ import PageContent from '../component/UI/DashboardLayout/Pagecontant/pageContent
 
 const BuyerProfilePage = () => {
 	return (
+<<<<<<< HEAD
 			<BuyerProfile />
+=======
+		<PageContent>
+			<BuyerProfile />
+		</PageContent>
+>>>>>>> main
 	);
 };
 export default BuyerProfilePage;

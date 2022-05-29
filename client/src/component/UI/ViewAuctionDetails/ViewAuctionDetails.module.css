@@ -37,7 +37,11 @@
 }
 .Description {
 	font-size: 12px !important;
+<<<<<<< HEAD
 	color: var(--paragraph-color);
+=======
+	color: var(--paragaph-color);
+>>>>>>> main
 	/* text-indent: 10px; */
 }
 

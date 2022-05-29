@@ -10,14 +10,22 @@
 }
 
 .Bids::-webkit-scrollbar-thumb {
+<<<<<<< HEAD
 	background-color: var(--paragraph-color) !important;
+=======
+	background-color: var(--paragaph-color) !important;
+>>>>>>> main
 }
 .BidsContent {
 	background-color: #111111 !important;
 }
 
 .BidsHeader {
+<<<<<<< HEAD
 	background-color: var(--paragraph-color) !important;
+=======
+	background-color: var(--paragaph-color) !important;
+>>>>>>> main
 }
 
 @media (max-width: 992px) {

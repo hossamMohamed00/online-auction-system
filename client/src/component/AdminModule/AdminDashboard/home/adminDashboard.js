@@ -104,7 +104,7 @@ const AdminDashboard = props => {
 				list: dropdownListForInquiries,
 			}}
 		>
-			{contentExist ? props.children : <DashboardContent />}
+			{contentExist ? props.children : <AdminDashboardContent />}
 		</DashboardLayout>
 	);
 };

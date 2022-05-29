@@ -21,7 +21,11 @@
 }
 .ContactDetails p {
 	display: inline-block !important;
+<<<<<<< HEAD
 	color: var(--paragraph-color);
+=======
+	color: var(--paragaph-color);
+>>>>>>> main
 }
 
 .phoneNumContent > svg {

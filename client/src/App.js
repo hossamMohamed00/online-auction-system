@@ -50,9 +50,12 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+<<<<<<< HEAD
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
+=======
+>>>>>>> main
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // end seller pages
@@ -109,6 +112,7 @@ function App() {
 					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
+<<<<<<< HEAD
 				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
 				<Route
 					path="/managersDashboard/sellersPage"
@@ -119,6 +123,12 @@ function App() {
 					path="/managersDashboard/addEmployee"
 					element={<AddEmployee />}
 				/>
+=======
+				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
+				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
+				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
+				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
+>>>>>>> main
 				<Route
 					path="/managersDashboard/listAllEmployees"
 					element={<ListAllEmployees />}
