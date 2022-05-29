@@ -99,6 +99,7 @@ export class AuctionsService {
 				'item',
 				'winningBuyer',
 				'bidders',
+				'waitingBidders',
 			];
 
 			// Delete the populate fields from the filterAuctionQuery
