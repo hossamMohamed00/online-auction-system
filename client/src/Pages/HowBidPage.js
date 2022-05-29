@@ -1,10 +1,8 @@
-import React from "react";
-import HowBid from "../component/HowBid/HowBid";
+import React from 'react';
+import HowBid from '../component/HowBid/HowBid';
 
 const HowBidPage = () => {
-	return(
-		<HowBid/>
-	)
-}
+	return <HowBid />;
+};
 
-export default HowBidPage ;
+export default HowBidPage;

@@ -1,4 +1,4 @@
-import { Module, Logger } from '@nestjs/common';
+import { Module, Logger, forwardRef } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
@@ -18,7 +18,7 @@ import { BiddingIncrementRules } from 'src/providers/bids';
 @Module({
 	imports: [
 		ItemModule,
-		CategoryModule,
+		forwardRef(() => CategoryModule),
 		WalletModule,
 		MongooseModule.forFeatureAsync([
 			{

@@ -28,6 +28,7 @@ import {
 	MainAuctionsBehaviors,
 	ScheduleAuctionsBehaviors,
 } from './interfaces';
+import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 
 @Injectable()
 export class AuctionsService
@@ -105,7 +106,9 @@ export class AuctionsService
 	 * @Param filterAuctionQuery - Contains search criteria
 	 * @returns List of all existing auctions
 	 */
-	async findAll(filterAuctionQuery?: FilterAuctionQueryDto) {
+	async findAll(
+		filterAuctionQuery?: FilterAuctionQueryDto | AdminFilterAuctionQueryDto,
+	): Promise<Auction[]> {
 		let populateFields = [];
 
 		//* Check if the user want to populate the nested docs
@@ -117,13 +120,13 @@ export class AuctionsService
 				'item',
 				'winningBuyer',
 				'bidders',
+				'waitingBidders',
 			];
 
 			// Delete the populate fields from the filterAuctionQuery
 			delete filterAuctionQuery.populate;
 		}
 
-		//TODO: Don't send denied auctions to normal users
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate(populateFields);
@@ -205,6 +208,46 @@ export class AuctionsService
 	}
 
 	/**
+	 * Check if there is any auctions that has status ongoing or upcoming in category
+	 * @param categoryId
+	 * @return true / false
+	 */
+	async isThereAnyRunningAuctionRelatedToCategory(
+		categoryId: string,
+	): Promise<boolean> {
+		const auctions = await this.auctionModel.countDocuments({
+			category: categoryId,
+			status: { $in: [AuctionStatus.OnGoing, AuctionStatus.UpComing] },
+		});
+
+		return auctions > 0;
+	}
+
+	/**
+	 * Remove all auctions related to specific category
+	 * @param categoryId - category id
+	 */
+	async removeAllCategoryAuctions(
+		categoryId: string,
+	): Promise<{ success: boolean }> {
+		const auctions = await this.auctionModel.deleteMany({
+			category: categoryId.toString(),
+		});
+
+		if (!auctions) {
+			throw new BadRequestException(
+				'Cannot remove auctions related to that category ❌',
+			);
+		}
+
+		this.logger.log('All auctions related to the category deleted ✔✔ ');
+
+		console.log({ auctions });
+
+		return { success: true };
+	}
+
+	/**
 	 * Check if auction exists or not
 	 * @param auctionId
 	 * @param sellerId
@@ -222,7 +265,6 @@ export class AuctionsService
 
 	/*---------------------------------------*/
 	/* Handle Admin Manage Auctions Methods */
-
 	/**
 	 * Approve specific auction
 	 * @param auctionId
@@ -288,6 +330,110 @@ export class AuctionsService
 		);
 
 		return rejectedAuction;
+	}
+
+	/*
+	 * Return auctions count to be displayed into admin dashboard
+	 */
+	async getAuctionsCount(): Promise<{
+		totalAuctions: number;
+		pendingAuctionsCount: number;
+		ongoingAuctionsCount: number;
+		upcomingAuctionsCount: number;
+		closedAuctionsCount: number;
+		deniedAuctionsCount: number;
+	}> {
+		//* Get total count of all auctions
+		const totalAuctions: number = await this.auctionModel.countDocuments();
+
+		//* Get count of pending auctions only
+		const pendingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.Pending,
+			},
+		);
+
+		//* Get count of ongoing auctions only
+		const ongoingAuctionsCount: number = await this.auctionModel.countDocuments(
+			{
+				status: AuctionStatus.OnGoing,
+			},
+		);
+
+		//* Get count of upcoming auctions only
+		const upcomingAuctionsCount: number =
+			await this.auctionModel.countDocuments({
+				status: AuctionStatus.UpComing,
+			});
+
+		//* Get count of closed auctions only
+		const closedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Closed,
+		});
+
+		//* Get count of denied auctions only
+		const deniedAuctionsCount: number = await this.auctionModel.countDocuments({
+			status: AuctionStatus.Denied,
+		});
+
+		return {
+			totalAuctions,
+			pendingAuctionsCount,
+			ongoingAuctionsCount,
+			upcomingAuctionsCount,
+			closedAuctionsCount,
+			deniedAuctionsCount,
+		};
+	}
+
+	/**
+	 * Return all winners bidders to be displayed in admin dashboard
+	 */
+	async getWinnersBiddersForDashboard(): Promise<any[]> {
+		//* Get all auctions with status 'closed'
+		const closedAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer')
+			.sort({ startDate: -1 });
+
+		const winnersBidders = [];
+
+		//* return only winningBuyer _id, email, auction title and winningPrice
+		closedAuctions.forEach(auction => {
+			winnersBidders.push({
+				winningBuyer: {
+					_id: auction.winningBuyer._id,
+					email: auction.winningBuyer.email,
+				},
+				auction: {
+					_id: auction._id,
+					title: auction.title,
+				},
+				winningPrice: auction.currentBid,
+			});
+		});
+
+		return winnersBidders;
+	}
+
+	/**
+	 * List auctions with highest number of bids
+	 * @param top - How many documents to return (default: 5)
+	 */
+	async getTopAuctionsForDashboard(top?: number): Promise<Auction[]> {
+		const topAuctions = await this.auctionModel
+			.find({
+				status: AuctionStatus.OnGoing,
+			})
+			.populate('category')
+			.limit(top || 5)
+			.sort({
+				numOfBids: -1,
+			});
+
+		return topAuctions;
 	}
 
 	/*---------------------------------------*/
@@ -382,12 +528,11 @@ export class AuctionsService
 	/* Handle Bidder Related Methods */
 
 	/**
-	 * Check if there are an auction with given id and is still ongoing
-	 * @param auctionId
-	 * @returns true if auction exists, false otherwise
+	 * Check if the auction is available for bidding or not
+	 * @param auctionId - Auction id
+	 * @returns true or false
 	 */
 	async isValidAuctionForBidding(auctionId: string): Promise<boolean> {
-		//? Get the count of auctions with given id
 		const count = await this.auctionModel.countDocuments({
 			_id: auctionId,
 			status: AuctionStatus.OnGoing,
@@ -449,10 +594,68 @@ export class AuctionsService
 	}
 
 	/**
+	 * Check if the auction is available to save (it is upcoming)
+	 * @param auctionId
+	 * @returns true or false
+	 */
+	async isAvailableToSave(auctionId: string) {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			status: AuctionStatus.UpComing,
+		});
+
+		return count > 0;
+	}
+
+	/**
 	 * Check if the bid value is greater than the minimum allowed bid value or not
 	 * @param auctionId - Auction that the bid in
 	 * @param bidValue - Incoming bid value
 	 * @returns true if bid is greater than current bid, false otherwise
+	 * Check if the bidder in auction's waiting list
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns Promise<boolean>
+	 */
+	async isAlreadyInWaitingList(
+		auctionId: string,
+		bidderId: string,
+	): Promise<boolean> {
+		const count = await this.auctionModel.countDocuments({
+			_id: auctionId,
+			waitingBidders: bidderId,
+		});
+
+		return count > 0;
+	}
+
+	/**
+	 * Add bidder to the auction's waiting list
+	 * @param auctionId - Auction id
+	 * @param bidderId - Bidder id
+	 * @returns Promise<boolean>
+	 */
+	async addBidderToWaitingList(
+		auctionId: string,
+		bidderId: string,
+	): Promise<boolean> {
+		//* push the bidder to the waiting list
+		const auction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				$push: { waitingBidders: bidderId },
+			},
+			{ new: true },
+		);
+
+		return auction != null;
+	}
+
+	/**
+	 * Change auction status to specific status
+	 * @param auctionId - Auction id
+	 * @param status - Auction status
+	 * @returns boolean
 	 */
 	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
 		//* Get the auction
@@ -502,7 +705,7 @@ export class AuctionsService
 	 * @param auctionId
 	 * @returns Auction details
 	 */
-	async getCurrentAuctionDetailsForBidding(auctionId: string) {
+	async getCurrentAuctionDetailsForBidding(auctionId: string): Promise<any> {
 		//* Select specific fields from the auction document
 		const auctionDetails = await this.auctionModel
 			.findById(auctionId)
@@ -571,4 +774,6 @@ export class AuctionsService
 		//* The chair cost will be 25% of the base price
 		return basePrice * 0.25;
 	}
+
+	/*--------------------------*/
 }

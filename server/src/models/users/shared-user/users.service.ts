@@ -3,13 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryService } from 'src/models/category/category.service';
 import { FilterUsersQueryDto } from './dto/filter-users.dto';
+import { Role } from './enums';
 import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
 export class UsersService {
 	constructor(
 		@InjectModel(User.name) private readonly usersModel: Model<UserDocument>,
-		private readonly categoryService: CategoryService,
 	) {}
 
 	/**
@@ -62,5 +62,44 @@ export class UsersService {
 		);
 
 		return user;
+	}
+
+	/**
+	 * Get users count to be displayed in admin dashboard
+	 */
+	async getUsersCount(): Promise<{
+		totalUsers: number;
+		adminsCount: number;
+		employeesCount: number;
+		sellersCount: number;
+		buyersCount: number;
+	}> {
+		//* Get the users documents
+		const users = await this.usersModel.find();
+
+		//* Get the users count
+		const totalUsers = users.length;
+
+		//* Get the admins count
+		const adminsCount = users.filter(user => user.role === Role.Admin).length;
+
+		//* Get the employees count
+		const employeesCount = users.filter(
+			user => user.role === Role.Employee,
+		).length;
+
+		//* Get the sellers count
+		const sellersCount = users.filter(user => user.role === Role.Seller).length;
+
+		//* Get the buyers count
+		const buyersCount = users.filter(user => user.role === Role.Buyer).length;
+
+		return {
+			totalUsers,
+			adminsCount,
+			employeesCount,
+			sellersCount,
+			buyersCount,
+		};
 	}
 }

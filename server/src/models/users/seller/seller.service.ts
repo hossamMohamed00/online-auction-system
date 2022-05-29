@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -7,7 +7,12 @@ import {
 	Auction,
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
+import { ComplaintService } from 'src/models/complaint/complaint.service';
+import { CreateComplaintDto } from 'src/models/complaint/dto';
+import { UserDocument } from '../shared-user/schema/user.schema';
+import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
+import { ReviewService } from 'src/models/review/review.service';
 
 @Injectable()
 export class SellerService {
@@ -18,7 +23,28 @@ export class SellerService {
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
 		private readonly auctionsService: AuctionsService,
+		private readonly complaintService: ComplaintService,
+		private readonly reviewService: ReviewService,
 	) {}
+
+	/* Handle Profile Functions logic*/
+	async getProfile(
+		sellerId: string,
+	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
+		//* Find seller
+		const seller = await this.sellerModel.findById(sellerId);
+		if (!seller) {
+			throw new BadRequestException('No Seller With That Id ❌');
+		}
+
+		//* Get seller auctions
+		const auctions: Auction[] = await this.listAuctions(seller);
+
+		//* Get seller reviews
+		const reviews: Review[] = await this.listSellerReviews(sellerId);
+
+		return { seller, auctions, reviews };
+	}
 
 	/* Handle Auctions Functions logic*/
 
@@ -31,7 +57,7 @@ export class SellerService {
 		createAuctionDto: CreateAuctionDto,
 		seller: SellerDocument,
 	): Promise<Auction> {
-		return this.auctionsService.create(createAuctionDto, seller);
+		return this.auctionsService.createNewAuction(createAuctionDto, seller);
 	}
 
 	/**
@@ -53,6 +79,9 @@ export class SellerService {
 				},
 				{
 					path: 'category',
+				},
+				{
+					path: 'winningBuyer',
 				},
 			],
 		});
@@ -87,5 +116,41 @@ export class SellerService {
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
+	}
+
+	/* Handle Reviews Functions logic */
+
+	/**
+	 * List all seller reviews
+	 * @param sellerId
+	 * @returns Array of reviews for that seller
+	 */
+	async listSellerReviews(sellerId: string) {
+		return this.reviewService.getSellerReviews(sellerId);
+	}
+
+	/**
+	 * Accept seller rate and update the rating in db
+	 * @param sellerId - Seller id
+	 * @param rate - new calculated rating
+	 * @returns void
+	 */
+	async updateSellerRating(sellerId: string | Seller, rate: number) {
+		const seller = await this.sellerModel.findByIdAndUpdate(
+			sellerId,
+			{
+				rating: rate,
+			},
+			{ new: true },
+		);
+
+		if (!seller) {
+			this.logger.error(`Cannot update ${seller.name} rate.`);
+			return;
+		}
+
+		this.logger.log(
+			`Seller ${seller.name} rating successfully update and become ${seller.rating}`,
+		);
 	}
 }

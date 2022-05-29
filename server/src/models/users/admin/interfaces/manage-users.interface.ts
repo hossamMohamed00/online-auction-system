@@ -5,6 +5,6 @@
 import { FilterUsersQueryDto } from '../../shared-user/dto/filter-users.dto';
 import { User, UserDocument } from '../../shared-user/schema/user.schema';
 
-export interface UsersBehaviors {
+export interface AdminUsersBehaviors {
 	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto): Promise<User[]>;
 }

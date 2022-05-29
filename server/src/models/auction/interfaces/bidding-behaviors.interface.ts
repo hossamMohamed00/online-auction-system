@@ -13,6 +13,12 @@ export interface BiddingBehaviors {
 	//* Append given bidder to specific auction bidders list
 	appendBidder(auctionId: string, bidderId: string): Promise<boolean>;
 
+	//* Check if the bidder already exists in auction's waiting list
+	isAlreadyInWaitingList(auctionId: string, bidderId: string): Promise<boolean>;
+
+	//* Add the bidder to auction's waiting list
+	addBidderToWaitingList(auctionId: string, bidderId: string): Promise<boolean>;
+
 	//* Check that incoming bid is valid for specific auction
 	isValidBid(auctionId: string, bidValue: number): Promise<boolean>;
 
@@ -20,5 +26,5 @@ export interface BiddingBehaviors {
 	handleNewBid(auctionId: string, bid: Bid): Promise<boolean>;
 
 	//* Return specific details about auctions to be emitted to client
-	getCurrentAuctionDetailsForBidding(auctionId: string);
+	getCurrentAuctionDetailsForBidding(auctionId: string): Promise<any>;
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -16,38 +16,55 @@ import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
 
 const LoginForm = () => {
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const {sendRequest , status , data , error } = useHttp(Login);
-	const idToken = useSelector((store)=> store.AuthData.idToken);
-	console.log(idToken)
+	const { sendRequest, status, data, error } = useHttp(Login);
+	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const nameRef= useRef();
+	const nameRef = useRef();
 	const passwordRef = useRef();
 
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
 
-	useEffect(()=>{
-		if(status==='completed'){
-			console.log(data)
-			dispatch(AuthDataActions.login({idToken:data.accessToken}))
-			navigate('/home-page')
+	useEffect(() => {
+		if (status === 'completed') {
+			const email = nameRef.current.value;
+			console.log(data);
+			dispatch(
+				AuthDataActions.login({
+					idToken: data.accessToken,
+					role: data.role,
+					email: email,
+				}),
+			);
+			if (data.role === 'buyer') {
+				navigate('/home-page');
+			} else if (data.role === 'admin') {
+				navigate('/adminDashboard');
+			} else if (data && data.role === 'seller') {
+				navigate('/seller-dashboard');
+			}
+			if (data && data.role === 'employee') {
+				navigate('/employeeDashboard');
+			}
 		}
-	},[status])
+	}, [status]);
 
-
-	const submitHandeler = (e) =>{
-		e.preventDefault()
-		const userDetails = {email:nameRef.current.value , password:passwordRef.current.value , idToken }
-		sendRequest(userDetails)
-	}
-
+	const submitHandeler = e => {
+		e.preventDefault();
+		const userDetails = {
+			email: nameRef.current.value,
+			password: passwordRef.current.value,
+			idToken,
+		};
+		sendRequest(userDetails);
+	};
 
 	return (
 		<div className={classes['form-container']}>
-			<Card className={'loginCard'} >
+			<Card className={'loginCard'}>
 				<form onSubmit={submitHandeler}>
 					<Input
 						type="email"
@@ -80,13 +97,20 @@ const LoginForm = () => {
 						</div>
 						<p className="text-primary"> Forget password ?</p>
 					</div>
-					{error && <p className={`${classes.alert} p-2 text-center fs-6 `} > {error} </p> }
+					{error && (
+						<p className={`${classes.alert} p-2 text-center fs-6 `}>
+							{' '}
+							{error}{' '}
+						</p>
+					)}
 
-					<button className="btn btn-primary" onSubmit={submitHandeler}>Login</button>
+					<button className="btn btn-primary" onSubmit={submitHandeler}>
+						Login
+					</button>
 				</form>
 				<div className={classes.accounts}>
 					<img src={facebookImg} alt="facebookImg" />
-					<img src={twitterImg} alt="twitterImg"/>
+					<img src={twitterImg} alt="twitterImg" />
 					<img src={googleImg} alt="googleImg" />
 				</div>
 			</Card>

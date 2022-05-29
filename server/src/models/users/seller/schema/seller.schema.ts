@@ -11,6 +11,10 @@ export type SellerDocument = Seller & Document;
 
 @Schema()
 export class Seller extends User {
+	//* Seller rating out of 5
+	@Prop({ default: 3, min: 1, max: 5 })
+	rating: number;
+
 	//* To keep track of stripe customer id to enable wallet
 	@Prop({ required: true, unique: true })
 	stripeCustomerId: string;

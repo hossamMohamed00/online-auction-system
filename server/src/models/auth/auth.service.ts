@@ -64,16 +64,19 @@ export class AuthService {
 				...registerUserDto,
 				stripeCustomerId: stripeCustomer.id,
 			});
+
+			//? Create new wallet to the seller
+			await this.walletService.createWallet(createdUser);
 		} else {
 			//? Create new buyer instance
 			createdUser = new this.sellerModel({
 				...registerUserDto,
 				stripeCustomerId: stripeCustomer.id,
 			});
-		}
 
-		//? Create new wallet to the user
-		await this.walletService.createWallet(createdUser);
+			//? Create new wallet to the buyer
+			await this.walletService.createWallet(createdUser);
+		}
 
 		//? Issue tokens, save refresh_token in db and save user
 		const tokens = await this.getTokensAndSaveUser(createdUser);

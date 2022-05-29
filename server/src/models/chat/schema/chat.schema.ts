@@ -17,7 +17,7 @@ export class Chat {
 	user2: string;
 
 	@Prop({ default: new Date() })
-	createdAt: string;
+	createdAt: Date;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

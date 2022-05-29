@@ -18,8 +18,12 @@ export class Buyer extends User {
 	stripeCustomerId: string;
 
 	//* To keep track of joined auctions
-	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name, unique: true }] }) //* This syntax is very important as the last was not populating all array
-	joinedAuctions: [Auction];
+	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name }] })
+	joinedAuctions: Auction[];
+
+	//* To keep track of saved auctions
+	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name }] })
+	savedAuctions: Auction[];
 }
 
 export const BuyerSchema = SchemaFactory.createForClass(Buyer);

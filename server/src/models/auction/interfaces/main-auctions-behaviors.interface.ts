@@ -11,7 +11,7 @@ export interface MainAuctionsBehaviors {
 	create(createAuctionDto: CreateAuctionDto, seller: Seller): Promise<Auction>;
 
 	//* Find all auctions with filter
-	findAll(filterAuctionQuery?: FilterAuctionQueryDto);
+	findAll(filterAuctionQuery?: FilterAuctionQueryDto): Promise<Auction[]>;
 
 	//* Get single auction
 	findById(_id: string): Promise<Auction>;
@@ -25,6 +25,14 @@ export interface MainAuctionsBehaviors {
 
 	//* Remove auction by id and seller id
 	remove(auctionId: string, sellerId: string): Promise<Auction>;
+
+	//* Check if there are running(ongoing/upcoming) auctions in one category
+	isThereAnyRunningAuctionRelatedToCategory(
+		categoryId: string,
+	): Promise<boolean>;
+
+	//* Remove all category in one category
+	removeAllCategoryAuctions(categoryId: string): Promise<{ success: boolean }>;
 
 	//* Check if auction exists or not
 	isExists(auctionId: string, sellerId: string): Promise<boolean>;

@@ -1,5 +1,7 @@
+import { Expose } from 'class-transformer';
 import { UserDto } from '../../shared-user/dto';
 
 export class SellerDto extends UserDto {
-	//TODO: Extend UserDto
+	@Expose()
+	rating: number; // Seller rating out of 5
 }

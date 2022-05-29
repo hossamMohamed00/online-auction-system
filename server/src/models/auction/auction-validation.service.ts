@@ -4,7 +4,7 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
+import { ObjectId, Schema } from 'mongoose';
 
 import { HandleDateService } from 'src/common/utils';
 import { CategoryService } from '../category/category.service';
@@ -17,6 +17,7 @@ export class AuctionValidationService {
 	constructor(
 		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionService: AuctionsService,
+		@Inject(forwardRef(() => CategoryService)) // To avoid Circular dependency between the two services
 		private readonly categoryService: CategoryService,
 	) {}
 
@@ -95,6 +96,41 @@ export class AuctionValidationService {
 			validationResult.success = false;
 			validationResult.message =
 				'Sorry, you do not have enough balance to pay auction assurance 😑';
+
+			return validationResult;
+		}
+
+		return validationResult;
+	}
+
+	/**
+	 * Run all validation before adding bidder to auction's waiting list
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns validationResult: {success: boolean, message: string}
+	 */
+	public async validateBidderSaveAuction(auctionId: string, bidderId: string) {
+		const validationResult = { success: true, message: undefined };
+
+		//? Ensure that auction is available to save (is currently upcoming)
+		const isAvailable = await this.auctionService.isAvailableToSave(auctionId);
+		if (!isAvailable) {
+			validationResult.success = false;
+			validationResult.message =
+				'This auction currently is not available to join ❌❌';
+
+			return validationResult;
+		}
+
+		//? Ensure that the bidder is not already in auction waiting list
+		const isAlreadyJoined = await this.auctionService.isAlreadyInWaitingList(
+			auctionId,
+			bidderId,
+		);
+
+		if (isAlreadyJoined) {
+			validationResult.success = false;
+			validationResult.message = 'You are already auction waiting list 🙂';
 
 			return validationResult;
 		}
