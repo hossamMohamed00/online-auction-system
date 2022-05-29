@@ -8,6 +8,7 @@ import {
 	RejectAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { DashboardAuctionsCount } from 'src/models/auction/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
@@ -55,7 +56,7 @@ export class AdminService {
 			upcomingAuctionsCount,
 			closedAuctionsCount,
 			deniedAuctionsCount,
-		} = await this.auctionService.getAuctionsCount();
+		}: DashboardAuctionsCount = await this.auctionService.getAuctionsCount();
 
 		//* Get all categories count
 		const totalCategories = await this.categoryService.getCategoriesCount();

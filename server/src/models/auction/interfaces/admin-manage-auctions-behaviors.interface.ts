@@ -1,5 +1,6 @@
 import { RejectAuctionDto } from '../dto';
 import { Auction } from '../schema/auction.schema';
+import { DashboardAuctionsCount } from '../types';
 
 export interface AdminManageAuctionsBehaviors {
 	//* Approve auction
@@ -12,14 +13,7 @@ export interface AdminManageAuctionsBehaviors {
 	): Promise<Auction>;
 
 	//* Get all auctions count details for admin dashboard
-	getAuctionsCount(): Promise<{
-		totalAuctions: number;
-		pendingAuctionsCount: number;
-		ongoingAuctionsCount: number;
-		upcomingAuctionsCount: number;
-		closedAuctionsCount: number;
-		deniedAuctionsCount: number;
-	}>;
+	getAuctionsCount(): Promise<DashboardAuctionsCount>;
 
 	//* Get the latest auction's winners for admin dashboard
 	getWinnersBiddersForDashboard(): Promise<any[]>;

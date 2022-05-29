@@ -29,6 +29,7 @@ import {
 	ScheduleAuctionsBehaviors,
 } from './interfaces';
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
+import { DashboardAuctionsCount } from './types';
 
 @Injectable()
 export class AuctionsService
@@ -335,46 +336,37 @@ export class AuctionsService
 	/*
 	 * Return auctions count to be displayed into admin dashboard
 	 */
-	async getAuctionsCount(): Promise<{
-		totalAuctions: number;
-		pendingAuctionsCount: number;
-		ongoingAuctionsCount: number;
-		upcomingAuctionsCount: number;
-		closedAuctionsCount: number;
-		deniedAuctionsCount: number;
-	}> {
+	async getAuctionsCount(): Promise<DashboardAuctionsCount> {
 		//* Get total count of all auctions
-		const totalAuctions: number = await this.auctionModel.countDocuments();
+		const auctions = await this.auctionModel.find();
+
+		//* Get the auctions count
+		const totalAuctions = auctions.length;
 
 		//* Get count of pending auctions only
-		const pendingAuctionsCount: number = await this.auctionModel.countDocuments(
-			{
-				status: AuctionStatus.Pending,
-			},
-		);
+		const pendingAuctionsCount: number = auctions.filter(
+			auction => auction.status === AuctionStatus.Pending,
+		).length;
 
 		//* Get count of ongoing auctions only
-		const ongoingAuctionsCount: number = await this.auctionModel.countDocuments(
-			{
-				status: AuctionStatus.OnGoing,
-			},
-		);
+		const ongoingAuctionsCount: number = auctions.filter(
+			auction => auction.status === AuctionStatus.OnGoing,
+		).length;
 
 		//* Get count of upcoming auctions only
-		const upcomingAuctionsCount: number =
-			await this.auctionModel.countDocuments({
-				status: AuctionStatus.UpComing,
-			});
+		const upcomingAuctionsCount: number = auctions.filter(
+			auction => auction.status === AuctionStatus.UpComing,
+		).length;
 
 		//* Get count of closed auctions only
-		const closedAuctionsCount: number = await this.auctionModel.countDocuments({
-			status: AuctionStatus.Closed,
-		});
+		const closedAuctionsCount: number = auctions.filter(
+			auction => auction.status === AuctionStatus.Closed,
+		).length;
 
 		//* Get count of denied auctions only
-		const deniedAuctionsCount: number = await this.auctionModel.countDocuments({
-			status: AuctionStatus.Denied,
-		});
+		const deniedAuctionsCount: number = auctions.filter(
+			auction => auction.status === AuctionStatus.Denied,
+		).length;
 
 		return {
 			totalAuctions,

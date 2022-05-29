@@ -72,7 +72,7 @@ export class BidGateway
 
 		//* Get the auctions that the bidder involved in
 		const bidderAuctions: Auction[] = await this.buyerService.listMyAuctions(
-			bidder._id,
+			bidder._id.toString(),
 		);
 
 		//* Loop over the auctions and keep track to those still ongoing
