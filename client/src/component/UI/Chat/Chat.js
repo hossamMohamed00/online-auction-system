@@ -15,6 +15,9 @@ import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
 const Chat = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [chatWith, setChatWith] = useState('');
+	const [showChatHistory, setShowChatHistory] = useState(true);
+
+
 
 	// establish socket connection
 	const socket = io('http://localhost:8000/chat', {
@@ -26,6 +29,9 @@ const Chat = () => {
 	const getChatWith = email => {
 		setChatWith(email);
 	};
+	const ShowChatHistoryHandler = value => {
+		setShowChatHistory(value);
+	};
 
 	return (
 		<PageContent className={`${classes.PageContentClasses}`}>
@@ -33,19 +39,31 @@ const Chat = () => {
 				<Col
 					lg={4}
 					md={6}
+					sm={12}
 					className={`${classes.chatList} ${scollbarStyle.scollbar}`}
 				>
-					<ChatHistory chatWith={getChatWith} />
+					<ChatHistory
+						chatWith={getChatWith}
+						className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
+						onShow = {ShowChatHistoryHandler}
+					/>
 				</Col>
 				<Col
 					lg={8}
 					md={6}
-					className={`${classes.ChatContent} ${scollbarStyle.scollbar} ps-0 `}
+					sm={12}
+					className={`${classes.ChatContent} ${scollbarStyle.scollbar} `}
 				>
+					<button
+						className={`btn bg-danger text-light ${!showChatHistory ? 'd-block d-xs-block' : 'd-none' }	`}
+						onClick={() => setShowChatHistory(true)}> X
+					</button>
 					<ChatContent
 						socket={socket}
 						getChatWithEmail={chatWith && chatWith}
+						className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } ps-0 `}
 					/>
+
 				</Col>
 			</Row>
 		</PageContent>
