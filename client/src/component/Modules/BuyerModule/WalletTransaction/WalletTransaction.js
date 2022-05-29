@@ -1,6 +1,7 @@
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row } from 'react-bootstrap';
 
 import DataTable from 'react-data-table-component';
@@ -45,6 +46,7 @@ const WalletTransaction = () => {
 		status: statusForWalletTrans,
 		data: dataForWalletTrans,
 	} = useHttp(getWalletTransactions);
+
 	useEffect(() => {
 		sendRequestForWalletTrans(idToken);
 	}, [sendRequestForWalletTrans, reload]);
@@ -56,20 +58,25 @@ const WalletTransaction = () => {
 	}, [status]);
 
 	// get num of withdraw and deposit transaction
+	console.log(dataForWalletTrans&&dataForWalletTrans)
+
 	useEffect(() => {
 		if (statusForWalletTrans === 'completed') {
+			console.log(dataForWalletTrans)
 			setDepositNum(
 				dataForWalletTrans.filter(trans => trans.transactionType === 'deposit')
 					.length,
 			);
 			setWithdrawNum(
-				dataForWalletTrans.filter(
+			 dataForWalletTrans.filter(
 					trans => trans.transactionType === 'withdrawal',
 				).length,
 			);
 			setLoading(false);
 		}
-	}, [statusForWalletTrans, reload, paymentIntentId]);
+	}, [statusForWalletTrans, reload , dataForWalletTrans]);
+
+
 	// end get wallet transaction
 
 	const columns = [
@@ -89,7 +96,7 @@ const WalletTransaction = () => {
 		},
 		{
 			name: 'Date',
-			selector: row => row.createdAt,
+			selector: row => moment(row.createdAt).format('L'),
 			sortable: true,
 		},
 		{
@@ -100,7 +107,7 @@ const WalletTransaction = () => {
 					<>
 						{props.transactionType === 'deposit' && (
 							<button
-								className="btn btn-danger my-2 "
+								className="btn bg-danger text-light my-2 "
 								onClick={() => showRecoverModalHandler(props.paymentIntentId)}
 							>
 								<FontAwesomeIcon icon={faEdit} />

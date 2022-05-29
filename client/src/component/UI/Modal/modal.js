@@ -29,7 +29,7 @@ const Modal_ = props => {
 					{props.title && props.title}
 				</Modal.Title>
 				<button
-					className="btn btn-danger align-items-end btn-close-modal"
+					className="btn bg-danger align-items-end btn-close-modal"
 					onClick={props.onHide}
 				>
 					{' '}
@@ -46,11 +46,11 @@ const Modal_ = props => {
 			>
 				{/* btn show only when delete */}
 				{props.btnName && (
-					<button onClick={btnHandler} className="btn-success btn">
+					<button onClick={btnHandler} className="btn-success btn fw-bold">
 						{props.btnName}
 					</button>
 				)}
-				<button onClick={props.onHide} className="btn-danger btn ">
+				<button onClick={props.onHide} className="bg-danger text-light fw-bold btn ">
 					Close
 				</button>
 			</Modal.Footer>

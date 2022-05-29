@@ -76,7 +76,7 @@ const usePaymentForm = onReload => {
 
 		if (success === true) {
 			setPaymentIntentId(data.paymentIntentId);
-			// onReload(Math.random());
+			onReload(Math.random());
 			setLoading(false);
 		}
 
