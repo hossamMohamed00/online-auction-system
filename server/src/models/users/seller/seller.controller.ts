@@ -22,12 +22,10 @@ import {
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
-import { ComplaintDto, CreateComplaintDto } from 'src/models/complaint/dto';
-import { User, UserDocument } from '../shared-user/schema/user.schema';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Role } from '../shared-user/enums';
-import { SellerDto, SellerProfileDto } from './dto';
+import { SellerProfileDto } from './dto';
 import {
 	SellerAuctionsBehaviors,
 	SellerProfileBehaviors,

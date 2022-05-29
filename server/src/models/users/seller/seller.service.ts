@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -33,6 +33,9 @@ export class SellerService {
 	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
 		//* Find seller
 		const seller = await this.sellerModel.findById(sellerId);
+		if (!seller) {
+			throw new BadRequestException('No Seller With That Id ❌');
+		}
 
 		//* Get seller auctions
 		const auctions: Auction[] = await this.listAuctions(seller);

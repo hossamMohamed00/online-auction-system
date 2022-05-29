@@ -41,6 +41,10 @@ export class BuyerService {
 			},
 		]);
 
+		if (!buyer) {
+			throw new BadRequestException('No Bidder With That Id ❌');
+		}
+
 		return buyer;
 	}
 
