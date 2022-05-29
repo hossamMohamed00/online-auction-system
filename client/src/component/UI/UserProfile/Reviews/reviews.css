@@ -9,7 +9,7 @@
 	width: 80%;
 	margin: 0 10% 0;
 }
-.card_profile{
+.card_profile {
 	background-color: rgb(160, 71, 71);
 	border-radius: 15px;
 	-webkit-border-radius: 15px;
@@ -20,4 +20,59 @@
 	display: inline-block;
 	margin-left: 1%;
 	padding: 2% 0;
+}
+
+.star {
+	cursor: pointer;
+	transition: color 200ms;
+	-webkit-transition: color 200ms;
+	-moz-transition: color 200ms;
+	-ms-transition: color 200ms;
+	-o-transition: color 200ms;
+}
+.star_con {
+	top: 70%;
+	position: absolute;
+	margin-left: 15px !important;
+}
+.rate_input {
+	background: none;
+	border: none;
+	border-bottom: 2px solid white !important;
+	border-radius: unset;
+	color: white !important;
+	box-shadow: none;
+}
+.rate_input:focus {
+	background: none;
+}
+.addContainer {
+	margin: 0 10%;
+}
+.save_rate_btn {
+	width: 11% !important;
+	margin-left: 10% !important;
+	margin-top: 1% !important;
+	border-radius: 15px;
+}
+
+.reviews_list:before,
+.reviews_list:after {
+  background-color: white ;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+.reviews_list:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+.reviews_list:after {
+  left: 0.5em;
+  margin-right: -50%;
 }
