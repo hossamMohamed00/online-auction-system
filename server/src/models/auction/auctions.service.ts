@@ -271,8 +271,6 @@ export class AuctionsService
 	 * @return the updated auction
 	 */
 	async approveAuction(auctionId: string): Promise<Auction> {
-		// BAD APPROACH --> 2 Requests to the db
-
 		//? Get the auction from db
 		const auction = await this.auctionModel.findById(auctionId);
 		if (!auction) return null;
@@ -643,9 +641,9 @@ export class AuctionsService
 	}
 
 	/**
-	 * Change auction status to specific status
+	 * Check if the bid is valid (bidValue > minimum bid value) and auction still ongoing
 	 * @param auctionId - Auction id
-	 * @param status - Auction status
+	 * @param bidValue - incoming bid value
 	 * @returns boolean
 	 */
 	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
