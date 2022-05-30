@@ -134,7 +134,15 @@ export class AdminService {
 		userId: string,
 		warningMessage: string,
 	): Promise<ResponseResult> {
-		throw new Error('Method not implemented.');
+		return this.usersService.toggleWarnUser(userId, warningMessage);
+	}
+
+	/**
+	 * Remove warning badge from user
+	 * @param userId : user id
+	 */
+	async removeWarnUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleWarnUser(userId);
 	}
 
 	/**

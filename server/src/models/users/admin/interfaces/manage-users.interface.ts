@@ -18,9 +18,15 @@ export interface AdminUsersBehaviors {
 		adminWarnUserDto: AdminWarnUserDto,
 	): Promise<ResponseResult>;
 
+	//* Remove the warn and warningMessage from user
+	removeWarn({ id: userId }: MongoObjectIdDto): Promise<ResponseResult>;
+
 	//* Block user and provide block reason
 	blockUser(
 		{ id: userId }: MongoObjectIdDto,
 		adminBlockUserDto: AdminBlockUserDto,
 	): Promise<ResponseResult>;
+
+	//* Un-block user
+	unBlockUser({ id: userId }: MongoObjectIdDto): Promise<ResponseResult>;
 }

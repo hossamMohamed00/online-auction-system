@@ -37,6 +37,12 @@ export class User {
 
 	@Prop({ default: null, trim: true })
 	blockReason: string;
+
+	@Prop({ default: false })
+	isWarned: boolean;
+
+	@Prop({ default: null, trim: true })
+	warningMessage: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -162,4 +162,44 @@ export class UsersService {
 			message,
 		};
 	}
+
+	/**
+	 * Add/remove warn badge from user
+	 * @param userId
+	 * @param warningMessage
+	 */
+	async toggleWarnUser(
+		userId: string,
+		warningMessage?: string,
+	): Promise<ResponseResult> {
+		//* Set the variable as waned user (default)
+		let isWarned: boolean = true;
+		let message: string = 'Warning badge added to user 👍🏻';
+
+		//* Check if the warningMessage is provided, if not, so it is remove warn operation
+		if (!warningMessage) {
+			isWarned = false;
+			warningMessage = null;
+			message = 'Warning badge removed from user 👍🏻';
+		}
+
+		//* Warn/remove-warn from user by update isWarned field to true/false and warningMessage to warningMessage
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{
+				isWarned: isWarned,
+				warningMessage,
+			},
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message,
+		};
+	}
 }

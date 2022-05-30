@@ -96,11 +96,20 @@ export class AdminController
 	 *
 	 */
 	@Post('users/warn')
+	@HttpCode(HttpStatus.OK)
 	warnUser(
 		@Query() { id: userId }: MongoObjectIdDto,
 		@Body() { warningMessage }: AdminWarnUserDto,
 	): Promise<ResponseResult> {
 		return this.adminService.warnUser(userId, warningMessage);
+	}
+
+	@Post('users/remove-warn')
+	@HttpCode(HttpStatus.OK)
+	removeWarn(
+		@Query() { id: userId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.removeWarnUser(userId);
 	}
 
 	@Post('users/block')
