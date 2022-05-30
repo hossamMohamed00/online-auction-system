@@ -17,4 +17,16 @@ export class UserDto {
 
 	@Expose()
 	role: string;
+
+	@Expose()
+	isBlocked: boolean;
+
+	@Expose()
+	blockReason: string;
+
+	@Expose()
+	isWarned: boolean;
+
+	@Expose()
+	warningMessage: string;
 }

@@ -1,5 +1,5 @@
-import { IsMongoId, IsString } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import { IsString } from 'class-validator';
+
 export class FindReviewInSeller {
 	@IsString()
 	sellerId: string;

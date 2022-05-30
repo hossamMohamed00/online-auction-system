@@ -5,9 +5,7 @@ import { Seller } from '../schema/seller.schema';
 
 export interface SellerProfileBehaviors {
 	//* Get seller profile
-	getProfile({
-		id,
-	}: MongoObjectIdDto): Promise<{
+	getProfile({ id }: MongoObjectIdDto): Promise<{
 		seller: Seller;
 		auctions: Auction[];
 		reviews: Review[];

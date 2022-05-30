@@ -30,6 +30,7 @@ import {
 } from './interfaces';
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
+import { ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class AuctionsService
@@ -228,9 +229,7 @@ export class AuctionsService
 	 * Remove all auctions related to specific category
 	 * @param categoryId - category id
 	 */
-	async removeAllCategoryAuctions(
-		categoryId: string,
-	): Promise<{ success: boolean }> {
+	async removeAllCategoryAuctions(categoryId: string): Promise<ResponseResult> {
 		const auctions = await this.auctionModel.deleteMany({
 			category: categoryId.toString(),
 		});

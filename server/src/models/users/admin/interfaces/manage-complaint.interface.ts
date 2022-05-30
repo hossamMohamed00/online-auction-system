@@ -1,4 +1,5 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import {
 	Complaint,
 	ComplaintDocument,
@@ -12,7 +13,7 @@ export interface AdminComplaintsBehavior {
 	): Promise<Complaint[]>;
 
 	//* Mark an complaint as read
-	markAsRead(complaintId: MongoObjectIdDto): Promise<{ success: boolean }>;
+	markAsRead(complaintId: MongoObjectIdDto): Promise<ResponseResult>;
 
 	//* Delete single complaint
 	deleteComplaint(complaintId: MongoObjectIdDto): Promise<Complaint>;
