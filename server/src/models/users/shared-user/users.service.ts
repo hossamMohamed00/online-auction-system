@@ -124,19 +124,30 @@ export class UsersService {
 	}
 
 	/**
-	 * Block user by id
+	 * Block or un-block user by id
 	 * @param userId
-	 * @param blockReason
+	 * @param blockReason? if not provided, user will be un-blocked
 	 */
-	async blockUser(
+	async toggleBlockUser(
 		userId: string,
-		blockReason: string,
+		blockReason?: string,
 	): Promise<ResponseResult> {
-		//* Block user by update isBlock field to true and blockReason to blockReason
+		//* Set the variable as blocked user (default)
+		let isBlocked: boolean = true;
+		let message: string = 'User blocked successfully ✅';
+
+		//* Check if the blockReason is provided, if not so it is unblock operation
+		if (!blockReason) {
+			isBlocked = false;
+			blockReason = null;
+			message = 'User unblocked successfully ✅';
+		}
+
+		//* Block/Un-block user by update isBlock field to true/false and blockReason to blockReason
 		const user = await this.usersModel.findByIdAndUpdate(
 			userId,
 			{
-				isBlocked: true,
+				isBlocked,
 				blockReason,
 			},
 			{ new: true },
@@ -148,7 +159,7 @@ export class UsersService {
 
 		return {
 			success: true,
-			message: 'User blocked successfully ✔️',
+			message,
 		};
 	}
 }

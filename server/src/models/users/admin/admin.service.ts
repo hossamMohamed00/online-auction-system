@@ -147,7 +147,15 @@ export class AdminService {
 		userId: string,
 		blockReason: string,
 	): Promise<ResponseResult> {
-		return this.usersService.blockUser(userId, blockReason);
+		return this.usersService.toggleBlockUser(userId, blockReason);
+	}
+
+	/**
+	 * Un-block a user
+	 * @param userId - user id
+	 */
+	async unBlockUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleBlockUser(userId);
 	}
 
 	/* Handle Auctions Functions */

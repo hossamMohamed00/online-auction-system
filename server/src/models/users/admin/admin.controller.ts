@@ -112,6 +112,14 @@ export class AdminController
 		return this.adminService.blockUser(userId, blockReason);
 	}
 
+	@Post('users/unblock')
+	@HttpCode(HttpStatus.OK)
+	unBlockUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.unBlockUser(userId);
+	}
+
 	/* Handle Auction Behaviors */
 	/**
 	 * List all available auctions
