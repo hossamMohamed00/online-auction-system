@@ -93,7 +93,10 @@ export class ReviewService {
 	 * @returns review if exists
 	 */
 	async getReviewInSeller(sellerId: string, buyerId: string) {
-		const review = await this.reviewModel.findOne({ sellerId, buyerId });
+		const review = await this.reviewModel.findOne({
+			seller: sellerId,
+			buyer: buyerId,
+		});
 
 		if (!review) {
 			throw new BadRequestException(
