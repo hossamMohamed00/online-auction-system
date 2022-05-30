@@ -15,7 +15,10 @@ export interface BuyerReviewsBehaviors {
 	): Promise<Review>;
 
 	//* Get buyer review in specific seller
-	getReviewOnSeller(sellerId: string, buyerId: string): Promise<Review>;
+	getReviewOnSeller(
+		{ sellerId }: FindReviewInSeller,
+		buyerId: string,
+	): Promise<Review>;
 
 	//* Edit buyer review
 	editReview(

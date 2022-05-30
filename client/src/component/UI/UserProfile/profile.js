@@ -8,7 +8,9 @@ import { CardsContainer } from './../../AdminModule/AdminDashboard/dashboard_con
 import ProfileDetails from './profileDetails/profileDetails';
 import Auctions from './Auctions/Auctions';
 import Reviews from './Reviews/Reviews';
+import OverallReviewBar from './Reviews/overallReviewBar';
 const UserProfile = props => {
+	console.log(props);
 	// Handle Tabs
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownAuctions, setIsShownAuctions] = useState(false);
@@ -42,6 +44,13 @@ const UserProfile = props => {
 							<img src={profileImg} />
 							<h5 className="text-light">{props.name}</h5>
 							<p>{props.role}</p>
+							<h4 className="text-light fw-bold d-inline-block position-absolute bar">
+								Rating : {props.seller && props.seller.rating} / 5
+							</h4>
+
+
+								<OverallReviewBar value={props.seller && props.seller.rating} class='profile_bar'/>
+
 						</div>
 					</header>
 				</section>
@@ -76,7 +85,9 @@ const UserProfile = props => {
 					/>
 				)}
 				{isShownAuctions && <Auctions auctionsData={props.auctions} />}
-				{isShownReviews && <Reviews reviews={props.reviews} sellerId={props.seller._id}/>}
+				{isShownReviews && (
+					<Reviews reviews={props.reviews} seller={props.seller} />
+				)}
 				{/* end tabs */}
 			</div>
 		</>

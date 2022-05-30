@@ -39,27 +39,33 @@
 .profile h5,
 .profile p {
 	position: absolute;
-	top: 102%;
+	top: 95%;
 	left: 25%;
 	font-weight: bold !important;
 }
 .profile p {
-	top: 110% !important;
+	top: 103% !important;
 	color: rgb(224, 216, 216);
 	font-weight: 300 !important;
 }
-.profile button {
+.profile .bar {
 	position: absolute;
 
-	top: 104% !important;
-	left: 80% !important;
-	font-weight: bold !important;
+	font-size: 14px !important;
+	left: 65.5% !important;
+	margin-top: 1.5%;
+}
+.profile .profile_bar {
+	position: absolute;
+	left: 73%;
+	width: 15%;
 }
 .profile_cards {
 	width: 80%;
 	margin: 0 10%;
 	/* background-color: #262525 !important; */
 }
+
 .profile_card {
 	background-color: #191c20;
 	padding: 2% 3%;
