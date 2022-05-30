@@ -171,11 +171,16 @@ export class ReviewService {
 			{ $match: { _id: sellerId } },
 		]);
 
-		//* Extract the rate from the array returned
-		let rate: any = reviewsAverage[0].rate;
+		//* At default rate and check if there is reviews to update the rate or not
+		let rate: any = 2.5;
 
-		//* Keep only first float value
-		rate = rate.toFixed(1);
+		if (reviewsAverage.length !== 0) {
+			//* Extract the rate from the array returned
+			rate = reviewsAverage[0].rate;
+
+			//* Keep only first float value
+			rate = rate.toFixed(1);
+		}
 
 		//* Update seller rate in db
 		await this.sellerService.updateSellerRating(sellerId, rate);
