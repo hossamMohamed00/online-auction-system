@@ -41,6 +41,7 @@ export class UsersService {
 		const user = await this.usersModel.findOne({ email }).exec();
 		return user;
 	}
+
 	async findByName(name: string) {
 		const user = await this.usersModel.findOne({ name }).exec();
 		if (user) {
@@ -48,6 +49,20 @@ export class UsersService {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Save user verification code in user document
+	 * @param email - user email
+	 * @param verificationCode - generated verification code
+	 */
+	async handleNewVerificationCode(email: string, verificationCode: number) {
+		await this.usersModel.findOneAndUpdate(
+			{ email },
+			{
+				emailVerificationCode: verificationCode,
+			},
+		);
 	}
 
 	/**

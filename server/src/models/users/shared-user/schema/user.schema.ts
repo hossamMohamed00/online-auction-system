@@ -20,6 +20,9 @@ export class User {
 	@Prop({ default: false })
 	isEmailConfirmed: boolean;
 
+	@Prop({ default: null })
+	emailVerificationCode: number;
+
 	@Prop({ required: true, min: 3 })
 	password: string;
 

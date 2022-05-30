@@ -12,18 +12,17 @@ export class EmailConfirmationController {
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.OK)
 	@Post('confirm')
-	async confirm(@Body() confirmationData: ConfirmEmailDto) {
-		//* Get the user email from the token
-		const email = await this.emailConfirmationService.decodeConfirmationToken(
-			confirmationData.token,
-		);
+	async confirm(@Body() { verificationCode, email }: ConfirmEmailDto) {
 		//* Confirm the email
-		return await this.emailConfirmationService.confirmEmail(email);
+		return await this.emailConfirmationService.confirmCode(
+			email,
+			verificationCode,
+		);
 	}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('resend-confirmation-link')
-	async resendConfirmationLink(@GetCurrentUserData('_id') userId: string) {
-		return await this.emailConfirmationService.resendConfirmationLink(userId);
+	async resendConfirmationCode(@GetCurrentUserData('_id') userId: string) {
+		return await this.emailConfirmationService.resendConfirmationCode(userId);
 	}
 }
