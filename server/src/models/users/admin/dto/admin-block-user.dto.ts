@@ -1,11 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { BlockUserReasonsEnum } from '../enums';
 
 export class AdminBlockUserDto {
-	@IsString()
+	@IsEnum(BlockUserReasonsEnum, {
+		message: 'Invalid block reason, please enter valid enum value 👀',
+	})
 	@IsNotEmpty()
-	@MinLength(5)
-	@MaxLength(255)
-	blockReason: string;
-
-	//* TODO: Create new block messages enum
+	blockReason: BlockUserReasonsEnum;
 }

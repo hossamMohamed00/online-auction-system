@@ -41,6 +41,7 @@ import {
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
 	AdminWarnUserDto,
+	GetEnumValues,
 	GetTopAuctionsDto,
 } from './dto';
 import { AdminDashboardBehavior } from './interfaces/manage-dashboard.interface';
@@ -48,6 +49,7 @@ import { AdminDashboardData } from './types/dashboard-data.type';
 import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { ResponseResult } from 'src/common/types';
+import { WarningMessagesEnum, BlockUserReasonsEnum } from './enums';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -92,9 +94,13 @@ export class AdminController
 		return this.adminService.findAllSystemUsers(filterUsersQueryDto);
 	}
 
-	/**
-	 *
-	 */
+	@Get('get-enum-values')
+	getEnumValue(
+		@Query() { enumName }: GetEnumValues,
+	): WarningMessagesEnum[] | BlockUserReasonsEnum[] {
+		return this.adminService.getEnumValue(enumName);
+	}
+
 	@Post('users/warn')
 	@HttpCode(HttpStatus.OK)
 	warnUser(

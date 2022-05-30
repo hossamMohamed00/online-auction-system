@@ -26,6 +26,7 @@ import {
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
 } from './dto';
+import { BlockUserReasonsEnum, EnumNames, WarningMessagesEnum } from './enums';
 import { Admin, AdminDocument } from './schema/admin.schema';
 import { AdminDashboardData } from './types/dashboard-data.type';
 
@@ -122,6 +123,21 @@ export class AdminService {
 	 */
 	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto) {
 		return this.usersService.findAll(filterUsersQueryDto);
+	}
+
+	/**
+	 * Return the enum values of given enum name
+	 * @param enumName
+	 * @returns
+	 */
+	getEnumValue(
+		enumName: string,
+	): BlockUserReasonsEnum[] | WarningMessagesEnum[] {
+		if (enumName === EnumNames.BlockUserReasonsEnum) {
+			return Object.values(BlockUserReasonsEnum);
+		} else {
+			return Object.values(WarningMessagesEnum);
+		}
 	}
 
 	/**

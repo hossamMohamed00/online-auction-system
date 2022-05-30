@@ -1,11 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { WarningMessagesEnum } from '../enums';
 
 export class AdminWarnUserDto {
-	@IsString()
 	@IsNotEmpty()
-	@MinLength(5)
-	@MaxLength(255)
-	warningMessage: string;
-
-	//* TODO: Create new warning messages enum
+	@IsEnum(WarningMessagesEnum, {
+		message: 'Invalid warning message, please enter valid enum value 👀',
+	})
+	warningMessage: WarningMessagesEnum;
 }
