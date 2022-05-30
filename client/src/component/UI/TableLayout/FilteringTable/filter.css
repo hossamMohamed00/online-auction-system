@@ -1,7 +1,7 @@
 .filter {
 	width: 30%;
 	padding: 10px !important;
-	margin-left: 66% !important;
+	margin-left: 58% !important;
 	margin-bottom: 1%;
 	background-color: #262525 !important;
 	color: white !important;
@@ -17,4 +17,9 @@
 	color: white !important;
 	opacity: 1;
 	font-size: 14px !important;
+}
+.clear{
+	margin-bottom: 1% !important;
+	background-color: black !important;
+	color: white !important
 }

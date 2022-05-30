@@ -22,11 +22,11 @@ const PaymentForm = props => {
 	const [showRecoverModal, setShowRecoverModal] = useState(false);
 
 	// start validate Amount num [Amount must be less than 100]
-	const validateAmout = value => value.trim().length !== 0 && value > 100;
+	const validateAmount = value => value.trim().length !== 0 && value > 100;
 
 	const handleSubmitValidation = e => {
 		e.preventDefault();
-		if (validateAmout(AmountRef.current.value)) {
+		if (validateAmount(AmountRef.current.value)) {
 			handleSubmit(e, AmountRef.current.value);
 		} else {
 			setAmountErrorMessage("Amount must'nt be less than 100 ❌");
@@ -36,10 +36,6 @@ const PaymentForm = props => {
 		}
 	};
 
-	// recover money handler using paymentIntent Id
-	const RecoverMoneyHandler = () => {
-		setShowRecoverModal(true);
-	};
 
 	//* Return the form that responsible for payment
 	return (
@@ -65,9 +61,9 @@ const PaymentForm = props => {
 				<label className="text-light fs-5 mt-4 mb-2 fw-bold"> Amount </label>
 				<Input
 					type="number"
-					validateText={validateAmout}
+					validateText={validateAmount}
 					errorMassage={AmountErrorMessage}
-					id="prudectPrice"
+					id="productPrice"
 					className="chargeAmountStyle "
 					ref={AmountRef}
 				/>
@@ -78,27 +74,13 @@ const PaymentForm = props => {
 					type="submit"
 					className={`btn paymentBtn btn-success  ${
 						props.className
-							? 'col-md-5 col-sm-12 chargeWalletBtn bg-primary'
+							? 'col-md-4 col-sm-12 chargeWalletBtn bg-primary float-end'
 							: 'float-left btn-success col-sm-12'
 					} `}
 				>
-					{' '}
-					Charge Wallet Now{' '}
+
+					Charge Wallet Now
 				</button>
-				{props.showAllBtns && (
-					<button
-						type="button"
-						onClick={() => RecoverMoneyHandler(PaymentIntentId)}
-						className={`btn paymentBtn  ${
-							props.className
-								? 'col-md-5 col-sm-12 recoverMoneyBtn btn-danger'
-								: 'float-left btn-success '
-						} `}
-					>
-						{' '}
-						Recover Your Money{' '}
-					</button>
-				)}
 			</form>
 
 			{showRecoverModal && (

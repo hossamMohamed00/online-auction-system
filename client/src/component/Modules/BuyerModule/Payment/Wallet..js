@@ -32,7 +32,7 @@ const Wallet = props => {
 
 	const reloadBalanceHandler = value => {
 		setReloadBalance(value);
-	};
+};
 
 	const chargeWalletHandler = () => {
 		setChargeWallet(true);
@@ -52,10 +52,11 @@ const Wallet = props => {
 	}, [status, reloadBalance]);
 
 	useEffect(() => {
-		if (status === 'completed') {
+		if (status === 'completed' || status === 'error') {
 			setLoading(false);
 		}
 	}, [status]);
+
 
 	const PaymentContent = (
 		<>
@@ -63,7 +64,6 @@ const Wallet = props => {
 				<div className="d-flex space-around w-100">
 					<h4 className="fw-bold pt-2 px-4"> Your Balance </h4>
 					<h4 className="px-1 pt-2 fw-bolder align-items-end text-end w-50 text-danger">
-						{' '}
 						{status === 'completed' && data && data.balance}{' '}
 					</h4>
 				</div>
@@ -89,6 +89,7 @@ const Wallet = props => {
 				btnHandler={!chargeWallet && chargeWalletHandler}
 				btnFooterStyle={btnFooterStyle}
 			/>
+
 			{/* wallet on buyer dashboard */}
 			{location && (
 				<BuyerDashboardContent>
@@ -99,8 +100,7 @@ const Wallet = props => {
 						<div className="BalanceCard mx-auto my-4 pt-4 d-flex flex-column justify-content-center bg-dark text-light text-center rounded-3">
 							<h5 className="fw-bold pb-2"> Your Balance </h5>
 							<h5 className="bg-primary py-2 m-0">
-								{' '}
-								{status === 'completed' && data && data.balance}{' '}
+								{status === 'completed' && data && data.balance}
 							</h5>
 						</div>
 						{/* end view balance */}

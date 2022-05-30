@@ -46,7 +46,6 @@ const UsersPage = props => {
 			idToken: idToken,
 			path: 'admin/users?role=seller',
 		});
-		props.reloadFun(Math.random());
 	}, [sendRequest]);
 
 	//filter

@@ -1,4 +1,4 @@
-.ServeiceCard {
+.ServiceCard {
 	width: 90vw;
 	margin-top: -10vh;
 	margin-bottom: 15vh;
@@ -36,14 +36,14 @@
 }
 
 ._cardText {
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 	word-spacing: 5px;
 }
 
-/* start mediaquery for medium screens && small screens */
+/* start media query for medium screens && small screens */
 
 @media (max-width: 991px) {
-	.ServeiceCard {
+	.ServiceCard {
 		margin-top: 10vh;
 		margin-bottom: 20vh;
 	}
@@ -61,4 +61,4 @@
 	}
 }
 
-/* end mediaquery for medium screens && small screens */
+/* end media query for medium screens && small screens */

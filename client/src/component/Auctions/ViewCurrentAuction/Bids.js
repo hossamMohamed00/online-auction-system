@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import classes from './Bids.module.css';
-import scollbarStyle from '../../UI/ScrollBar.module.css';
+import scrollbarStyle from '../../UI/ScrollBar.module.css';
 
 function Bids() {
 	return (
-		<div className={`${scollbarStyle.scollbar} ${classes.Bids} `}>
+		<div className={`${scrollbarStyle.scrollbar} ${classes.Bids} `}>
 			<div
 				className={`${classes.BidsContent} toast d-block mb-3 w-100`}
 				role="alert"

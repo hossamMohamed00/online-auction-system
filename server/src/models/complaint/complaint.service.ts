@@ -9,6 +9,7 @@ import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Seller } from '../users/seller/schema/seller.schema';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { AdminFilterComplaintQueryDto } from '../users/admin/dto';
+import { ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class ComplaintService {
@@ -76,9 +77,7 @@ export class ComplaintService {
 	 * @param complaintId
 	 * @returns true or false
 	 */
-	async markComplaintAsRead(
-		complaintId: String,
-	): Promise<{ success: boolean }> {
+	async markComplaintAsRead(complaintId: String): Promise<ResponseResult> {
 		//* Set markedAsRead field to true
 		const updatedComplaint = await this.complaintModel.findByIdAndUpdate(
 			complaintId,

@@ -2,7 +2,7 @@
 
 export const getEmailContent = (
 	name: string,
-	verificationLink: string,
+	verificationCode: number,
 ): string => {
 	return `
 		<!DOCTYPE html>
@@ -182,7 +182,7 @@ export const getEmailContent = (
 							<tr>
 								<td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
 								<p style="margin: 0;">Hello ${name} 👋🏻</p>
-								<p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="http://localhost:3000.com">Auction System</a>, you can safely delete this email.</p>
+								<p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="http://localhost:3000/">Online Auction System</a>, you can safely delete this email.</p>
 								</td>
 							</tr>
 							<!-- end copy -->
@@ -196,9 +196,9 @@ export const getEmailContent = (
 												<table border="0" cellpadding="0" cellspacing="0">
 													<tr>
 														<td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-															<a href="${verificationLink}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Verify your email Now 📨🤘🏻</a>
+															<h3 style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">${verificationCode}</h3>
 														</td>
-														Note that this verification link will expires in 5 min.
+														<td>Verify your email now, by copy the code and paste in the website 📨🤘🏻</td>
 													</tr>
 												</table>
 											</td>
@@ -207,15 +207,6 @@ export const getEmailContent = (
 								</td>
 							</tr>
 							<!-- end button -->
-
-							<!-- start copy -->
-							<tr>
-								<td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-									<p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
-									<p style="margin: 0;"><a href="${verificationLink}" target="_blank">${verificationLink}</a></p>
-								</td>
-							</tr>
-							<!-- end copy -->
 
 							<!-- start copy -->
 							<tr>

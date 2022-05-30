@@ -2,12 +2,14 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import {
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { DashboardAuctionsCount } from 'src/models/auction/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
@@ -24,6 +26,7 @@ import {
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
 } from './dto';
+import { BlockUserReasonsEnum, EnumNames, WarningMessagesEnum } from './enums';
 import { Admin, AdminDocument } from './schema/admin.schema';
 import { AdminDashboardData } from './types/dashboard-data.type';
 
@@ -55,7 +58,7 @@ export class AdminService {
 			upcomingAuctionsCount,
 			closedAuctionsCount,
 			deniedAuctionsCount,
-		} = await this.auctionService.getAuctionsCount();
+		}: DashboardAuctionsCount = await this.auctionService.getAuctionsCount();
 
 		//* Get all categories count
 		const totalCategories = await this.categoryService.getCategoriesCount();
@@ -121,6 +124,64 @@ export class AdminService {
 	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto) {
 		return this.usersService.findAll(filterUsersQueryDto);
 	}
+
+	/**
+	 * Return the enum values of given enum name
+	 * @param enumName
+	 * @returns
+	 */
+	getEnumValue(
+		enumName: string,
+	): BlockUserReasonsEnum[] | WarningMessagesEnum[] {
+		if (enumName === EnumNames.BlockUserReasonsEnum) {
+			return Object.values(BlockUserReasonsEnum);
+		} else {
+			return Object.values(WarningMessagesEnum);
+		}
+	}
+
+	/**
+	 * Warn a user and provide reason for warning
+	 * @param userId : user id
+	 * @param warningMessage: reason for warning
+	 * @returns Promise<ResponseResult>
+	 */
+	async warnUser(
+		userId: string,
+		warningMessage: string,
+	): Promise<ResponseResult> {
+		return this.usersService.toggleWarnUser(userId, warningMessage);
+	}
+
+	/**
+	 * Remove warning badge from user
+	 * @param userId : user id
+	 */
+	async removeWarnUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleWarnUser(userId);
+	}
+
+	/**
+	 * Block a user and provide reason for blocking
+	 * @param userId : user id
+	 * @param blockReason : reason for blocking
+	 * @returns Promise<ResponseResult>
+	 */
+	async blockUser(
+		userId: string,
+		blockReason: string,
+	): Promise<ResponseResult> {
+		return this.usersService.toggleBlockUser(userId, blockReason);
+	}
+
+	/**
+	 * Un-block a user
+	 * @param userId - user id
+	 */
+	async unBlockUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleBlockUser(userId);
+	}
+
 	/* Handle Auctions Functions */
 
 	/**
@@ -260,7 +321,7 @@ export class AdminService {
 	 * @param complaintId
 	 * @returns true or false
 	 */
-	markComplaintRead(complaintId: String): Promise<{ success: boolean }> {
+	markComplaintRead(complaintId: String): Promise<ResponseResult> {
 		return this.complaintService.markComplaintAsRead(complaintId);
 	}
 

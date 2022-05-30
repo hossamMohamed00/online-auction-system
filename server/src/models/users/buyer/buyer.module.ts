@@ -18,5 +18,6 @@ import { ReviewModule } from 'src/models/review/review.module';
 	],
 	controllers: [BuyerController],
 	providers: [BuyerService, AuctionValidationService],
+	exports: [BuyerService],
 })
 export class BuyerModule {}

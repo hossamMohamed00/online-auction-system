@@ -85,7 +85,7 @@ export default class WalletService {
 	 * @param user
 	 */
 	public async getWalletBalance(
-		user: User | ObjectId,
+		user: User | string,
 	): Promise<{ balance: number }> {
 		const wallet = await this.walletModel.findOne({ user });
 

@@ -13,7 +13,7 @@ import {
 import Categories from '../Categories/Categories';
 import classes from './Navbar.module.css';
 import DropDownBox from './DropDownBox';
-import Search from './Seach';
+import Search from './Search';
 import { Col, Row } from 'react-bootstrap';
 
 const activeLink = navData =>
@@ -22,27 +22,27 @@ const activeLink = navData =>
 const Navbar = props => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
-	const [isShownNavContent, setisShownNavContent] = useState(false);
-	const [isShownCategoriesContent, setisShownCategoriesContent] = useState(
+	const [isShownNavContent, setIsShownNavContent] = useState(false);
+	const [isShownCategoriesContent, setIsShownCategoriesContent] = useState(
 		false,
 	);
-	const [isShownProfileContent, setisShownProfileContent] = useState(false);
+	const [isShownProfileContent, setIsShownProfileContent] = useState(false);
 
 	const email = useSelector(store => store.AuthData.email);
 	const emailName = email && email.substring(0, email.indexOf('@'));
 
-	const showNavContentHandeler = () => {
-		setisShownNavContent(prevState => !prevState);
+	const showNavContentHandler = () => {
+		setIsShownNavContent(prevState => !prevState);
 	};
 
-	const showCategoriesContentHandeler = e => {
+	const showCategoriesContentHandler = e => {
 		e.preventDefault();
-		setisShownCategoriesContent(prevState => !prevState);
+		setIsShownCategoriesContent(prevState => !prevState);
 	};
 
-	const showProfileContentHandeler = e => {
+	const showProfileContentHandler = e => {
 		e.preventDefault();
-		setisShownProfileContent(prevState => !prevState);
+		setIsShownProfileContent(prevState => !prevState);
 	};
 
 	const NavLinks = (
@@ -70,7 +70,7 @@ const Navbar = props => {
 	const showCategories = (
 		<div
 			className={`text-start pb-0 fw-bold ${classes.navLink} `}
-			onClick={showCategoriesContentHandeler}
+			onClick={showCategoriesContentHandler}
 		>
 			Categories
 			{!isShownCategoriesContent && (
@@ -103,11 +103,11 @@ const Navbar = props => {
 	const isLoggedInUser = isLoggedIn && (
 		<div
 			className={`text-start pb-0 pe-3 fw-bold ${classes.navLink} `}
-			onClick={showProfileContentHandeler}
+			onClick={showProfileContentHandler}
 		>
 			<FontAwesomeIcon icon={faUser} className="px-1" /> {emailName}
 			{isShownProfileContent && (
-				<DropDownBox showWalletHandeler={props.showWalletHandeler} />
+				<DropDownBox showWalletHandler = {props.showWalletHandler} />
 			)}
 		</div>
 	);
@@ -120,7 +120,7 @@ const Navbar = props => {
 						<FontAwesomeIcon
 							icon={faBars}
 							className={` ${classes.faBars} text-light d-inline-block d-xs d-lg-none pt-1 px-2  `}
-							onClick={showNavContentHandeler}
+							onClick={showNavContentHandler}
 						/>
 						<Link
 							className={` ${classes.navbarBrand} navbar-brand fw-bold pt-3`}

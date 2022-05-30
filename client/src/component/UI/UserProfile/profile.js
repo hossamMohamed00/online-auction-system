@@ -1,39 +1,64 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PageHeader from '../../UI/Page Header/pageHeader';
 import './profile.css';
-import { Col, Row } from 'react-bootstrap';
-
+import coverImg from '../../../assets/fbc2a961bfd0e7b5673a7922cb848cdb.jpg';
+import profileImg from '../../../assets/download.png';
+import { CardsContainer } from './../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
+import useFilter from '../TableLayout/FilteringTable/filter';
+import DataTable from 'react-data-table-component';
 const UserProfile = props => {
 	const role = useSelector(store => store.AuthData.role);
+	const data=[];
+  const	columns=[]
+
+	//filter
+	const items = data ? data : [];
+	const { filterFun, filteredItems } = useFilter(items, 'name');
+	//end filter
 	return (
 		<>
-			<PageHeader text={`Welcome ${props.name}`} showLink={false} />
-			<div className="container ">
-				<Row className="h-100">
-					<Col
-						lg={4}
-						md={6}
-						// className={`${classes.chatList} ${scollbarStyle.scollbar}`}
-					>
-						<h3 className="text-center text-light fw-bold">Profile details</h3>
-						<div className="row">
-							<img src={props.img} />
+			<div className="container-fluid container_profile">
+				<section className="header_container position-relative">
+					<header className="header">
+						<img src={coverImg} />
+						<div className="profile">
+							<img src={profileImg} />
+							<h5 className="text-light">{props.name}</h5>
+							<p>{role}</p>
+							{role === 'admin' ||
+								(role === 'employee' && (
+									<button className="btn btn-danger">Block</button>
+								))}
 						</div>
-						<div className="row">
-							<h2 className="text-light ">{props.email}</h2>
-						</div>
-						{role === 'admin' && (
-							<div className="row buttons">
-								<button className="btn btn-danger col-lg-6 mx-2">Block</button>
-								<button className="btn btn-warning col-lg">Worn</button>
-							</div>
+					</header>
+				</section>
+				<hr className="bg-light profileHr1" />
+
+				<section className="profile_content">
+					{/* <div className="profile_cards">
+						<CardsContainer
+							title="joined Auctions"
+							cards={props.cards}
+							class="profile_card "
+							card-class="cardP"
+						/>
+					</div> */}
+					{/* <hr className="bg-light profileHr2" /> */}
+					<div className="profile_table">
+						<h2 className="text-light mt-2 fw-bold">Joined Auctions</h2>
+						{data && (
+							<DataTable
+								// selectableRows
+								columns={columns}
+								data={filteredItems}
+								subHeader
+								subHeaderComponent={filterFun}
+								theme="dark"
+								pagination
+							/>
 						)}
-					</Col>
-					<Col lg={8} md={6}>
-						<h3 className="text-center text-light fw-bold">{props.dataName}</h3>
-					</Col>
-				</Row>
+					</div>
+				</section>
 			</div>
 		</>
 	);

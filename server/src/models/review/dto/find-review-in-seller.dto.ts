@@ -1,6 +1,6 @@
-import { IsMongoId } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class FindReviewInSeller {
-	@IsMongoId()
+	@IsString()
 	sellerId: string;
 }

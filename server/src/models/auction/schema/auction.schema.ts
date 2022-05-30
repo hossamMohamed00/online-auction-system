@@ -1,15 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Types, ObjectId } from 'mongoose';
 import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { Transform } from 'class-transformer';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
 export type AuctionDocument = Auction & Document;
 
 @Schema()
 export class Auction {
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
+
 	@Prop({ required: true, trim: true })
 	title: string;
 
@@ -79,6 +83,10 @@ export class Auction {
 
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
 	bidders: [Types.ObjectId];
+
+	//* To keep track of all bidders that should be notified when the auction start
+	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })
+	waitingBidders: [Types.ObjectId];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

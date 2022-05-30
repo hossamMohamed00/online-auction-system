@@ -4,7 +4,7 @@
 	--nav-color: #262726;
 	--overlay-dark: rgba(0, 0, 0, 0.78);
 
-	--paragaph-color: #a2a2a2;
+	--paragraph-color: #a2a2a2;
 	/* --input-dark-color: #707070; */
 
 	--btnActive-color: #2666cf;
@@ -78,9 +78,9 @@ html {
 }
 /* table rows */
 .CjiV {
-	font-size: 15px !important;
+	font-size: 14px !important;
 	background-color: #262525 !important;
-	font-weight: bold;
+	font-weight: bold !important;
 }
 /* pagination */
 .cvYaNh {
@@ -105,8 +105,8 @@ html {
 
 .bg-danger,
 .alert-danger .btn-danger {
-	background-color: var(--alert-color) !important;
-	border-color: var(--alert-color) !important;
+	background-color: var(--alert-color)!important;
+	border-color: var(--alert-color)!important;
 }
 .btn-primary {
 	background-color: var(--main-color) !important ;
@@ -121,6 +121,9 @@ html {
 	background: none;
 	border: 0 !important;
 }
+.btn:focus {
+	box-shadow: none !important;
+}
 /* ************************************** */
 /* Key frames*/
 @keyframes slide-from-left {
@@ -131,6 +134,7 @@ html {
 		transform: translateX(0%);
 	}
 }
+
 
 @keyframes slide-from-top {
 	from {

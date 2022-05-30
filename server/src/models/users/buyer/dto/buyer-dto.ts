@@ -10,4 +10,10 @@ export class BuyerDto extends UserDto {
 		return SerializeIt(AuctionDto, obj.joinedAuctions);
 	})
 	joinedAuctions: Auction[];
+
+	@Expose()
+	@Transform(({ obj }) => {
+		return SerializeIt(AuctionDto, obj.savedAuctions);
+	})
+	savedAuctions: Auction[];
 }

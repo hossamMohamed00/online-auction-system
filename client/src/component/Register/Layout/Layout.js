@@ -3,13 +3,13 @@ import RegisterContent from '../RegisterContent/RegisterContent';
 import RegisterHeader from '../RegisterHeader/RegisterHeader';
 
 import classes from './Layout.module.css';
-import scollbarStyle from '../../UI/ScrollBar.module.css';
+import scrollbarStyle from '../../UI/ScrollBar.module.css';
 
 const Layout = props => {
 	return (
 		<Fragment>
 			<div
-				className={`${classes.Register} ${scollbarStyle.scollbar} text-center h-100`}
+				className={`${classes.Register} ${scrollbarStyle.scrollbar} text-center h-100`}
 			>
 				<div className="container-fluid p-0">
 					<div className="row m-0 p-0 h-100">
