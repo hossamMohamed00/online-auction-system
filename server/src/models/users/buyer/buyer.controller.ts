@@ -151,7 +151,7 @@ export class BuyerController
 	deleteReview(
 		@Param() { id }: MongoObjectIdDto,
 		@GetCurrentUserData('_id') buyerId: string,
-	): Promise<Review> {
+	): Promise<ResponseResult> {
 		return this.buyerService.removeReview(id, buyerId);
 	}
 }
