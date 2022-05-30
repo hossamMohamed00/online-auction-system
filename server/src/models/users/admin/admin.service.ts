@@ -123,6 +123,33 @@ export class AdminService {
 	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto) {
 		return this.usersService.findAll(filterUsersQueryDto);
 	}
+
+	/**
+	 * Warn a user and provide reason for warning
+	 * @param userId : user id
+	 * @param warningMessage: reason for warning
+	 * @returns Promise<ResponseResult>
+	 */
+	async warnUser(
+		userId: string,
+		warningMessage: string,
+	): Promise<ResponseResult> {
+		throw new Error('Method not implemented.');
+	}
+
+	/**
+	 * Block a user and provide reason for blocking
+	 * @param userId : user id
+	 * @param blockReason : reason for blocking
+	 * @returns Promise<ResponseResult> 
+	 */
+	async blockUser(
+		userId: string,
+		blockReason: string,
+	): Promise<ResponseResult> {
+		throw new Error('Method not implemented.');
+	}
+
 	/* Handle Auctions Functions */
 
 	/**

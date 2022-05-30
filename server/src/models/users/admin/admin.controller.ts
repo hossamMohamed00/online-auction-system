@@ -35,8 +35,10 @@ import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { AdminComplaintsBehavior } from './interfaces/manage-complaint.interface';
 import {
+	AdminBlockUserDto,
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
+	AdminWarnUserDto,
 	GetTopAuctionsDto,
 } from './dto';
 import { AdminDashboardBehavior } from './interfaces/manage-dashboard.interface';
@@ -86,6 +88,25 @@ export class AdminController
 		@Query() filterUsersQueryDto: FilterUsersQueryDto,
 	): Promise<User[]> {
 		return this.adminService.findAllSystemUsers(filterUsersQueryDto);
+	}
+
+	/**
+	 *
+	 */
+	@Post('users/warn')
+	warnUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+		@Body() {warningMessage}: AdminWarnUserDto,
+	): Promise<ResponseResult> {
+		return this.adminService.warnUser(userId, warningMessage);
+	}
+
+	@Post('users/block')
+	blockUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+		@Body() {blockReason}: AdminBlockUserDto,
+	): Promise<ResponseResult> {
+		return this.adminService.blockUser(userId, blockReason);
 	}
 
 	/* Handle Auction Behaviors */
