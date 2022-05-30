@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
+import { ResponseResult } from 'src/common/types';
 import { Seller } from '../users/seller/schema/seller.schema';
 import { SellerService } from '../users/seller/seller.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -128,7 +129,7 @@ export class ReviewService {
 	 * @param buyerId
 	 * @returns review if removed
 	 */
-	async remove(reviewId: string, buyerId: string) {
+	async remove(reviewId: string, buyerId: string): Promise<ResponseResult> {
 		const review: ReviewDocument = await this.reviewModel.findOneAndRemove({
 			_id: reviewId,
 			buyer: buyerId,
@@ -141,7 +142,10 @@ export class ReviewService {
 		//* Update seller rating
 		await this.updateSellerRating(review.seller);
 
-		return review;
+		return {
+			success: true,
+			message: 'Review removed successfully ✔️',
+		};
 	}
 
 	/**
