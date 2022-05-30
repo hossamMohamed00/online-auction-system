@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ResponseResult } from 'src/common/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { FilterUsersQueryDto } from './dto/filter-users.dto';
 import { Role } from './enums';
@@ -115,6 +116,28 @@ export class UsersService {
 			employeesCount,
 			sellersCount,
 			buyersCount,
+		};
+	}
+
+	/**
+	 * Block user by id
+	 * @param userId
+	 * @param blockReason
+	 */
+	async blockUser(userId: string, blockReason: string): Promise<ResponseResult> {
+		//* Block user by update isBlock field to true and blockReason to blockReason
+		const user = await this.usersModel.findByIdAndUpdate(userId, {
+			isBlock: true,
+			blockReason,
+		}, { new: true })
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message: 'User blocked successfully ✔️',
 		};
 	}
 }

@@ -3,6 +3,8 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -96,15 +98,16 @@ export class AdminController
 	@Post('users/warn')
 	warnUser(
 		@Query() { id: userId }: MongoObjectIdDto,
-		@Body() {warningMessage}: AdminWarnUserDto,
+		@Body() { warningMessage }: AdminWarnUserDto,
 	): Promise<ResponseResult> {
 		return this.adminService.warnUser(userId, warningMessage);
 	}
 
 	@Post('users/block')
+	@HttpCode(HttpStatus.OK)
 	blockUser(
 		@Query() { id: userId }: MongoObjectIdDto,
-		@Body() {blockReason}: AdminBlockUserDto,
+		@Body() { blockReason }: AdminBlockUserDto,
 	): Promise<ResponseResult> {
 		return this.adminService.blockUser(userId, blockReason);
 	}

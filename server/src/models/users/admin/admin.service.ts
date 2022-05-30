@@ -141,13 +141,13 @@ export class AdminService {
 	 * Block a user and provide reason for blocking
 	 * @param userId : user id
 	 * @param blockReason : reason for blocking
-	 * @returns Promise<ResponseResult> 
+	 * @returns Promise<ResponseResult>
 	 */
 	async blockUser(
 		userId: string,
 		blockReason: string,
 	): Promise<ResponseResult> {
-		throw new Error('Method not implemented.');
+		return this.usersService.blockUser(userId, blockReason);
 	}
 
 	/* Handle Auctions Functions */
