@@ -1,6 +1,6 @@
 import { IsMongoId } from 'class-validator';
-
+import { ObjectId } from 'mongoose';
 export class FindReviewInSeller {
 	@IsMongoId()
-	sellerId: string;
+	sellerId: ObjectId;
 }

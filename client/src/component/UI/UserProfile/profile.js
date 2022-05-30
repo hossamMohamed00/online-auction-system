@@ -76,7 +76,7 @@ const UserProfile = props => {
 					/>
 				)}
 				{isShownAuctions && <Auctions auctionsData={props.auctions} />}
-				{isShownReviews && <Reviews reviews={props.reviews} />}
+				{isShownReviews && <Reviews reviews={props.reviews} sellerId={props.seller._id}/>}
 				{/* end tabs */}
 			</div>
 		</>
