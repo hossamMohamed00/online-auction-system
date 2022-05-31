@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ResponseResult } from 'src/common/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { FilterUsersQueryDto } from './dto/filter-users.dto';
 import { Role } from './enums';
@@ -41,6 +46,7 @@ export class UsersService {
 		const user = await this.usersModel.findOne({ email }).exec();
 		return user;
 	}
+
 	async findByName(name: string) {
 		const user = await this.usersModel.findOne({ name }).exec();
 		if (user) {
@@ -48,6 +54,20 @@ export class UsersService {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Save user verification code in user document
+	 * @param email - user email
+	 * @param verificationCode - generated verification code
+	 */
+	async handleNewVerificationCode(email: string, verificationCode: number) {
+		await this.usersModel.findOneAndUpdate(
+			{ email },
+			{
+				emailVerificationCode: verificationCode,
+			},
+		);
 	}
 
 	/**
@@ -100,6 +120,86 @@ export class UsersService {
 			employeesCount,
 			sellersCount,
 			buyersCount,
+		};
+	}
+
+	/**
+	 * Block or un-block user by id
+	 * @param userId
+	 * @param blockReason? if not provided, user will be un-blocked
+	 */
+	async toggleBlockUser(
+		userId: string,
+		blockReason?: string,
+	): Promise<ResponseResult> {
+		//* Set the variable as blocked user (default)
+		let isBlocked: boolean = true;
+		let message: string = 'User blocked successfully ✅';
+
+		//* Check if the blockReason is provided, if not so it is unblock operation
+		if (!blockReason) {
+			isBlocked = false;
+			blockReason = null;
+			message = 'User unblocked successfully ✅';
+		}
+
+		//* Block/Un-block user by update isBlock field to true/false and blockReason to blockReason
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{
+				isBlocked,
+				blockReason,
+			},
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message,
+		};
+	}
+
+	/**
+	 * Add/remove warn badge from user
+	 * @param userId
+	 * @param warningMessage
+	 */
+	async toggleWarnUser(
+		userId: string,
+		warningMessage?: string,
+	): Promise<ResponseResult> {
+		//* Set the variable as waned user (default)
+		let isWarned: boolean = true;
+		let message: string = 'Warning badge added to user 👍🏻';
+
+		//* Check if the warningMessage is provided, if not, so it is remove warn operation
+		if (!warningMessage) {
+			isWarned = false;
+			warningMessage = null;
+			message = 'Warning badge removed from user 👍🏻';
+		}
+
+		//* Warn/remove-warn from user by update isWarned field to true/false and warningMessage to warningMessage
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{
+				isWarned: isWarned,
+				warningMessage,
+			},
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message,
 		};
 	}
 }

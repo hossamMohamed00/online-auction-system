@@ -1,0 +1,15 @@
+.WarnReasons , .BlockReasons{
+	background-color: var(--nav-color);
+	color: white;
+	width: 90%;
+	margin-left: 5%;
+	border: 0!important;
+	border-color: var(--nav-color);
+	padding: 8px;
+}
+
+.WarnReasons:focus , .WarnReasons::selection{
+	box-shadow: none!important;
+	border: 0!important;
+}
+

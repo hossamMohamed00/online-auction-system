@@ -26,6 +26,7 @@ import {
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
 } from './dto';
+import { BlockUserReasonsEnum, EnumNames, WarningMessagesEnum } from './enums';
 import { Admin, AdminDocument } from './schema/admin.schema';
 import { AdminDashboardData } from './types/dashboard-data.type';
 
@@ -123,6 +124,64 @@ export class AdminService {
 	findAllSystemUsers(filterUsersQueryDto: FilterUsersQueryDto) {
 		return this.usersService.findAll(filterUsersQueryDto);
 	}
+
+	/**
+	 * Return the enum values of given enum name
+	 * @param enumName
+	 * @returns
+	 */
+	getEnumValue(
+		enumName: string,
+	): BlockUserReasonsEnum[] | WarningMessagesEnum[] {
+		if (enumName === EnumNames.BlockUserReasonsEnum) {
+			return Object.values(BlockUserReasonsEnum);
+		} else {
+			return Object.values(WarningMessagesEnum);
+		}
+	}
+
+	/**
+	 * Warn a user and provide reason for warning
+	 * @param userId : user id
+	 * @param warningMessage: reason for warning
+	 * @returns Promise<ResponseResult>
+	 */
+	async warnUser(
+		userId: string,
+		warningMessage: string,
+	): Promise<ResponseResult> {
+		return this.usersService.toggleWarnUser(userId, warningMessage);
+	}
+
+	/**
+	 * Remove warning badge from user
+	 * @param userId : user id
+	 */
+	async removeWarnUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleWarnUser(userId);
+	}
+
+	/**
+	 * Block a user and provide reason for blocking
+	 * @param userId : user id
+	 * @param blockReason : reason for blocking
+	 * @returns Promise<ResponseResult>
+	 */
+	async blockUser(
+		userId: string,
+		blockReason: string,
+	): Promise<ResponseResult> {
+		return this.usersService.toggleBlockUser(userId, blockReason);
+	}
+
+	/**
+	 * Un-block a user
+	 * @param userId - user id
+	 */
+	async unBlockUser(userId: string): Promise<ResponseResult> {
+		return this.usersService.toggleBlockUser(userId);
+	}
+
 	/* Handle Auctions Functions */
 
 	/**

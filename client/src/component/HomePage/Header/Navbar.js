@@ -20,6 +20,8 @@ const activeLink = navData =>
 	`${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `;
 
 const Navbar = props => {
+	
+	console.log(props)
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [isShownNavContent, setIsShownNavContent] = useState(false);
@@ -66,6 +68,7 @@ const Navbar = props => {
 			</NavLink>
 		</>
 	);
+	console.log(props.showWalletHandler);
 
 	const showCategories = (
 		<div
@@ -107,7 +110,7 @@ const Navbar = props => {
 		>
 			<FontAwesomeIcon icon={faUser} className="px-1" /> {emailName}
 			{isShownProfileContent && (
-				<DropDownBox showWalletHandler = {props.showWalletHandler} />
+				<DropDownBox showWalletHandler={() => props.showWalletHandler()} />
 			)}
 		</div>
 	);

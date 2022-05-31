@@ -11,7 +11,7 @@ import { EmailConfirmationController } from './email-confirmation.controller';
 import { EmailConfirmationService } from './email-confirmation.service';
 
 @Module({
-	imports: [JwtModule.register({}), EmailModule, AuthConfigModule, UsersModule],
+	imports: [EmailModule, UsersModule],
 	controllers: [EmailConfirmationController],
 	exports: [EmailConfirmationService],
 	providers: [EmailConfirmationService],

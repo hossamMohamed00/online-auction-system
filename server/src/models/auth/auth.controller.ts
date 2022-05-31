@@ -48,7 +48,7 @@ export class AuthController {
 		const tokens = await this.authService.register(registerUserDto);
 
 		//? Send confirmation email
-		await this.emailConfirmationService.sendVerificationLink(
+		await this.emailConfirmationService.sendVerificationCode(
 			registerUserDto.name,
 			registerUserDto.email,
 		);

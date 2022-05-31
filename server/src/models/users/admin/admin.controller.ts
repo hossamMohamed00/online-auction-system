@@ -3,6 +3,8 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -35,8 +37,11 @@ import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { AdminComplaintsBehavior } from './interfaces/manage-complaint.interface';
 import {
+	AdminBlockUserDto,
 	AdminFilterAuctionQueryDto,
 	AdminFilterComplaintQueryDto,
+	AdminWarnUserDto,
+	GetEnumValues,
 	GetTopAuctionsDto,
 } from './dto';
 import { AdminDashboardBehavior } from './interfaces/manage-dashboard.interface';
@@ -44,6 +49,7 @@ import { AdminDashboardData } from './types/dashboard-data.type';
 import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { ResponseResult } from 'src/common/types';
+import { WarningMessagesEnum, BlockUserReasonsEnum } from './enums';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -86,6 +92,47 @@ export class AdminController
 		@Query() filterUsersQueryDto: FilterUsersQueryDto,
 	): Promise<User[]> {
 		return this.adminService.findAllSystemUsers(filterUsersQueryDto);
+	}
+
+	@Get('get-enum-values')
+	getEnumValue(
+		@Query() { enumName }: GetEnumValues,
+	): WarningMessagesEnum[] | BlockUserReasonsEnum[] {
+		return this.adminService.getEnumValue(enumName);
+	}
+
+	@Post('users/warn')
+	@HttpCode(HttpStatus.OK)
+	warnUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+		@Body() { warningMessage }: AdminWarnUserDto,
+	): Promise<ResponseResult> {
+		return this.adminService.warnUser(userId, warningMessage);
+	}
+
+	@Post('users/remove-warn')
+	@HttpCode(HttpStatus.OK)
+	removeWarn(
+		@Query() { id: userId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.removeWarnUser(userId);
+	}
+
+	@Post('users/block')
+	@HttpCode(HttpStatus.OK)
+	blockUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+		@Body() { blockReason }: AdminBlockUserDto,
+	): Promise<ResponseResult> {
+		return this.adminService.blockUser(userId, blockReason);
+	}
+
+	@Post('users/unblock')
+	@HttpCode(HttpStatus.OK)
+	unBlockUser(
+		@Query() { id: userId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.unBlockUser(userId);
 	}
 
 	/* Handle Auction Behaviors */

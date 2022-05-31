@@ -1,9 +1,13 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import {IsNotEmpty, IsNumber, IsEmail } from 'class-validator';
 
 export class ConfirmEmailDto {
-	@IsString()
+	@IsNumber()
 	@IsNotEmpty()
-	token: string;
+	verificationCode: number;
+
+	@IsEmail()
+	@IsNotEmpty()
+	email:string
 }
 
 export default ConfirmEmailDto;
