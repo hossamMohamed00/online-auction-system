@@ -32,6 +32,7 @@ export const AddReview = props => {
 	React.useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Your review has been added successfully 💖🐱‍👤');
+			props.onReload(Math.random());
 		} else {
 			toast.error(error);
 		}

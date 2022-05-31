@@ -61,6 +61,7 @@ export const AddBuyerReview = props => {
 	useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Your review has been added successfully 💖🐱‍👤');
+			props.onReload(Math.random())
 		} else {
 			toast.error(error);
 		}
@@ -69,6 +70,8 @@ export const AddBuyerReview = props => {
 	useEffect(() => {
 		if (statusForDelete === 'completed') {
 			toast.success('Your review has been deleted successfully 💖🐱‍👤');
+			props.onReload(Math.random());
+
 		} else {
 			toast.error(errorForDelete);
 		}

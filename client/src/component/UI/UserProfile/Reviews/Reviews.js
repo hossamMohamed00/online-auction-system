@@ -16,15 +16,29 @@ const Reviews = props => {
 	const sellerId = props.seller._id;
 
 	// ! Check if buyer has already review this seller if has get it
-	React.useEffect(() => {
-		sendRequest({ sellerId: sellerId, idToken });
-	}, sendRequest);
+	React.useEffect(
+		() => {
+			sendRequest({ sellerId: sellerId, idToken });
+		},
+	[	sendRequest,
+		props.reload]
+	);
 
 	// ! rendering
 	return (
 		<>
-			{role === 'buyer' && error && <AddReview seller={props.seller._id} />}
-			{role === 'buyer' && !error && <AddBuyerReview data={data && data} />}
+			{role === 'buyer' && error && (
+				<AddReview
+					onReload={value => props.onReload(value)}
+					seller={props.seller._id}
+				/>
+			)}
+			{role === 'buyer' && !error && (
+				<AddBuyerReview
+					onReload={value => props.onReload(value)}
+					data={data && data}
+				/>
+			)}
 			<div className="card_container_Profile">
 				<h2 className="text-light text-center mt-4 fw-bold reviews_list">
 					Recent Reviews

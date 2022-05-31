@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './profile.css';
 import './tabs.css';
 import coverImg from '../../../assets/fbc2a961bfd0e7b5673a7922cb848cdb.jpg';
 import profileImg from '../../../assets/download.png';
 import { CardsContainer } from './../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
+import {
+	faBan,
+	faCircleExclamation,
+	faCircleXmark,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ProfileDetails from './profileDetails/profileDetails';
 import Auctions from './Auctions/Auctions';
 import Reviews from './Reviews/Reviews';
 import OverallReviewBar from './Reviews/overallReviewBar';
 import { useSelector } from 'react-redux';
+import BlockModal from './../Modals/BlockModal';
+import WarnModal from './../Modals/WarnModal';
 const UserProfile = props => {
 	const role = useSelector(store => store.AuthData.role);
 
@@ -18,7 +26,18 @@ const UserProfile = props => {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownAuctions, setIsShownAuctions] = useState(false);
 	const [isShownReviews, setIsShownReviews] = useState(false);
+	// modal handle
+	const [isShownWarnModal, setIsShownWarnModal] = useState(false);
+	const [isWarned, setIsWarned] = useState(false);
 
+	const [isShownBlockModal, setIsShownBlockModal] = useState(false);
+	const [isBlocked, setIsBlocked] = useState(false);
+	// end
+	// reload users table when warn or block user
+	const [reload, setReload] = useState('');
+
+	const [userId, setUserId] = useState('');
+	// end
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
 		setIsShownAuctions(false);
@@ -36,6 +55,26 @@ const UserProfile = props => {
 		setIsShownReviews(true);
 	};
 	// end
+	// start warn handler
+	const warnHandler = (id, isWarned) => {
+		setUserId(id);
+		setIsShownWarnModal(true);
+		setIsWarned(isWarned);
+	};
+	// end warn handler
+
+	// start block handler
+	const blockHandler = (id, isBlocked) => {
+		setUserId(id);
+		setIsShownBlockModal(true);
+		setIsBlocked(isBlocked);
+	};
+	// end block handler
+
+	useEffect(() => {
+		console.log('reload');
+		props.onReload(reload);
+	}, [reload]);
 
 	return (
 		<>
@@ -58,20 +97,60 @@ const UserProfile = props => {
 						</div>
 						{(role === 'admin' || role === 'employee') && (
 							<>
-								<button className="btn btn-danger btn_chat position-absolute d-block mb-2">
-									Block
+								<button
+									type="button"
+									className="btn  text-light fw-bold btn_compliment btn_warn position-absolute "
+									onClick={() =>
+										warnHandler(props.seller._id, props.seller.isWarned)
+									}
+								>
+									{props.seller && props.seller.isWarned ? (
+										<>
+											<FontAwesomeIcon icon={faCircleXmark} className="px-1" />
+											<span className="RemoveBadge btn-remove">
+												Remove Warn{' '}
+											</span>
+										</>
+									) : (
+										// btn show when user is not warned
+										<>
+											<FontAwesomeIcon
+												icon={faCircleExclamation}
+												className="pe-1"
+											/>
+											Warn
+										</>
+									)}
 								</button>
-								<button className="btn btn-warning btn_compliment position-absolute">
-									worn
+								<button
+									type="button"
+									className="btn bg-danger text-light fw-bold btn_chat position-absolute"
+									onClick={() =>
+										blockHandler(props.seller._id, props.seller.isBlocked)
+									}
+								>
+									{props.seller && props.seller.isBlocked ? (
+										<>
+											<FontAwesomeIcon icon={faCircleXmark} />
+											<span className="RemoveBadge btn-remove"> UnBlock </span>
+										</>
+									) : (
+										// btn show when user is not Blocked
+										<>
+											<FontAwesomeIcon icon={faBan} className="pe-1" />
+											Block
+										</>
+									)}
 								</button>
 							</>
 						)}
+
 						{role === 'buyer' && (
 							<>
 								<button className="btn btn-success btn_chat d-block mb-2 position-absolute">
 									Chat with seller
 								</button>{' '}
-								<button className="btn btn-danger btn_compliment d-block mb-2 position-absolute">
+								<button className="btn text-light btn_compliment d-block mb-2 position-absolute">
 									Make a compliment
 								</button>
 							</>
@@ -110,9 +189,37 @@ const UserProfile = props => {
 				)}
 				{isShownAuctions && <Auctions auctionsData={props.auctions} />}
 				{isShownReviews && (
-					<Reviews reviews={props.reviews} seller={props.seller} />
+					<Reviews
+						reviews={props.reviews}
+						seller={props.seller}
+						onReload={value => setReload(value)}
+						reload={reload}
+					/>
 				)}
 				{/* end tabs */}
+				{/* start warn modal */}
+				{isShownWarnModal && (
+					<WarnModal
+						id={userId}
+						show={isShownWarnModal}
+						onHide={() => setIsShownWarnModal(false)}
+						isWarned={isWarned}
+						onReload={value => setReload(value)}
+					/>
+				)}
+				{/* end warn modal */}
+
+				{/* start Block modal */}
+				{isShownBlockModal && (
+					<BlockModal
+						id={userId}
+						show={isShownBlockModal}
+						onHide={() => setIsShownBlockModal(false)}
+						isBlocked={isBlocked}
+						onReload={value => setReload(value)}
+					/>
+				)}
+				{/* end Block modal */}
 			</div>
 		</>
 	);

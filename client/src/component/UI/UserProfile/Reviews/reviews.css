@@ -44,14 +44,14 @@
 	box-shadow: none;
 	/* padding-bottom: 1%; */
 }
-.rate_input::placeholder{
+.rate_input::placeholder {
 	color: #a09b9b96 !important;
 }
 .rate_input:focus {
 	background: none;
 }
 .addContainer {
-	margin-left: 10%;
+	margin: 0 10%;
 	width: 80% !important;
 }
 .save_rate_btn {
@@ -84,7 +84,6 @@
 	top: 74%;
 	left: 62%;
 	border-radius: 15px;
-
 }
 
 .reviews_list:before,
@@ -95,7 +94,7 @@
 	height: 1px;
 	position: relative;
 	vertical-align: middle;
-	width: 50%;
+	width: 42.5%;
 }
 
 .reviews_list:before {
