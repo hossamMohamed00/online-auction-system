@@ -1,10 +1,10 @@
 import { Injectable, Inject, Logger, forwardRef } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { log } from 'console';
 import { CronJob } from 'cron';
 import * as moment from 'moment';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { AuctionStatus } from 'src/models/auction/enums';
+import { SocketService } from 'src/providers/socket/socket.service';
 
 @Injectable()
 export class AuctionSchedulingService {
@@ -14,6 +14,7 @@ export class AuctionSchedulingService {
 		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the tow services
 		private readonly auctionService: AuctionsService,
 		private readonly schedulerRegistry: SchedulerRegistry,
+		private readonly socketService: SocketService,
 	) {}
 
 	/**
@@ -58,6 +59,9 @@ export class AuctionSchedulingService {
 		const job = new CronJob(endDate, async () => {
 			//* Mark the auctions as ended
 			await this.auctionService.markAuctionAsEnded(auctionId);
+
+			//* Notify all bidders that auction is ended
+			this.socketService.emitEvent('auction-ended', auctionId);
 
 			//* Remove this cron job to avoid duplicate problem
 			this.deleteCron(auctionId);

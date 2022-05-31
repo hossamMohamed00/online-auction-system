@@ -31,6 +31,7 @@ import {
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 
 @Injectable()
 export class AuctionsService
@@ -282,11 +283,13 @@ export class AuctionsService
 	 * @return the updated auction
 	 */
 	async approveAuction(auctionId: string): Promise<Auction> {
-		// BAD APPROACH --> 2 Requests to the db
-
 		//? Get the auction from db
 		const auction = await this.auctionModel.findById(auctionId);
 		if (!auction) return null;
+
+		if (auction.status === AuctionStatus.UpComing) {
+			throw new BadRequestException('Auction is already approved ✔✔');
+		}
 
 		//? Prepare the end date
 		const auctionStartDate = auction.startDate;
@@ -654,9 +657,9 @@ export class AuctionsService
 	}
 
 	/**
-	 * Change auction status to specific status
+	 * Check if the bid is valid (bidValue > minimum bid value) and auction still ongoing
 	 * @param auctionId - Auction id
-	 * @param status - Auction status
+	 * @param bidValue - incoming bid value
 	 * @returns boolean
 	 */
 	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
@@ -742,6 +745,30 @@ export class AuctionsService
 		};
 	}
 
+	/**
+	 * Get the winner for an auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionWinner(auctionId: string): Promise<any> {
+		const auction = await this.auctionModel
+			.findOne({
+				_id: auctionId,
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer');
+
+		if (!auction) {
+			return null;
+		}
+
+		const auctionWinner = auction.winningBuyer;
+
+		return {
+			_id: auctionWinner._id,
+			name: auctionWinner.name,
+			email: auctionWinner.email,
+		};
+	}
 	/*-------------------------*/
 	/* Helper functions */
 

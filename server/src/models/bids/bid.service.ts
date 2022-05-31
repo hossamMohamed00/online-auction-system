@@ -58,6 +58,17 @@ export class BidService {
 			'New bid accepted ⚡⚡ with value ' + bidValue + ' from ' + userId,
 		);
 
+		//* Check if the auction still ongoing
+		const isStillOngoing: boolean =
+			await this.auctionService.isValidAuctionForBidding(auctionId);
+
+		if (!isStillOngoing) {
+			this.logger.error('Auction has been ended ❌');
+			throw new WsException(
+				'This auction has been ended, you cannot bid anymore ❌',
+			);
+		}
+
 		//* Before create the bid, check if it is valid
 		const isValidBid = await this.auctionService.isValidBid(
 			auctionId,

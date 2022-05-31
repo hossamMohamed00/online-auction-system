@@ -23,6 +23,7 @@ import { BuyerService } from '../users/buyer/buyer.service';
 import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
+import { SocketService } from 'src/providers/socket/socket.service';
 
 /**
  * Its job is to handle the bidding process.
@@ -36,6 +37,9 @@ import { NewBid } from './types/new-bid.type';
 export class BidGateway
 	implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
+	@Inject()
+	private socketService: SocketService;
+
 	@Inject()
 	private bidService: BidService;
 
@@ -58,8 +62,11 @@ export class BidGateway
 	/**
 	 * Run when the service initialises
 	 */
-	afterInit(server: any) {
+	afterInit(server: Server) {
 		this.logger.log('BidGateway initialized ⚡⚡');
+
+		//* Initialize the socket of Socket Service to can use the socket globally
+		this.socketService.socket = server;
 	}
 
 	/**
@@ -210,6 +217,53 @@ export class BidGateway
 
 			//* Leave the bidder from the room
 			client.leave(auctionId);
+		}
+	}
+
+	@UseGuards(SocketAuthGuard)
+	@SubscribeMessage('get-winner')
+	async getAuctionWinner(
+		@ConnectedSocket() client: Socket,
+		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
+		@GetCurrentUserFromSocket() bidder: Buyer,
+	) {
+		//* Ensure that the auctionId provided
+		if (!auctionId) {
+			throw new WsException('auctionId is required ❌');
+		}
+
+		//* Get the bidder from the room
+		const savedBidder = this.auctionRoomService.getBidder(client.id, auctionId);
+		if (!savedBidder) {
+			throw new WsException('You are not in this auction room ❌');
+		}
+
+		const winnerBidder = await this.auctionService.getAuctionWinner(auctionId);
+
+		if (!winnerBidder) {
+			this.server.to(auctionId.toString()).emit('winner-bidder', {
+				success: false,
+				message: 'No winner for this auction🤔',
+				system: true,
+			});
+			return;
+		}
+
+		//* Check if the winner bidder is the current logged in one
+		//* FIXME - This is a temporary solution, we need to fix this
+		if (winnerBidder._id === bidder._id) {
+			//* Send message to this bidder only
+			client.emit('winner-bidder', {
+				success: true,
+				message:
+					'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
+				system: true,
+			});
+
+			//* Send message to all bidders except this bidder
+			client.broadcast
+				.to(auctionId.toString())
+				.emit('winner-bidder', winnerBidder);
 		}
 	}
 
