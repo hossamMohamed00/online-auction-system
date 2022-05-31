@@ -41,7 +41,7 @@ import BuyerProfile from './Pages/buyerProilePage';
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
-import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
+import ViewJoinedAuctions_buyer from './component/Modules/BuyerModule/Auctions/ViewJoinedAuctions';
 // end buyer pages
 
 // start seller pages
@@ -55,6 +55,7 @@ import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee'
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
+// import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 // end seller pages
 
 function App() {
@@ -144,8 +145,8 @@ function App() {
 							element={<SavedAuctions />}
 						/>
 						<Route
-							path="/buyer-dashboard/participating-auctions"
-							element={<ViewParticipatingAuctions />}
+							path="/buyer-dashboard/joinedAuctions"
+							element={<ViewJoinedAuctions_buyer />}
 						/>
 						{/* end Buyer Auctions */}
 

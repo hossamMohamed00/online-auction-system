@@ -11,7 +11,6 @@ import CountDownTimer from '../CountDownTimer/CountDownTimer';
 const ViewAuctionDetails = props => {
 	const location = useLocation();
 	const viewAllAuctionPage = location.pathname === '/auctions';
-
 	const getAuctionDetails = (Items, animate) => {
 		return (
 			Items &&

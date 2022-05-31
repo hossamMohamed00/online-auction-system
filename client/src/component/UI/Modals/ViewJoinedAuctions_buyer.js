@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import useHttp from '../../../CustomHooks/useHttp';
-import moment from 'moment';
 
 import Modal_ from '../Modal/modal'
 import LoadingSpinner from '../Loading/LoadingSpinner'
@@ -10,7 +9,7 @@ import './WarnModal.css'
 import { getJoinedAuctions } from '../../../Api/BuyerApi';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
-import { ro } from 'date-fns/locale';
+import useFilter from '../TableLayout/FilteringTable/filter';
 
 const JoinedAuctionModal = ({id , show , onHide }) => {
 
@@ -98,12 +97,17 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 		},
 	];
 
+	const items = data ? data.joinedAuctions : [];
+	const { filterFun, filteredItems } = useFilter(items, 'title');
 
 	// start View Joined Auctions
 	const ViewJoinedAuctions = data && status==='completed' ? (
 		<DataTable
+			selectableRows
 			columns={columns}
-			data={data.joinedAuctions}
+			data={filteredItems}
+			subHeader
+			subHeaderComponent={filterFun}
 			theme="dark"
 			pagination
 		/>)

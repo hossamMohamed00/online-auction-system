@@ -46,3 +46,19 @@ export const SaveAuctionApi = async ({idToken , id}) => {
 	}
 	return data;
 };
+
+export const viewSaveAuctionApi = async (idToken) => {
+	const response = await fetch(`${url}/buyer/auctions?populateField=savedAuctions`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+
