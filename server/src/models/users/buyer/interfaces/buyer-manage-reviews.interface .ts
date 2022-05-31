@@ -1,4 +1,5 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import {
 	CreateReviewDto,
 	FindReviewInSeller,
@@ -28,5 +29,5 @@ export interface BuyerReviewsBehaviors {
 	): Promise<Review>;
 
 	//* Remove buyer review in seller
-	deleteReview(id: MongoObjectIdDto, buyerId: string): Promise<Review>;
+	deleteReview(id: MongoObjectIdDto, buyerId: string): Promise<ResponseResult>;
 }
