@@ -275,6 +275,10 @@ export class AuctionsService
 		const auction = await this.auctionModel.findById(auctionId);
 		if (!auction) return null;
 
+		if (auction.status === AuctionStatus.UpComing) {
+			throw new BadRequestException('Auction is already approved ✔✔');
+		}
+
 		//? Prepare the end date
 		const auctionStartDate = auction.startDate;
 

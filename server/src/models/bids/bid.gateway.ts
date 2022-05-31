@@ -23,6 +23,7 @@ import { BuyerService } from '../users/buyer/buyer.service';
 import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
+import { SocketService } from 'src/providers/socket/socket.service';
 
 /**
  * Its job is to handle the bidding process.
@@ -36,6 +37,9 @@ import { NewBid } from './types/new-bid.type';
 export class BidGateway
 	implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
+	@Inject()
+	private socketService: SocketService;
+
 	@Inject()
 	private bidService: BidService;
 
@@ -58,8 +62,11 @@ export class BidGateway
 	/**
 	 * Run when the service initialises
 	 */
-	afterInit(server: any) {
+	afterInit(server: Server) {
 		this.logger.log('BidGateway initialized ⚡⚡');
+
+		//* Initialize the socket of Socket Service to can use the socket globally
+		this.socketService.socket = server;
 	}
 
 	/**
