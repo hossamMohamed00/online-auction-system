@@ -79,9 +79,17 @@ export class AuctionSchedulingService {
 	}
 
 	/**
-	 * Load cron jobs when server restarted
+	 * This method used to reload all cron jobs for auctions
 	 */
-	async loadCronJobsForUpcomingAuctions() {
+	async loadCronJobsForAuctions() {
+		this.loadCronJobsForUpcomingAuctions();
+		this.loadCronJobsForOngoingAuctions();
+	}
+
+	/**
+	 * Load all cron jobs for any ongoing auctions if any
+	 */
+	private async loadCronJobsForUpcomingAuctions() {
 		this.logger.debug('Loading cron jobs for upcoming auctions...');
 
 		//* Get all upcoming auctions
@@ -97,7 +105,30 @@ export class AuctionSchedulingService {
 		if (upcomingAuctions.length > 0) {
 			this.logger.debug(`${upcomingAuctions.length} upcoming auctions loaded!`);
 		} else {
-			this.logger.debug('No upcoming auctions found!');
+			this.logger.debug('No upcoming auctions found to be loaded!');
+		}
+	}
+
+	/**
+	 * Load all cron jobs for any ongoing auctions if any
+	 */
+	private async loadCronJobsForOngoingAuctions() {
+		this.logger.debug('Loading cron jobs for ongoing auctions...');
+
+		//* Get all incoming auctions
+		const ongoingAuctions = await this.auctionService.getAuctionByStatus(
+			AuctionStatus.OnGoing,
+		);
+
+		//* For each ongoing auction, create cron job for end date
+		ongoingAuctions.forEach(auction => {
+			this.addCronJobForEndAuction(auction.id, auction.endDate);
+		});
+
+		if (ongoingAuctions.length > 0) {
+			this.logger.debug(`${ongoingAuctions.length} ongoing auctions loaded!`);
+		} else {
+			this.logger.debug('No ongoing auctions found to be loaded!');
 		}
 	}
 
