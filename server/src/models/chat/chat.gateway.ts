@@ -260,7 +260,7 @@ export class ChatGateway
 	) {
 		// Display log message
 		this.logger.log(
-			'New message recieved ❤ from ' + user.email + ' to ' + data.receiverEmail,
+			'New message received ❤ from ' + user.email + ' to ' + data.receiverEmail,
 		);
 
 		//* Handle the incoming message
