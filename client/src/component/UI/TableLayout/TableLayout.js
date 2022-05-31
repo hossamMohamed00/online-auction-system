@@ -39,7 +39,6 @@ const TableLayout = props => {
 										</thead>
 										{/* <tbody> */}
 										{props.records.name.map((record, index) => {
-											console.log(record);
 											return (
 												<tr className="text-center" key={index}>
 													{props.columNames.map(name => (

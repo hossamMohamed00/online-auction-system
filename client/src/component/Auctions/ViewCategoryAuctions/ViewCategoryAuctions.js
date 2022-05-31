@@ -12,6 +12,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getCategoryAuctions } from '../../../Api/CategoryApi';
 
 import classes from './ViewCategoryAuctions.module.css';
+import { useSelector } from 'react-redux';
 
 const ViewCategoryAuctions = () => {
 	const [changeCategory, setChangeCategory] = useState(false);
@@ -27,16 +28,19 @@ const ViewCategoryAuctions = () => {
 
 	useEffect(() => {
 		if (CategoryId) {
-			console.log('change ca1');
 			setChangeCategory(Math.random());
 		}
 	}, [CategoryId]);
 
 	useEffect(() => {
-		console.log('change ca2');
 		sendRequest(CategoryId && CategoryId);
 	}, [sendRequest, changeCategory]);
 
+	useEffect(()=>{
+		if(status==='completed'){
+			console.log(data , CategoryId)
+		}
+	}, [sendRequest, changeCategory]);
 	return (
 		<Fragment>
 			<div className={classes.ViewCategoryAuctions}>
@@ -49,7 +53,7 @@ const ViewCategoryAuctions = () => {
 				)}
 
 				{status === 'completed' && (!data || data.length === 0) && (
-					<div class="alert alert-danger text-center p-4" role="alert">
+					<div class="alert bg-danger text-center p-4" role="alert">
 						<h3 className="mb-4 fw-bold text-light">
 							{' '}
 							No Auctions in this Category{' '}

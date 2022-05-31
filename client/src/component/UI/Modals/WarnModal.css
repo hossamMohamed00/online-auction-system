@@ -13,3 +13,14 @@
 	border: 0!important;
 }
 
+.JoinedAuctionModal .modal-content{
+	width: 100%!important;
+	margin-left: 0% !important;
+
+}
+
+.JoinedAuctionModal .btn-close-modal{
+	margin-top: -90px;
+	margin-right: -5%;
+
+}
