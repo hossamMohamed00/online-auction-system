@@ -2,3 +2,19 @@ span a {
 	text-decoration: none !important;
 	color: #0dcaf0 !important;
 }
+
+.btn-warn , .btn-block{
+	margin-left: 5px;
+	font-size: 10px!important;
+	font-weight: bold;
+}
+
+.btn-warn{
+	background-color: var(--semiDark-color);
+}
+
+
+.RemoveBadge{
+	font-size: 10px;
+	font-weight: bold;
+}

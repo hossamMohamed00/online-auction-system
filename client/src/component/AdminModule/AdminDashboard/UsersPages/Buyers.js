@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
@@ -7,11 +7,30 @@ import DataTable from 'react-data-table-component';
 import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
+import { faBan, faCircleExclamation, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+
+import BlockModal from '../../../UI/Modals/BlockModal';
+import WarnModal from '../../../UI/Modals/WarnModal';
+import { ToastContainer } from 'react-toastify';
 import './users.css';
-import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
+
+	const [isShownWarnModal , setIsShownWarnModal ] = useState(false)
+	const [isWarned , setIsWarned] = useState(false)
+
+	const [isShownBlockModal , setIsShownBlockModal ] = useState(false)
+	const [isBlocked , setIsBlocked] = useState(false)
+
+
+	// reload users table when warn or block user
+	const [reload , setReload] = useState('')
+
+	const [userId , setUserId ] = useState('')
+
 	const columns = [
 		{
 			name: 'Name',
@@ -32,7 +51,37 @@ const UsersPage = () => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to="/buyerProfile">User Profile</Link>
+						<button type='button' className='btn btn-warn my-1 px-1 text-light ' onClick={() => warnHandler(props._id , props.isWarned)}>
+							{props.isWarned ?
+								<>
+									<FontAwesomeIcon icon={faCircleXmark} className ="px-1" />
+									<span className='RemoveBadge'>Remove Warn </span>
+								</>
+								// btn show when user is not warned
+								:
+								<>
+									<FontAwesomeIcon icon={faCircleExclamation} className ="pe-1" />
+									Warn
+								</>
+							}
+						</button>
+						<button type='button' className='btn bg-danger my-1 px-1 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
+							{props.isBlocked ?
+								<>
+									<FontAwesomeIcon icon={faCircleXmark} className ="px-1" />
+									<span className='RemoveBadge'> Un Block </span>
+								</>
+								// btn show when user is not Blocked
+								:
+								<>
+									<FontAwesomeIcon icon={faBan} className ="pe-1" />
+									Block
+								</>
+							}
+						</button>
+						<br></br>
+						{/* <button type='button' > View Joined Auctions </button> */}
+
 					</span>
 				);
 			},
@@ -46,7 +95,26 @@ const UsersPage = () => {
 			idToken: idToken,
 			path: 'admin/users?role=buyer',
 		});
-	}, [sendRequest]);
+	}, [sendRequest ,reload]);
+
+
+	// start warn handler
+	const warnHandler = (id,isWarned) => {
+		setUserId(id)
+		setIsShownWarnModal(true)
+		setIsWarned(isWarned)
+	}
+	// end warn handler
+
+
+	// start block handler
+	const blockHandler = (id,isBlocked) => {
+		setUserId(id)
+		setIsShownBlockModal(true)
+		setIsBlocked(isBlocked)
+	}
+	// end block handler
+
 
 	//filter
 	const items = data ? data : [];
@@ -59,6 +127,9 @@ const UsersPage = () => {
 	return (
 		<React.Fragment>
 			<AdminDashboard>
+				{/* show successful message for warn or block user  */}
+				<ToastContainer theme="dark" />
+
 				<PageContent>
 					<PageHeader text="Buyers" showLink={false} />
 					{data && (
@@ -73,6 +144,15 @@ const UsersPage = () => {
 						/>
 					)}
 				</PageContent>
+
+				{/* start warn modal */}
+				{isShownWarnModal && <WarnModal id={userId} show={isShownWarnModal} onHide={()=>setIsShownWarnModal(false)} isWarned={isWarned} onReload= {(value)=>setReload(value)} /> }
+				{/* end warn modal */}
+
+				{/* start Block modal */}
+				{isShownBlockModal && <BlockModal id={userId} show={isShownBlockModal} onHide={()=>setIsShownBlockModal(false)} isBlocked={isBlocked} onReload= {(value)=>setReload(value)} /> }
+				{/* end Block modal */}
+
 			</AdminDashboard>
 		</React.Fragment>
 	);
