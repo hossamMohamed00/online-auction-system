@@ -29,4 +29,20 @@ export const getJoinedAuctions = async (id) => {
 			throw new Error(data.message);
 		}
 		return data;
-	};
+};
+
+
+export const SaveAuctionApi = async ({idToken , id}) => {
+	const response = await fetch(`${url}/buyer/auction/save/${id}`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
