@@ -118,7 +118,31 @@ export class ChatService {
 
 		return message;
 	}
-	async handleNewMessageWithSupport(
+	async handleNewMessageToSupport(
+		sender: string,
+		receiverEmail: string,
+		messageString: string,
+	): Promise<Message> {
+		const supportEmail = 'Support@email.com';
+
+		//* Find the chat between the client and the  Support
+		let chat = await this.findPrivateChat(sender, receiverEmail);
+		if (chat) {
+		}
+		//? If the chat is not found, create new one
+		if (!chat) {
+			chat = await this.createNewChat(sender, supportEmail, messageString);
+		}
+
+		//* Create new message object
+		const message = new Message(messageString, sender);
+
+		//* Update chat messages
+		this.updateChatMessages(chat, message);
+
+		return message;
+	}
+	async handleNewMessageFromSupport(
 		sender: string,
 		receiverEmail: string,
 		messageString: string,
