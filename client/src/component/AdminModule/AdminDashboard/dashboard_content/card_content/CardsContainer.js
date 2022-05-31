@@ -8,9 +8,11 @@ export const CardsContainer = props => {
 		<div
 			className={`  ${props.class ? props.class : 'card_container'}  row m-0`}
 		>
-			<h2 className="text-light text-center pb-4 pt-2  fw-bolder">
-				{props.title}
-			</h2>
+			{props.title && (
+				<h2 className="text-light text-center pb-4 pt-2  fw-bolder">
+					{props.title}
+				</h2>
+			)}
 
 			{props.cards.map(card => {
 				return (
@@ -29,6 +31,13 @@ export const CardsContainer = props => {
 										<FontAwesomeIcon icon={faArrowRight} />
 									</span>
 								</Link>
+							)}
+							{card.handler && (
+								<button onClick={card.handler} className={`btn ${props.profile_btn}`}>
+									<span className="text-right text-primary icon">
+										<FontAwesomeIcon icon={faArrowRight} />
+									</span>
+								</button>
 							)}
 						</div>
 					</>

@@ -14,7 +14,7 @@ const Header = () => {
 	return (
 		<Fragment>
 			<div className="position-relative">
-				<Navbar showWalletHandler={showWalletHandler} />
+				<Navbar showWalletHandler={showWalletHandler} start='im here' />
 				{/* start Header  */}
 				<div className={classes.Header}></div>
 
