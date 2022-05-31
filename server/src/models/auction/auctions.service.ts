@@ -153,6 +153,17 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get list of auctions by their status
+	 * @param status
+	 * @returns Array of auctions
+	 */
+	async getAuctionByStatus(status: AuctionStatus): Promise<AuctionDocument[]> {
+		const auctions = await this.auctionModel.find({ status });
+
+		return auctions ? auctions : [];
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id

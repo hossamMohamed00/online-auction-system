@@ -1,8 +1,10 @@
 import { Injectable, Inject, Logger, forwardRef } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { log } from 'console';
 import { CronJob } from 'cron';
 import * as moment from 'moment';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { AuctionStatus } from 'src/models/auction/enums';
 
 @Injectable()
 export class AuctionSchedulingService {
@@ -70,6 +72,29 @@ export class AuctionSchedulingService {
 		);
 
 		this.getCrons();
+	}
+
+	/**
+	 * Load cron jobs when server restarted
+	 */
+	async loadCronJobsForUpcomingAuctions() {
+		this.logger.debug('Loading cron jobs for upcoming auctions...');
+
+		//* Get all upcoming auctions
+		const upcomingAuctions = await this.auctionService.getAuctionByStatus(
+			AuctionStatus.UpComing,
+		);
+
+		//* For each upcoming auction, create cron job for start auction
+		upcomingAuctions.forEach(auction => {
+			this.addCronJobForStartAuction(auction.id, auction.startDate);
+		});
+
+		if (upcomingAuctions.length > 0) {
+			this.logger.debug(`${upcomingAuctions.length} upcoming auctions loaded!`);
+		} else {
+			this.logger.debug('No upcoming auctions found!');
+		}
 	}
 
 	/**
