@@ -77,9 +77,25 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 		},
 		{
 			name: 'Seller',
-			selector: row => row.seller.name,
 			center: true,
-		}
+			cell: props => {
+				return (
+					<span className="text-info">
+						<Link to={`/sellerProfile?id=${props.seller._id}`}>{props.seller.name} </Link>
+					</span>
+				);
+			}
+		},
+		{
+			name: 'View Details',
+			cell: props => {
+				return (
+					<span className="text-info ">
+						<Link to={`/auctions?id=${props._id}`} >Auction Details</Link>
+					</span>
+				);
+			},
+		},
 	];
 
 
