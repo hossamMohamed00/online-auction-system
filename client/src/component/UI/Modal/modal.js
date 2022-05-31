@@ -46,7 +46,7 @@ const Modal_ = props => {
 			>
 				{/* btn show only when delete */}
 				{props.btnName && (
-					<button onClick={btnHandler} className="btn-success btn fw-bold">
+					<button onClick={btnHandler} type="button" className="btn-success btn fw-bold">
 						{props.btnName}
 					</button>
 				)}
