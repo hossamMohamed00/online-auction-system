@@ -31,6 +31,7 @@ import {
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 
 @Injectable()
 export class AuctionsService
@@ -733,6 +734,30 @@ export class AuctionsService
 		};
 	}
 
+	/**
+	 * Get the winner for an auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionWinner(auctionId: string): Promise<any> {
+		const auction = await this.auctionModel
+			.findOne({
+				_id: auctionId,
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer');
+
+		if (!auction) {
+			return null;
+		}
+
+		const auctionWinner = auction.winningBuyer;
+
+		return {
+			_id: auctionWinner._id,
+			name: auctionWinner.name,
+			email: auctionWinner.email,
+		};
+	}
 	/*-------------------------*/
 	/* Helper functions */
 

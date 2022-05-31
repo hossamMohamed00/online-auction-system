@@ -27,4 +27,7 @@ export interface BiddingBehaviors {
 
 	//* Return specific details about auctions to be emitted to client
 	getCurrentAuctionDetailsForBidding(auctionId: string): Promise<any>;
+
+	//* Get the winner of the auction
+	getAuctionWinner(auctionId: string);
 }

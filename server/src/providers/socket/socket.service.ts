@@ -10,9 +10,6 @@ export class SocketService {
 		if (this.socket) {
 			this.logger.debug('Emit new event: ' + event);
 
-			console.log(data);
-			console.log(data.toString());
-
 			this.socket.to(data.toString()).emit(event, {
 				message: 'Auction has been ended 🔚',
 				system: true,
