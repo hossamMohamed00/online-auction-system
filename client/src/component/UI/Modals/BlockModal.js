@@ -81,9 +81,9 @@ const BlockModal = ({id , show , onHide , isBlocked , onReload}) => {
 
 
 	// start view Block Reasons
-	const ViewAllReasons = data && status==='completed' && data.map((reason, index)=> (
+	const ViewAllReasons = data && status==='completed' && data.length > 0 ? data.map((reason, index)=> (
 		<option key={index} value={reason} > {reason} </option>
-	))
+	)): <option className='bg-danger'> No Reasons </option>
 
 	const BlockReasons = !isBlocked
 	? <select className='BlockReasons' onChange={(e)=> setSelectedBlockMessage(e.target.value)}>

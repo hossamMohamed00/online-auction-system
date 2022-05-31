@@ -112,7 +112,7 @@ export const getProfileData = async accessToken => {
 
 // start get warn reasons
 export const getReasons = async ({accessToken,Type}) => {
-	const response = await fetch(`${url}/get-enum-values?enumName=${Type==='Warn' ? 'WarningMessagesEnum': 'WarningMessagesEnum'}`, {
+	const response = await fetch(`${url}/get-enum-values?enumName=${Type==='Warn' ? 'WarningMessagesEnum': 'BlockUserReasonsEnum'}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${accessToken}`,

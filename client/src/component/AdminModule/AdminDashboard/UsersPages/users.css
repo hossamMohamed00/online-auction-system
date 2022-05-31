@@ -5,14 +5,13 @@ span a {
 
 .btn-warn , .btn-block{
 	margin-left: 5px;
-	font-size: 10px!important;
+	font-size: 9px!important;
 	font-weight: bold;
 }
 
 .btn-warn{
 	background-color: var(--semiDark-color);
 }
-
 
 .RemoveBadge{
 	font-size: 10px;

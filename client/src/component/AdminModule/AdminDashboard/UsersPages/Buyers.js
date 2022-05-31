@@ -65,11 +65,11 @@ const UsersPage = () => {
 								</>
 							}
 						</button>
-						<button type='button' className='btn bg-danger my-1 px-1 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
+						<button type='button' className='btn bg-danger my-1 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
 							{props.isBlocked ?
 								<>
-									<FontAwesomeIcon icon={faCircleXmark} className ="px-1" />
-									<span className='RemoveBadge'> Un Block </span>
+									<FontAwesomeIcon icon={faCircleXmark} />
+									<span className='RemoveBadge'> UnBlock </span>
 								</>
 								// btn show when user is not Blocked
 								:
