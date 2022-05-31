@@ -249,7 +249,7 @@ export class ChatGateway
 			}
 		}
 		//* Emit the message
-		this.server.to(messageTo).emit('new-message-to-employee', message);
+		this.server.to(messageTo).emit('new-message-to-Support', message);
 	}
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-From-Support')
@@ -284,6 +284,6 @@ export class ChatGateway
 		}
 
 		//* Emit the message
-		this.server.to(messageTo).emit('new-message-from-employee', message);
+		this.server.to(messageTo).emit('new-message-from-Support', message);
 	}
 }
