@@ -31,29 +31,60 @@
 	-o-transition: color 200ms;
 }
 .star_con {
-	top: 70%;
+	top: 77%;
 	position: absolute;
 	margin-left: 15px !important;
 }
 .rate_input {
 	background: none;
 	border: none;
-	border-bottom: 2px solid white !important;
+	border-bottom: 2px solid #6e6b6b96 !important;
 	border-radius: unset;
 	color: white !important;
 	box-shadow: none;
+	/* padding-bottom: 1%; */
+}
+.rate_input::placeholder{
+	color: #a09b9b96 !important;
 }
 .rate_input:focus {
 	background: none;
 }
 .addContainer {
-	margin: 0 10%;
+	margin-left: 10%;
+	width: 80% !important;
 }
 .save_rate_btn {
-	width: 11% !important;
-	margin-left: 10% !important;
-	margin-top: 1% !important;
+	width: 14% !important;
+	position: absolute;
+	top: 6%;
+	left: 62%;
+	/* margin-top: 1% !important; */
 	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
+	/* padding-top: 2px; */
+}
+.delete_review {
+	margin-left: 1% !important;
+	width: fit-content !important;
+	border-radius: 4px !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	-ms-border-radius: 4px !important;
+	-o-border-radius: 4px !important;
+	position: absolute;
+	top: 75%;
+	left: 74%;
+}
+.update_btn {
+	position: absolute;
+	top: 74%;
+	left: 62%;
+	border-radius: 15px;
+
 }
 
 .reviews_list:before,

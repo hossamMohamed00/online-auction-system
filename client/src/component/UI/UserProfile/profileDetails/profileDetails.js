@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import '../Reviews/reviews.css';
 import './details.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,19 +41,7 @@ const ProfileDetails = props => {
 							{props.sellerData && props.sellerData.email}
 						</p>
 					</h4>
-					{(role === 'admin' || role === 'employee') && (
-						<>
-							<button className="btn btn-danger d-block mb-2">Block</button>
-							<button className="btn btn-warning">worn</button>
-						</>
-					)}
-					{role === 'buyer' && (
-						<>
-							<button className="btn btn-success d-block mb-2">
-								Chat with seller
-							</button>
-						</>
-					)}
+
 				</div>
 				<div className="cards_seller col-lg text-light">
 					{

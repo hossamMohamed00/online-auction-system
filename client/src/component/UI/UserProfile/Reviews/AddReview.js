@@ -3,7 +3,7 @@ import { StartComponent } from './StartComponent';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './reviews.css';
-import { AddReviewForSeller } from '../sellerDetails';
+import { AddReviewForSeller } from '../sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

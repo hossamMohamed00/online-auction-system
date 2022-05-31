@@ -96,3 +96,24 @@
 .profileHr2 {
 	margin: 0 10%;
 }
+.btn_chat {
+	left: 73%;
+	top: 125%;
+	width:15%;
+	border-radius:25px;
+	-webkit-border-radius:25px;
+	-moz-border-radius:25px;
+	-ms-border-radius:25px;
+	-o-border-radius:25px;
+}
+.btn_compliment {
+	left: 73%;
+	top: 109%;
+	width:15%;
+	border-radius:25px;
+	-webkit-border-radius:25px;
+	-moz-border-radius:25px;
+	-ms-border-radius:25px;
+	-o-border-radius:25px;
+
+}

@@ -9,7 +9,10 @@ import ProfileDetails from './profileDetails/profileDetails';
 import Auctions from './Auctions/Auctions';
 import Reviews from './Reviews/Reviews';
 import OverallReviewBar from './Reviews/overallReviewBar';
+import { useSelector } from 'react-redux';
 const UserProfile = props => {
+	const role = useSelector(store => store.AuthData.role);
+
 	console.log(props);
 	// Handle Tabs
 	const [isShownDetails, setIsShownDetails] = useState(true);
@@ -48,10 +51,31 @@ const UserProfile = props => {
 								Rating : {props.seller && props.seller.rating} / 5
 							</h4>
 
-
-								<OverallReviewBar value={props.seller && props.seller.rating} class='profile_bar'/>
-
+							<OverallReviewBar
+								value={props.seller && props.seller.rating}
+								class="profile_bar"
+							/>
 						</div>
+						{(role === 'admin' || role === 'employee') && (
+							<>
+								<button className="btn btn-danger btn_chat position-absolute d-block mb-2">
+									Block
+								</button>
+								<button className="btn btn-warning btn_compliment position-absolute">
+									worn
+								</button>
+							</>
+						)}
+						{role === 'buyer' && (
+							<>
+								<button className="btn btn-success btn_chat d-block mb-2 position-absolute">
+									Chat with seller
+								</button>{' '}
+								<button className="btn btn-danger btn_compliment d-block mb-2 position-absolute">
+									Make a compliment
+								</button>
+							</>
+						)}
 					</header>
 				</section>
 				{/* tabs */}

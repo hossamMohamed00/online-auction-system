@@ -3,11 +3,13 @@ import { StartComponent } from './StartComponent';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './reviews.css';
-import { AddReviewForSeller } from '../sellerDetails';
+import { DeleteReview, UpdateReviewForSeller } from '../sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaStar } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export const AddBuyerReview = props => {
 	const nameInputRef = React.useRef();
@@ -17,29 +19,43 @@ export const AddBuyerReview = props => {
 	const [inputsDisabled, setInputsDisabled] = useState(true);
 
 	let message = props.data && props.data.message;
-nameInputRef.current.value=message;
-console.log(nameInputRef.current.value)
+	const reviewId = props.data && props.data._id;
+	console.log(reviewId);
+
 	const getRateValue = value => {
 		setRateValue(value);
 	};
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { data, status, sendRequest, error } = useHttp(AddReviewForSeller);
+	const { data, status, sendRequest, error } = useHttp(UpdateReviewForSeller);
+	const {
+		status: statusForDelete,
+		sendRequest: sendRequestForDelete,
+		error: errorForDelete,
+	} = useHttp(DeleteReview);
 
 	const switchToEdit = () => {
 		setInputsDisabled(!inputsDisabled);
-		nameInputRef.current.value = '';
-		console.log(nameInputRef.current.value);
 	};
 
-	const handleSubmit = e => {
-		e.preventDefault();
+	const updateReview = () => {
+		console.log('hiiiiiiiiiiiiiiii');
 		const reviewData = {
 			message: nameInputRef.current.value,
 			review: rateValue,
-			seller: props.seller,
 		};
-		sendRequest({ idToken: idToken, reviewData: reviewData });
+		sendRequest({
+			idToken: idToken,
+			reviewData: reviewData,
+			reviewId: reviewId,
+		});
+	};
+	const deleteReview = () => {
+		console.log('hiiiiiiiiiiiiiiii');
+		sendRequestForDelete({
+			idToken: idToken,
+			reviewId: reviewId,
+		});
 	};
 
 	useEffect(() => {
@@ -49,10 +65,18 @@ console.log(nameInputRef.current.value)
 			toast.error(error);
 		}
 	}, [status]);
+	console.log(statusForDelete);
+	useEffect(() => {
+		if (statusForDelete === 'completed') {
+			toast.success('Your review has been deleted successfully 💖🐱‍👤');
+		} else {
+			toast.error(errorForDelete);
+		}
+	}, [statusForDelete]);
 	return (
 		<>
 			<ToastContainer theme="dark" />
-			<form className="row" onSubmit={handleSubmit}>
+			<div className="row">
 				<div className=" addContainer d-inline-block position-relative ">
 					<div class="form-check form-switch">
 						<input
@@ -73,11 +97,11 @@ console.log(nameInputRef.current.value)
 					</label>
 					<input
 						type="text"
-						placeholder="Type your review message..."
+						placeholder={message}
 						className="form-control w-50 rate_input d-inline-block"
 						ref={nameInputRef}
 						disabled={inputsDisabled}
-
+						readOnly={inputsDisabled}
 					/>
 					<span className="star_con">
 						{inputsDisabled && (
@@ -89,14 +113,17 @@ console.log(nameInputRef.current.value)
 						)}
 						{!inputsDisabled && <StartComponent value={getRateValue} />}
 					</span>
+					<button className="btn btn-primary update_btn" onClick={updateReview}>
+						Update Review
+					</button>
 					<button
-						className="btn btn-primary save_rate_btn"
-						disabled={inputsDisabled}
+						className="btn btn-danger save_rate_btn delete_review"
+						onClick={deleteReview}
 					>
-						Submit Review
+						<FontAwesomeIcon icon={faXmark} />
 					</button>
 				</div>
-			</form>
+			</div>
 		</>
 	);
 };
