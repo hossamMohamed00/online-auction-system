@@ -32,7 +32,8 @@ const UsersPage = props => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to="#">User Profile</Link>
+						{/*  props._id */}
+						<Link to={`/seller?id=${props._id}`}>User Profile</Link>
 					</span>
 				);
 			},

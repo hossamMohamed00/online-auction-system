@@ -129,6 +129,7 @@ export class BuyerController
 	@Get('review')
 	getReviewOnSeller(
 		@Query() { sellerId }: FindReviewInSeller,
+		// @Query() sellerId: string,
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
 		return this.buyerService.getReviewOnSeller(buyerId, sellerId);
