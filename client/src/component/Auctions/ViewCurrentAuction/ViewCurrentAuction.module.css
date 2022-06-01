@@ -27,7 +27,7 @@
 	font-size: 15px;
 	margin: 2px;
 	margin-bottom: 0;
-	color: var(--paragaph-color);
+	color: var(--paragraph-color);
 	cursor: pointer;
 	transition: all 0.5;
 	padding: 5px 15px !important;
@@ -78,8 +78,8 @@
 	background-color: var(--alert-color);
 	color: white;
 	width: 50% !important;
-	margin-left: 25%!important;
-  margin-top: 2%;
+	margin-left: 25% !important;
+	margin-top: 2%;
 }
 
 /* styles in small and extra small */

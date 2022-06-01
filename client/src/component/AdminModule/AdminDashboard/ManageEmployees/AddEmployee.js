@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 // !for toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,10 +14,9 @@ export default function AddEmployee() {
 	const nameRef = useRef();
 	const passwordRef = useRef();
 	const emailRef = useRef();
-		const [successMessage, setMessage] = useState('');
-		const [failedMessage, setFailedMessage] = useState('');
-const idToken = useSelector(store => store.AuthData.idToken);
-
+	const [successMessage, setMessage] = useState('');
+	const [failedMessage, setFailedMessage] = useState('');
+	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
@@ -26,11 +25,11 @@ const idToken = useSelector(store => store.AuthData.idToken);
 
 	const submitHandler = e => {
 		e.preventDefault();
-			const employeeData = {
-				name: nameRef.current.value,
-				email: emailRef.current.value,
-				password: passwordRef.current.value,
-			};
+		const employeeData = {
+			name: nameRef.current.value,
+			email: emailRef.current.value,
+			password: passwordRef.current.value,
+		};
 
 		fetch(`${url}/admin/employee/`, {
 			method: 'POST',
@@ -50,8 +49,6 @@ const idToken = useSelector(store => store.AuthData.idToken);
 			emailRef.current.value = '';
 			passwordRef.current.value = '';
 			toast.success('Done, new Employee added successfully 💖🐱‍👤');
-
-
 		});
 	};
 	const messageClasses = successMessage ? 'text-success' : 'text-danger';
@@ -60,8 +57,8 @@ const idToken = useSelector(store => store.AuthData.idToken);
 		<AdminDashboard>
 			<PageContent>
 				{/*! to show toast */}
-				<ToastContainer theme="dark"/>
-				<PageHeader text='Add employee' showLink={false}/>
+				<ToastContainer theme="dark" />
+				<PageHeader text="Add employee" showLink={false} />
 				<h3 className={`text-center ${messageClasses} mt-4 fw-bold`}>
 					{successMessage ? successMessage : failedMessage}
 				</h3>

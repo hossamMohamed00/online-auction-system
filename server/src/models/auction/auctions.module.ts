@@ -13,6 +13,7 @@ import { AuctionValidationService } from './auction-validation.service';
 import { AuctionsController } from './auctions.controller';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import { WalletModule } from 'src/providers/payment/wallet.module';
+import { BiddingIncrementRules } from 'src/providers/bids';
 
 @Module({
 	imports: [
@@ -49,6 +50,7 @@ import { WalletModule } from 'src/providers/payment/wallet.module';
 	providers: [
 		AuctionsService,
 		AuctionValidationService,
+		BiddingIncrementRules,
 		AuctionSchedulingService,
 	],
 	exports: [

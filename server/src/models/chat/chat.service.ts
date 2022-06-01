@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Chat, ChatDocument } from './schema/chat.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,6 +14,7 @@ export class ChatService {
 		private readonly chatModel: Model<ChatDocument>,
 		private readonly authService: AuthService,
 	) {}
+	private logger: Logger = new Logger('chatservice');
 
 	/**
 	 * Accept the socket client and return the user
@@ -117,19 +118,44 @@ export class ChatService {
 
 		return message;
 	}
-	async handleNewMessageWithSupport(
+	async handleNewMessageToSupport(
 		sender: string,
-		clientEmail: string,
+		receiverEmail: string,
 		messageString: string,
 	): Promise<Message> {
-		const supportemail = 'Support@email.com';
+		const supportEmail = 'Support@email.com';
 
-		//* Find the chat between the client and the given receiver
-		let chat = await this.findPrivateChat(clientEmail, supportemail);
-
+		//* Find the chat between the client and the  Support
+		let chat = await this.findPrivateChat(sender, receiverEmail);
+		if (chat) {
+		}
 		//? If the chat is not found, create new one
 		if (!chat) {
-			chat = await this.createNewChat(sender, supportemail, messageString);
+			chat = await this.createNewChat(sender, supportEmail, messageString);
+		}
+
+		//* Create new message object
+		const message = new Message(messageString, sender);
+
+		//* Update chat messages
+		this.updateChatMessages(chat, message);
+
+		return message;
+	}
+	async handleNewMessageFromSupport(
+		sender: string,
+		receiverEmail: string,
+		messageString: string,
+	): Promise<Message> {
+		const supportEmail = 'Support@email.com';
+
+		//* Find the chat between the client and the  Support
+		let chat = await this.findPrivateChat(supportEmail, receiverEmail);
+		if (chat) {
+		}
+		//? If the chat is not found, create new one
+		if (!chat) {
+			chat = await this.createNewChat(sender, supportEmail, messageString);
 		}
 
 		//* Create new message object
@@ -160,45 +186,46 @@ export class ChatService {
 	): Promise<ChatDocument | null> {
 		// Find the chat from DB
 		// frist check if user is employee
-		if (
-			user1Email == 'Support@email.com' ||
-			user2Email == 'Support@email.com'
-		) {
-			const chat = await this.chatModel.findOne({
-				$and: [
-					{
-						$or: [{ user1: 'Support@email.com' }, { user1: user2Email }],
-					},
-					{
-						$or: [{ user2: 'Support@email.com' }, { user2: user2Email }],
-					},
-				],
-			});
-			if (!chat) {
-				return null;
-			}
+		// if (
+		// 	user1Email == 'Support@email.com' ||
+		// 	user2Email == 'Support@email.com'
+		// ) {
+		// 	const chat = await this.chatModel.findOne({
+		// 		$and: [
+		// 			{
+		// 				$or: [{ user1: user1Email }, { user1: user2Email }],
+		// 			},
+		// 			{
+		// 				$or: [{ user2: user1Email }, { user2: user2Email }],
+		// 			},
+		// 		],
+		// 	});
+		// 	if (!chat) {
+		// 		console.log('llllllllll');
+		// 		return null;
+		// 	}
+		// 	console.log('hhhhhhh');
 
-			return chat;
-		} else {
-			const chat = await this.chatModel.findOne({
-				$and: [
-					{
-						$or: [{ user1: user1Email }, { user1: user2Email }],
-					},
-					{
-						$or: [{ user2: user1Email }, { user2: user2Email }],
-					},
-				],
-			});
-			if (!chat) {
-				return null;
-			}
-
-			return chat;
+		// 	return chat;
+		// } else {
+		const chat = await this.chatModel.findOne({
+			$and: [
+				{
+					$or: [{ user1: user1Email }, { user1: user2Email }],
+				},
+				{
+					$or: [{ user2: user1Email }, { user2: user2Email }],
+				},
+			],
+		});
+		if (!chat) {
+			return null;
 		}
 
-		//? If the chat not exists, return null;
+		return chat;
 	}
+
+	//? If the chat not exists, return null;
 
 	/**
 	 * Get user chat and update messages array

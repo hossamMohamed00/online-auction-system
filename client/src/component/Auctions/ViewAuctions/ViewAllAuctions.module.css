@@ -2,11 +2,11 @@
 	margin-top: 10vh;
 } */
 
-.FilterAuctions{
+.FilterAuctions {
 	background-color: #262726;
 	color: white;
 	min-height: 100vh;
-	margin-top:55.9px;
+	margin-top: 55.9px;
 	padding: 15px;
 	border-top: 1px solid white;
 	position: fixed;
@@ -14,61 +14,73 @@
 	z-index: 1000;
 }
 
-.FilterAuctions > h4{
+.FilterAuctions > h4 {
 	color: var(--main-color);
 	font-weight: bold;
 }
 
-.AllAuction{
+.AllAuction {
 	margin-top: 15vh;
 	margin-bottom: 25px;
 	position: relative;
 }
 
-
-.AuctionType label , .AuctionCategory  label{
-	color: var(--paragaph-color )!important;
+.AuctionType label,
+.AuctionCategory label {
+	color: var(--paragraph-color) !important;
 	font-weight: lighter !important;
 	cursor: pointer;
 }
-.AuctionType label:hover , .AuctionCategory  label:hover{
-	color: var(--main-color )!important;
-
+.AuctionType label:hover,
+.AuctionCategory label:hover {
+	color: var(--main-color) !important;
 }
-.AuctionType , .AuctionCategory{
+.AuctionType,
+.AuctionCategory {
 	border-bottom: 1px solid #4a4949;
 }
-.AuctionPrice > div > input{
-	background-color:var(--overlay-dark )!important ;
-	border-color: var(--overlay-dark )!important ;
-	color: white!important	;
+.AuctionPrice > div > input {
+	background-color: var(--overlay-dark) !important ;
+	border-color: var(--overlay-dark) !important ;
+	color: white !important	;
 }
 .AuctionPrice > div > input::placeholder {
-	color: white!important	;
+	color: white !important	;
 }
 
-.btnFilter{
-	margin-top: 50px!important;
+.btnFilter {
+	margin-top: 50px !important;
 	background-color: #34588f;
 	color: white;
 }
 
 @media (max-width: 767.98px) {
-	.AllAuction{margin-top: 10vh;}
-	.FilterIcons{color: white; font-size: 25px;}
+	.AllAuction {
+		margin-top: 10vh;
+	}
+	.FilterIcons {
+		color: white;
+		font-size: 25px;
+	}
 
-	.FilterAuctions{
-		margin-top:50px;
+	.FilterAuctions {
+		margin-top: 50px;
 		width: 100%;
 	}
 
-	.hrLeft{left: 0px}
-	.hrRight{right: 0px}
+	.hrLeft {
+		left: 0px;
+	}
+	.hrRight {
+		right: 0px;
+	}
 }
-
 
 @media (min-width: 767.98px) and (max-width: 991.98px) {
-	.hrLeft{left: 15px}
-	.hrRight{right: 15px}
+	.hrLeft {
+		left: 15px;
+	}
+	.hrRight {
+		right: 15px;
+	}
 }
-

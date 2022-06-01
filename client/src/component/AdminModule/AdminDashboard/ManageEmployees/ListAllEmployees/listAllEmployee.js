@@ -72,9 +72,6 @@ const ListAllEmployees = props => {
 			cell: props => {
 				return (
 					<>
-						<button className="btn btn-success mx-1 my-2">
-							<FontAwesomeIcon icon={faEdit} />
-						</button>
 						<button
 							className="btn btn-danger my-2 "
 							onClick={() => removeHandler(props._id)}
@@ -89,7 +86,7 @@ const ListAllEmployees = props => {
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
 	const failed = status !== 'completed';

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 // toast
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // end toast
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getAllCategoriesForAdmin, remove } from './../../../../Api/Admin';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import Modal_ from '../../../UI/Modal/modal';
@@ -16,6 +16,11 @@ import Modal_ from '../../../UI/Modal/modal';
 const AllCategories = props => {
 	const [ModalShow, setModalShow] = useState(false);
 	const [categoryId, setCategoryId] = useState('');
+
+	const [ModalTitle, setModalTitle] = useState(
+		'Are you sure to Delete this category?',
+	);
+	const [ModalBtn, setModalBtn] = useState('Confirm');
 
 	//! cols name
 	const columns = [
@@ -52,12 +57,12 @@ const AllCategories = props => {
 			},
 		},
 	];
-	const url = 'http://localhost:8000';
-	const { sendRequest, status, data } = useHttp(getAllCategoriesForAdmin);
+	const { sendRequest, data } = useHttp(getAllCategoriesForAdmin);
 	// remove api
 	const {
 		sendRequest: sendRequestForRemove,
 		status: statusForRemove,
+		error: errorForRemove,
 	} = useHttp(remove);
 
 	const [
@@ -67,31 +72,32 @@ const AllCategories = props => {
 	// ! handle remove
 	//
 	const showModel = category_Id => {
-		console.log(category_Id);
 		setCategoryId(category_Id);
-
 		setModalShow(true);
 	};
 	const removeHandler = categoryId => {
-		console.log(categoryId);
-
 		sendRequestForRemove({
 			path: `category/${categoryId}`,
 			accessToken: idToken,
 		});
 		setReloadWhenRemoveCategory(categoryId);
-		console.log('remve succskkdk');
-
-		setModalShow(false);
-
 	};
 
 	useEffect(() => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
-			// props.onReload(true);
+			setModalShow(false);
+			setReloadWhenRemoveCategory(categoryId);
 		}
 	}, [statusForRemove, reloadWhenRemoveCategory]);
+
+	useEffect(() => {
+		if (errorForRemove && statusForRemove === 'error') {
+			toast.error(`${errorForRemove} 💖🐱‍👤`);
+			setModalTitle(errorForRemove);
+			setModalBtn('');
+		}
+	}, [errorForRemove, statusForRemove]);
 	// ! end remove
 
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -101,12 +107,12 @@ const AllCategories = props => {
 
 	//filter
 	const items = data ? data : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 	console.log(categoryId);
 	return (
 		<>
-			<ToastContainer theme="dark" />
+			{/* <ToastContainer theme="dark" /> */}
 			{data && (
 				<DataTable
 					// selectableRows
@@ -125,8 +131,9 @@ const AllCategories = props => {
 					onHide={() => setModalShow(false)}
 					btnHandler={removeHandler}
 					Id={categoryId && categoryId}
-					title='Are you sure to Delete this category?'
-					btnName = "Confirm"
+					title={ModalTitle}
+					btnName={ModalBtn}
+					// error = {error && error}
 				/>
 			)}
 		</>

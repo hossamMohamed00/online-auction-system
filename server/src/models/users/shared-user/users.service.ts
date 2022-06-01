@@ -1,8 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ResponseResult } from 'src/common/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { FilterUsersQueryDto } from './dto/filter-users.dto';
+import { Role } from './enums';
 import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
@@ -38,8 +44,10 @@ export class UsersService {
 	 */
 	async findByEmail(email: string) {
 		const user = await this.usersModel.findOne({ email }).exec();
+		if (!user) throw new NotFoundException('User not found ❌');
 		return user;
 	}
+
 	async findByName(name: string) {
 		const user = await this.usersModel.findOne({ name }).exec();
 		if (user) {
@@ -47,6 +55,20 @@ export class UsersService {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Save user verification code in user document
+	 * @param email - user email
+	 * @param verificationCode - generated verification code
+	 */
+	async handleNewVerificationCode(email: string, verificationCode: number) {
+		await this.usersModel.findOneAndUpdate(
+			{ email },
+			{
+				emailVerificationCode: verificationCode,
+			},
+		);
 	}
 
 	/**
@@ -61,5 +83,124 @@ export class UsersService {
 		);
 
 		return user;
+	}
+
+	/**
+	 * Get users count to be displayed in admin dashboard
+	 */
+	async getUsersCount(): Promise<{
+		totalUsers: number;
+		adminsCount: number;
+		employeesCount: number;
+		sellersCount: number;
+		buyersCount: number;
+	}> {
+		//* Get the users documents
+		const users = await this.usersModel.find();
+
+		//* Get the users count
+		const totalUsers = users.length;
+
+		//* Get the admins count
+		const adminsCount = users.filter(user => user.role === Role.Admin).length;
+
+		//* Get the employees count
+		const employeesCount = users.filter(
+			user => user.role === Role.Employee,
+		).length;
+
+		//* Get the sellers count
+		const sellersCount = users.filter(user => user.role === Role.Seller).length;
+
+		//* Get the buyers count
+		const buyersCount = users.filter(user => user.role === Role.Buyer).length;
+
+		return {
+			totalUsers,
+			adminsCount,
+			employeesCount,
+			sellersCount,
+			buyersCount,
+		};
+	}
+
+	/**
+	 * Block or un-block user by id
+	 * @param userId
+	 * @param blockReason? if not provided, user will be un-blocked
+	 */
+	async toggleBlockUser(
+		userId: string,
+		blockReason?: string,
+	): Promise<ResponseResult> {
+		//* Set the variable as blocked user (default)
+		let isBlocked: boolean = true;
+		let message: string = 'User blocked successfully ✅';
+
+		//* Check if the blockReason is provided, if not so it is unblock operation
+		if (!blockReason) {
+			isBlocked = false;
+			blockReason = null;
+			message = 'User unblocked successfully ✅';
+		}
+
+		//* Block/Un-block user by update isBlock field to true/false and blockReason to blockReason
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{
+				isBlocked,
+				blockReason,
+			},
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message,
+		};
+	}
+
+	/**
+	 * Add/remove warn badge from user
+	 * @param userId
+	 * @param warningMessage
+	 */
+	async toggleWarnUser(
+		userId: string,
+		warningMessage?: string,
+	): Promise<ResponseResult> {
+		//* Set the variable as waned user (default)
+		let isWarned: boolean = true;
+		let message: string = 'Warning badge added to user 👍🏻';
+
+		//* Check if the warningMessage is provided, if not, so it is remove warn operation
+		if (!warningMessage) {
+			isWarned = false;
+			warningMessage = null;
+			message = 'Warning badge removed from user 👍🏻';
+		}
+
+		//* Warn/remove-warn from user by update isWarned field to true/false and warningMessage to warningMessage
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{
+				isWarned: isWarned,
+				warningMessage,
+			},
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return {
+			success: true,
+			message,
+		};
 	}
 }

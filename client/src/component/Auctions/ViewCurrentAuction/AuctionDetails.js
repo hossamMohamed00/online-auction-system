@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 
 import useTimer from '../../../CustomHooks/useTimer';
 
-import classes from './AuctionDetails.module.css'
+import classes from './AuctionDetails.module.css';
 
-const AuctionDetails = ({data}) => {
-
-	const AuctionDate = data && data.endDate ;
-	const {days, hours , minutes , seconds } = useTimer(new Date (AuctionDate))
-
+const AuctionDetails = ({ data }) => {
+	const AuctionDate = data && data.endDate;
+	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 
 	return (
 		<Fragment>
@@ -91,6 +89,6 @@ const AuctionDetails = ({data}) => {
 			)}
 		</Fragment>
 	);
-}
+};
 
 export default AuctionDetails;

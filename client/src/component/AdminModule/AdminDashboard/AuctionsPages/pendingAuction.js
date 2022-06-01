@@ -61,7 +61,7 @@ const PendingAuctions = () => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/auctions/id=${props._id}`}>Auction Details</Link>
+						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
 					</span>
 				);
 			},
@@ -86,7 +86,7 @@ const PendingAuctions = () => {
 
 	//filter
 	const items = pendingData ? pendingData : [];
-	const { filterFun, filteredItems } = useFilter(items);
+	const { filterFun, filteredItems } = useFilter(items, 'title');
 
 	console.log({ filteredItems });
 	//end filter

@@ -1,14 +1,28 @@
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const usePaymentForm = () => {
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { toast } from 'react-toastify';
+
+const usePaymentForm = onReload => {
 	const stripe = useStripe();
 	const elements = useElements();
 
-	const handleSubmit = async e => {
+	// get email and idToken
+	const email = useSelector(store => store.AuthData.email);
+	const idToken = useSelector(store => store.AuthData.idToken);
+
+	// get PaymentIntentId to recover money
+	const [PaymentIntentId, setPaymentIntentId] = useState('');
+	const [Loading, setLoading] = useState(false);
+
+	const handleSubmit = async (e, amount) => {
+		setLoading(true);
+
 		// We don't want to let default form submission happen here,
 		// which would refresh the page.
 		e.preventDefault();
-
+		console.log(amount);
 		if (!stripe || !elements) {
 			// Stripe.js has not yet loaded.
 			// Make sure to disable form submission until Stripe.js has loaded.
@@ -27,62 +41,54 @@ const usePaymentForm = () => {
 			type: 'card',
 			card: cardElement,
 			billing_details: {
-				name: 'Hossam',
-				email: 'a01122882174@gmail.com',
-				phone: '01156826636',
-				address: 'cairo',
+				email: email,
 			},
 		});
 
 		if (stripeError || !paymentMethod) {
 			console.log({ stripeError });
+			toast.error(stripeError.message);
 			return;
 		}
 
 		//? Create payment intent in the server
-		const { success, message } = await fetch(
+		const { success, message, data } = await fetch(
 			`${process.env.REACT_APP_API_URL}/wallet/charge`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
 					paymentMethodId: paymentMethod.id,
-					amount: 100,
+					amount: parseInt(amount),
 				}),
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjdmZWI3MDlkNmIxMDgwZGI4ZGI0MDgiLCJlbWFpbCI6ImJ1eWVyQGVtYWlsLmNvbSIsImlhdCI6MTY1MjU1MDY5MCwiZXhwIjoxMDY1MjU1MDY5MH0.EeAvFyRIN9TS6qGr5ua4ciKlral4xq057LefDz4IRZ8`,
+					Authorization: `Bearer ${idToken}`,
 				},
 			},
-			).then(res => res.json());
+		).then(res => res.json());
 
-			if (success === false) {
-				console.log({ message });
-				return;
+		if (success === false) {
+			console.log({ message });
+			toast.error({ message });
+			return;
+		}
+
+		if (success === true) {
+			setPaymentIntentId(data.paymentIntentId);
+			onReload(Math.random());
+			setLoading(false);
 		}
 
 		console.log('Charge wallet done successfully ✔✔✔, status is ' + message);
 
-		// //? Confirm the payment on the client
-		// const { error, paymentIntent } = await stripe.confirmCardPayment(
-		// 	clientSecret,
-		// 	{
-		// 		payment_method: paymentMethod.id,
-		// 	},
-		// );
-
-		// if (error) {
-		// 	// Show error to customer (e.g., insufficient funds)
-		// 	console.log({ error: error.message });
-		// 	return;
-		// }
-
-		// // Show a success message to your customer
-		// console.log(`Payment ${paymentIntent.id}: ${paymentIntent.status}`);
+		toast.success('You wallet balance updated ✔✔');
 	};
 
 	return {
 		handleSubmit,
+		PaymentIntentId,
+		Loading,
 	};
 };
 

@@ -3,6 +3,7 @@ import {
 	forwardRef,
 	Inject,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -16,6 +17,8 @@ import { AuctionsService } from 'src/models/auction/auctions.service';
 
 @Injectable()
 export class CategoryService {
+	private logger: Logger = new Logger(CategoryService.name);
+
 	constructor(
 		@InjectModel(Category.name)
 		private readonly categoryModel: Model<CategoryDocument>,
@@ -42,6 +45,8 @@ export class CategoryService {
 
 		await createdCategory.save();
 
+		this.logger.log('New Category created successfully ✔');
+
 		return createdCategory;
 	}
 
@@ -52,6 +57,8 @@ export class CategoryService {
 		let categories = name
 			? await this.categoryModel.find({ name: name.toLowerCase() })
 			: await this.categoryModel.find();
+
+		this.logger.log('Retrieving all saved categories...');
 
 		return categories;
 	}
@@ -64,6 +71,10 @@ export class CategoryService {
 	async getAuctionsOfCategory(categoryId: string): Promise<AuctionDocument[]> {
 		//* Find the category
 		const category = await this.findOne(categoryId);
+
+		if (!category) {
+			throw new BadRequestException('Category not found ❌');
+		}
 
 		//* Populate the virtual auctions property
 		await category.populate({
@@ -81,6 +92,8 @@ export class CategoryService {
 		// FIXME: Fix this error
 		// @ts-ignore: Unreachable code error
 		const auctions: AuctionDocument[] = category.auctions;
+
+		this.logger.log('Retrieving all auctions for ' + category.name);
 
 		return auctions;
 	}
@@ -122,6 +135,8 @@ export class CategoryService {
 
 		if (!category) throw new NotFoundException('Category not found ❌.');
 
+		this.logger.log('Category updated successfully ✔');
+
 		return category;
 	}
 
@@ -132,7 +147,10 @@ export class CategoryService {
 	async remove(categoryId: string) {
 		//? Ensure before remove that there is no upcoming or ongoing auctions related to this category
 		const isExists =
-			this.auctionService.isThereAnyRunningAuctionRelatedToCategory(categoryId);
+			await this.auctionService.isThereAnyRunningAuctionRelatedToCategory(
+				categoryId,
+			);
+
 		if (isExists) {
 			throw new BadRequestException(
 				'There are ongoing or upcoming auctions related to this category ❌.',
@@ -140,10 +158,23 @@ export class CategoryService {
 		}
 
 		//* Find the category and delete it
-		const category = await this.categoryModel.findByIdAndRemove(categoryId);
+		const category = await this.categoryModel.findOne({ _id: categoryId });
 
 		if (!category) throw new NotFoundException('Category not found ❌');
 
+		//* Remove the category using this approach to fire the pre hook event
+		await category.remove();
+
 		return category;
+	}
+
+	/**
+	 * Return categories count to be displayed in admin dashboard
+	 */
+	async getCategoriesCount() {
+		//* Get all categories count
+		const categoriesCount = await this.categoryModel.countDocuments();
+
+		return categoriesCount;
 	}
 }

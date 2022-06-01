@@ -1,0 +1,134 @@
+.container_profile {
+	background-color: #191c20;
+	min-height: 100vh !important;
+	/* margin : 0 5% !important; */
+}
+
+.header {
+	max-height: 20% !important;
+}
+.header img {
+	position: relative;
+	height: 250px;
+	width: 80%;
+	margin: 3% 10% 0;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+
+.profile img {
+	position: absolute;
+	width: 120px !important;
+	height: 120px !important;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	top: 210px;
+	left: 40px;
+	transform: translate(10%, 0);
+	-webkit-transform: translate(10%, 0);
+	-moz-transform: translate(10%, 0);
+	-ms-transform: translate(10%, 0);
+	-o-transform: translate(10%, 0);
+}
+.profile h5,
+.profile p {
+	position: absolute;
+	top: 95%;
+	left: 25%;
+	font-weight: bold !important;
+}
+.profile p {
+	top: 103% !important;
+	color: rgb(224, 216, 216);
+	font-weight: 300 !important;
+}
+.profile .bar {
+	position: absolute;
+
+	font-size: 14px !important;
+	left: 65.5% !important;
+	margin-top: 1.5%;
+}
+.profile .profile_bar {
+	position: absolute;
+	left: 73%;
+	width: 15%;
+}
+.profile_cards {
+	width: 80%;
+	margin: 0 10%;
+	/* background-color: #262525 !important; */
+}
+
+.profile_card {
+	background-color: #191c20;
+	padding: 2% 3%;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
+}
+.cardP {
+	background-color: #424242 !important;
+	margin-left: 34%;
+}
+/* 424242 */
+.profile_table {
+	width: 80%;
+	background-color: #191c20;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	-ms-border-radius: 15px;
+	-o-border-radius: 15px;
+	margin: 0 10%;
+}
+.profileHr1 {
+	margin: 10% 10% 0;
+}
+.profileHr2 {
+	margin: 0 10%;
+}
+.btn_chat {
+	left: 73%;
+	top: 125%;
+	width: 15%;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	-ms-border-radius: 25px;
+	-o-border-radius: 25px;
+}
+.btn_compliment {
+	left: 73%;
+	top: 109%;
+	width: 15%;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	-ms-border-radius: 25px;
+	-o-border-radius: 25px;
+	background-color: var(--nav-color);
+}
+
+.btn-remove {
+	font-size: 15px !important;
+}
+/* related to complaints page */
+.formLabel {
+	color: white !important;
+}
+.formInput {
+	background-color: #2e2f32 !important;
+	border: none !important;
+	outline: none !important;
+	color: white !important;
+	margin: 0 !important;
+}

@@ -4,7 +4,7 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
+import { ObjectId, Schema } from 'mongoose';
 
 import { HandleDateService } from 'src/common/utils';
 import { CategoryService } from '../category/category.service';
@@ -63,7 +63,9 @@ export class AuctionValidationService {
 		const validationResult = { success: true, message: undefined };
 
 		//? Ensure that auction is available to join (is currently ongoing)
-		const isAvailable = await this.auctionService.isAvailableToJoin(auctionId);
+		const isAvailable = await this.auctionService.isValidAuctionForBidding(
+			auctionId,
+		);
 		if (!isAvailable) {
 			validationResult.success = false;
 			validationResult.message =
@@ -75,7 +77,7 @@ export class AuctionValidationService {
 		//? Ensure that the bidder is not already joined
 		const isAlreadyJoined = await this.auctionService.isAlreadyJoined(
 			auctionId,
-			bidderId,
+			bidderId.toString(),
 		);
 		if (isAlreadyJoined) {
 			validationResult.success = false;
@@ -88,12 +90,47 @@ export class AuctionValidationService {
 		//?Ensure that the buyer has auction's assurance in his wallet
 		const hasMinAssurance = await this.auctionService.hasMinAssurance(
 			auctionId,
-			bidderId,
+			bidderId.toString(),
 		);
 		if (!hasMinAssurance) {
 			validationResult.success = false;
 			validationResult.message =
 				'Sorry, you do not have enough balance to pay auction assurance 😑';
+
+			return validationResult;
+		}
+
+		return validationResult;
+	}
+
+	/**
+	 * Run all validation before adding bidder to auction's waiting list
+	 * @param auctionId
+	 * @param bidderId
+	 * @returns validationResult: {success: boolean, message: string}
+	 */
+	public async validateBidderSaveAuction(auctionId: string, bidderId: string) {
+		const validationResult = { success: true, message: undefined };
+
+		//? Ensure that auction is available to save (is currently upcoming)
+		const isAvailable = await this.auctionService.isAvailableToSave(auctionId);
+		if (!isAvailable) {
+			validationResult.success = false;
+			validationResult.message =
+				'This auction currently is not available to join ❌❌';
+
+			return validationResult;
+		}
+
+		//? Ensure that the bidder is not already in auction waiting list
+		const isAlreadyJoined = await this.auctionService.isAlreadyInWaitingList(
+			auctionId,
+			bidderId,
+		);
+
+		if (isAlreadyJoined) {
+			validationResult.success = false;
+			validationResult.message = 'You are already auction waiting list 🙂';
 
 			return validationResult;
 		}

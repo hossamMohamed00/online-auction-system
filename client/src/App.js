@@ -1,11 +1,6 @@
-import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import toast
-
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from './component/Modules/BuyerModule/Payment/PaymentForm';
 
 // css files
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -36,14 +31,15 @@ import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers
 import AdminPage from './Pages/AdminDashboard';
 import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
-import OngoingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
+import UpcomingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
 import ManageCategories from './component/AdminModule/AdminDashboard/ManageCategories/manageCategories';
 // end admin pages
+// profile pages
+import BuyerProfile from './Pages/buyerProilePage';
 
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
-import Chat from './component/UI/Chat/Chat';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
 import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
 // end buyer pages
@@ -55,27 +51,21 @@ import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
 import UpdateAccount from './component/Modules/SellerModule/SellerPages/UpdateAccount';
+import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
+import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
+import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
+import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
+import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
+import SellerProfilePage from './Pages/SellerProfilePage';
 // end seller pages
-
-//* Payment
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function App() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(role);
-
 	return (
 		<React.Fragment>
 			{/* start Routes of admin*/}
-
-			{/* //* TEMPORARY Payment code */}
-
-			{/* <Elements stripe={stripePromise}>
-				<PaymentForm />
-			</Elements> */}
-
 			<Routes>
 				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />
@@ -91,6 +81,9 @@ function App() {
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
+				{/* profile */}
+				<Route path="/buyerProfile" element={<BuyerProfile />} />
+				<Route path={`/seller`} element={<SellerProfilePage />} />
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
@@ -98,30 +91,46 @@ function App() {
 				)}
 				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
 				<Route
-					path="/adminDashboard/ongoingAuctions"
-					element={<OngoingAuctionsPage />}
+					path="/managersDashboard/allAuctions"
+					element={<AllAuctions />}
 				/>
 				<Route
-					path="/adminDashboard/currentAuctions"
+					path="/managersDashboard/upcomingAuctions"
+					element={<UpcomingAuctionsPage />}
+				/>
+				<Route
+					path="/managersDashboard/currentAuctions"
 					element={<CurrentAuctionsPage />}
 				/>
 				<Route
-					path="/adminDashboard/pendingAuctions"
+					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
-				<Route path="/adminDashboard/allUsersPage" element={<UsersPage />} />
-				<Route path="/adminDashboard/sellersPage" element={<SellersPage />} />
-				<Route path="/adminDashboard/buyersPage" element={<BuyersPage />} />
-				<Route path="/adminDashboard/addEmployee" element={<AddEmployee />} />
+				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
 				<Route
-					path="/adminDashboard/listAllEmployees"
+					path="/managersDashboard/sellersPage"
+					element={<SellersPage />}
+				/>
+				<Route path="/managersDashboard/buyersPage" element={<BuyersPage />} />
+				<Route
+					path="/managersDashboard/addEmployee"
+					element={<AddEmployee />}
+				/>
+				<Route
+					path="/managersDashboard/listAllEmployees"
 					element={<ListAllEmployees />}
 				/>
 				<Route
-					path="/adminDashboard/manageCategories"
+					path="/managersDashboard/manageCategories"
 					element={<ManageCategories />}
 				/>
 				{/* end Admin Routes */}
+				{/* start route Employees */}
+				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
+				<Route
+					path="/managersDashboard/allCompliments"
+					element={<AllCompliments />}
+				/>
 
 				{/* start buyer routes  */}
 
@@ -129,7 +138,7 @@ function App() {
 					<>
 						<Route path="/buyer-dashboard" element={<BuyerDashboard />} />
 						<Route path="/buyer-dashboard/chat" element={<BuyerChat />} />
-						{/* Buyer Auctions */}
+						{/* start Buyer Auctions */}
 						<Route
 							path="/buyer-dashboard/saved-auctions"
 							element={<SavedAuctions />}
@@ -138,6 +147,16 @@ function App() {
 							path="/buyer-dashboard/participating-auctions"
 							element={<ViewParticipatingAuctions />}
 						/>
+						{/* end Buyer Auctions */}
+
+						{/* start Payment */}
+						<Route path="/buyer-dashboard/chargeWallet" element={<Wallet />} />
+
+						<Route
+							path="/buyer-dashboard/viewWalletTransaction"
+							element={<WalletTransaction />}
+						/>
+						{/* end Payment */}
 					</>
 				)}
 

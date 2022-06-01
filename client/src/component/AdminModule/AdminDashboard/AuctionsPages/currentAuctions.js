@@ -18,19 +18,6 @@ const CurrentAuctionsPage = () => {
 		getAllAuctions,
 	);
 	// ! to be removed
-	let neededData;
-	if (statusForGet === 'completed') {
-		neededData = data.map(auction => {
-			return {
-				name: auction.title,
-				basePrice: auction.basePrice,
-				startDate: auction.startDate,
-				endDate: auction.endDate,
-				seller: auction.seller.name,
-				status: auction.status,
-			};
-		});
-	}
 
 	useEffect(() => {
 		sendRequest({ idToken, status: 'ongoing' });
@@ -39,7 +26,7 @@ const CurrentAuctionsPage = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
-			neededData.map(data => {
+			data.map(data => {
 				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
 				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
 				data.endDate = newEndDate;
@@ -47,53 +34,57 @@ const CurrentAuctionsPage = () => {
 				data.startDate = newStartDate;
 			});
 
-			setOngoingAuctions(neededData);
+			setOngoingAuctions(data);
 		}
 	}, [statusForGet]);
 
 	const columns = [
 		{
 			name: 'Title',
-			selector: row => row.name,
+			selector: row => row.title,
 			sortable: true,
+			center: true,
 		},
 		{
 			name: 'Base Price',
 			selector: row => row.basePrice,
+			center: true,
 		},
 		{
 			name: 'Start Date',
 			selector: row => row.startDate,
+			center: true,
 		},
 		{
 			name: 'End Date',
 			selector: row => row.endDate,
+			center: true,
 		},
 		{
 			name: 'Seller',
-			selector: row => row.seller,
+			selector: row => row.seller.name,
+			center: true,
 		},
 		{
 			name: 'Status',
 			selector: row => row.status,
+			center: true,
 		},
 		{
 			name: 'Actions',
-			// selector: row => row.action,
+			center: true,
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/auctions/id=${props._id}`}>Auction Details</Link>
+						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
 					</span>
 				);
 			},
-		},
+		}
 	];
 	//filter
 	const items = ongoingAuctions ? ongoingAuctions : [];
-	const { filterFun, filteredItems } = useFilter(items);
-
-	console.log({ filteredItems });
+	const { filterFun, filteredItems } = useFilter(items, 'title');
 	//end filter
 
 	return (
@@ -101,7 +92,7 @@ const CurrentAuctionsPage = () => {
 			<AdminDashboard>
 				<PageContent>
 					<PageHeader text="Current Auctions" showLink={false} />{' '}
-					{neededData && (
+					{ongoingAuctions && (
 						<DataTable
 							columns={columns}
 							data={filteredItems}

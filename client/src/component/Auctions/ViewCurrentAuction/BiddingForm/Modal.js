@@ -1,4 +1,4 @@
-import React, { useState , useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -21,11 +21,11 @@ const ModalUi = props => {
 		} else {
 			setIsBidValid(true);
 		}
-	}
+	};
 	const btnSavedHandeler = () => {
-		props.btnSaved('Saved') ;
-		props.onHide()
-	}
+		props.btnSaved('Saved');
+		props.onHide();
+	};
 
 	return (
 		<Modal
@@ -62,7 +62,7 @@ const ModalUi = props => {
 			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
-				{/* for buyer */}
+					{/* for buyer */}
 					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<>
 							<div
@@ -124,14 +124,13 @@ const ModalUi = props => {
 
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-
 					{/* buyer modal */}
 					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
 							type="button"
 						>
-						Place My Bid
+							Place My Bid
 						</button>
 					)}
 					{!isLoggedIn && (
@@ -148,7 +147,6 @@ const ModalUi = props => {
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"
 							onClick={btnSavedHandeler}
-
 						>
 							Save
 						</button>
@@ -158,7 +156,7 @@ const ModalUi = props => {
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"
-							onClick={()=>props.rejectHandler(rejectRef.current.value)}
+							onClick={() => props.rejectHandler(rejectRef.current.value)}
 						>
 							Submit
 						</button>

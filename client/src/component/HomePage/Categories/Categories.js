@@ -1,24 +1,25 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector} from 'react-redux'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../../Api/CategoryApi';
-import{ getAllCategoriesForAdmin} from '../../../Api/Admin'
+import { getAllCategoriesForAdmin } from '../../../Api/Admin';
 import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from '../../UI/DropDownBox.module.css';
 
 const Categories = () => {
 	const [isHiddenCategories, setIsHiddenCategories] = useState(false);
-	const role = useSelector(store => store.AuthData.role)
+	const role = useSelector(store => store.AuthData.role);
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const getCategories = role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
+	const getCategories =
+		role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
 
-	const {sendRequest , status , data , error} = useHttp(getAllCategories);
+	const { sendRequest, status, data, error } = useHttp(getAllCategories);
 
-	useEffect(()=>{
-		sendRequest(idToken)
-	},[sendRequest])
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest]);
 
 	const showAllCategories =
 		!error &&
@@ -31,16 +32,15 @@ const Categories = () => {
 						className="p-2 text-decoration-none text-light"
 						to={`/categories?id=${category._id}`}
 					>
-						{category.name}{' '}
+						{category.name}
 					</Link>
 				</li>
 			);
 		});
 
-	const btnShowCategoryHandeler = e => {
+	const btnShowCategoryHandler = e => {
 		e.preventDefault();
 		setIsHiddenCategories(true);
-		console.log('yes');
 	};
 
 	return (
@@ -53,10 +53,10 @@ const Categories = () => {
 				<button
 					type="button"
 					className="btn-close d-md-none float-end m-2 text-dark bg-light"
-					onClick={btnShowCategoryHandeler}
+					onClick={btnShowCategoryHandler}
 					aria-label="Close"
 				></button>
-				<ul className={`list-group d-md-block  `}>{showAllCategories}</ul>
+				<ul className={`list-group d-md-block`}>{showAllCategories}</ul>
 			</div>
 		</Fragment>
 	);

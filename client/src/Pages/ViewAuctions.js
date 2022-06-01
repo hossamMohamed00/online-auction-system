@@ -5,14 +5,12 @@ import ViewAllAuctions from '../component/Auctions/ViewAuctions/ViewAllAuction';
 import { useLocation } from 'react-router-dom';
 
 function ViewAuctions() {
-
-	const location  = useLocation()
-	const AuctionId = new URLSearchParams(location.search).get('id')
+	const location = useLocation();
+	const AuctionId = new URLSearchParams(location.search).get('id');
 	return (
 		<Fragment>
-			{AuctionId && <ViewCurrentAuction/> }
-			{!AuctionId && <ViewAllAuctions/>}
-
+			{AuctionId && <ViewCurrentAuction />}
+			{!AuctionId && <ViewAllAuctions />}
 		</Fragment>
 	);
 }

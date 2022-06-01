@@ -1,11 +1,11 @@
-.ContactUs{
+.ContactUs {
 	margin-top: 18vh;
 	height: 70vh;
 	color: white;
 }
 
 @media (max-width: 768px) {
-	.ContactUs{
+	.ContactUs {
 		margin-right: 0;
 		height: fit-content;
 		margin-top: 10vh;
@@ -14,10 +14,9 @@
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
-	.ContactUs{
+	.ContactUs {
 		margin-top: 20vh;
 		height: 40vh;
 		margin-right: 100px;
 	}
 }
-

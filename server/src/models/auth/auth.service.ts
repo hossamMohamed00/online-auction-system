@@ -4,6 +4,7 @@ import {
 	Injectable,
 	Logger,
 	NotFoundException,
+	UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/shared-user/users.service';
@@ -94,6 +95,13 @@ export class AuthService {
 		//* Find the user
 		const user: UserDocument = await this.usersService.findByEmail(email);
 		if (!user) throw new NotFoundException('User not found ❌');
+
+		//* Check if the user is blocked or not
+		if (user.isBlocked) {
+			throw new UnauthorizedException(
+				`[BLOCKED ACCOUNT] ==> ${user.blockReason}`,
+			);
+		}
 
 		//? Check if the password matches or not
 		const isMatch = await compare(password, user.password);

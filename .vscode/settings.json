@@ -1,5 +1,17 @@
 {
 	"todo-tree.tree.scanMode": "workspace",
 	"todo-tree.tree.showBadges": true,
-	"cSpell.words": ["fortawesome", "labelledby", "Xmark"]
+	"cSpell.words": [
+		"Btns",
+		"Filterd",
+		"fontawesome",
+		"fortawesome",
+		"labelledby",
+		"Messagevalue",
+		"Pagecontant",
+		"toastify",
+		"Uogoing",
+		"Upgoing",
+		"Xmark"
+	]
 }
