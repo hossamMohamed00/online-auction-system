@@ -5,15 +5,15 @@ span a {
 
 .btn-warn , .btn-block , .btn-joinAuction{
 	margin-left: 5px;
-	font-size: 9px!important;
+	font-size: 10px !important;
 	font-weight: bold;
 }
 
-.btn-warn{
+.btn-warn {
 	background-color: var(--semiDark-color);
 }
 
-.RemoveBadge{
+.RemoveBadge {
 	font-size: 10px;
 	font-weight: bold;
 }

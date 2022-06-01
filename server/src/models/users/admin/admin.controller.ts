@@ -147,20 +147,20 @@ export class AdminController
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
 
-	@Serialize(AuctionDto)
 	@Post('auction/approve/:id')
+	@HttpCode(HttpStatus.OK)
 	approveAuction(
 		@Param() { id: auctionId }: MongoObjectIdDto,
-	): Promise<Auction> {
+	): Promise<ResponseResult> {
 		return this.adminService.approveAuction(auctionId);
 	}
 
-	@Serialize(AuctionDto)
 	@Post('auction/reject/:id')
+	@HttpCode(HttpStatus.OK)
 	rejectAuction(
 		@Param() { id: auctionId }: MongoObjectIdDto,
 		@Body() rejectAuctionDto: RejectAuctionDto,
-	) {
+	): Promise<ResponseResult> {
 		return this.adminService.rejectAuction(auctionId, rejectAuctionDto);
 	}
 

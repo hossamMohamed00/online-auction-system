@@ -5,7 +5,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -16,7 +16,6 @@ import {
 } from './dto';
 import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
-import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import WalletService from 'src/providers/payment/wallet.service';
@@ -31,6 +30,7 @@ import {
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
+import { HandleDateService } from './../../common/utils/date/handle-date.service';
 
 @Injectable()
 export class AuctionsService
@@ -153,6 +153,17 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get list of auctions by their status
+	 * @param status
+	 * @returns Array of auctions
+	 */
+	async getAuctionByStatus(status: AuctionStatus): Promise<AuctionDocument[]> {
+		const auctions = await this.auctionModel.find({ status });
+
+		return auctions ? auctions : [];
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -270,15 +281,31 @@ export class AuctionsService
 	 * @param auctionId
 	 * @return the updated auction
 	 */
-	async approveAuction(auctionId: string): Promise<Auction> {
-		// BAD APPROACH --> 2 Requests to the db
-
+	async approveAuction(auctionId: string): Promise<ResponseResult> {
 		//? Get the auction from db
 		const auction = await this.auctionModel.findById(auctionId);
 		if (!auction) return null;
 
-		//? Prepare the end date
-		const auctionStartDate = auction.startDate;
+		if (auction.status === AuctionStatus.UpComing) {
+			throw new BadRequestException('Auction is already approved ✔✔');
+		}
+
+		//? Get start HandleDateService
+		let auctionStartDate = auction.startDate;
+
+		//* Check if the start date is in the past
+		const isStartDateInPast = HandleDateService.isInPast(auctionStartDate);
+		if (isStartDateInPast) {
+			//* Set the start date to tomorrow
+			const tomorrow = HandleDateService.getTomorrowDate();
+			console.log(`tomorrow: ${tomorrow}`);
+
+			auctionStartDate = tomorrow;
+
+			this.logger.debug(
+				'Auction start date is in the past ❌, so it is set to tomorrow 🐱‍🏍',
+			);
+		}
 
 		//* Add 7 days to the startDate
 		const newEndDate =
@@ -290,13 +317,14 @@ export class AuctionsService
 			{
 				$set: {
 					status: AuctionStatus.UpComing, // Update status to up coming
+					startDate: auctionStartDate, // Update start date (if it was in the past)
 					endDate: newEndDate, // Update end date
 				},
 			},
 			{ new: true },
 		);
 
-		//* Schedule the auction to run in start date automatically
+		//? Schedule the auction to run in start date automatically
 		this.startAuctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
@@ -308,7 +336,15 @@ export class AuctionsService
 				approvedAuction.title +
 				' approved successfully 👏🏻',
 		);
-		return approvedAuction;
+
+		return {
+			success: true,
+			message: 'Auction approved successfully ✔✔',
+			data: {
+				startDate: approvedAuction.startDate,
+				endDate: approvedAuction.endDate,
+			},
+		};
 	}
 
 	/**
@@ -643,9 +679,9 @@ export class AuctionsService
 	}
 
 	/**
-	 * Change auction status to specific status
+	 * Check if the bid is valid (bidValue > minimum bid value) and auction still ongoing
 	 * @param auctionId - Auction id
-	 * @param status - Auction status
+	 * @param bidValue - incoming bid value
 	 * @returns boolean
 	 */
 	async isValidBid(auctionId: string, bidValue: number): Promise<boolean> {
@@ -731,6 +767,30 @@ export class AuctionsService
 		};
 	}
 
+	/**
+	 * Get the winner for an auction
+	 * @param auctionId - Auction id
+	 */
+	async getAuctionWinner(auctionId: string): Promise<any> {
+		const auction = await this.auctionModel
+			.findOne({
+				_id: auctionId,
+				status: AuctionStatus.Closed,
+			})
+			.populate('winningBuyer');
+
+		if (!auction || !auction.winningBuyer) {
+			return null;
+		}
+
+		const auctionWinner = auction.winningBuyer;
+
+		return {
+			_id: auctionWinner._id,
+			name: auctionWinner.name,
+			email: auctionWinner.email,
+		};
+	}
 	/*-------------------------*/
 	/* Helper functions */
 
