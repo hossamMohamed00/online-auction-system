@@ -282,7 +282,10 @@ export class BuyerService {
 	 * @param buyerId
 	 * @returns removed review
 	 */
-	async removeReview(reviewId: string, buyerId: string): Promise<Review> {
+	async removeReview(
+		reviewId: string,
+		buyerId: string,
+	): Promise<ResponseResult> {
 		return this.reviewService.remove(reviewId, buyerId);
 	}
 

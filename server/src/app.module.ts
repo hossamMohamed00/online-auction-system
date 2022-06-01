@@ -1,3 +1,4 @@
+import { SocketModule } from './providers/socket/socket.module';
 import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -28,6 +29,7 @@ import { BidModule } from './models/bids/bid.module';
 
 @Module({
 	imports: [
+		SocketModule,
 		//? Import stripe module
 		WalletModule,
 		//? Import the chat module

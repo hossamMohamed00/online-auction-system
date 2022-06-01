@@ -68,6 +68,26 @@ export class AuctionRoomService {
 	}
 
 	/**
+	 * Search fot the winner bidder in the online members list
+	 * @param userId
+	 * @param room
+	 * @returns winner bidder socket id if found
+	 */
+	getWinnerBidder(userId: string, room: string) {
+		const winner = this.onlineBidders.find(
+			(member: { userId: string; room: string }) => {
+				return (
+					member.userId.toString() == userId.toString() && member.room == room
+				);
+			},
+		);
+
+		console.log({ winner });
+
+		return winner?.socketId ? winner.socketId : null;
+	}
+
+	/**
 	 * Return list of all available bidders in specific room
 	 * @param room - room name
 	 */

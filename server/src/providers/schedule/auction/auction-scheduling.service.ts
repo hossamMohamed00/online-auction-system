@@ -3,6 +3,8 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import * as moment from 'moment';
 import { AuctionsService } from 'src/models/auction/auctions.service';
+import { AuctionStatus } from 'src/models/auction/enums';
+import { SocketService } from 'src/providers/socket/socket.service';
 
 @Injectable()
 export class AuctionSchedulingService {
@@ -12,6 +14,7 @@ export class AuctionSchedulingService {
 		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the tow services
 		private readonly auctionService: AuctionsService,
 		private readonly schedulerRegistry: SchedulerRegistry,
+		private readonly socketService: SocketService,
 	) {}
 
 	/**
@@ -57,6 +60,9 @@ export class AuctionSchedulingService {
 			//* Mark the auctions as ended
 			await this.auctionService.markAuctionAsEnded(auctionId);
 
+			//* Notify all bidders that auction is ended
+			this.socketService.emitEvent('auction-ended', auctionId);
+
 			//* Remove this cron job to avoid duplicate problem
 			this.deleteCron(auctionId);
 		});
@@ -70,6 +76,60 @@ export class AuctionSchedulingService {
 		);
 
 		this.getCrons();
+	}
+
+	/**
+	 * This method used to reload all cron jobs for auctions
+	 */
+	async loadCronJobsForAuctions() {
+		this.loadCronJobsForUpcomingAuctions();
+		this.loadCronJobsForOngoingAuctions();
+	}
+
+	/**
+	 * Load all cron jobs for any ongoing auctions if any
+	 */
+	private async loadCronJobsForUpcomingAuctions() {
+		this.logger.debug('Loading cron jobs for upcoming auctions...');
+
+		//* Get all upcoming auctions
+		const upcomingAuctions = await this.auctionService.getAuctionByStatus(
+			AuctionStatus.UpComing,
+		);
+
+		//* For each upcoming auction, create cron job for start auction
+		upcomingAuctions.forEach(auction => {
+			this.addCronJobForStartAuction(auction.id, auction.startDate);
+		});
+
+		if (upcomingAuctions.length > 0) {
+			this.logger.debug(`${upcomingAuctions.length} upcoming auctions loaded!`);
+		} else {
+			this.logger.debug('No upcoming auctions found to be loaded!');
+		}
+	}
+
+	/**
+	 * Load all cron jobs for any ongoing auctions if any
+	 */
+	private async loadCronJobsForOngoingAuctions() {
+		this.logger.debug('Loading cron jobs for ongoing auctions...');
+
+		//* Get all incoming auctions
+		const ongoingAuctions = await this.auctionService.getAuctionByStatus(
+			AuctionStatus.OnGoing,
+		);
+
+		//* For each ongoing auction, create cron job for end date
+		ongoingAuctions.forEach(auction => {
+			this.addCronJobForEndAuction(auction.id, auction.endDate);
+		});
+
+		if (ongoingAuctions.length > 0) {
+			this.logger.debug(`${ongoingAuctions.length} ongoing auctions loaded!`);
+		} else {
+			this.logger.debug('No ongoing auctions found to be loaded!');
+		}
 	}
 
 	/**

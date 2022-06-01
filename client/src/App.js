@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // css files
@@ -56,22 +56,17 @@ import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/A
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
+import SellerProfilePage from './Pages/SellerProfilePage';
 // end seller pages
 
 function App() {
+
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
 	return (
 		<React.Fragment>
 			{/* start Routes of admin*/}
-
-			{/* //* TEMPORARY Payment code */}
-
-			{/* <Elements stripe={stripePromise}>
-				<PaymentForm />
-			</Elements> */}
-
 			<Routes>
 				{/* start Home Page Routes */}
 				<Route path="/home-page" element={<HomePage />} />
@@ -87,7 +82,9 @@ function App() {
 				<Route path="/auctions" element={<ViewAuctions />} exact />
 				<Route path="/categories" element={<ViewCategoryAuctions />} />
 				{/* end Home Page Routes */}
+				{/* profile */}
 				<Route path="/buyerProfile" element={<BuyerProfile />} />
+				<Route path={`/seller`} element={<SellerProfilePage />} />
 
 				{/* start Admin Routes */}
 				{isLoggedIn && role === 'admin' && (
@@ -131,7 +128,10 @@ function App() {
 				{/* end Admin Routes */}
 				{/* start route Employees */}
 				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
-				<Route path="/managersDashboard/allCompliments" element={<AllCompliments />} />
+				<Route
+					path="/managersDashboard/allCompliments"
+					element={<AllCompliments />}
+				/>
 
 				{/* start buyer routes  */}
 

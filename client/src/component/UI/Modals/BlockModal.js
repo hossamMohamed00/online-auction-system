@@ -29,7 +29,7 @@ const BlockModal = ({id , show , onHide , isBlocked , onReload}) => {
 	useEffect(()=>{
 		const Type = 'Block'
 		sendRequest({accessToken,Type})
-	},[show, sendRequest])
+	},[sendRequest])
 
 	// end get all Blocking reasons
 

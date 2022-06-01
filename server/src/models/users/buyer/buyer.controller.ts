@@ -129,6 +129,7 @@ export class BuyerController
 	@Get('review')
 	getReviewOnSeller(
 		@Query() { sellerId }: FindReviewInSeller,
+		// @Query() sellerId: string,
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<Review> {
 		return this.buyerService.getReviewOnSeller(buyerId, sellerId);
@@ -151,7 +152,7 @@ export class BuyerController
 	deleteReview(
 		@Param() { id }: MongoObjectIdDto,
 		@GetCurrentUserData('_id') buyerId: string,
-	): Promise<Review> {
+	): Promise<ResponseResult> {
 		return this.buyerService.removeReview(id, buyerId);
 	}
 }
