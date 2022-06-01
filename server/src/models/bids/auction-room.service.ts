@@ -76,9 +76,13 @@ export class AuctionRoomService {
 	getWinnerBidder(userId: string, room: string) {
 		const winner = this.onlineBidders.find(
 			(member: { userId: string; room: string }) => {
-				member.userId.toString() == userId.toString() && member.room === room;
+				return (
+					member.userId.toString() == userId.toString() && member.room == room
+				);
 			},
 		);
+
+		console.log({ winner });
 
 		return winner?.socketId ? winner.socketId : null;
 	}
