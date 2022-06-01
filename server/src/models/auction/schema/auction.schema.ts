@@ -1,24 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { Document, Types, ObjectId } from 'mongoose';
 import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { Transform } from 'class-transformer';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
 export type AuctionDocument = Auction & Document;
 
 @Schema()
 export class Auction {
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
+
 	@Prop({ required: true, trim: true })
 	title: string;
 
 	@Prop({
 		required: true,
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: Item.name,
 	})
-	item: Item;
+	item: Types.ObjectId;
 
 	@Prop({ required: true, min: 0 })
 	basePrice: number; //? Auction starting price
@@ -59,23 +63,30 @@ export class Auction {
 	rejectionMessage: string;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: User.name,
 		default: null,
 	})
-	winningBuyer: User;
+	winningBuyer: Buyer;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: User.name,
 	})
-	seller: User;
+	seller: Types.ObjectId;
 
 	@Prop({
-		type: mongoose.Schema.Types.ObjectId,
+		type: Types.ObjectId,
 		ref: Category.name,
 	})
-	category: Category;
+	category: Types.ObjectId;
+
+	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
+	bidders: [Types.ObjectId];
+
+	//* To keep track of all bidders that should be notified when the auction start
+	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })
+	waitingBidders: [Types.ObjectId];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

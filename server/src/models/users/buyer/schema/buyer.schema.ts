@@ -1,5 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+
+import { Auction } from 'src/models/auction/schema/auction.schema';
+import { User } from '../../shared-user/schema/user.schema';
 
 export type BuyerDocument = Buyer & Document;
 
@@ -9,13 +12,18 @@ export type BuyerDocument = Buyer & Document;
  */
 
 @Schema()
-export class Buyer {
-	@Prop({ required: true, default: true })
-	isBuyer: boolean;
-
+export class Buyer extends User {
 	//* To keep track of stripe customer id to enable wallet
 	@Prop({ required: true, unique: true })
 	stripeCustomerId: string;
+
+	//* To keep track of joined auctions
+	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name }] })
+	joinedAuctions: Auction[];
+
+	//* To keep track of saved auctions
+	@Prop({ type: [{ type: Types.ObjectId, ref: Auction.name }] })
+	savedAuctions: Auction[];
 }
 
 export const BuyerSchema = SchemaFactory.createForClass(Buyer);

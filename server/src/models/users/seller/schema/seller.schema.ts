@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { User } from '../../shared-user/schema/user.schema';
 
 export type SellerDocument = Seller & Document;
 
@@ -9,9 +10,10 @@ export type SellerDocument = Seller & Document;
  */
 
 @Schema()
-export class Seller {
-	@Prop({ required: true, default: true })
-	isSeller: boolean;
+export class Seller extends User {
+	//* Seller rating out of 5
+	@Prop({ default: 3, min: 1, max: 5 })
+	rating: number;
 
 	//* To keep track of stripe customer id to enable wallet
 	@Prop({ required: true, unique: true })

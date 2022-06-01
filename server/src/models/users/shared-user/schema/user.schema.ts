@@ -1,12 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { Role } from '../enums';
+import { Transform } from 'class-transformer';
 
 export type UserDocument = User & Document;
 
 @Schema({ discriminatorKey: 'kind' })
 export class User {
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
+
 	@Prop({ required: true, trim: true })
 	name: string;
 
@@ -16,6 +20,9 @@ export class User {
 	@Prop({ default: false })
 	isEmailConfirmed: boolean;
 
+	@Prop({ default: null })
+	emailVerificationCode: number;
+
 	@Prop({ required: true, min: 3 })
 	password: string;
 
@@ -24,6 +31,18 @@ export class User {
 
 	@Prop({ enum: Object.values(Role), default: Role.Buyer })
 	role: Role;
+
+	@Prop({ default: false })
+	isBlocked: boolean;
+
+	@Prop({ default: null, trim: true })
+	blockReason: string;
+
+	@Prop({ default: false })
+	isWarned: boolean;
+
+	@Prop({ default: null, trim: true })
+	warningMessage: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

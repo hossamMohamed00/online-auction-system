@@ -1,4 +1,4 @@
-import { Module, Logger } from '@nestjs/common';
+import { Module, Logger, forwardRef } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
@@ -11,12 +11,15 @@ import { CategoryModule } from '../category/category.module';
 import { ItemService } from './../items/item.service';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionsController } from './auctions.controller';
-import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/start-auction-scheduling.service';
+import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
+import { WalletModule } from 'src/providers/payment/wallet.module';
+import { BiddingIncrementRules } from 'src/providers/bids';
 
 @Module({
 	imports: [
 		ItemModule,
-		CategoryModule,
+		forwardRef(() => CategoryModule),
+		WalletModule,
 		MongooseModule.forFeatureAsync([
 			{
 				name: Auction.name,
@@ -44,7 +47,12 @@ import { StartAuctionSchedulingService } from 'src/providers/schedule/auction/st
 		]),
 	],
 	controllers: [AuctionsController],
-	providers: [AuctionValidationService, AuctionsService, StartAuctionSchedulingService],
+	providers: [
+		AuctionsService,
+		AuctionValidationService,
+		BiddingIncrementRules,
+		AuctionSchedulingService,
+	],
 	exports: [
 		AuctionsService,
 		MongooseModule.forFeature([{ name: Auction.name, schema: AuctionSchema }]),

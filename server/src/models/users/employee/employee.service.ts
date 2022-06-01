@@ -7,6 +7,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Employee, EmployeeDocument } from './schema/employee.schema';
 import { CreateEmployeeDto } from './dto/';
+import { Roles } from 'src/common/decorators';
+import { Role } from '../shared-user/enums';
 
 @Injectable()
 export class EmployeeService {
@@ -29,9 +31,10 @@ export class EmployeeService {
 				'Employee with the same email already exists❌.',
 			);
 
-		const createdEmployee: EmployeeDocument = new this.employeeModel(
-			createEmployeeDto,
-		);
+		const createdEmployee: EmployeeDocument = new this.employeeModel({
+			...createEmployeeDto,
+			role: Role.Employee,
+		});
 
 		await createdEmployee.save();
 

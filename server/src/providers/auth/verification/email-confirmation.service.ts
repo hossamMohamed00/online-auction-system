@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ResponseResult } from 'src/common/types';
 import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { UsersService } from 'src/models/users/shared-user/users.service';
 import EmailService from 'src/providers/mail/email.service';
@@ -12,8 +13,6 @@ export class EmailConfirmationService {
 
 	//* Inject required services
 	constructor(
-		private readonly jwtService: JwtService,
-		private readonly authConfigService: AuthConfigService,
 		private readonly emailService: EmailService,
 		private readonly usersService: UsersService,
 	) {}
@@ -23,22 +22,17 @@ export class EmailConfirmationService {
 	 * @param name: Name of the user
 	 * @param email: Email address of the user to send verification link
 	 */
-	async sendVerificationLink(name: string, email: string) {
-		//* Prepare the jwt payload
-		const payload: VerificationTokenPayload = { email };
+	async sendVerificationCode(name: string, email: string) {
+		//* Get 5 random numbers
+		const verificationCode = this.generateVerificationCode();
 
-		//? Issue new verification token
-		const token = this.jwtService.sign(payload, {
-			secret: this.authConfigService.jwtVerificationTokenSecret,
-			expiresIn: `${this.authConfigService.jwtVerificationTokenExpirationTime}s`,
-		});
-
-		//? Prepare the url
-		const url = `${this.authConfigService.emailConfirmationUrl}?token=${token}`;
+		//TODO Save verification Code into user document
+		await this.usersService.handleNewVerificationCode(email, verificationCode)
 
 		//? Get the email content
-		const emailText = getEmailContent(name, url);
-		//? Send the verification link
+		const emailText = getEmailContent(name, verificationCode);
+
+		//? Send the verification code
 		const emailStatus: boolean = await this.emailService.sendMail({
 			to: email,
 			subject: 'Online-Auction-System: Email confirmation 👌🏻🧐',
@@ -55,43 +49,25 @@ export class EmailConfirmationService {
 	}
 
 	/**
-	 * Resend new verification link
-	 */
-	public async resendConfirmationLink(userId: string) {
-		//? Ensure that the user email not already confirmed
-		const user = await this.usersService.findById(userId);
-		if (user?.isEmailConfirmed) {
-			throw new BadRequestException('Email already confirmed 🙄');
-		}
-
-		//? Re-send the link again
-		const result = await this.sendVerificationLink(user.name, user.email);
-
-		if (result) {
-			this.logger.log('Email confirmation resend 😉');
-			return {
-				status: true,
-				message: 'Email confirmation resend 😉',
-			};
-		} else {
-			this.logger.error('Cannot resend new confirmation link right now 😪');
-			return {
-				status: false,
-				message: 'Cannot resend new confirmation link right now 😪',
-			};
-		}
-	}
-
-	/**
 	 * Mark the user email as confirmed
 	 * @param email - User email
 	 */
-	async confirmEmail(email: string) {
-		//? Check if the email address is already confirmed
+	async confirmCode(
+		email: string,
+		verificationCode: number,
+	): Promise<ResponseResult> {
+		//* Get the user by email
 		const user = await this.usersService.findByEmail(email);
+
+		//? Check if the email address is already confirmed
 		if (user && user.isEmailConfirmed) {
 			this.logger.error('Email is already confirmed 🙂');
 			throw new BadRequestException('Email already confirmed 🙄');
+		}
+
+		//* Check if the verification code is correct
+		if (user.emailVerificationCode !== verificationCode) {
+			throw new BadRequestException('Invalid verification code 🙄');
 		}
 
 		//? Otherwise, confirm the email address
@@ -99,41 +75,53 @@ export class EmailConfirmationService {
 
 		this.logger.log('Email confirmed successfully 😍');
 		return {
-			status: true,
+			success: true,
 			message: 'Email address confirmed successfully 💃🏻💃🏻',
 		};
 	}
 
 	/**
-	 * Decode token and get user email
-	 * @param token - The token for the verification
-	 * @returns email if found, otherwise throw error
+	 * Resend new verification code
 	 */
-	async decodeConfirmationToken(token: string): Promise<string> {
-		try {
-			//* Decode the token and get the payload
-			const payload: VerificationTokenPayload = await this.jwtService.verify(
-				token,
-				{
-					secret: this.authConfigService.jwtVerificationTokenSecret,
-				},
-			);
-
-			//* Ensure that the email field in the payload
-			if (typeof payload === 'object' && 'email' in payload) {
-				//? return the user email
-				return payload.email;
-			}
-
-			//! Otherwise, throw an error
-			throw new BadRequestException();
-		} catch (error) {
-			//? If the error is 'TokenExpiredError', so throw bad request exception with proper message
-			if (error?.name === 'TokenExpiredError') {
-				throw new BadRequestException('Email confirmation token expired 😑');
-			}
-			//? Else, throw generic error
-			throw new BadRequestException('Bad confirmation token');
+	public async resendConfirmationCode(userId: string): Promise<ResponseResult> {
+		//? Ensure that the user email not already confirmed
+		const user = await this.usersService.findById(userId);
+		if (user?.isEmailConfirmed) {
+			throw new BadRequestException('Email already confirmed 🙄');
 		}
+
+		//? Re-send the link again
+		const result = await this.sendVerificationCode(user.name, user.email);
+
+		if (result) {
+			this.logger.log('Email confirmation resend 😉');
+			return {
+				success: true,
+				message: 'Email confirmation resend 😉',
+			};
+		} else {
+			this.logger.error('Cannot resend new confirmation link right now 😪');
+			return {
+				success: false,
+				message: 'Cannot resend new confirmation link right now 😪',
+			};
+		}
+	}
+
+	/*----*/
+	/**
+	 * Generate 5 random numbers
+	 * @returns generated number
+	 */
+	private generateVerificationCode(): number {
+		//* Generate 5 random number
+		const code: number = Math.floor(10000 + Math.random() * 90000);
+
+		this.logger.debug(
+			'Verification code generated to be used to confirm email address ✔, Code = ' +
+				code,
+		);
+
+		return code;
 	}
 }
