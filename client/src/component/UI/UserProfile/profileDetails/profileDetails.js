@@ -8,7 +8,6 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { CardsContainer } from '../../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
 
 const ProfileDetails = props => {
-	console.log(props.data && props.data);
 
 	const cards = [
 		{

@@ -18,10 +18,10 @@ import OverallReviewBar from './Reviews/overallReviewBar';
 import { useSelector } from 'react-redux';
 import BlockModal from './../Modals/BlockModal';
 import WarnModal from './../Modals/WarnModal';
+import { MakeAComplaintModal } from './MakeAComplaint';
 const UserProfile = props => {
 	const role = useSelector(store => store.AuthData.role);
 
-	console.log(props);
 	// Handle Tabs
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownAuctions, setIsShownAuctions] = useState(false);
@@ -32,6 +32,9 @@ const UserProfile = props => {
 
 	const [isShownBlockModal, setIsShownBlockModal] = useState(false);
 	const [isBlocked, setIsBlocked] = useState(false);
+
+	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
+
 	// end
 	// reload users table when warn or block user
 	const [reload, setReload] = useState('');
@@ -70,9 +73,14 @@ const UserProfile = props => {
 		setIsBlocked(isBlocked);
 	};
 	// end block handler
+	// start complaint handler
+	const ComplaintHandler = id => {
+		console.log(id && id)
+		setUserId(id);
+		setIsShownComplaintModal(true);
+	};
 
 	useEffect(() => {
-		console.log('reload');
 		props.onReload(reload);
 	}, [reload]);
 
@@ -150,7 +158,12 @@ const UserProfile = props => {
 								<button className="btn btn-success btn_chat d-block mb-2 position-absolute">
 									Chat with seller
 								</button>{' '}
-								<button className="btn text-light btn_compliment d-block mb-2 position-absolute">
+								<button
+									onClick={() =>
+										ComplaintHandler(props.seller && props.seller._id)
+									}
+									className="btn text-light btn_compliment d-block mb-2 position-absolute"
+								>
 									Make a compliment
 								</button>
 							</>
@@ -219,7 +232,18 @@ const UserProfile = props => {
 						onReload={value => setReload(value)}
 					/>
 				)}
+
 				{/* end Block modal */}
+
+				{/* start complaint modal */}
+				{isShownComplaintModal && (
+					<MakeAComplaintModal
+						id={userId}
+						show={isShownComplaintModal}
+						onHide={() => setIsShownComplaintModal(false)}
+						onReload={value => setReload(value)}
+					/>
+				)}
 			</div>
 		</>
 	);
