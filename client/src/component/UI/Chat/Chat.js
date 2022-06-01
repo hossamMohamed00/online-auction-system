@@ -46,7 +46,7 @@ const Chat = (props) => {
 						chatWith={getChatWith}
 						className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
 						onShow = {ShowChatHistoryHandler}
-						getChatHistoryWith ={props.email && props.email}
+						getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
 					/>
 				</Col>
 				<Col

@@ -3,7 +3,6 @@ import './profile.css';
 import './tabs.css';
 import coverImg from '../../../assets/fbc2a961bfd0e7b5673a7922cb848cdb.jpg';
 import profileImg from '../../../assets/download.png';
-import { CardsContainer } from './../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
 import {
 	faBan,
 	faCircleExclamation,
@@ -19,6 +18,8 @@ import { useSelector } from 'react-redux';
 import BlockModal from './../Modals/BlockModal';
 import WarnModal from './../Modals/WarnModal';
 import { MakeAComplaintModal } from './MakeAComplaint';
+import BuyerChat from '../../Modules/BuyerModule/BuyerChat';
+import { useNavigate } from 'react-router-dom';
 const UserProfile = props => {
 	const role = useSelector(store => store.AuthData.role);
 
@@ -40,7 +41,12 @@ const UserProfile = props => {
 	const [reload, setReload] = useState('');
 
 	const [userId, setUserId] = useState('');
-	// end
+
+	// start state to show component of chat
+	// const [ViewChatWithSeller , setViewChatWithSeller ] = useState(false)
+	const navigate = useNavigate()
+	// end to show component of chat
+
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
 		setIsShownAuctions(false);
@@ -79,6 +85,15 @@ const UserProfile = props => {
 		setUserId(id);
 		setIsShownComplaintModal(true);
 	};
+
+	// start chat With seller
+	const chatWithSellerHandler = () => {
+		// setViewChatWithSeller(true)
+		console.log(props.seller.email)
+		navigate(`/buyer-dashboard/chat?email=${props.seller.email}`)
+	}
+
+	// end chat With seller
 
 	useEffect(() => {
 		props.onReload(reload);
@@ -155,9 +170,9 @@ const UserProfile = props => {
 
 						{role === 'buyer' && (
 							<>
-								<button className="btn btn-success btn_chat d-block mb-2 position-absolute">
+								<button className="btn btn-success btn_chat d-block mb-2 position-absolute" onClick={chatWithSellerHandler} >
 									Chat with seller
-								</button>{' '}
+								</button>
 								<button
 									onClick={() =>
 										ComplaintHandler(props.seller && props.seller._id)
@@ -244,6 +259,10 @@ const UserProfile = props => {
 						onReload={value => setReload(value)}
 					/>
 				)}
+
+				{/* start chatWithSeller */}
+				{/* {ViewChatWithSeller && <BuyerChat SellerEmail={props.seller && props.seller.email} />} */}
+				{/* end chat with seller */}
 			</div>
 		</>
 	);

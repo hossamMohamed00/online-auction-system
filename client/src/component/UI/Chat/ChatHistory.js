@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
@@ -6,6 +6,7 @@ import { getChats } from '../../../Api/Chat';
 import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from './ChatHistory.module.css';
+import { useLocation } from 'react-router-dom';
 
 const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 	const [activeChat, setActiveChat] = useState('');
@@ -17,11 +18,13 @@ const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const ChatEmail = useSelector(store => store.AuthData.email);
 
-	const chatWithEmail = getChatHistoryWith && getChatHistoryWith
+	const location = useLocation()
+	const chatWithEmail = new URLSearchParams(location.search).get('email')
 
+	console.log(chatWithEmail)
 	useEffect(() => {
 		sendRequest(idToken);
-	}, [sendRequest]);
+	}, [sendRequest , chatWithEmail]);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -45,7 +48,7 @@ const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 		}
 	}, [status]);
 
-	const getChat = email => {
+	const getChat = (email) => {
 		setActiveChat(email);
 		chatWith(email);
 		onShow(false)
@@ -59,24 +62,70 @@ const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 		);
 	};
 
-	const noChatHistoryContent = chatWithEmail &&
-		<div
-			className={` ${classes.ChatHistoryContent} ${
-				activeChat === chatWithEmail ? classes.activeChat : ''
-			} `}
-			onClick={() => getChat(chatWithEmail)}
-		>
-			<div className={classes.UserImage}>
-				<span className="rounded-circle bg-light px-2 pb-1">
-					{chatWithEmail.substring(0, 1)}
-				</span>
-			</div>
-			<div className="w-100 ">
-				<h6 className={classes.UserName}>
-					{chatWithEmail.substring(0, chatWithEmail.indexOf('@'))}
-				</h6>
-			</div>
-		</div>
+	const noChatHistoryContent = chatWithEmail && <div
+		className={`${classes.ChatHistoryContent} ${ classes.activeChat } `}
+		// onClick={() => getChat(chatWithEmail)}
+	>
+	<div className={classes.UserImage}>
+		<span className="rounded-circle bg-light px-2 pb-1">
+			{chatWithEmail.substring(0, 1)}
+		</span>
+	</div>
+	<div className="w-100 ">
+		<h6 className={classes.UserName}>
+			{chatWithEmail.substring(0, chatWithEmail.indexOf('@'))}
+		</h6>
+	</div>
+	</div>
+
+	const checkIfNoChat = chats.filter(chat => chat.email === chatWithEmail)
+
+	useEffect(()=>{
+		if(chatWithEmail && checkIfNoChat.length === 0 ){
+			getChat(chatWithEmail)
+			setActiveChat(chatWithEmail)
+		}
+	},[getChat])
+
+	const ChatHistoryContent =
+		FilterChats(searchTerm).map((chat,index) => {
+			return (
+				<>
+			{(chatWithEmail || !chatWithEmail) &&
+				(
+				<div
+					className={` ${classes.ChatHistoryContent} ${
+						((activeChat === chat.email)) ? classes.activeChat : ''
+					} `}
+					key={index}
+					onClick={() => getChat(chat.email)}
+				>
+					<div className={classes.UserImage}>
+						<span className="rounded-circle bg-light px-2 pb-1">
+							{chat.email.substring(0, 1)}
+						</span>
+					</div>
+					<div className="w-100 ">
+						<h6 className={classes.UserName}>
+							{chat.email.substring(0, chat.email.indexOf('@'))}
+						</h6>
+						<span className={classes.MessageTime}>
+							{chat.lastMessageTime}
+						</span>
+						<p className={classes.MessageContent}> {chat.lastMessage} </p>
+					</div>
+				</div>
+				)
+			}
+			{/* if no chat history to this user  */}
+			{ checkIfNoChat.length === 0 && noChatHistoryContent}
+
+			</>
+			)
+		})
+
+
+
 
 	return (
 		<>
@@ -89,38 +138,8 @@ const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 					onChange={e => setSearchTerm(e.target.value)}
 				/>
 
-				{chats &&
-					chats.length > 0 &&
-					FilterChats(searchTerm).map(chat => (
-						<div
-							className={` ${classes.ChatHistoryContent} ${
-								activeChat === chat.email ? classes.activeChat : ''
-							} `}
-							key={chat._id}
-							onClick={() => getChat(chat.email)}
-						>
-							<div className={classes.UserImage}>
-								<span className="rounded-circle bg-light px-2 pb-1">
-									{' '}
-									{chat.email.substring(0, 1)}{' '}
-								</span>
-							</div>
-							<div className="w-100 ">
-								<h6 className={classes.UserName}>
-									{' '}
-									{chat.email.substring(0, chat.email.indexOf('@'))}{' '}
-								</h6>
-								<span className={classes.MessageTime}>
-									{' '}
-									{chat.lastMessageTime}{' '}
-								</span>
-								<p className={classes.MessageContent}> {chat.lastMessage} </p>
-							</div>
-						</div>
-					))
-				}
+				{ChatHistoryContent}
 
-				{noChatHistoryContent}
 			</div>
 		</>
 	);

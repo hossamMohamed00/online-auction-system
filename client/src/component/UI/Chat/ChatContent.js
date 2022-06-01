@@ -6,32 +6,35 @@ import { useSelector } from 'react-redux';
 import classes from './ChatContent.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 
-function ChatContent({ socket, getChatWithEmail, className }) {
+function ChatContent({ socket,getChatWithEmail ,className }) {
 	const email = useSelector(store => store.AuthData.email);
 
 	const [Message, setMessage] = useState([]);
 	const [MessageValue, setMessageValue] = useState('');
 
 	const [joined, setJoined] = useState(false);
+	// const location = useLocation()
+	// const getChatWithEmail = new URLSearchParams(location.search).get('email')
 
-	const sendMessage = (messgae, Email) => {
-		if (messgae) {
+	console.log(getChatWithEmail)
+
+	const sendMessage = (message, Email) => {
+		if (message) {
 			setJoined(true);
 			socket.emit('new-message-to-server', {
-				message: messgae,
+				message: message,
 				receiverEmail: Email,
 			});
+			setMessageValue('')
 		}
-		// setMessage((prevState)=> [...prevState , {
-		// 	messgae : messgae ,
-		// 	senderEmail : email
-		// }])
 	};
 
 	useEffect(() => {
 		if (getChatWithEmail) {
 			console.log('Load chat history... ', MessageValue);
+
 			socket.emit('get-chat-history', {
 				with: getChatWithEmail,
 			});
@@ -40,13 +43,11 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 
 	useEffect(() => {
 		socket.on('chat-history-to-client', data => {
-			console.log('messages', data);
 			setMessage(data && [...data]);
 		});
 
 		socket.on('new-message-to-client', data => {
-			console.log('Message to client ->', data);
-			setMessage(prevState => [...prevState, data]);
+			setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 		});
 	}, [socket]);
 
@@ -54,9 +55,9 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 		const Time = moment(time).format('LT');
 		return Time;
 	};
+
 	return (
-		<div className={`${classes.ChatContent} ${className ? className : ''}`}>
-			{/* {Message && Message.length !== 0 && ( */}
+		<div className={` ${classes.ChatContent} ${className ? className : ''}`}>
 				<>
 					<input
 						type="text"
@@ -75,40 +76,42 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 						/>
 					</button>
 				</>
-			{/* )} */}
-			<div className={` ${className ? className : ''} ${classes.Messages}`}>
-				{Message && Message.length !== 0 ? (
-					Message.map((message, index) => (
-						<React.Fragment key={index}>
-							<div
-								className={
-									message.senderEmail === email
-										? classes.messageFromMe
-										: classes.messageFromOther
-								}
-							>
-								<p className={classes.Email}>
-									{' '}
-									{message.senderEmail.substring(0, 1).toUpperCase()}{' '}
-								</p>
-								<div className={classes.MessageContent}>
-									<p> {message.message} </p>
+
+				{/* start chat content  */}
+				<div className={` ${className ? className : ''} ${classes.Messages}`}>
+					{Message && Message.length !== 0 ? (
+						Message.map((message, index) => (
+							<React.Fragment key={index}>
+								<div
+									className={
+										message.senderEmail === email
+											? classes.messageFromMe
+											: classes.messageFromOther
+									}
+								>
+									<p className={classes.Email}>
+										{message.senderEmail.substring(0, 1).toUpperCase()}{' '}
+									</p>
+									<div className={classes.MessageContent}>
+										<p> {message.message} </p>
+									</div>
 								</div>
-							</div>
-							<p
-								className={`${classes.MessageTime} ${
-									message.senderEmail === email ? 'text-end' : 'text-start'
-								}`}
-							>
-								{' '}
-								{getTime(message.sentAt)}
-							</p>
-						</React.Fragment>
-					))
-				) : (
-					<p className="text-center text-danger pt-2"> No messages Now </p>
-				)}
-			</div>
+								<p
+									className={`${classes.MessageTime} ${
+										message.senderEmail === email ? 'text-end' : 'text-start'
+									}`}
+								>
+									{' '}
+									{getTime(message.sentAt)}
+								</p>
+							</React.Fragment>
+						))
+					) : (
+						<p className="text-center text-danger pt-2"> No messages Now </p>
+					)}
+				</div>
+				{/* end chat content  */}
+
 		</div>
 	);
 }
