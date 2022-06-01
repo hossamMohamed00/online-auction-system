@@ -7,13 +7,14 @@ import DataTable from 'react-data-table-component';
 import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
-import { faBan, faCircleExclamation, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faCircleExclamation, faCircleXmark, faGavel } from '@fortawesome/free-solid-svg-icons';
 
 import BlockModal from '../../../UI/Modals/BlockModal';
 import WarnModal from '../../../UI/Modals/WarnModal';
 import { ToastContainer } from 'react-toastify';
 import './users.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import JoinedAuctionModal from '../../../UI/Modals/JoinedAuctionModal';
 
 
 const UsersPage = () => {
@@ -24,6 +25,9 @@ const UsersPage = () => {
 
 	const [isShownBlockModal , setIsShownBlockModal ] = useState(false)
 	const [isBlocked , setIsBlocked] = useState(false)
+
+	const [isShownJoinAuctions , setIsShownJoinAuctions ] = useState(false)
+
 
 
 	// reload users table when warn or block user
@@ -50,8 +54,8 @@ const UsersPage = () => {
 			selector: row => row.action,
 			cell: props => {
 				return (
-					<span className="text-info">
-						<button type='button' className='btn btn-warn my-1 px-1 text-light ' onClick={() => warnHandler(props._id , props.isWarned)}>
+					<div className="text-info btn-actions">
+						<button type='button' className='btn btn-warn my-2 px-1 text-light ' onClick={() => warnHandler(props._id , props.isWarned)}>
 							{props.isWarned ?
 								<>
 									<FontAwesomeIcon icon={faCircleXmark} className ="px-1" />
@@ -65,7 +69,7 @@ const UsersPage = () => {
 								</>
 							}
 						</button>
-						<button type='button' className='btn bg-danger my-1 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
+						<button type='button' className='btn bg-danger my-2 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
 							{props.isBlocked ?
 								<>
 									<FontAwesomeIcon icon={faCircleXmark} />
@@ -80,9 +84,12 @@ const UsersPage = () => {
 							}
 						</button>
 						<br></br>
-						{/* <button type='button' > View Joined Auctions </button> */}
+						<button type='button' className='btn btn-primary btn-joinAuction mb-2 mt-0 px-3' onClick={() => joinAuctionsHandler(props._id)}>
+							<FontAwesomeIcon icon={faGavel} className="px-2 f-4" />
+							 	View Joined Auctions
+						</button>
 
-					</span>
+					</div>
 				);
 			},
 		},
@@ -115,6 +122,13 @@ const UsersPage = () => {
 	}
 	// end block handler
 
+		// start block handler
+		const joinAuctionsHandler = (id) => {
+			setUserId(id)
+			setIsShownJoinAuctions(true)
+		}
+		// end block handler
+
 
 	//filter
 	const items = data ? data : [];
@@ -122,7 +136,6 @@ const UsersPage = () => {
 	//end filter
 
 	const failed = status !== 'completed';
-	console.log(failed);
 
 	return (
 		<React.Fragment>
@@ -151,6 +164,10 @@ const UsersPage = () => {
 
 				{/* start Block modal */}
 				{isShownBlockModal && <BlockModal id={userId} show={isShownBlockModal} onHide={()=>setIsShownBlockModal(false)} isBlocked={isBlocked} onReload= {(value)=>setReload(value)} /> }
+				{/* end Block modal */}
+
+				{/* start Block modal */}
+				{isShownJoinAuctions && <JoinedAuctionModal id={userId} show={isShownJoinAuctions} onHide={()=>setIsShownJoinAuctions(false)} /> }
 				{/* end Block modal */}
 
 			</AdminDashboard>

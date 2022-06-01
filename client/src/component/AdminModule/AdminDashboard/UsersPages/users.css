@@ -3,8 +3,7 @@ span a {
 	color: #0dcaf0 !important;
 }
 
-.btn-warn,
-.btn-block {
+.btn-warn , .btn-block , .btn-joinAuction{
 	margin-left: 5px;
 	font-size: 10px !important;
 	font-weight: bold;
@@ -17,4 +16,9 @@ span a {
 .RemoveBadge {
 	font-size: 10px;
 	font-weight: bold;
+}
+
+
+.btn-joinAuction{
+	font-size: 12px;
 }
