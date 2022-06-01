@@ -46,7 +46,7 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 
 		socket.on('new-message-to-client', data => {
 			console.log('Message to client ->', data);
-			setMessage(prestate => [...prestate, data]);
+			setMessage(prevState => [...prevState, data]);
 		});
 	}, [socket]);
 
@@ -56,7 +56,7 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 	};
 	return (
 		<div className={`${classes.ChatContent} ${className ? className : ''}`}>
-			{Message && Message.length !== 0 && (
+			{/* {Message && Message.length !== 0 && ( */}
 				<>
 					<input
 						type="text"
@@ -75,7 +75,7 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 						/>
 					</button>
 				</>
-			)}
+			{/* )} */}
 			<div className={` ${className ? className : ''} ${classes.Messages}`}>
 				{Message && Message.length !== 0 ? (
 					Message.map((message, index) => (

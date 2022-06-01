@@ -48,14 +48,15 @@ const ViewAuctionDetails = props => {
 									{' '}
 									{item['item']['shortDescription']}{' '}
 								</p>
-								<p>
-									{' '}
-									Creator :{' '}
-									<span className="fs-6 fw-light ">
-										{' '}
-										{item.seller.name}{' '}
-									</span>{' '}
-								</p>
+								<div>
+									Creator :
+									<Link
+									className={`fs-6 fw-light text-decoration-none`}
+									to={`/seller?id=${item.seller._id}`}
+								>
+									{item.seller.name}
+								</Link>
+								</div>
 								{viewAllAuctionPage && (
 									<p>
 										{' '}

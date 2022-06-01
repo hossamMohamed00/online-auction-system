@@ -7,7 +7,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 
 import classes from './ChatHistory.module.css';
 
-const ChatHistory = ({ chatWith , className , onShow }) => {
+const ChatHistory = ({ chatWith , className , onShow , getChatHistoryWith}) => {
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
@@ -16,6 +16,8 @@ const ChatHistory = ({ chatWith , className , onShow }) => {
 	const { sendRequest, status, data } = useHttp(getChats);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const ChatEmail = useSelector(store => store.AuthData.email);
+
+	const chatWithEmail = getChatHistoryWith && getChatHistoryWith
 
 	useEffect(() => {
 		sendRequest(idToken);
@@ -57,6 +59,25 @@ const ChatHistory = ({ chatWith , className , onShow }) => {
 		);
 	};
 
+	const noChatHistoryContent = chatWithEmail &&
+		<div
+			className={` ${classes.ChatHistoryContent} ${
+				activeChat === chatWithEmail ? classes.activeChat : ''
+			} `}
+			onClick={() => getChat(chatWithEmail)}
+		>
+			<div className={classes.UserImage}>
+				<span className="rounded-circle bg-light px-2 pb-1">
+					{chatWithEmail.substring(0, 1)}
+				</span>
+			</div>
+			<div className="w-100 ">
+				<h6 className={classes.UserName}>
+					{chatWithEmail.substring(0, chatWithEmail.indexOf('@'))}
+				</h6>
+			</div>
+		</div>
+
 	return (
 		<>
 			<div className={`${classes.ChatHistory} ${className ? className : '' } `}>
@@ -96,7 +117,10 @@ const ChatHistory = ({ chatWith , className , onShow }) => {
 								<p className={classes.MessageContent}> {chat.lastMessage} </p>
 							</div>
 						</div>
-					))}
+					))
+				}
+
+				{noChatHistoryContent}
 			</div>
 		</>
 	);

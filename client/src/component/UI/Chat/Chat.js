@@ -12,7 +12,7 @@ import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
 import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
 
-const Chat = () => {
+const Chat = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [chatWith, setChatWith] = useState('');
 	const [showChatHistory, setShowChatHistory] = useState(true);
@@ -46,6 +46,7 @@ const Chat = () => {
 						chatWith={getChatWith}
 						className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
 						onShow = {ShowChatHistoryHandler}
+						getChatHistoryWith ={props.email && props.email}
 					/>
 				</Col>
 				<Col
