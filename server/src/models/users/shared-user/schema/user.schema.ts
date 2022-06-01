@@ -3,6 +3,7 @@ import { Document, ObjectId } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { Role } from '../enums';
 import { Transform } from 'class-transformer';
+import { ImageType } from 'src/models/items/schema/image.type';
 
 export type UserDocument = User & Document;
 
@@ -43,6 +44,9 @@ export class User {
 
 	@Prop({ default: null, trim: true })
 	warningMessage: string;
+
+	@Prop()
+	image: ImageType;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
