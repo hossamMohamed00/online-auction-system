@@ -30,10 +30,11 @@ const SavedAuctions = () => {
 				<div className="p-4">
 					{data && status === 'completed' && (
 						<ViewAuctionDetails AuctionData={data && data.savedAuctions} lg={5} animate={false}/>
-					)}
+					)
+					}
 					<NoData
 						text={'No Saved Auctions now '}
-						data={data && data}
+						data={data && data.savedAuctions}
 						error={error}
 					>
 					</NoData>

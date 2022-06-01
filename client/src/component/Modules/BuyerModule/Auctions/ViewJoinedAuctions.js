@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
 const ViewJoinedAuctions_buyer = () => {
-	const { sendRequest, status, data, error } = useHttp(getJoinedAuctions);
+	const { sendRequest, status, data } = useHttp(getJoinedAuctions);
 
 	// static id
 	const id= "6289833e24c958b626b72f9a"
@@ -86,7 +86,7 @@ const ViewJoinedAuctions_buyer = () => {
 	return (
 		<BuyerDashboardContent>
 			<PageContent className={classes.ParticipatingAuction}>
-				<PageHeader text="View Participating Auctions" />
+				<PageHeader text="View Joined Auctions" />
 				<div className="p-0">
 					{data && status === 'completed'  && (
 							<DataTable
