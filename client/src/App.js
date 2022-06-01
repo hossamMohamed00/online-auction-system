@@ -54,6 +54,7 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+import UpdateAccount from './component/Modules/SellerModule/SellerPages/UpdateAccount';
 // end seller pages
 
 //* Payment
@@ -153,6 +154,10 @@ function App() {
 						<Route
 							path="/seller-dashboard/AddAuction"
 							element={<AddAuction />}
+						/>
+						<Route
+							path="/seller-dashboard/UpdateAccount"
+							element={<UpdateAccount />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
 					</>

@@ -16,17 +16,12 @@ const SellerDashboardContent = props => {
 		{
 			title: 'View Info',
 			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			path: '',
 		},
 		{
 			title: 'Edit Account',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
-		},
-		{
-			title: 'Change Password',
-			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/seller-dashboard/UpdateAccount',
 		},
 	];
 
