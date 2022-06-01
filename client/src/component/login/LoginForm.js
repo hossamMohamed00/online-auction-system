@@ -14,6 +14,7 @@ import classes from './loginForm.module.css';
 import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
+import { toast , ToastContainer} from 'react-toastify';
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
@@ -31,7 +32,6 @@ const LoginForm = () => {
 	useEffect(() => {
 		if (status === 'completed') {
 			const email = nameRef.current.value;
-			console.log(data);
 			dispatch(
 				AuthDataActions.login({
 					idToken: data.accessToken,
@@ -39,20 +39,25 @@ const LoginForm = () => {
 					email: email,
 				}),
 			);
-			if (data.role === 'buyer') {
-				navigate('/home-page');
-			} else if (data.role === 'admin') {
-				navigate('/adminDashboard');
-			} else if (data && data.role === 'seller') {
-				navigate('/seller-dashboard');
-			}
-			if (data && data.role === 'employee') {
-				navigate('/employeeDashboard');
-			}
+			toast.success('Login Successfully ❤️‍🔥 ')
+			const timer = setTimeout(()=>{
+				if (data.role === 'buyer') {
+					navigate('/home-page');
+				} else if (data.role === 'admin') {
+					navigate('/adminDashboard');
+				} else if (data && data.role === 'seller') {
+					navigate('/seller-dashboard');
+				}
+				if (data && data.role === 'employee') {
+					navigate('/employeeDashboard');
+				}
+			},1000)
+
+			return ()=> clearTimeout(timer)
 		}
 	}, [status]);
 
-	const submitHandeler = e => {
+	const submitHandler = e => {
 		e.preventDefault();
 		const userDetails = {
 			email: nameRef.current.value,
@@ -62,12 +67,19 @@ const LoginForm = () => {
 		sendRequest(userDetails);
 	};
 
-	
+
+	useEffect(()=>{
+		if(status==='error'){
+			toast.error(error)
+		}
+	},[status])
+
 
 	return (
 		<div className={classes['form-container']}>
+			<ToastContainer theme='dark'/>
 			<Card className={'loginCard'}>
-				<form onSubmit={submitHandeler}>
+				<form onSubmit={submitHandler}>
 					<Input
 						type="email"
 						placeholder="Email"
@@ -99,14 +111,14 @@ const LoginForm = () => {
 						</div>
 						<p className="text-primary"> Forget password ?</p>
 					</div>
-					{error && (
+					{/* {error && (
 						<p className={`${classes.alert} p-2 text-center fs-6 `}>
 							{' '}
 							{error}{' '}
 						</p>
-					)}
+					)} */}
 
-					<button className="btn btn-primary" onSubmit={submitHandeler}>
+					<button className="btn btn-primary" onSubmit={submitHandler}>
 						Login
 					</button>
 				</form>

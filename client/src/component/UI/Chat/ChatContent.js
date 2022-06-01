@@ -21,13 +21,12 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 	console.log(getChatWithEmail)
 
 	const sendMessage = (message, Email) => {
-		if (message) {
+	if (message) {
 			setJoined(true);
 			socket.emit('new-message-to-server', {
 				message: message,
 				receiverEmail: Email,
 			});
-			setMessageValue('')
 		}
 	};
 
@@ -101,7 +100,6 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 										message.senderEmail === email ? 'text-end' : 'text-start'
 									}`}
 								>
-									{' '}
 									{getTime(message.sentAt)}
 								</p>
 							</React.Fragment>
