@@ -2,6 +2,7 @@ import { Injectable, Inject, Logger, forwardRef } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import * as moment from 'moment';
+import { HandleDateService } from 'src/common/utils';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { AuctionStatus } from 'src/models/auction/enums';
 import { SocketService } from 'src/providers/socket/socket.service';
@@ -98,12 +99,16 @@ export class AuctionSchedulingService {
 		);
 
 		//* For each upcoming auction, create cron job for start auction
+		let count = 0;
 		upcomingAuctions.forEach(auction => {
-			this.addCronJobForStartAuction(auction.id, auction.startDate);
+			if (!HandleDateService.isInPast(auction.startDate)) {
+				this.addCronJobForStartAuction(auction.id, auction.startDate);
+				count++;
+			}
 		});
 
 		if (upcomingAuctions.length > 0) {
-			this.logger.debug(`${upcomingAuctions.length} upcoming auctions loaded!`);
+			this.logger.debug(`${count} upcoming auctions loaded!`);
 		} else {
 			this.logger.debug('No upcoming auctions found to be loaded!');
 		}
@@ -121,12 +126,16 @@ export class AuctionSchedulingService {
 		);
 
 		//* For each ongoing auction, create cron job for end date
+		let count = 0;
 		ongoingAuctions.forEach(auction => {
-			this.addCronJobForEndAuction(auction.id, auction.endDate);
+			if (!HandleDateService.isInPast(auction.endDate)) {
+				this.addCronJobForEndAuction(auction.id, auction.endDate);
+				count++;
+			}
 		});
 
 		if (ongoingAuctions.length > 0) {
-			this.logger.debug(`${ongoingAuctions.length} ongoing auctions loaded!`);
+			this.logger.debug(`${count} ongoing auctions loaded!`);
 		} else {
 			this.logger.debug('No ongoing auctions found to be loaded!');
 		}
