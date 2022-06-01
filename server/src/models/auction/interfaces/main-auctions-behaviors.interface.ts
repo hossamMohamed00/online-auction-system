@@ -5,7 +5,8 @@ import {
 	FilterAuctionQueryDto,
 	UpdateAuctionDto,
 } from '../dto';
-import { Auction } from '../schema/auction.schema';
+import { AuctionStatus } from '../enums';
+import { Auction, AuctionDocument } from '../schema/auction.schema';
 
 export interface MainAuctionsBehaviors {
 	//* Create new auction
@@ -16,6 +17,8 @@ export interface MainAuctionsBehaviors {
 
 	//* Get single auction
 	findById(_id: string): Promise<Auction>;
+
+	getAuctionByStatus(status: AuctionStatus): Promise<AuctionDocument[]>;
 
 	//* Update auction
 	update(

@@ -1,10 +1,11 @@
 import { RejectAuctionDto } from '../dto';
 import { Auction } from '../schema/auction.schema';
 import { DashboardAuctionsCount } from '../types';
+import { ResponseResult } from 'src/common/types';
 
 export interface AdminManageAuctionsBehaviors {
 	//* Approve auction
-	approveAuction(auctionId: string): Promise<Auction>;
+	approveAuction(auctionId: string): Promise<ResponseResult>;
 
 	//* Reject auction and provide rejection reason
 	rejectAuction(

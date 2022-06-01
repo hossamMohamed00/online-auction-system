@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppConfigService } from './config/app/app.config.service';
+import { AuctionSchedulingService } from './providers/schedule/auction/auction-scheduling.service';
 
 async function bootstrap() {
 	//* Create new logger
@@ -38,5 +39,14 @@ async function bootstrap() {
 	await app.listen(appConfig.port, () =>
 		logger.log(`Server started on port ${appConfig.port} ⚡⚡`),
 	);
+
+	//* Re-create cron jobs for upcoming auctions
+
+	//* Inject AuctionSchedulingService
+	const auctionSchedulingService: AuctionSchedulingService = app.get(
+		AuctionSchedulingService,
+	);
+
+	await auctionSchedulingService.loadCronJobsForAuctions();
 }
 bootstrap();

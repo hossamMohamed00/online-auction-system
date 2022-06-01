@@ -196,7 +196,7 @@ export class AdminService {
 	 * Approve auction by id
 	 * @param auctionId
 	 */
-	async approveAuction(auctionId: string): Promise<Auction> {
+	async approveAuction(auctionId: string): Promise<ResponseResult> {
 		const approvedAuction = await this.auctionService.approveAuction(auctionId);
 
 		//? Return true if the auction approved successfully
@@ -214,7 +214,10 @@ export class AdminService {
 	 * @param rejectAuctionDto - Rejection Reason
 	 * @returns Updated auction
 	 */
-	async rejectAuction(auctionId: string, rejectAuctionDto: RejectAuctionDto) {
+	async rejectAuction(
+		auctionId: string,
+		rejectAuctionDto: RejectAuctionDto,
+	): Promise<ResponseResult> {
 		const rejectedAuction = await this.auctionService.rejectAuction(
 			auctionId,
 			rejectAuctionDto,
@@ -226,7 +229,10 @@ export class AdminService {
 
 		//TODO: Send email to inform the seller
 
-		return rejectedAuction;
+		return {
+			success: true,
+			message: 'Auction rejected successfully 🤙🏻',
+		};
 	}
 
 	/* Handle Employee Functions */
