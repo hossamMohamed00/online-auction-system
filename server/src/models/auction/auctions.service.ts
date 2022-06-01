@@ -5,7 +5,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
@@ -16,7 +16,6 @@ import {
 } from './dto';
 import { AuctionStatus } from './enums';
 import { Auction, AuctionDocument } from './schema/auction.schema';
-import { HandleDateService } from 'src/common/utils';
 import { AuctionValidationService } from './auction-validation.service';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import WalletService from 'src/providers/payment/wallet.service';
@@ -31,7 +30,7 @@ import {
 import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
-import { Buyer } from '../users/buyer/schema/buyer.schema';
+import { HandleDateService } from './../../common/utils/date/handle-date.service';
 
 @Injectable()
 export class AuctionsService
@@ -282,7 +281,7 @@ export class AuctionsService
 	 * @param auctionId
 	 * @return the updated auction
 	 */
-	async approveAuction(auctionId: string): Promise<Auction> {
+	async approveAuction(auctionId: string): Promise<ResponseResult> {
 		//? Get the auction from db
 		const auction = await this.auctionModel.findById(auctionId);
 		if (!auction) return null;
@@ -291,8 +290,22 @@ export class AuctionsService
 			throw new BadRequestException('Auction is already approved ✔✔');
 		}
 
-		//? Prepare the end date
-		const auctionStartDate = auction.startDate;
+		//? Get start HandleDateService
+		let auctionStartDate = auction.startDate;
+
+		//* Check if the start date is in the past
+		const isStartDateInPast = HandleDateService.isInPast(auctionStartDate);
+		if (isStartDateInPast) {
+			//* Set the start date to tomorrow
+			const tomorrow = HandleDateService.getTomorrowDate();
+			console.log(`tomorrow: ${tomorrow}`);
+
+			auctionStartDate = tomorrow;
+
+			this.logger.debug(
+				'Auction start date is in the past ❌, so it is set to tomorrow 🐱‍🏍',
+			);
+		}
 
 		//* Add 7 days to the startDate
 		const newEndDate =
@@ -304,13 +317,14 @@ export class AuctionsService
 			{
 				$set: {
 					status: AuctionStatus.UpComing, // Update status to up coming
+					startDate: auctionStartDate, // Update start date (if it was in the past)
 					endDate: newEndDate, // Update end date
 				},
 			},
 			{ new: true },
 		);
 
-		//* Schedule the auction to run in start date automatically
+		//? Schedule the auction to run in start date automatically
 		this.startAuctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
@@ -322,7 +336,15 @@ export class AuctionsService
 				approvedAuction.title +
 				' approved successfully 👏🏻',
 		);
-		return approvedAuction;
+
+		return {
+			success: true,
+			message: 'Auction approved successfully ✔✔',
+			data: {
+				startDate: approvedAuction.startDate,
+				endDate: approvedAuction.endDate,
+			},
+		};
 	}
 
 	/**

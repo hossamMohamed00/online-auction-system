@@ -52,10 +52,20 @@ export class HandleDateService {
 	}
 
 	/**
-	 * Return the given date in Ms
+	 * Check if given date is in the past
 	 * @param date
 	 */
-	public static getDateAsMs(date: Date): number {
-		return moment(date).valueOf();
+	public static isInPast(date: Date): boolean {
+		//* Check if the given date is in the paste or not
+		return moment(date).isBefore(moment());
+	}
+
+	/**
+	 * Get tomorrow date
+	 * @returns Tomorrow Date
+	 */
+	public static getTomorrowDate() {
+		//* Get tomorrow date
+		return moment().add(1, 'days').toDate();
 	}
 }
