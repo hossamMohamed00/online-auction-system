@@ -47,6 +47,14 @@ export class User {
 
 	@Prop()
 	image: ImageType;
+	@Prop()
+	nationalID: Number;
+
+	@Prop()
+	phoneNumber: Number;
+
+	@Prop()
+	address: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

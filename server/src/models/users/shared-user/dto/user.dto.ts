@@ -29,4 +29,10 @@ export class UserDto {
 
 	@Expose()
 	warningMessage: string;
+	@Expose()
+	image: any;
+	@Expose()
+	phoneNumber: Number;
+	@Expose()
+	address: String;
 }

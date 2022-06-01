@@ -12,6 +12,10 @@ import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { ListBidderAuctionsQueryDto } from './dto';
 import { BidderAuctionsEnumQuery } from './enums';
 import { ResponseResult } from 'src/common/types';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ImageType } from '../shared-user/schema/image.type';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { Seller } from '../seller/schema/seller.schema';
 
 @Injectable()
 export class BuyerService {
@@ -23,6 +27,7 @@ export class BuyerService {
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/* Profile Functions Logic */
@@ -44,6 +49,54 @@ export class BuyerService {
 		}
 
 		return buyer;
+	}
+	async editProfile(
+		buyerId: string,
+		userUpdateDto: UserUpdateDto,
+	): Promise<Buyer> {
+		let image: ImageType = new ImageType();
+		if (userUpdateDto.image) {
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					userUpdateDto.image,
+				);
+				// const user = this.buyerModel.findById(buyerId);
+				// if ((await user).image.publicId) {
+				// 	await this.cloudinary.destroyImage((await user).image.publicId);
+				// }
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				console.log(error);
+
+				throw new BadRequestException(
+					'Cannot upload image to cloudinary, ',
+					error,
+				);
+			}
+
+			const buyer = this.buyerModel.findByIdAndUpdate(
+				buyerId,
+				{ name: userUpdateDto.name, password: userUpdateDto.password, image },
+				{
+					new: true,
+				},
+			);
+			return buyer;
+		} else {
+			const buyer = await this.buyerModel.findByIdAndUpdate(
+				buyerId,
+				{ ...userUpdateDto },
+				{
+					new: true,
+				},
+			);
+			return buyer;
+		}
 	}
 
 	/* Auctions Functions Logic */

@@ -13,6 +13,9 @@ import { UserDocument } from '../shared-user/schema/user.schema';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
+import { ImageType } from '../shared-user/schema/image.type';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 
 @Injectable()
 export class SellerService {
@@ -25,6 +28,7 @@ export class SellerService {
 		private readonly auctionsService: AuctionsService,
 		private readonly complaintService: ComplaintService,
 		private readonly reviewService: ReviewService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/* Handle Profile Functions logic*/
@@ -44,6 +48,57 @@ export class SellerService {
 		const reviews: Review[] = await this.listSellerReviews(sellerId);
 
 		return { seller, auctions, reviews };
+	}
+	async editProfile(
+		sellerId: string,
+		userUpdateDto: UserUpdateDto,
+	): Promise<Seller> {
+		let image: ImageType = new ImageType();
+		if (userUpdateDto.image) {
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					userUpdateDto.image,
+				);
+
+				const user = this.sellerModel.findById(sellerId);
+				this.logger.log(user);
+				// if ((await user).image.publicId) {
+				// 	console.log((await user).image.publicId);
+				// 	await this.cloudinary.destroyImage((await user).image.publicId);
+				// }
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				console.log(error);
+
+				throw new BadRequestException(
+					'Cannot upload image to cloudinary, ',
+					error,
+				);
+			}
+
+			const seller = await this.sellerModel.findByIdAndUpdate(
+				sellerId,
+				{ ...userUpdateDto, image },
+				{
+					new: true,
+				},
+			);
+			return seller;
+		} else {
+			const seller = await this.sellerModel.findByIdAndUpdate(
+				sellerId,
+				{ ...userUpdateDto },
+				{
+					new: true,
+				},
+			);
+			return seller;
+		}
 	}
 
 	/* Handle Auctions Functions logic*/

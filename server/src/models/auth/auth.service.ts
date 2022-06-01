@@ -60,24 +60,26 @@ export class AuthService {
 			registerUserDto.role,
 		);
 		let image: ImageType = new ImageType();
-		try {
-			// Upload image to cloudinary
-			const savedImage = await this.cloudinary.uploadImage(
-				registerUserDto.image,
-			);
+		if (registerUserDto.image) {
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					registerUserDto.image,
+				);
 
-			//* If upload success, save image url and public id to db
-			if (savedImage.url) {
-				image.url = savedImage.url;
-				image.publicId = savedImage.public_id;
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				console.log(error);
+
+				throw new BadRequestException(
+					'Cannot upload image to cloudinary, ',
+					error,
+				);
 			}
-		} catch (error) {
-			console.log(error);
-
-			throw new BadRequestException(
-				'Cannot upload image to cloudinary, ',
-				error,
-			);
 		}
 
 		//? Check whether the user is buyer or seller

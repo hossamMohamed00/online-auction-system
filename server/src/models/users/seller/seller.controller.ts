@@ -24,8 +24,9 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { Role } from '../shared-user/enums';
-import { SellerProfileDto } from './dto';
+import { SellerDto, SellerProfileDto } from './dto';
 import {
 	SellerAuctionsBehaviors,
 	SellerProfileBehaviors,
@@ -54,7 +55,16 @@ export class SellerController
 	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
 		return this.sellerService.getProfile(id);
 	}
-
+	@IsPublicRoute()
+	@Serialize(SellerDto)
+	@Patch('profile/:id')
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
+	editProfile(
+		@Param() { id }: MongoObjectIdDto,
+		@Body() userUpdateDto: UserUpdateDto,
+	): Promise<Seller> {
+		return this.sellerService.editProfile(id, userUpdateDto);
+	}
 	/* Handle Auctions Functions */
 
 	@Roles(Role.Seller)

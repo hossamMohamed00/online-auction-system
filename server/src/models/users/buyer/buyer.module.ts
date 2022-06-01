@@ -7,6 +7,8 @@ import { AuctionsModule } from 'src/models/auction/auctions.module';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { CategoryModule } from 'src/models/category/category.module';
 import { ReviewModule } from 'src/models/review/review.module';
+import { NestjsFormDataModule } from 'nestjs-form-data';
+import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
 
 @Module({
 	imports: [
@@ -15,6 +17,8 @@ import { ReviewModule } from 'src/models/review/review.module';
 		CategoryModule,
 		ReviewModule,
 		ComplaintModule,
+		NestjsFormDataModule,
+		CloudinaryModule,
 	],
 	controllers: [BuyerController],
 	providers: [BuyerService, AuctionValidationService],
