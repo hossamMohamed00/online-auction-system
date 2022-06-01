@@ -168,4 +168,21 @@ export const Remove_Warning_Or_Blocking_Badge = async ({accessToken , id , Type}
 
 
 
-
+// get all complaints
+export const getAllComplaints = async ({ idToken, path }) => {
+	const response = await fetch(
+		`${url}/${path}`,
+		{
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'content-type': 'application/json',
+			},
+		},
+	);
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};

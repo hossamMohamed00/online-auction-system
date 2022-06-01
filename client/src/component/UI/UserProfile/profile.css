@@ -121,3 +121,14 @@
 .btn-remove {
 	font-size: 15px !important;
 }
+/* related to complaints page */
+.formLabel {
+	color: white !important;
+}
+.formInput {
+	background-color: #2e2f32 !important;
+	border: none !important;
+	outline: none !important;
+	color: white !important;
+	margin: 0 !important;
+}
