@@ -337,6 +337,23 @@ Let’s consider a chat application. When a user first connects, a corresponding
 
 4. Our NestJS API gets the request and charges the user using the Stripe API.
 
+### Bidding websockets events
+
+#### Listeners
+
+- `place-bid` --> Place new bid in specific auction.
+- `get-winner` --> Return auction's winner.
+- `leave-auction` --> Retreat from auction
+
+#### Emitting events
+
+- `message-to-client` --> Listen for any message from server to client
+- `room-data` --> Get updates about room details (bidders, current bid, etc)
+- `new-bid` --> Listen for any new bid from bidders
+- `auction-ended` --> Fires when auction ended.
+- `winner-bidder` --> To display who is the winner of the auction if exists.
+- `exception` --> General event fires when there is an error
+
 ## References
 
 - [Auction related definitions and rules](https://auction.wgbh.org/networkinfo.taf?_function=glossary#OpeningBid)

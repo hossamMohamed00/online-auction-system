@@ -2,7 +2,7 @@ import { IsNumberString, IsString } from 'class-validator';
 
 export class PlaceBidDto {
 	@IsString()
-	room: string;
+	auctionId: string;
 
 	@IsNumberString()
 	bidValue: number;

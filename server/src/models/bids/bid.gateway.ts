@@ -143,32 +143,32 @@ export class BidGateway
 	@SubscribeMessage('place-bid')
 	async handleIncomingBid(
 		@ConnectedSocket() client: Socket,
-		@MessageBody() { room, bidValue }: PlaceBidDto,
+		@MessageBody() { auctionId, bidValue }: PlaceBidDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
 		//* Ensure that the bid value provided
-		if (!bidValue || !room) {
+		if (!bidValue || !auctionId) {
 			throw new WsException('Room and Bid value are required');
 		}
 
 		//* Get the bidder from the room
-		const savedBidder = this.auctionRoomService.getBidder(client.id, room);
+		const savedBidder = this.auctionRoomService.getBidder(client.id, auctionId);
 		if (!savedBidder) {
 			throw new WsException('You are not in this auction room ❌');
 		}
 
 		//* Handle the bid and update auction details
 		const createdBid: NewBid = await this.bidService.HandleBid(
-			room,
+			auctionId,
 			bidder._id,
 			bidValue,
 		);
 
 		//* Emit the bid to the client-side
-		this.server.to(room).emit('new-bid', createdBid);
+		this.server.to(auctionId).emit('new-bid', createdBid);
 
 		//* Handle the room data to be sent to the client
-		this.handleRoomData(room);
+		this.handleRoomData(auctionId);
 
 		//* Log bid to the console
 		this.logger.log(
@@ -176,6 +176,7 @@ export class BidGateway
 		);
 	}
 
+	// TODO: Refactor this method
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('leave-auction')
 	async handleLeaveAuction(
@@ -222,22 +223,13 @@ export class BidGateway
 
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('get-winner')
-	async getAuctionWinner(
-		@ConnectedSocket() client: Socket,
-		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
-		@GetCurrentUserFromSocket() bidder: Buyer,
-	) {
+	async getAuctionWinner(@MessageBody() { auctionId }: JoinOrLeaveAuctionDto) {
 		//* Ensure that the auctionId provided
 		if (!auctionId) {
 			throw new WsException('auctionId is required ❌');
 		}
 
-		//* Get the bidder from the room
-		const savedBidder = this.auctionRoomService.getBidder(client.id, auctionId);
-		if (!savedBidder) {
-			throw new WsException('You are not in this auction room ❌');
-		}
-
+		//* Get auction winner
 		const winnerBidder = await this.auctionService.getAuctionWinner(auctionId);
 
 		if (!winnerBidder) {
@@ -249,22 +241,28 @@ export class BidGateway
 			return;
 		}
 
-		//* Check if the winner bidder is the current logged in one
-		//* FIXME - This is a temporary solution, we need to fix this
-		if (winnerBidder._id === bidder._id) {
+		//* Get the bidder from the room
+		const winnerBidderSocketId = this.auctionRoomService.getWinnerBidder(
+			winnerBidder._id,
+			auctionId,
+		);
+
+		//* If winner is currently online, send congratulation message
+		if (winnerBidderSocketId) {
 			//* Send message to this bidder only
-			client.emit('winner-bidder', {
-				success: true,
+			this.server.to(winnerBidderSocketId).emit('winner-bidder', {
 				message:
 					'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
+				isWinner: true,
 				system: true,
 			});
-
-			//* Send message to all bidders except this bidder
-			client.broadcast
-				.to(auctionId.toString())
-				.emit('winner-bidder', winnerBidder);
 		}
+
+		//* Send message to all bidders except this bidder
+		this.server.to(auctionId.toString()).emit('winner-bidder', {
+			message: `Winner is ${winnerBidder.email} 🐱‍🏍🏆`,
+			system: true,
+		});
 	}
 
 	/*--------------------------*/

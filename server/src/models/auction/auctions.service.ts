@@ -779,7 +779,7 @@ export class AuctionsService
 			})
 			.populate('winningBuyer');
 
-		if (!auction) {
+		if (!auction || !auction.winningBuyer) {
 			return null;
 		}
 
