@@ -7,7 +7,6 @@ const OverallReviewBar = props => {
 	if (props.value > 0) {
 		console.log(props.value);		// here overall rating
 		barFillWidth = Math.round((props.value / 5)* 100) + '%';
-		console.log(barFillWidth);
 	}
 
 	return (

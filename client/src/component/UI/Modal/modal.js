@@ -20,6 +20,7 @@ const Modal_ = props => {
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
+			className={props.className ? props.className : ''}
 		>
 			<Modal.Header closeButton>
 				<Modal.Title
