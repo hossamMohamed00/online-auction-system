@@ -13,15 +13,17 @@ import BuyerDashboardContent from '../BuyerDashboard';
 import { getJoinedAuctions } from '../../../../Api/BuyerApi';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
+import { useSelector } from 'react-redux';
 
 const ViewJoinedAuctions_buyer = () => {
 	const { sendRequest, status, data } = useHttp(getJoinedAuctions);
 
 	// static id
-	const id= "6289833e24c958b626b72f9a"
+	// const id= "6289833e24c958b626b72f9a"
+	const idToken = useSelector(store=>store.AuthData.idToken)
 
 	useEffect(() => {
-		sendRequest(id);
+		sendRequest(idToken);
 	}, [sendRequest]);
 
 	console.log(data && data);
