@@ -8,7 +8,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
-const ChatHistory = ({ chatWith , className , onShow}) => {
+const ChatHistory = ({ chatWith , className , onShow , ChatWithSupportEmail}) => {
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
@@ -17,9 +17,12 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 	const { sendRequest, status, data } = useHttp(getChats);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const ChatEmail = useSelector(store => store.AuthData.email);
+	const role = useSelector(store => store.AuthData.role);
+
 
 	const location = useLocation()
 	const chatWithEmail = new URLSearchParams(location.search).get('email')
+
 
 	useEffect(() => {
 		sendRequest(idToken);
@@ -27,19 +30,20 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 
 	useEffect(() => {
 		if (status === 'completed') {
-			console.log(data);
 			data.map(chat => {
 				if (chat.messages.length !== 0) {
 					console.log(chat.user1, chat.user2, email, chat.user1 === ChatEmail);
 					let email = chat.user1 === ChatEmail ? chat.user2 : chat.user1;
 					let lastMessage = chat.messages[chat.messages.length - 1].message;
 					let lastMessageTime = chat.messages[chat.messages.length - 1].sentAt;
+					let id = chat._id
 					setChats(prevChats => [
 						...prevChats,
 						{
 							email: email,
 							lastMessage: lastMessage,
 							lastMessageTime: moment(lastMessageTime).format('LT'),
+							id_ : {id}
 						},
 					]);
 				}
@@ -48,9 +52,9 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 	}, [status]);
 
 	const getChat = (email) => {
-		console.log("send email" , email)
 		setActiveChat(email);
-		chatWith(email);
+		const EmailOfChat = chatWithEmail==='Support@email.com'
+		chatWith(email , EmailOfChat);
 		onShow(false)
 	};
 
