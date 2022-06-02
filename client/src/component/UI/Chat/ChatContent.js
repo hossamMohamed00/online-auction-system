@@ -11,7 +11,6 @@ import ChatContentUi from './ChatContentUi';
 function ChatContent({ socket,getChatWithEmail ,className }) {
 
 	const role = useSelector(store => store.AuthData.role);
-	// const email = useSelector(store => store.AuthData.email);
 
 	const [Message, setMessage] = useState([]);
 
@@ -29,6 +28,13 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 				receiverEmail: Email,
 			});
 		}
+		// send new Message to support
+		else if(Email === 'Support@email.com'){
+			setJoined(true);
+			socket.emit('new-message-to-Support', {
+				message: message,
+			});
+		}
 		// to send message from support to client
 		else{
 			console.log("send message to client" , message , Email)
@@ -36,10 +42,6 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 			socket.emit('new-message-From-Support', {
 				message: message,
 				receiverEmail: Email,
-			});
-			socket.on('new-message-From-Employee', data => {
-				console.log(data)
-				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 		}
 		}
@@ -81,15 +83,13 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 
 		// start get all chats to employee
 		else{
-			console.log("get-chat-history")
 
 			// get all chat history
 			socket.on('chat-history-to-client', data => {
 				setMessage(data && [...data]);
 				console.log(data)
 			});
-
-			socket.on('new-message-From-Support', data => {
+			socket.on('new-message-From-Employee', data => {
 				console.log(data)
 				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
@@ -98,7 +98,6 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 				console.log(data)
 				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
-
 
 		}
 		// end get all chats to employee
@@ -109,10 +108,7 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 
 
 	return (
-		role !== 'employee' ?
 		<ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
-		: <ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
-
 	);
 }
 

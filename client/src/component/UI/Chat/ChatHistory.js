@@ -87,8 +87,8 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 		}
 	},[getChat])
 
-	const ChatHistoryContent =
-		FilterChats(searchTerm).map((chat,index) => {
+	const ChatHistoryContent = <>
+		{FilterChats(searchTerm).map((chat,index) => {
 			return (
 				<>
 			{(chatWithEmail || !chatWithEmail) &&
@@ -117,14 +117,12 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 				</div>
 				)
 			}
-			{/* if no chat history to this user  */}
-			{ checkIfNoChat.length === 0 && noChatHistoryContent}
-
 			</>
-			)
-		})
-
-
+		)
+		})}
+		{/* if no chat history to this user  */}
+		{ checkIfNoChat.length === 0 && noChatHistoryContent}
+		</>
 
 
 	return (

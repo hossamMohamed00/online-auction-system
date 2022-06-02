@@ -54,7 +54,7 @@ function Footer() {
 		},
 		{
 			text: 'Contact Us',
-			links: [{ name: 'Chat now', path: '/buyer-dashboard/chat', className: 'SupportLink' }],
+			links: [{ name: 'Chat now', path: '/buyer-dashboard/chat?email=Support@email.com', className: 'SupportLink' }],
 		},
 	];
 

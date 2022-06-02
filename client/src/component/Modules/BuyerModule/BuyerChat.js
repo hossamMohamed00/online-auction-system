@@ -6,10 +6,11 @@ import BuyerDashboardContent from './BuyerDashboard';
 
 const BuyerChat = () => {
 	const location = useLocation()
-	const SellerEmail = new URLSearchParams(location.search).get('email')
+	const Email = new URLSearchParams(location.search).get('email')
+
 	return (
 		<BuyerDashboardContent>
-			<Chat SellerEmail={SellerEmail && SellerEmail}  />
+			<Chat SellerEmail={Email && Email}  />
 		</BuyerDashboardContent>
 	);
 };
