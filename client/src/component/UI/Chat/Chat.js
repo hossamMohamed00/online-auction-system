@@ -42,16 +42,16 @@ const Chat = (props) => {
 					sm={12}
 					className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
 				>
-					{role !== 'employee' ?
+					{/* {role !== 'employee' ? */}
 						<ChatHistory
 							chatWith={getChatWith}
 							className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
 							onShow = {ShowChatHistoryHandler}
 							getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
 						/>
-					:
-						<p> Employee</p>
-					}
+					{/* : */}
+						{/* <p> Employee</p> */}
+					{/* } */}
 				</Col>
 				<Col
 					lg={8}

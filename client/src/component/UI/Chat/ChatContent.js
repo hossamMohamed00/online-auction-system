@@ -18,7 +18,7 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 	const [joined, setJoined] = useState(false);
 
 	// console.log(getChatWithEmail)
-
+	console.log(getChatWithEmail)
 
 	const sendMessage = (message, Email) => {
 	if (message) {
@@ -33,9 +33,13 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 		else{
 			console.log("send message to client" , message , Email)
 			setJoined(true);
-			socket.emit('new-message-from-support', {
+			socket.emit('new-message-From-Support', {
 				message: message,
 				receiverEmail: Email,
+			});
+			socket.on('new-message-From-Employee', data => {
+				console.log(data)
+				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 		}
 		}
@@ -54,10 +58,8 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 		if (role === 'employee') {
 			console.log('Load chat history... ' , getChatWithEmail);
 			socket.emit('get-chat-history', {
-				with: "buyer@email.com"	,
+				with: getChatWithEmail	,
 			});
-
-			socket.emit('get-MyChat')
 
 		}
 	}, [getChatWithEmail]);
@@ -81,14 +83,20 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 		else{
 			console.log("get-chat-history")
 
-			// Chat history loaded and emitted to user ✔✔ [listener]
-			socket.on('MyChat', data => {
+			// get all chat history
+			socket.on('chat-history-to-client', data => {
+				setMessage(data && [...data]);
 				console.log(data)
 			});
 
-			socket.on('new-message-to-support', data => {
-				//setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
+			socket.on('new-message-From-Support', data => {
 				console.log(data)
+				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
+			});
+
+			socket.on('new-message-to-Support', data => {
+				console.log(data)
+				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 
 
@@ -103,7 +111,7 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 	return (
 		role !== 'employee' ?
 		<ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
-		: <ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={"buyer@email.com"}/>
+		: <ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
 
 	);
 }

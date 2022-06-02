@@ -48,6 +48,7 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 	}, [status]);
 
 	const getChat = (email) => {
+		console.log("send email" , email)
 		setActiveChat(email);
 		chatWith(email);
 		onShow(false)
@@ -63,7 +64,7 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 
 	const noChatHistoryContent = chatWithEmail && <div
 		className={`${classes.ChatHistoryContent} ${ classes.activeChat } `}
-		// onClick={() => getChat(chatWithEmail)}
+		onClick={() => getChat(chatWithEmail)}
 	>
 	<div className={classes.UserImage}>
 		<span className="rounded-circle bg-light px-2 pb-1">

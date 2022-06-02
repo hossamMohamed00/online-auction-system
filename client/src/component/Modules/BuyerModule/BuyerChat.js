@@ -9,7 +9,7 @@ const BuyerChat = () => {
 	const SellerEmail = new URLSearchParams(location.search).get('email')
 	return (
 		<BuyerDashboardContent>
-			<Chat SellerEmail={SellerEmail && SellerEmail} />
+			<Chat SellerEmail={SellerEmail && SellerEmail}  />
 		</BuyerDashboardContent>
 	);
 };
