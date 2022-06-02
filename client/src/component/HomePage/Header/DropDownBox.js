@@ -48,7 +48,7 @@ const DropDownBox = props => {
 		<ul className={`list-group  d-md-block text-start`}>
 			<li>
 				<Link
-					className="px-1 fs-6 text-decoration-none bg-none text-light"
+					className="px-1 text-decoration-none bg-none text-light"
 					to={profileLink()}
 				>
 					<FontAwesomeIcon icon={faAddressCard} className="pe-2" />
@@ -57,7 +57,7 @@ const DropDownBox = props => {
 			</li>
 			<li>
 				<button
-					className="px-1 text-light bg-none "
+					className="px-1 text-light bg-none fw-bold"
 					type='button'
 					onClick={handleShownWallet}
 				>
@@ -67,7 +67,7 @@ const DropDownBox = props => {
 			</li>
 			<li>
 				<button
-					className="btn py-0 px-1 text-decoration-none text-danger bg-none fw-bold"
+					className="px-1 text-danger bg-none fw-bold "
 					onClick={logoutHandler}
 				>
 					<FontAwesomeIcon

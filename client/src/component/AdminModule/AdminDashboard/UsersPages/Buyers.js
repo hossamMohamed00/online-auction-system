@@ -14,7 +14,7 @@ import WarnModal from '../../../UI/Modals/WarnModal';
 import { ToastContainer } from 'react-toastify';
 import './users.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import JoinedAuctionModal from '../../../UI/Modals/JoinedAuctionModal';
+import JoinedAuctionModal from '../../../UI/Modals/ViewJoinedAuctions_buyer';
 
 
 const UsersPage = () => {
@@ -147,7 +147,7 @@ const UsersPage = () => {
 					<PageHeader text="Buyers" showLink={false} />
 					{data && (
 						<DataTable
-							// selectableRows
+							selectableRows
 							columns={columns}
 							data={filteredItems}
 							subHeader

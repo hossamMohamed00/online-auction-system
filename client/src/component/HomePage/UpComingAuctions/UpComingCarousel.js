@@ -45,7 +45,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 								<h6 className="fw-bold d-inline-block"> Seller : </h6>
 								<Link
 									className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.SellerName}`}
-									to={`/auctions?id=${Item._id}`}
+									to={`/seller?id=${Item.seller._id}`}
 								>
 									{' '}
 									{Item.seller.name}{' '}
