@@ -26,8 +26,8 @@ export class EmailConfirmationService {
 		//* Get 5 random numbers
 		const verificationCode = this.generateVerificationCode();
 
-		//TODO Save verification Code into user document
-		await this.usersService.handleNewVerificationCode(email, verificationCode)
+		//* Save verification Code into user document
+		await this.usersService.handleNewVerificationCode(email, verificationCode);
 
 		//? Get the email content
 		const emailText = getEmailContent(name, verificationCode);
@@ -83,9 +83,9 @@ export class EmailConfirmationService {
 	/**
 	 * Resend new verification code
 	 */
-	public async resendConfirmationCode(userId: string): Promise<ResponseResult> {
+	public async resendConfirmationCode(email: string): Promise<ResponseResult> {
 		//? Ensure that the user email not already confirmed
-		const user = await this.usersService.findById(userId);
+		const user = await this.usersService.findByEmail(email);
 		if (user?.isEmailConfirmed) {
 			throw new BadRequestException('Email already confirmed 🙄');
 		}
