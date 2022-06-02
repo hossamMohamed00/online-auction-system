@@ -1,18 +1,49 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { SaveAuctionApi } from '../../../../Api/BuyerApi';
+import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
 const ModalUi = props => {
-	console.log(props.btnReject);
 
+	console.log(props.SavedAuctionId)
 	const [BidValue, setBidValue] = useState(1500);
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 
-	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+
+	// start Saved Auction Handler
+	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
+	const idToken = useSelector(store => store.AuthData.idToken);
+
+	const btnSavedHandler = () => {
+		const id = props.SavedAuctionId
+		sendRequestForSaveAuction({idToken , id})
+	};
+
+	useEffect(()=>{
+		if(statusForSaveAuction === 'completed'){
+			toast.success(dataForSaveAuction.message)
+			props.btnSaved('saved')
+			props.onHide()
+		}
+	},[statusForSaveAuction])
+
+	useEffect(()=>{
+		if(statusForSaveAuction === 'error'){
+			toast.error(errorForSaveAuction)
+			props.btnSaved('saved')
+			props.onHide()
+		}
+	},[statusForSaveAuction])
+
+	// end Saved Auction Handler
+
 
 	const BidValueValidation = e => {
 		setBidValue(e.target.value);
@@ -22,11 +53,6 @@ const ModalUi = props => {
 			setIsBidValid(true);
 		}
 	};
-	const btnSavedHandeler = () => {
-		props.btnSaved('Saved');
-		props.onHide();
-	};
-
 	return (
 		<Modal
 			show={props.show}
@@ -146,7 +172,7 @@ const ModalUi = props => {
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"
-							onClick={btnSavedHandeler}
+							onClick={btnSavedHandler}
 						>
 							Save
 						</button>

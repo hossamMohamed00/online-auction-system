@@ -10,14 +10,14 @@ import ChatHistory from './ChatHistory';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
-import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
 
-const Chat = () => {
+const Chat = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [chatWith, setChatWith] = useState('');
 	const [showChatHistory, setShowChatHistory] = useState(true);
 
 
+	const role = useSelector(store => store.AuthData.role);
 
 	// establish socket connection
 	const socket = io('http://localhost:8000/chat', {
@@ -42,11 +42,16 @@ const Chat = () => {
 					sm={12}
 					className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
 				>
-					<ChatHistory
-						chatWith={getChatWith}
-						className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
-						onShow = {ShowChatHistoryHandler}
-					/>
+					{/* {role !== 'employee' ? */}
+						<ChatHistory
+							chatWith={getChatWith}
+							className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
+							onShow = {ShowChatHistoryHandler}
+							getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
+						/>
+					{/* : */}
+						{/* <p> Employee</p> */}
+					{/* } */}
 				</Col>
 				<Col
 					lg={8}

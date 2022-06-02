@@ -18,20 +18,11 @@ const BuyerDashboardContent = props => {
 
 	const dropdownListProfile = [
 		{
-			title: 'View Info',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
 			title: 'Edit Account',
 			icon: faGavel,
 			path: '/adminDashboard/ongoingAuctions',
-		},
-		{
-			title: 'Change Password',
-			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
-		},
+		}
+
 	];
 
 	const dropdownListViewAuctions = [
@@ -43,7 +34,7 @@ const BuyerDashboardContent = props => {
 		{
 			title: 'View Participating Auctions',
 			icon: faGavel,
-			path: '/buyer-dashboard/participating-auctions',
+			path: '/buyer-dashboard/joinedAuctions',
 		},
 	];
 

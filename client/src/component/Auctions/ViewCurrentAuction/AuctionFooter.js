@@ -10,27 +10,32 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AuctionFooter({ AuctionStatus, sellerEmail }) {
+
 	const location = useLocation();
 	const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 
 	const [modalShow, setModalShow] = useState(false);
-	const [btnSavedValue, setBtnSavedValue] = useState('');
+	const [btnSavedValue, setBtnSavedValue] = useState('Save Auction');
 
 	const [auctionDenied, setAuctionDenied] = useState(false);
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
 	const DeniedStatus = AuctionStatus === 'pending';
+	// const SavedAuctionStatus = AuctionStatus === 'saved';
 
+
+	console.log(UpComingStatus)
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
+
 	const role = useSelector(store => store.AuthData.role);
 	const accessToken = useSelector(store => store.AuthData.idToken);
 	const url = 'http://localhost:8000';
-	const email = useSelector(store => store.AuthData.email);
+	// const email = useSelector(store => store.AuthData.email);
 
-	console.log(role, email, sellerEmail);
+	console.log(AuctionStatus);
 	// console.log(AuctionStatus);
 	useEffect(() => {
 		if (status === 'completed') {
@@ -102,9 +107,10 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
+					disabled = {btnSavedValue==='saved'}
 				>
 					{OnGoingStatus && 'Place on Bid'}
-					{UpComingStatus && btnSavedValue ? btnSavedValue : ''}
+					{UpComingStatus && btnSavedValue}
 				</button>
 			)}
 
@@ -167,7 +173,7 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 				btnReject={DeniedStatus}
 				rejectHandler={rejectHandler}
 				btnSaved={btnSaved}
-				// SavedStatus 		= {SavedStatus}
+				SavedAuctionId	= {AuctionId}
 			/>
 		</>
 	);
