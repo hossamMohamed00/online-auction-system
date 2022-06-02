@@ -8,7 +8,11 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
+<<<<<<< HEAD
 const ChatHistory = ({ chatWith , className , onShow , ChatWithSupportEmail}) => {
+=======
+const ChatHistory = ({ chatWith , className , onShow}) => {
+>>>>>>> main
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
