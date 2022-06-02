@@ -57,6 +57,7 @@ import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
+import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
 // end seller pages
 
 function App() {
@@ -132,6 +133,7 @@ function App() {
 					path="/managersDashboard/allCompliments"
 					element={<AllCompliments />}
 				/>
+				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
 
 				{/* start buyer routes  */}
 

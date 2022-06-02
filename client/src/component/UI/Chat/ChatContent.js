@@ -3,114 +3,108 @@ import moment from 'moment';
 
 import { useSelector } from 'react-redux';
 
-import classes from './ChatContent.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { useLocation } from 'react-router-dom';
+// import classes from './ChatContent.module.css';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import ChatContentUi from './ChatContentUi';
 
 function ChatContent({ socket,getChatWithEmail ,className }) {
-	const email = useSelector(store => store.AuthData.email);
+
+	const role = useSelector(store => store.AuthData.role);
+	// const email = useSelector(store => store.AuthData.email);
 
 	const [Message, setMessage] = useState([]);
-	const [MessageValue, setMessageValue] = useState('');
 
 	const [joined, setJoined] = useState(false);
-	// const location = useLocation()
-	// const getChatWithEmail = new URLSearchParams(location.search).get('email')
 
-	console.log(getChatWithEmail)
+	// console.log(getChatWithEmail)
+
 
 	const sendMessage = (message, Email) => {
 	if (message) {
+		if (role!== 'employee') {
 			setJoined(true);
 			socket.emit('new-message-to-server', {
 				message: message,
 				receiverEmail: Email,
 			});
 		}
+		// to send message from support to client
+		else{
+			console.log("send message to client" , message , Email)
+			setJoined(true);
+			socket.emit('new-message-from-support', {
+				message: message,
+				receiverEmail: Email,
+			});
+		}
+		}
 	};
 
+	// start get chat history when reload
 	useEffect(() => {
-		if (getChatWithEmail) {
-			console.log('Load chat history... ', MessageValue);
+		if (getChatWithEmail && role!== 'employee') {
+			console.log('Load chat history... ');
 
 			socket.emit('get-chat-history', {
 				with: getChatWithEmail,
 			});
 		}
+		// get chat history with this email
+		if (role === 'employee') {
+			console.log('Load chat history... ' , getChatWithEmail);
+			socket.emit('get-chat-history', {
+				with: "buyer@email.com"	,
+			});
+
+			socket.emit('get-MyChat')
+
+		}
 	}, [getChatWithEmail]);
+	// end get chat history when reload
+
 
 	useEffect(() => {
-		socket.on('chat-history-to-client', data => {
-			setMessage(data && [...data]);
-		});
+		// start get all chats to [seller or buyer]
+		if(role!== 'employee'){
+			socket.on('chat-history-to-client', data => {
+				setMessage(data && [...data]);
+			});
 
-		socket.on('new-message-to-client', data => {
-			setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
-		});
+			socket.on('new-message-to-client', data => {
+				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
+			});
+		}
+		// end get all chats to [seller or buyer]
+
+		// start get all chats to employee
+		else{
+			console.log("get-chat-history")
+
+			// Chat history loaded and emitted to user ✔✔ [listener]
+			socket.on('MyChat', data => {
+				console.log(data)
+			});
+
+			socket.on('new-message-to-support', data => {
+				//setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
+				console.log(data)
+			});
+
+
+		}
+		// end get all chats to employee
+
 	}, [socket]);
 
-	const getTime = time => {
-		const Time = moment(time).format('LT');
-		return Time;
-	};
+
+
 
 	return (
-		<div className={` ${classes.ChatContent} ${className ? className : ''}`}>
-				<>
-					<input
-						type="text"
-						placeholder="Type your message"
-						className={`${classes.ChatContentInput}  form-control `}
-						onChange={e => setMessageValue(e.target.value)}
-					/>
-					<button
-						className={`${classes.ChatContentButton} btn btn-secondary`}
-						type="button"
-						id="inputGroupFileAddon04"
-					>
-						<FontAwesomeIcon
-							icon={faPaperPlane}
-							onClick={() => sendMessage(MessageValue, getChatWithEmail)}
-						/>
-					</button>
-				</>
+		role !== 'employee' ?
+		<ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
+		: <ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={"buyer@email.com"}/>
 
-				{/* start chat content  */}
-				<div className={` ${className ? className : ''} ${classes.Messages}`}>
-					{Message && Message.length !== 0 ? (
-						Message.map((message, index) => (
-							<React.Fragment key={index}>
-								<div
-									className={
-										message.senderEmail === email
-											? classes.messageFromMe
-											: classes.messageFromOther
-									}
-								>
-									<p className={classes.Email}>
-										{message.senderEmail.substring(0, 1).toUpperCase()}{' '}
-									</p>
-									<div className={classes.MessageContent}>
-										<p> {message.message} </p>
-									</div>
-								</div>
-								<p
-									className={`${classes.MessageTime} ${
-										message.senderEmail === email ? 'text-end' : 'text-start'
-									}`}
-								>
-									{getTime(message.sentAt)}
-								</p>
-							</React.Fragment>
-						))
-					) : (
-						<p className="text-center text-danger pt-2"> No messages Now </p>
-					)}
-				</div>
-				{/* end chat content  */}
-
-		</div>
 	);
 }
 
