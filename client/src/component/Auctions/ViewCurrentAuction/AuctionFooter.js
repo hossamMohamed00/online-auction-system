@@ -30,6 +30,8 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 	const url = 'http://localhost:8000';
 	const email = useSelector(store => store.AuthData.email);
 
+	console.log(role, email, sellerEmail);
+	// console.log(AuctionStatus);
 	useEffect(() => {
 		if (status === 'completed') {
 			sendRequest({ AuctionId: AuctionId, idToken: accessToken });
