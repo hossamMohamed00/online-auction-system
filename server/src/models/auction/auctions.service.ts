@@ -164,6 +164,19 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get list of auctions by category
+	 * @param categoryId
+	 * @returns Array of auctions
+	 */
+	async getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]> {
+		const auctions = await this.auctionModel
+			.find({ category: categoryId })
+			.populate(['seller', 'category', 'item', 'winningBuyer']);
+
+		return auctions ? auctions : [];
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -537,8 +550,6 @@ export class AuctionsService
 		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
 
 		return true;
-
-		//TODO: Check who the winner of the auction
 	}
 
 	/**
