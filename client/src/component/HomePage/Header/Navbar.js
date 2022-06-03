@@ -20,8 +20,6 @@ const activeLink = navData =>
 	`${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `;
 
 const Navbar = props => {
-	
-	console.log(props)
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [isShownNavContent, setIsShownNavContent] = useState(false);
@@ -58,17 +56,12 @@ const Navbar = props => {
 				{' '}
 				Auctions{' '}
 			</NavLink>
-			<NavLink to="/how-bid" className={activeLink}>
-				{' '}
-				How Bid{' '}
-			</NavLink>
 			<NavLink to="/contact-us" className={activeLink}>
 				{' '}
 				Contact Us{' '}
 			</NavLink>
 		</>
 	);
-	console.log(props.showWalletHandler);
 
 	const showCategories = (
 		<div
