@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import classes from './Footer.module.css';
+import { useSelector } from 'react-redux';
 
 function Footer() {
 	// start contact us
@@ -25,6 +26,23 @@ function Footer() {
 		</Col>
 	));
 	// end contact us
+
+	// start footer chat path
+
+	const role = useSelector(store => store.AuthData.role);
+	const ChatPath = () => {
+		if(role==='seller'){
+			return '/seller-dashboard/chat?email=Support@email.com'
+		}
+		if(role==='buyer') {
+			return '/buyer-dashboard/chat?email=Support@email.com'
+		}
+	}
+
+	const HideContactChat = role === ('admin' || 'employee')
+
+
+
 
 	// start footerMoreDetails
 	const FooterMoreDetailsData = [
@@ -54,19 +72,18 @@ function Footer() {
 		},
 		{
 			text: 'Contact Us',
-			links: [{ name: 'Chat now', path: '/buyer-dashboard/chat?email=Support@email.com', className: 'SupportLink' }],
+			links: [{ name: 'Chat now', path: ChatPath() , className: 'SupportLink' }],
 		},
 	];
 
 	const FooterMoreDetails = FooterMoreDetailsData.map((data, index) => (
 		<Col lg={3} sm={4} xs={12} key={index}>
 			<FontAwesomeIcon icon={data.icon} className={classes.ContactIcon} />
-			<h5 className={data.text === 'Contact Us' && classes.ContactStyle}>
-				{' '}
-				{data.text}{' '}
+			<h5 className={ `${HideContactChat ? 'd-none': 'd-block'} ${data.text === 'Contact Us' && classes.ContactStyle } `}>
+				{data.text}
 			</h5>
 			{data.text === 'Contact Us' && (
-				<p className={classes.Support}> Questition? We've got answers. </p>
+				<p className={ `${HideContactChat ? 'd-none': 'd-block'} ${classes.Support}`} > Question? We've got answers. </p>
 			)}
 			<ul>
 				{data.links.map((_link, index) => (
@@ -91,7 +108,7 @@ function Footer() {
 		<div className={`${classes.Footer} `}>
 			{/* start contact details */}
 			<div className={classes.ContactUs}>
-				<Row className="m-0 p-0">{ContactUs}</Row>
+				<Row className="m-0 p-0">{ContactUs} </Row>
 			</div>
 			{/* end contact details */}
 

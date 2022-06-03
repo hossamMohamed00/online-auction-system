@@ -8,11 +8,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
-<<<<<<< HEAD
-const ChatHistory = ({ chatWith , className , onShow , ChatWithSupportEmail}) => {
-=======
 const ChatHistory = ({ chatWith , className , onShow}) => {
->>>>>>> main
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
@@ -21,7 +17,7 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 	const { sendRequest, status, data } = useHttp(getChats);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const ChatEmail = useSelector(store => store.AuthData.email);
-	const role = useSelector(store => store.AuthData.role);
+	// const role = useSelector(store => store.AuthData.role);
 
 
 	const location = useLocation()
