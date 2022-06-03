@@ -193,7 +193,7 @@ export class AuctionsService
 
 		if (!permittedStatus.includes(auction.status)) {
 			throw new BadRequestException(
-				'Cannot update auction in current status ❌',
+				'Cannot update the auction in current status ❌',
 			);
 		}
 
@@ -223,12 +223,27 @@ export class AuctionsService
 	 */
 	async remove(auctionId: string, sellerId: string): Promise<Auction> {
 		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
+
 		const auction: AuctionDocument = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,
 		});
 		if (!auction)
 			throw new NotFoundException('Auction not found for that seller❌');
+
+		//* Ensure that the auction is in one of the following states (Upcoming, Pending, Rejected)
+		const permittedStatus = [
+			AuctionStatus.UpComing,
+			AuctionStatus.Pending,
+			AuctionStatus.Denied,
+			AuctionStatus.Closed,
+		];
+
+		if (!permittedStatus.includes(auction.status)) {
+			throw new BadRequestException(
+				'Cannot remove currently running auction ❌',
+			);
+		}
 
 		//* Remove the auction using this approach to fire the pre hook event
 		await auction.remove();
