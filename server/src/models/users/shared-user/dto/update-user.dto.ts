@@ -1,7 +1,4 @@
-import { string } from '@hapi/joi';
 import {
-	IsEmail,
-	IsEnum,
 	IsNotEmpty,
 	IsOptional,
 	IsString,
@@ -17,21 +14,20 @@ export class UserUpdateDto {
 
 	@IsString()
 	@IsOptional()
-	@IsNotEmpty()
 	@MinLength(3)
 	password: string;
+
+	@IsOptional()
+	@Length(11)
+	phoneNumber: Number;
+
+	@IsString()
+	@IsOptional()
+	address: string;
 
 	@IsFile()
 	@MaxFileSize(1e6)
 	@IsOptional()
 	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
-	// image: MemoryStoredFile;
 	image: any;
-
-	@IsOptional()
-	@Length(11)
-	phoneNumber: Number;
-	@IsString()
-	@IsOptional()
-	address: string;
 }

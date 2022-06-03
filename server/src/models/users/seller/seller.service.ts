@@ -49,11 +49,20 @@ export class SellerService {
 
 		return { seller, auctions, reviews };
 	}
+
+	/**
+	 * Edit seller profile data
+	 * @param sellerId
+	 * @param userUpdateDto
+	 * @returns updated seller instance
+	 */
 	async editProfile(
 		sellerId: string,
 		userUpdateDto: UserUpdateDto,
 	): Promise<Seller> {
 		let image: ImageType = new ImageType();
+
+		//* Check if seller upload new image
 		if (userUpdateDto.image) {
 			try {
 				// Upload image to cloudinary

@@ -1,13 +1,10 @@
 import {
 	IsEmail,
 	IsEnum,
-	IsMobilePhone,
 	IsNotEmpty,
-	IsNumber,
 	IsOptional,
 	IsString,
 	Length,
-	Matches,
 	MinLength,
 } from 'class-validator';
 import { HasMimeType, IsFile, MaxFileSize } from 'nestjs-form-data';
@@ -26,16 +23,6 @@ export class RegisterUserDto {
 	@MinLength(3)
 	password: string;
 
-	@IsEnum(AvailableRolesForRegister, {
-		message: 'Role must be either seller or buyer 🙂',
-	})
-	role: AvailableRolesForRegister;
-	@IsOptional()
-	@IsFile()
-	@MaxFileSize(1e6)
-	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
-	// image: MemoryStoredFile;
-	image: any;
 	@IsNotEmpty()
 	@Length(14)
 	nationalID: Number;
@@ -43,7 +30,19 @@ export class RegisterUserDto {
 	@IsOptional()
 	@Length(11)
 	phoneNumber: Number;
+
 	@IsString()
 	@IsOptional()
 	address: string;
+
+	@IsOptional()
+	@IsFile()
+	@MaxFileSize(1e6)
+	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
+	image: any;
+
+	@IsEnum(AvailableRolesForRegister, {
+		message: 'Role must be either seller or buyer 🙂',
+	})
+	role: AvailableRolesForRegister;
 }

@@ -27,11 +27,20 @@ export class User {
 	@Prop({ required: true, min: 3 })
 	password: string;
 
+	@Prop()
+	image: ImageType;
+
+	@Prop()
+	nationalID: Number;
+
+	@Prop()
+	phoneNumber: Number;
+
+	@Prop()
+	address: string;
+
 	@Prop({ required: false })
 	refreshToken: string;
-
-	@Prop({ enum: Object.values(Role), default: Role.Buyer })
-	role: Role;
 
 	@Prop({ default: false })
 	isBlocked: boolean;
@@ -45,16 +54,8 @@ export class User {
 	@Prop({ default: null, trim: true })
 	warningMessage: string;
 
-	@Prop()
-	image: ImageType;
-	@Prop()
-	nationalID: Number;
-
-	@Prop()
-	phoneNumber: Number;
-
-	@Prop()
-	address: string;
+	@Prop({ enum: Object.values(Role), default: Role.Buyer })
+	role: Role;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
