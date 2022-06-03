@@ -57,15 +57,15 @@ export class BuyerController
 	async getProfile(@Param() { id: buyerId }: MongoObjectIdDto): Promise<Buyer> {
 		return this.buyerService.getProfile(buyerId);
 	}
-	@IsPublicRoute()
-	@Patch('profile/:id')
-	@Serialize(BuyerDto)
+
+	@Roles(Role.Buyer)
+	@Patch('profile')
 	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	editProfile(
-		@Param() { id }: MongoObjectIdDto,
 		@Body() userUpdateDto: UserUpdateDto,
-	): Promise<Buyer> {
-		return this.buyerService.editProfile(id, userUpdateDto);
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<ResponseResult> {
+		return this.buyerService.editProfile(buyerId, userUpdateDto);
 	}
 
 	/* Handle Auctions Functions */

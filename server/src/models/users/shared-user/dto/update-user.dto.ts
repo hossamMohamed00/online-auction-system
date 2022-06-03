@@ -8,12 +8,12 @@ import {
 import { HasMimeType, IsFile, MaxFileSize } from 'nestjs-form-data';
 
 export class UserUpdateDto {
-	@IsString()
 	@IsOptional()
+	@IsString()
 	name: string;
 
-	@IsString()
 	@IsOptional()
+	@IsString()
 	@MinLength(3)
 	password: string;
 
@@ -21,13 +21,13 @@ export class UserUpdateDto {
 	@Length(11)
 	phoneNumber: Number;
 
-	@IsString()
 	@IsOptional()
+	@IsString()
 	address: string;
 
+	@IsOptional()
 	@IsFile()
 	@MaxFileSize(1e6)
-	@IsOptional()
 	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
 	image: any;
 }

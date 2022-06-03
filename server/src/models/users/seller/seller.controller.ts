@@ -16,6 +16,7 @@ import {
 } from 'src/common/decorators';
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { Serialize } from 'src/common/interceptors';
+import { ResponseResult } from 'src/common/types';
 import {
 	AuctionDto,
 	CreateAuctionDto,
@@ -55,15 +56,15 @@ export class SellerController
 	): Promise<{ seller: Seller; auctions: Auction[]; reviews: Review[] }> {
 		return this.sellerService.getProfile(id);
 	}
-	@IsPublicRoute()
-	@Serialize(SellerDto)
-	@Patch('profile/:id')
+
+	@Roles(Role.Seller)
+	@Patch('profile')
 	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	editProfile(
-		@Param() { id }: MongoObjectIdDto,
 		@Body() userUpdateDto: UserUpdateDto,
-	): Promise<Seller> {
-		return this.sellerService.editProfile(id, userUpdateDto);
+		@GetCurrentUserData('_id') userId: string,
+	): Promise<ResponseResult> {
+		return this.sellerService.editProfile(userId, userUpdateDto);
 	}
 	/* Handle Auctions Functions */
 

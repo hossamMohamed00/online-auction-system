@@ -52,51 +52,52 @@ export class BuyerService {
 	}
 	async editProfile(
 		buyerId: string,
-		userUpdateDto: UserUpdateDto,
-	): Promise<Buyer> {
-		let image: ImageType = new ImageType();
-		if (userUpdateDto.image) {
+		updateBuyerDto: UserUpdateDto,
+	): Promise<ResponseResult> {
+		//* Check if buyer upload new image to upload it to cloudinary
+		let image: ImageType;
+		let imageUpdated = false;
+		if (updateBuyerDto.image) {
+			imageUpdated = true;
+			this.logger.debug('Uploading image to cloudinary...');
+			image = new ImageType();
+
 			try {
 				// Upload image to cloudinary
 				const savedImage = await this.cloudinary.uploadImage(
-					userUpdateDto.image,
+					updateBuyerDto.image,
 				);
-				// const user = this.buyerModel.findById(buyerId);
-				// if ((await user).image.publicId) {
-				// 	await this.cloudinary.destroyImage((await user).image.publicId);
-				// }
+
 				//* If upload success, save image url and public id to db
 				if (savedImage.url) {
+					this.logger.log('User Image uploaded successfully!');
 					image.url = savedImage.url;
 					image.publicId = savedImage.public_id;
 				}
 			} catch (error) {
-				console.log(error);
-
-				throw new BadRequestException(
-					'Cannot upload image to cloudinary, ',
-					error,
-				);
+				this.logger.error('Cannot upload user image to cloudinary ❌');
+				throw new BadRequestException('Cannot upload image to cloudinary ❌');
 			}
 
-			const buyer = this.buyerModel.findByIdAndUpdate(
-				buyerId,
-				{ name: userUpdateDto.name, password: userUpdateDto.password, image },
-				{
-					new: true,
-				},
-			);
-			return buyer;
-		} else {
-			const buyer = await this.buyerModel.findByIdAndUpdate(
-				buyerId,
-				{ ...userUpdateDto },
-				{
-					new: true,
-				},
-			);
-			return buyer;
+			//* Override image field to the uploaded image
+			updateBuyerDto.image = image;
 		}
+
+		//* Find the buyer and update his data
+		const buyer = await this.buyerModel.findByIdAndUpdate(buyerId, {
+			...updateBuyerDto,
+		});
+
+		//? Remove old image if there was one
+		if (imageUpdated && buyer.image) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(buyer.image.publicId);
+		}
+
+		return {
+			success: true,
+			message: 'Buyer data updated successfully ✔✔',
+		};
 	}
 
 	/* Auctions Functions Logic */
