@@ -12,6 +12,17 @@ const Login = () => {
 						<div
 							className={`w-100 h-100 ${classes.overlay} position-absolute`}
 						></div>
+						<div className={`${classes.logo} position-absolute `}>
+							<Link
+								to="/"
+								className="text-light  mt-3 fw-bolder text-decoration-none "
+							>
+								<h2>
+									On<span>Line Auction</span>
+								</h2>
+							</Link>
+						</div>
+
 						<div className={`${classes.img}`}></div>
 					</div>
 
