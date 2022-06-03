@@ -123,6 +123,16 @@ export class BuyerController
 		return this.buyerService.saveAuctionForLater(buyer, id);
 	}
 
+	@Roles(Role.Buyer)
+	@Get('auction/is-saved/:id')
+	@HttpCode(HttpStatus.OK)
+	isSavedAuction(
+		@GetCurrentUserData() buyer: Buyer,
+		@Param() { id: auctionId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.buyerService.isSavedAuction(buyer, auctionId);
+	}
+
 	/*--------------------*/
 
 	/* Review Behaviors */

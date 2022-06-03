@@ -6,7 +6,7 @@ import { CreateAuctionDto } from './create-auction.dto';
 
 //? export class UpdateAuctionDto extends PartialType(CreateAuctionDto) and omit `item` from it
 export class UpdateAuctionDto extends PartialType(
-	OmitType(CreateAuctionDto, [`item`]),
+	OmitType(CreateAuctionDto, [`item`, 'startDate']),
 ) {
 	//* Add item again but with UpdateItemDto type.
 	@IsOptional()

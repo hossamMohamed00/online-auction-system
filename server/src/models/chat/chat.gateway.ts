@@ -145,6 +145,7 @@ export class ChatGateway
 			this.logger.log('Chat history loaded and emitted to user ✔✔');
 		}
 	}
+
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('get-MyChat')
 	async MyChat(
@@ -215,6 +216,7 @@ export class ChatGateway
 		//* Emit the message
 		this.server.to(messageTo).emit('new-message-to-client', message);
 	}
+
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-to-Support')
 	async ToSupport(
@@ -222,16 +224,16 @@ export class ChatGateway
 		@GetCurrentUserFromSocket() user: User,
 		@ConnectedSocket() client: Socket,
 	) {
-		const receiverEmail = 'Support@email.com';
+		const supportEmail = 'Support@email.com';
 		// Display log message
 		this.logger.log(
-			'New message recieved ❤ from ' + user.email + ' to ' + receiverEmail,
+			'New message recieved ❤ from ' + user.email + ' to ' + supportEmail,
 		);
 
 		//* Handle the incoming message
-		const message = await this.chatService.handleNewMessageWithSupport(
+		const message = await this.chatService.handleNewMessageToSupport(
 			user.email,
-			receiverEmail,
+			supportEmail,
 			data.message,
 		);
 
@@ -249,7 +251,7 @@ export class ChatGateway
 			}
 		}
 		//* Emit the message
-		this.server.to(messageTo).emit('new-message-to-employee', message);
+		this.server.to(messageTo).emit('new-message-to-Employee', message);
 	}
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-From-Support')
@@ -258,13 +260,14 @@ export class ChatGateway
 		@GetCurrentUserFromSocket() user: User,
 		@ConnectedSocket() client: Socket,
 	) {
+		const supportEmail = 'Support@email.com';
 		// Display log message
 		this.logger.log(
-			'New message recieved ❤ from ' + user.email + ' to ' + data.receiverEmail,
+			'New message received ❤ from ' + user.email + ' to ' + data.receiverEmail,
 		);
 
 		//* Handle the incoming message
-		const message = await this.chatService.handleNewMessageWithSupport(
+		const message = await this.chatService.handleNewMessageFromSupport(
 			user.email,
 			data.receiverEmail,
 			data.message,
@@ -284,6 +287,6 @@ export class ChatGateway
 		}
 
 		//* Emit the message
-		this.server.to(messageTo).emit('new-message-from-employee', message);
+		this.server.to(messageTo).emit('new-message-From-Employee', message);
 	}
 }

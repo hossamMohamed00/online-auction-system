@@ -21,7 +21,7 @@ const AdminDashboard = props => {
 		{
 			title: 'Inquiries ',
 			icon: faComment,
-			path: '/managersDashboard/allCompliments',
+			path: '/employeeDashBoard/chat',
 		},
 	];
 	const dropdownListForEmployees = [
@@ -102,6 +102,7 @@ const AdminDashboard = props => {
 			inquiries={{
 				name: 'Inquiries',
 				list: dropdownListForInquiries,
+
 			}}
 		>
 			{contentExist ? props.children : <DashboardContent />}
