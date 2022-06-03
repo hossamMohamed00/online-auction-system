@@ -75,12 +75,26 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 			},
 		}).then(res => {
 			if (!res.ok) {
-				console.log('failed');
 			}
 			setModalShow(false);
 		});
 	};
 
+	// ! to be handled
+	const DeleteAuctionHandler = AuctionId => {
+		fetch(`${url}/seller/auction/${AuctionId}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'content-type': 'application/json',
+			},
+		}).then(res => {
+			if (!res.ok) {
+			}
+			setModalShow(false);
+		});
+
+	}
 	return (
 		<>
 			<ToastContainer theme="dark" />

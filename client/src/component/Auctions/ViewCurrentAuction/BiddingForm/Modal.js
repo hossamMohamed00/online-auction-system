@@ -9,7 +9,6 @@ import classes from './Modal.module.css';
 
 const ModalUi = props => {
 
-	console.log(props.SavedAuctionId)
 	const [BidValue, setBidValue] = useState(1500);
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
