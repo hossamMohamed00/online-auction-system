@@ -268,6 +268,12 @@ export class AdminController
 		return this.adminService.listAllComplaint(adminFilterComplaintQueryDto);
 	}
 
+	@Serialize(ComplaintDto)
+	@Get('complaints-in-system')
+	listAllComplaintInSystem(): Promise<Complaint[]> {
+		return this.adminService.listAllComplaintInSystem();
+	}
+
 	@Patch('complaints/:id')
 	markAsRead(@Param() { id }: MongoObjectIdDto): Promise<ResponseResult> {
 		return this.adminService.markComplaintRead(id);
