@@ -1,4 +1,5 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ListBidderAuctionsQueryDto } from '../dto';
 import { Buyer, BuyerDocument } from '../schema/buyer.schema';
@@ -20,5 +21,14 @@ export interface BuyerAuctionsBehaviors {
 	retreatFromAuction(buyer: Buyer, auctionId: MongoObjectIdDto);
 
 	//* Mark the auction as interesting to receive email when starting
-	saveAuctionForLater(buyer: Buyer, auctionId: MongoObjectIdDto);
+	saveAuctionForLater(
+		buyer: Buyer,
+		auctionId: MongoObjectIdDto,
+	): Promise<ResponseResult>;
+
+	//* Mark the auction as interesting to receive email when starting
+	isSavedAuction(
+		buyer: Buyer,
+		auctionId: MongoObjectIdDto,
+	): Promise<ResponseResult>;
 }

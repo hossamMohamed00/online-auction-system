@@ -196,6 +196,33 @@ export class BuyerService {
 	}
 
 	/**
+	 * Check if given auction is saved or not
+	 * @param buyer
+	 * @param auctionId
+	 */
+	async isSavedAuction(
+		buyer: Buyer,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		this.logger.debug(`Check if ${buyer.name} is saved auction ${auctionId}!`);
+
+		const savedAuction = await this.buyerModel.countDocuments({
+			_id: buyer._id,
+			savedAuctions: auctionId,
+		});
+
+		return savedAuction == 0
+			? {
+					success: false,
+					message: 'Auction is not saved ✖✖',
+			  }
+			: {
+					success: true,
+					message: 'Auction is saved ✔✔',
+			  };
+	}
+
+	/**
 	 * Add given auctions to list of bidder's joined auctions
 	 * @param auctionId
 	 * @param bidderId
