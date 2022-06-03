@@ -6,7 +6,6 @@ import './modal.css';
 const Modal_ = props => {
 	const btnHandler = () => {
 		if (props.Id) {
-			console.log(props.Id);
 			props.btnHandler(props.Id);
 		}
 		if (!props.Id) {

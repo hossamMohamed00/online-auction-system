@@ -57,7 +57,12 @@ const AllCategories = props => {
 			},
 		},
 	];
+	// handle get all categories
 	const { sendRequest, data } = useHttp(getAllCategoriesForAdmin);
+	const idToken = useSelector(store => store.AuthData.idToken);
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest, props.reload, reloadWhenRemoveCategory]);
 	// remove api
 	const {
 		sendRequest: sendRequestForRemove,
@@ -80,36 +85,38 @@ const AllCategories = props => {
 			path: `category/${categoryId}`,
 			accessToken: idToken,
 		});
-		setReloadWhenRemoveCategory(Math.random());
+		setReloadWhenRemoveCategory(categoryId);
 	};
 
 	useEffect(() => {
+		console.log(statusForRemove);
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);
-			setReloadWhenRemoveCategory(Math.random());
-		}
-	}, [statusForRemove, reloadWhenRemoveCategory]);
+		// setReloadWhenRemoveCategory(Math.random());
 
-	useEffect(() => {
-		if (errorForRemove && statusForRemove === 'error') {
+		} else if (statusForRemove === 'error') {
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
 			setModalTitle(errorForRemove);
 			setModalBtn('');
-		}
-	}, [errorForRemove, statusForRemove]);
-	// ! end remove
+		// setReloadWhenRemoveCategory(Math.random());
 
-	const idToken = useSelector(store => store.AuthData.idToken);
-	useEffect(() => {
-		sendRequest(idToken);
-	}, [sendRequest, props.reload, reloadWhenRemoveCategory]);
+		}
+	}, [statusForRemove, errorForRemove ,reloadWhenRemoveCategory]);
+
+	// useEffect(() => {
+	// 	if (errorForRemove && statusForRemove === 'error') {
+	// 		toast.error(`${errorForRemove} 💖🐱‍👤`);
+	// 		setModalTitle(errorForRemove);
+	// 		setModalBtn('');
+	// 	}
+	// }, [errorForRemove, statusForRemove]);
+	// ! end remove
 
 	//filter
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
-	console.log(categoryId);
 	return (
 		<>
 			{/* <ToastContainer theme="dark" /> */}
@@ -128,11 +135,10 @@ const AllCategories = props => {
 				<Modal_
 					show={ModalShow}
 					onHide={() => setModalShow(false)}
-					btnHandler={removeHandler}
-					Id={categoryId && categoryId}
+					btnHandler={() => removeHandler(categoryId)}
+					// Id={categoryId && categoryId}
 					title={ModalTitle}
 					btnName={ModalBtn}
-					// error = {error && error}
 				/>
 			)}
 		</>
