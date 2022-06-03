@@ -6,6 +6,7 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data }) => {
+
 	const AuctionDate = data && data.endDate;
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 
@@ -14,6 +15,8 @@ const AuctionDetails = ({ data }) => {
 			{data && (
 				<div className={classes.AuctionDetails}>
 					<div className={classes.AuctionDetailsContent}>
+						<h1 className="pt-2 pb-2 text-light"> {data && data['item']['name']} </h1>
+
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
 								{' '}
@@ -72,14 +75,13 @@ const AuctionDetails = ({ data }) => {
 							<div>
 								<h6 className="fw-bold text-light px-3"> Minimum Bid </h6>
 								<span className={`ps-2 fs-6 ${classes.MinimumBidValue}`}>
-									{data.minimumBidAllowed}{' '}
+									{data.minimumBidAllowed}
 								</span>
 							</div>
 							<div className={classes.hrRight}></div>
 							<div>
 								<h6 className="fw-bold  text-light"> Auction Will End In </h6>
 								<span className={`ps-1 fs-6 ${classes.AuctionDate}`}>
-									{' '}
 									{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}{' '}
 								</span>
 							</div>

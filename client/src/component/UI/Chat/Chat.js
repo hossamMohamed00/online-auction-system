@@ -13,11 +13,11 @@ import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+
 	const [chatWith, setChatWith] = useState('');
 	const [showChatHistory, setShowChatHistory] = useState(true);
 
-
-	const role = useSelector(store => store.AuthData.role);
 
 	// establish socket connection
 	const socket = io('http://localhost:8000/chat', {
@@ -34,44 +34,50 @@ const Chat = (props) => {
 	};
 
 	return (
-		<PageContent className={`${classes.PageContentClasses}`}>
-			<Row className="h-100 m-0">
-				<Col
-					lg={4}
-					md={6}
-					sm={12}
-					className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
-				>
-					{/* {role !== 'employee' ? */}
-						<ChatHistory
-							chatWith={getChatWith}
-							className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
-							onShow = {ShowChatHistoryHandler}
-							getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
+		<>
+		{isLoggedIn && (
+			<PageContent className={`${classes.PageContentClasses}`}>
+				<Row className="h-100 m-0">
+					<Col
+						lg={4}
+						md={6}
+						sm={12}
+						className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
+					>
+						{/* {role !== 'employee' ? */}
+							<ChatHistory
+								chatWith={getChatWith}
+								className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
+								onShow = {ShowChatHistoryHandler}
+								getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
+							/>
+						{/* : */}
+							{/* <p> Employee</p> */}
+						{/* } */}
+					</Col>
+					<Col
+						lg={8}
+						md={6}
+						sm={12}
+						className={`${classes.ChatContent} ${scrollbarStyle.scrollbar} p-0 `}
+					>
+						<button
+							className={`btn bg-danger text-light position-fixed ${!showChatHistory ? 'd-block d-xs-block d-sm-block d-md-none' : 'd-none' }	`}
+							onClick={() => setShowChatHistory(true)}> X
+						</button>
+						<ChatContent
+							socket={socket}
+							getChatWithEmail={chatWith && chatWith}
+							className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } `}
 						/>
-					{/* : */}
-						{/* <p> Employee</p> */}
-					{/* } */}
-				</Col>
-				<Col
-					lg={8}
-					md={6}
-					sm={12}
-					className={`${classes.ChatContent} ${scrollbarStyle.scrollbar} p-0 `}
-				>
-					<button
-						className={`btn bg-danger text-light position-fixed ${!showChatHistory ? 'd-block d-xs-block d-sm-block d-md-none' : 'd-none' }	`}
-						onClick={() => setShowChatHistory(true)}> X
-					</button>
-					<ChatContent
-						socket={socket}
-						getChatWithEmail={chatWith && chatWith}
-						className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } `}
-					/>
 
-				</Col>
-			</Row>
-		</PageContent>
+					</Col>
+				</Row>
+			</PageContent>
+			)
+			// else not logged in => will show modal
+		}
+		</>
 	);
 };
 

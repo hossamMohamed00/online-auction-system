@@ -1,16 +1,13 @@
-import React, { Fragment, useState } from 'react';
-// import { useSelector } from "react-redux";
-
+import React, { Fragment, useEffect, useState } from 'react';
 import AuctionDetails from './AuctionDetails';
 import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionHeader({ AuctionData }) {
+function AuctionHeader({ AuctionData , isShownBidsProp , socket}) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 
-	// const role = useSelector(store => store.AuthData.role);
 
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
@@ -18,33 +15,43 @@ function AuctionHeader({ AuctionData }) {
 	};
 
 	const btnBidsHandler = () => {
-		setIsShownDetails(false);
-		setIsShownBids(true);
+		if(isShownBidsProp){
+			setIsShownDetails(false);
+			setIsShownBids(true);
+		}
+
 	};
 
-	console.log(AuctionData);
+	// start show bid when bidder joined in auction and want to bid
+	useEffect(()=>{
+		if(isShownBidsProp){
+			btnBidsHandler()
+		}
+	},[isShownBidsProp])
+	// end show bid when bidder joined in auction and want to bid
+
+
 	return (
 		<Fragment>
-			<h1 className="pt-5 pb-2"> {AuctionData && AuctionData.item.name} </h1>
 			<div className={classes.AuctionHeader}>
 				<button
 					className={`btn ${isShownDetails ? classes.ActiveLink : ''}`}
 					onClick={btnDetailsHandler}
 				>
-					{' '}
-					Details{' '}
+					Details
 				</button>
 				{AuctionData && AuctionData.status === 'ongoing' && (
 					<button
-						className={`btn ${isShownBids ? classes.ActiveLink : ''}`}
+						className={`btn ${isShownBids ? classes.ActiveLink : ''} ${classes.showBidsBtn}`}
 						onClick={btnBidsHandler}
+						disabled = {!isShownBidsProp}
 					>
 						Bids
 					</button>
 				)}
 			</div>
 			{isShownDetails && <AuctionDetails data={AuctionData} />}
-			{isShownBids && <Bids />}
+			{isShownBids && <Bids isShownBidsProp = {isShownBidsProp} socket={socket} />}
 		</Fragment>
 	);
 }

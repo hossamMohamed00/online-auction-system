@@ -9,7 +9,6 @@ import classes from './Modal.module.css';
 
 const ModalUi = props => {
 
-	console.log(props.SavedAuctionId)
 	const [BidValue, setBidValue] = useState(1500);
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
@@ -18,8 +17,8 @@ const ModalUi = props => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	// start Saved Auction Handler
-	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
 
 	const btnSavedHandler = () => {
 		const id = props.SavedAuctionId
@@ -66,8 +65,13 @@ const ModalUi = props => {
 
 			<Modal.Header closeButton className={classes.BiddingModalHeader}>
 				<Modal.Title id="contained-modal-title-vcenter">
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
 						<h2 className="fw-bold">Place a Bid </h2>
+					)}
+
+					{/* start View exception when true to join  */}
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (!!props.errorWhenJoinAuction) && (
+						<h2 className="fw-bold"> {props.errorWhenJoinAuction} </h2>
 					)}
 					{!isLoggedIn && (
 						<h5 className="text-center pt-3">
@@ -89,7 +93,7 @@ const ModalUi = props => {
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
 					{/* for buyer */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
 						<>
 							<div
 								className={` ${classes['ModalBodyForm']} ${
@@ -151,7 +155,7 @@ const ModalUi = props => {
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
 					{/* buyer modal */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
 							type="button"

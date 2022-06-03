@@ -17,7 +17,15 @@
 }
 
 .BidsHeader {
-	background-color: var(--paragraph-color) !important;
+	background-color: var(--nav-color) !important;
+	color: white;
+}
+
+.messageToClient{
+	color: var(--alert-color);
+	font-weight: bold;
+	text-align: center;
+	margin: 10px 0px 15px 0px;
 }
 
 @media (max-width: 992px) {

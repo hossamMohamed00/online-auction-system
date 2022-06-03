@@ -37,6 +37,7 @@ function Footer() {
 		if(role==='buyer') {
 			return '/buyer-dashboard/chat?email=Support@email.com'
 		}
+		return '/'
 	}
 
 	const HideContactChat = role === ('admin' || 'employee')
@@ -77,9 +78,9 @@ function Footer() {
 	];
 
 	const FooterMoreDetails = FooterMoreDetailsData.map((data, index) => (
-		<Col lg={3} sm={4} xs={12} key={index}>
+		<Col lg={!HideContactChat ? 3 : 4} sm={4} xs={12} key={index}>
 			<FontAwesomeIcon icon={data.icon} className={classes.ContactIcon} />
-			<h5 className={ `${HideContactChat ? 'd-none': 'd-block'} ${data.text === 'Contact Us' && classes.ContactStyle } `}>
+			<h5 className={ `${(HideContactChat && (data.text === 'Contact Us') ) ? 'd-none': 'd-block'} ${data.text === 'Contact Us' && classes.ContactStyle } `}>
 				{data.text}
 			</h5>
 			{data.text === 'Contact Us' && (
@@ -87,7 +88,7 @@ function Footer() {
 			)}
 			<ul>
 				{data.links.map((_link, index) => (
-					<li key={index}>
+					<li key={index} className={_link.name==='Chat now' && HideContactChat ? 'd-none' : 'd-block' }>
 						<Link
 							to={_link.path}
 							className={`text-decoration-none ${
