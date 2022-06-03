@@ -19,7 +19,6 @@ const AuctionDetails = ({ data }) => {
 
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
-								{' '}
 								Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen
 								i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win
 								10 Pro Black – Certified Refurbished

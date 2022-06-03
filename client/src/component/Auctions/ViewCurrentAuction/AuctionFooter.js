@@ -88,25 +88,24 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 	const joinAuctionHandler = (OnGoingStatus) =>{
 		// start send request to join auction
 		if(OnGoingStatus && !isJoined){
+			console.log('join auction')
 			const idToken = accessToken
 			const id = AuctionId
 			sendRequestForJoinAuction({ idToken, id})
 		}
 		else if(isJoined && OnGoingStatus){
 			console.log("joined and want to place a bid")
-			// view exception error in modal
-
 			socket.emit('place-bid', {
-				"auctionId" : "629a157933c157eddd21b097",
-				"bidValue" : 200
+				auctionId : "629a157933c157eddd21b097",
+				bidValue : 2000
 				}
 			);
+			// view exception error in modal
 			socket.on('exception', data => {
 				console.log('exception' , data.message)
 				setIsExistErrorWhenJoinAuction(data.message)
 				setModalShow(true)
 			});
-			console.log(isJoined)
 		}
 		else{
 			setModalShow(true);
