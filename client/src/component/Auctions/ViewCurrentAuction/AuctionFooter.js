@@ -33,7 +33,7 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 	const role = useSelector(store => store.AuthData.role);
 	const accessToken = useSelector(store => store.AuthData.idToken);
 	const url = 'http://localhost:8000';
-	// const email = useSelector(store => store.AuthData.email);
+	const email = useSelector(store => store.AuthData.email);
 
 	console.log(AuctionStatus);
 	// console.log(AuctionStatus);

@@ -80,14 +80,14 @@ const AllCategories = props => {
 			path: `category/${categoryId}`,
 			accessToken: idToken,
 		});
-		setReloadWhenRemoveCategory(categoryId);
+		setReloadWhenRemoveCategory(Math.random());
 	};
 
 	useEffect(() => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);
-			setReloadWhenRemoveCategory(categoryId);
+			setReloadWhenRemoveCategory(Math.random());
 		}
 	}, [statusForRemove, reloadWhenRemoveCategory]);
 
@@ -115,7 +115,6 @@ const AllCategories = props => {
 			{/* <ToastContainer theme="dark" /> */}
 			{data && (
 				<DataTable
-					// selectableRows
 					columns={columns}
 					data={filteredItems}
 					subHeader

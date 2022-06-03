@@ -23,7 +23,6 @@ import ViewAuctions from './Pages/ViewAuctions';
 // end home Pages
 
 // start admin pages
-import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
 import ListAllEmployees from './component/AdminModule/AdminDashboard/ManageEmployees/ListAllEmployees/listAllEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
@@ -108,7 +107,6 @@ function App() {
 					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
-				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
 				<Route
 					path="/managersDashboard/sellersPage"
 					element={<SellersPage />}
@@ -130,7 +128,7 @@ function App() {
 				{/* start route Employees */}
 				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
 				<Route
-					path="/managersDashboard/allCompliments"
+					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
 				/>
 				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
