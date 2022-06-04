@@ -54,6 +54,7 @@ import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee'
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
+import UpdateAuction from './component/Modules/SellerModule/SellerPages/UpdateAuction';
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
 import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
@@ -176,6 +177,10 @@ function App() {
 						<Route
 							path="/seller-dashboard/UpdateAccount"
 							element={<UpdateAccount />}
+						/>
+						<Route
+							path="/seller-dashboard/UpdateAuction"
+							element={<UpdateAuction />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
 					</>
