@@ -6,8 +6,6 @@ import {
 	Max,
 	IsEnum,
 } from 'class-validator';
-import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
-import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { TransactionType } from '../enums';
 
@@ -21,7 +19,7 @@ export class CreateTransactionDto {
 	sender: User;
 
 	@IsNotEmpty()
-	recipient: User;
+	recipient: User | string;
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;

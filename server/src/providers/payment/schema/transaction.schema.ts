@@ -28,13 +28,13 @@ export class Transaction {
 		autopopulate: true,
 		required: true,
 	})
-	recipient: User;
+	recipient: User | string;
 
 	@Prop({ enum: Object.values(TransactionType), required: true })
 	transactionType: TransactionType;
 
-	@Prop({ required: true })
-	paymentIntentId: string;
+	@Prop()
+	paymentIntentId: string | null;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

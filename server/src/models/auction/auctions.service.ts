@@ -31,6 +31,7 @@ import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 
 @Injectable()
 export class AuctionsService
@@ -629,6 +630,24 @@ export class AuctionsService
 		const { balance } = await this.walletService.getWalletBalance(bidderId);
 
 		return balance >= auctionChairCost;
+	}
+
+	/**
+	 * Transfer
+	 * @param auctionId
+	 * @param bidder
+	 */
+	async blockAssuranceFromWallet(
+		auctionId: string,
+		bidder: Buyer,
+	): Promise<boolean> {
+		//* Get auction's assurance
+		const auction = await this.auctionModel.findById(auctionId);
+		const assuranceValue = auction.chairCost;
+
+		await this.walletService.blockAssuranceFromWallet(bidder, assuranceValue);
+
+		return true;
 	}
 
 	/**

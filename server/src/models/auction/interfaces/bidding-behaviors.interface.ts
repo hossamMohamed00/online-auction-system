@@ -1,4 +1,5 @@
 import { Bid } from 'src/models/bids/schema/bid.schema';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
 export interface BiddingBehaviors {
 	//* Check if there is an ongoing auction with that id
@@ -9,6 +10,9 @@ export interface BiddingBehaviors {
 
 	//* Check if given bidder has auction minimum assurance to join auction
 	hasMinAssurance(auctionId: string, bidderId: string): Promise<boolean>;
+
+	//* Block auction's assurance from bidder wallet
+	blockAssuranceFromWallet(auctionId: string, bidder: Buyer): Promise<boolean>;
 
 	//* Append given bidder to specific auction bidders list
 	appendBidder(auctionId: string, bidderId: string): Promise<boolean>;
