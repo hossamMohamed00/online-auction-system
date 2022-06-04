@@ -1,6 +1,12 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+	BadRequestException,
+	forwardRef,
+	Inject,
+	Injectable,
+	Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -23,6 +29,7 @@ export class BuyerService {
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
 		private readonly auctionValidationService: AuctionValidationService,
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
 		private cloudinary: CloudinaryService,
@@ -48,6 +55,13 @@ export class BuyerService {
 
 		return buyer;
 	}
+
+	/**
+	 * Edit buyer profile
+	 * @param buyerId
+	 * @param updateBuyerDto
+	 * @returns ResponseResult
+	 */
 	async editProfile(
 		buyerId: string,
 		updateBuyerDto: UserUpdateDto,
@@ -293,6 +307,26 @@ export class BuyerService {
 			bidderId,
 			{
 				$push: { joinedAuctions: auctionId },
+			},
+			{ new: true },
+		);
+
+		return updatedBidder != null;
+	}
+
+	/**
+	 * Remove auction from joined auctions list (Fires when bidder request to leave auction)
+	 * @param _id
+	 * @param auctionId
+	 */
+	public async removeAuctionFromJoinedAuctions(
+		bidderId: string,
+		auctionId: string,
+	): Promise<boolean> {
+		const updatedBidder = await this.buyerModel.findByIdAndUpdate(
+			bidderId,
+			{
+				$pull: { joinedAuctions: auctionId },
 			},
 			{ new: true },
 		);

@@ -82,8 +82,6 @@ export class AuctionRoomService {
 			},
 		);
 
-		console.log({ winner });
-
 		return winner?.socketId ? winner.socketId : null;
 	}
 

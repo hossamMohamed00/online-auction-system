@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { BuyerService } from './buyer.service';
 import { BuyerController } from './buyer.controller';
 import { ComplaintModule } from 'src/models/complaint/complaint.module';
@@ -13,8 +13,8 @@ import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
 @Module({
 	imports: [
 		WalletModule,
-		AuctionsModule,
-		CategoryModule,
+		forwardRef(() => AuctionsModule),
+		forwardRef(() => CategoryModule),
 		ReviewModule,
 		ComplaintModule,
 		NestjsFormDataModule,
