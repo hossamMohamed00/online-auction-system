@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export const FilterComponent = props => {
-	console.log(props);
 	return (
 		<>
 			{' '}

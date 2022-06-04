@@ -6,7 +6,6 @@ import { getProfileData } from '../../../UI/UserProfile/sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 
 const SellerProfile = props => {
-	console.log('Opening seller profile');
 	const { data, status, sendRequest } = useHttp(getProfileData);
 	const [reload, setReload] = useState('');
 
@@ -19,7 +18,6 @@ const SellerProfile = props => {
 	[	sendRequest,
 		reload]
 	);
-	console.log(data);
 
 	return (
 		<UserProfile
