@@ -173,8 +173,6 @@ export class BuyerService {
 			);
 		}
 
-		//TODO: Block the chair cost from the bidder wallet
-
 		return { success: true, message: 'Bidder joined successfully ✔' };
 	}
 

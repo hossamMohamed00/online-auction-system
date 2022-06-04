@@ -31,6 +31,7 @@ import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 
 @Injectable()
 export class AuctionsService
@@ -647,6 +648,56 @@ export class AuctionsService
 		);
 
 		return auction != null;
+	}
+
+	/**
+	 * Retreat bidder from auction
+	 * @param bidder
+	 * @param auctionId
+	 */
+	async retreatBidderFromAuction(
+		bidder: Buyer,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			status: AuctionStatus.OnGoing,
+			bidders: bidder._id,
+		});
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'You are not a bidder of this auction',
+			};
+		}
+
+		//? Check if the bidder is the winner
+		const auctionWinner = auction.winningBuyer;
+
+		if (bidder._id.toString() === auctionWinner._id.toString()) {
+			return {
+				success: false,
+				message:
+					'You cannot retreat from the auction as you have highest bid!!',
+			};
+		}
+
+		//? Filter auction bidders list
+		const bidders = auction.bidders.filter(bidderId => {
+			return bidderId.toString() !== bidder._id.toString();
+		});
+
+		//* Update the auction
+		auction.bidders = bidders;
+
+		//* Save the auction
+		await auction.save();
+
+		return {
+			success: true,
+			message: 'You have been retreated from the auction!!',
+		};
 	}
 
 	/**

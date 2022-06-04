@@ -82,7 +82,7 @@ export class Auction {
 	category: Types.ObjectId;
 
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
-	bidders: [Types.ObjectId];
+	bidders: Types.ObjectId[];
 
 	//* To keep track of all bidders that should be notified when the auction start
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })

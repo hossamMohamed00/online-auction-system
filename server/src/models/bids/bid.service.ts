@@ -6,6 +6,7 @@ import { Socket } from 'socket.io';
 import { AuctionsService } from '../auction/auctions.service';
 
 import { AuthService } from '../auth/auth.service';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { User } from '../users/shared-user/schema/user.schema';
 import { BidDocument, Bid } from './schema/bid.schema';
 import { NewBid } from './types/new-bid.type';
@@ -118,5 +119,19 @@ export class BidService {
 			},
 			createdAt: createdBid.createdAt,
 		};
+	}
+
+	/**
+	 * Retreat given bidder from given auction
+	 * @param bidder
+	 * @param auctionId
+	 */
+	async retreatBidderFromAuction(bidder: Buyer, auctionId: string) {
+		const result = this.auctionService.retreatBidderFromAuction(
+			bidder,
+			auctionId,
+		);
+
+		return result;
 	}
 }

@@ -176,7 +176,6 @@ export class BidGateway
 		);
 	}
 
-	// TODO: Refactor this method
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('leave-auction')
 	async handleLeaveAuction(
@@ -194,10 +193,13 @@ export class BidGateway
 		this.logger.debug(
 			"'" +
 				bidder.email +
-				"' want to leave auction with id '" +
+				"' want to retreat from auction with id '" +
 				auctionId +
 				"'",
 		);
+
+		//* Check if the bidder can retreat or not
+		await this.bidService.retreatBidderFromAuction(bidder, auctionId);
 
 		//* Remove the bidder from the list
 		const removedBidder = this.auctionRoomService.removeBidder(client.id);
