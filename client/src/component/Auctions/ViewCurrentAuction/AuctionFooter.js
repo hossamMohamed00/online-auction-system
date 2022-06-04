@@ -9,7 +9,7 @@ import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AuctionFooter({ AuctionStatus, sellerEmail }) {
+function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -22,7 +22,9 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
-	const DeniedStatus = AuctionStatus === 'pending';
+	const PendingStatus = AuctionStatus === 'pending';
+	const DeniedStatus = AuctionStatus === 'denied';
+
 	// const SavedAuctionStatus = AuctionStatus === 'saved';
 
 
@@ -116,12 +118,22 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 					</button>
 				</div>
 			)}
+			{role === 'seller' && DeniedStatus && (
+				<div className=" bg-warning mt-3 p-3">
+					<h3 className=" text-white fs-6 fw-bold">
+						Rejected because : {RejectionMessage}
+					</h3>
+
+				</div>
+
+			)
+			}
 			{role === 'buyer' && (
 				<button
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
-					disabled = {btnSavedValue==='saved'}
+					disabled={btnSavedValue === 'saved'}
 				>
 					{OnGoingStatus && 'Place on Bid'}
 					{UpComingStatus && btnSavedValue}
@@ -184,10 +196,10 @@ function AuctionFooter({ AuctionStatus, sellerEmail }) {
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 				UpComingAuction={UpComingStatus}
-				btnReject={DeniedStatus}
+				btnReject={PendingStatus}
 				rejectHandler={rejectHandler}
 				btnSaved={btnSaved}
-				SavedAuctionId	= {AuctionId}
+				SavedAuctionId={AuctionId}
 			/>
 		</>
 	);
