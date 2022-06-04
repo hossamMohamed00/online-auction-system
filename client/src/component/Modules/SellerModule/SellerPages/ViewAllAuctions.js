@@ -24,13 +24,17 @@ const ViewAllAuctions = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
-			data.map(data => {
-				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
-				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+		data.map(data => {
+			const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
+			const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+			if (data.endDate) {
 				data.endDate = newEndDate;
+			} else {
+				data.endDate = <span>NA</span>;
+			}
 
-				data.startDate = newStartDate;
-			});
+			data.startDate = newStartDate;
+		});
 
 			setMyAuctions(data);
 		}

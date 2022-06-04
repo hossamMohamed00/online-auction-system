@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getSingleAuction } from '../../../Api/Admin';
+import { DeleteAuctionHandler } from '../../../Api/AuctionsApi';
 import ModalUi from './BiddingForm/Modal';
 import useHttp from '../../../CustomHooks/useHttp';
 
@@ -9,8 +10,7 @@ import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
-
+function AuctionFooter({ AuctionStatus, sellerEmail, RejectionMessage }) {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
@@ -27,10 +27,16 @@ function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 
 	// const SavedAuctionStatus = AuctionStatus === 'saved';
 
-
-	console.log(UpComingStatus)
+	console.log(UpComingStatus);
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
+	// handle delete
+	const {
+		data: dataForDelete,
+		sendRequest: sendRequestForDelete,
+		status: statusForDelete,
+		error: errorForDelete,
+	} = useHttp(DeleteAuctionHandler);
 
 	const role = useSelector(store => store.AuthData.role);
 	const accessToken = useSelector(store => store.AuthData.idToken);
@@ -83,20 +89,19 @@ function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 	};
 
 	// ! to be handled
-	const DeleteAuctionHandler = AuctionId => {
-		fetch(`${url}/seller/auction/${AuctionId}`, {
-			method: 'DELETE',
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				'content-type': 'application/json',
-			},
-		}).then(res => {
-			if (!res.ok) {
-			}
-			setModalShow(false);
-		});
+	const DeleteAuction = AuctionId => {
+		sendRequestForDelete({ AuctionId: AuctionId, accessToken });
 
-	}
+		if (statusForDelete === 'completed') {
+			setModalShow(false);
+
+			toast.success('Auction Deleted Successfully');
+		} else if (statusForDelete === 'error') {
+			setModalShow(false);
+			toast.error(errorForDelete);
+		}
+	};
+
 	return (
 		<>
 			<ToastContainer theme="dark" />
@@ -120,14 +125,11 @@ function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 			)}
 			{role === 'seller' && DeniedStatus && (
 				<div className=" bg-warning mt-3 p-3">
-					<h3 className=" text-white fs-6 fw-bold">
+					<h5 className=" text-black fw-bold">
 						Rejected because : {RejectionMessage}
-					</h3>
-
+					</h5>
 				</div>
-
-			)
-			}
+			)}
 			{role === 'buyer' && (
 				<button
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
@@ -188,7 +190,7 @@ function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 						onClick={() => setModalShow(true)}
 					>
 						delete
-					</button>{' '}
+					</button>
 				</div>
 			)}
 
@@ -200,6 +202,7 @@ function AuctionFooter({ AuctionStatus, sellerEmail ,RejectionMessage }) {
 				rejectHandler={rejectHandler}
 				btnSaved={btnSaved}
 				SavedAuctionId={AuctionId}
+				btnRemove={() => DeleteAuction(AuctionId)}
 			/>
 		</>
 	);

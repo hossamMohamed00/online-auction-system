@@ -88,6 +88,11 @@ const ModalUi = props => {
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
 					{/* for buyer */}
+					{isLoggedIn && role === 'seller' && (
+						<h1 className="text-light text-center">
+							Are you sure to delete this auction
+						</h1>
+					)}
 					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
 						<>
 							<div
@@ -186,7 +191,15 @@ const ModalUi = props => {
 							Submit
 						</button>
 					)}
-
+					{isLoggedIn && role === 'seller' && (
+						<button
+							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
+							type="button"
+							onClick={props.btnRemove}
+						>
+							Delete
+						</button>
+					)}
 					<button
 						className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`}
 						type="button"
