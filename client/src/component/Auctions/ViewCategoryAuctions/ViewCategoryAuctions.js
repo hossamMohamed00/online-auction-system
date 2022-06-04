@@ -19,9 +19,13 @@ const ViewCategoryAuctions = () => {
 	const [showRestItems, setShowRestItems] = useState(false);
 
 	const { sendRequest, status, data } = useHttp(getCategoryAuctions);
-
-	const FirstThreeItems = data && data.slice(0, 3);
-	const RestItems = data && data.slice(3);
+	// !filter data to not show denied and pending auctions
+	const filteredData =
+		data &&
+		data.filter(item => item.status !== 'denied' && item.status !== 'pending');
+	console.log(filteredData && filteredData);
+	const FirstThreeItems = filteredData && filteredData.slice(0, 3);
+	const RestItems = filteredData && filteredData.slice(3);
 
 	const location = useLocation();
 	const CategoryId = new URLSearchParams(location.search).get('id');
@@ -35,10 +39,11 @@ const ViewCategoryAuctions = () => {
 	useEffect(() => {
 		sendRequest(CategoryId && CategoryId);
 	}, [sendRequest, changeCategory]);
+	console.log(data && data);
 
-	useEffect(()=>{
-		if(status==='completed'){
-			console.log(data , CategoryId)
+	useEffect(() => {
+		if (status === 'completed') {
+			console.log(data, CategoryId);
 		}
 	}, [sendRequest, changeCategory]);
 	return (

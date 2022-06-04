@@ -1,4 +1,5 @@
-import React from 'react';
+import React ,{useEffect , useState} from 'react';
+import { useSelector } from 'react-redux';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
 // import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
@@ -6,25 +7,36 @@ import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
+import useHttp from './../../../CustomHooks/useHttp';
+import { getProfileData } from '../../../Api/Admin';
 
 const SellerDashboardContent = props => {
+const { sendRequest, data, status } = useHttp(getProfileData);
+const idToken = useSelector(store => store.AuthData.idToken);
+const [sellerId , setSellerId] = useState('');
+useEffect(() => {
+	sendRequest(idToken);
+
+},[sendRequest])
+useEffect(() => {
+
+	if(status === 'completed'){
+		setSellerId(data &&data._id);
+	}
+})
+
 	const email = localStorage.getItem('email');
 
 	const dropdownListProfile = [
 		{
 			title: 'View Info',
 			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
+			path: `/seller?id=${sellerId}`,
 		},
 		{
 			title: 'Edit Account',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
-		},
-		{
-			title: 'Change Password',
-			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/seller-dashboard/UpdateAccount',
 		},
 	];
 

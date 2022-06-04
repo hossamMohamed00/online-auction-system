@@ -30,7 +30,7 @@ const ViewCurrentAuction = () => {
 	const AuctionData = data && status === 'completed' && data;
 	const ClosedAuction = AuctionData && AuctionData.status === 'closed';
 	// const imageSlider =
-
+console.log(AuctionData);
 	return (
 		<div className="container">
 			{role !== 'admin' && <Navbar />}
@@ -61,7 +61,10 @@ const ViewCurrentAuction = () => {
 				<Col lg={6} className={classes.Auction}>
 					<AuctionHeader AuctionData={AuctionData} />
 					{!ClosedAuction && (
-						<AuctionFooter AuctionStatus={AuctionData && AuctionData.status} />
+						<AuctionFooter
+							AuctionStatus={AuctionData && AuctionData.status}
+							RejectionMessage={AuctionData && AuctionData.rejectionMessage}
+						/>
 					)}
 				</Col>
 			</Row>

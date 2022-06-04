@@ -23,3 +23,21 @@ export const getSavedAuctions = async () =>
 // export const getClosedAuctions = async () => getAuctions(`${url}?status=closed&populate=true`)
 export const getSingleAuction = async auctionId =>
 	getAuctions(`${url}/${auctionId}?populate=true`);
+
+export const DeleteAuctionHandler = async ({ AuctionId, accessToken }) => {
+	const response = await fetch(
+		`http://localhost:8000/seller/auction/${AuctionId}`,
+		{
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'content-type': 'application/json',
+			},
+		},
+	);
+	const data = await response.json();
+
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+};
