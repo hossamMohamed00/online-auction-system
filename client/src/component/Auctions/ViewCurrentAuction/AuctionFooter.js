@@ -142,38 +142,40 @@ function AuctionFooter({ AuctionStatus, sellerEmail, RejectionMessage }) {
 				</button>
 			)}
 
-			{role === 'admin' && AuctionStatus === 'pending' && (
-				<div className="d-flex justify-content-evenly mt-3">
-					<button
-						className={`btn w-100 fw-bold btn-success`}
-						type="button"
-						onClick={approveHandler}
-					>
-						Approve
-					</button>
-					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
-						type="button"
-						onClick={() => (
-							<>
-								{setModalShow(true)} {setAuctionDenied(true)}
-							</>
-						)}
-					>
-						Reject
-					</button>
-				</div>
-			)}
+			{(role === 'admin' || role === 'employee') &&
+				AuctionStatus === 'pending' && (
+					<div className="d-flex justify-content-evenly mt-3">
+						<button
+							className={`btn w-100 fw-bold btn-success`}
+							type="button"
+							onClick={approveHandler}
+						>
+							Approve
+						</button>
+						<button
+							className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+							type="button"
+							onClick={() => (
+								<>
+									{setModalShow(true)} {setAuctionDenied(true)}
+								</>
+							)}
+						>
+							Reject
+						</button>
+					</div>
+				)}
 
-			{role === 'admin' && AuctionStatus === 'ongoing' && (
-				<button
-					className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
-					type="button"
-					onClick={() => setModalShow(true)}
-				>
-					Extend Auction Time
-				</button>
-			)}
+			{(role === 'admin' || role === 'employee') &&
+				AuctionStatus === 'ongoing' && (
+					<button
+						className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
+						type="button"
+						onClick={() => setModalShow(true)}
+					>
+						Extend Auction Time
+					</button>
+				)}
 
 			{role === 'seller' && sellerEmail === email && (
 				<div className="d-flex justify-content-evenly mt-3">
