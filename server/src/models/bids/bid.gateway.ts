@@ -208,6 +208,13 @@ export class BidGateway
 				'Bidder left auction 👎🏻, with email: ' + removedBidder.email,
 			);
 
+			client.emit('message-to-client', {
+				message: `You left the auction 🚪, auction's assurance refunded to your wallet 👍🏻💲 `,
+			});
+
+			//* Leave the bidder from the room
+			client.leave(auctionId);
+
 			this.server.to(removedBidder.room).emit('message-to-client', {
 				message: `With sorry, ${bidder.email} left 😑`,
 				system: true, // To be used to identify the message as system message
@@ -215,9 +222,6 @@ export class BidGateway
 
 			//* Handle the room data to be sent to the client
 			this.handleRoomData(removedBidder.room);
-
-			//* Leave the bidder from the room
-			client.leave(auctionId);
 		}
 	}
 

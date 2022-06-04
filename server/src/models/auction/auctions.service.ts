@@ -735,6 +735,12 @@ export class AuctionsService
 			auctionId,
 		);
 
+		//* Refund assurance to bidder wallet
+		await this.walletService.recoverAssuranceToBidder(
+			bidder,
+			auction.chairCost,
+		);
+
 		return {
 			success: true,
 			message: 'You have been retreated from the auction!!',
