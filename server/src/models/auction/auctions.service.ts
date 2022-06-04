@@ -165,6 +165,19 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get list of auctions by category
+	 * @param categoryId
+	 * @returns Array of auctions
+	 */
+	async getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]> {
+		const auctions = await this.auctionModel
+			.find({ category: categoryId })
+			.populate(['seller', 'category', 'item', 'winningBuyer']);
+
+		return auctions ? auctions : [];
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -537,9 +550,11 @@ export class AuctionsService
 
 		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
 
-		return true;
+		/*---------------------*/
+		// Recover all joined bidders auction assurance (except winner bidder)
+		await this.recoverAuctionAssurance(auctionId);
 
-		//TODO: Check who the winner of the auction
+		return true;
 	}
 
 	/**
@@ -630,6 +645,24 @@ export class AuctionsService
 		const { balance } = await this.walletService.getWalletBalance(bidderId);
 
 		return balance >= auctionChairCost;
+	}
+
+	/**
+	 * Transfer
+	 * @param auctionId
+	 * @param bidder
+	 */
+	async blockAssuranceFromWallet(
+		auctionId: string,
+		bidder: Buyer,
+	): Promise<boolean> {
+		//* Get auction's assurance
+		const auction = await this.auctionModel.findById(auctionId);
+		const assuranceValue = auction.chairCost;
+
+		await this.walletService.blockAssuranceFromWallet(bidder, assuranceValue);
+
+		return true;
 	}
 
 	/**
@@ -796,6 +829,9 @@ export class AuctionsService
 				bidIncrement, // Set the bid increment
 				minimumBidAllowed: newMinimumBid, // Set the new minimum bid
 				winningBuyer: bid.user, // Set the winning bidder
+				$push: {
+					bids: bid,
+				},
 			},
 			{ new: true },
 		);
@@ -870,6 +906,37 @@ export class AuctionsService
 			name: auctionWinner.name,
 			email: auctionWinner.email,
 		};
+	}
+
+	/**
+	 * Recover auction's assurance to all bidders
+	 * @param auctionId
+	 */
+	async recoverAuctionAssurance(auctionId: string) {
+		const auction = await this.auctionModel
+			.findById(auctionId)
+			.populate('bidders')
+			.populate('winningBuyer');
+
+		//* Filter bidders to remove winner
+		let bidders = auction.bidders;
+
+		//* Get assurance and recover to bidders wallet
+		const assuranceValue = auction.chairCost;
+
+		const winnerBuyer = auction.winningBuyer;
+
+		bidders.forEach(async bidder => {
+			//* Skip the winner
+			if (bidder._id.toString() == winnerBuyer?._id.toString()) {
+				this.logger.debug('Winner bidder, skipping...');
+				return;
+			}
+
+			await this.walletService.recoverAssuranceToBidder(bidder, assuranceValue);
+		});
+
+		return true;
 	}
 	/*-------------------------*/
 	/* Helper functions */

@@ -6,6 +6,7 @@ import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { Transform } from 'class-transformer';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
+import { Bid } from 'src/models/bids/schema/bid.schema';
 
 export type AuctionDocument = Auction & Document;
 
@@ -82,7 +83,10 @@ export class Auction {
 	category: Types.ObjectId;
 
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
-	bidders: Types.ObjectId[];
+	bidders: Buyer[];
+
+	@Prop({ type: [{ type: Types.ObjectId, ref: 'Bid', autopopulate: true }] })
+	bids: Bid[];
 
 	//* To keep track of all bidders that should be notified when the auction start
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })

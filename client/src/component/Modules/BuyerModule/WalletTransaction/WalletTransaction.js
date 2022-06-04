@@ -58,36 +58,31 @@ const WalletTransaction = () => {
 	}, [status]);
 
 	// get num of withdraw and deposit transaction
-	console.log(dataForWalletTrans&&dataForWalletTrans)
+	console.log(dataForWalletTrans && dataForWalletTrans);
 
 	useEffect(() => {
 		if (statusForWalletTrans === 'completed') {
-			console.log(dataForWalletTrans)
+			console.log(dataForWalletTrans);
 			setDepositNum(
 				dataForWalletTrans.filter(trans => trans.transactionType === 'deposit')
 					.length,
 			);
 			setWithdrawNum(
-			 dataForWalletTrans.filter(
+				dataForWalletTrans.filter(
 					trans => trans.transactionType === 'withdrawal',
 				).length,
 			);
 			setLoading(false);
 		}
-	}, [statusForWalletTrans, reload , dataForWalletTrans]);
-
+	}, [statusForWalletTrans, reload, dataForWalletTrans]);
 
 	// end get wallet transaction
 
 	const columns = [
 		{
-			name: 'Name',
-			selector: row => row.sender.name,
-			sortable: true,
-		},
-		{
 			name: 'Type',
 			selector: row => row.transactionType.toUpperCase(),
+			sortable: true,
 		},
 		{
 			name: 'Amount',
@@ -96,8 +91,15 @@ const WalletTransaction = () => {
 		},
 		{
 			name: 'Date',
-			selector: row => moment(row.createdAt).format('L'),
+			selector: row =>
+				moment(row.createdAt).format('ddd DD/MM [at] hh:mm:ss a'),
 			sortable: true,
+		},
+		{
+			name: 'Auction Assurance',
+			selector: row => (row.isBlockAssuranceTransaction ? 'YES' : 'NO'),
+			sortable: true,
+			center: true,
 		},
 		{
 			name: 'Actions',

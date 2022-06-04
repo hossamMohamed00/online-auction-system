@@ -1,13 +1,8 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ComplaintDocument, Complaint } from './schema/complaint.schema';
-import { CreateComplaintDto } from './dto';
+import { CreateComplaintDto, CreateComplaintInSystemDto } from './dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../users/shared-user/schema/user.schema';
-import { from } from 'rxjs';
-import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
-import { Seller } from '../users/seller/schema/seller.schema';
-import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { AdminFilterComplaintQueryDto } from '../users/admin/dto';
 import { ResponseResult } from 'src/common/types';
 
@@ -54,6 +49,39 @@ export class ComplaintService {
 	}
 
 	/**
+	 * Accept complaint from user in system
+	 * @param createComplaintInSystemDto
+	 * @returns ResponseResult
+	 */
+	async createComplaintInSystem(
+		createComplaintInSystemDto: CreateComplaintInSystemDto,
+	): Promise<ResponseResult> {
+		const createdComplaint: ComplaintDocument = new this.complaintModel({
+			reason: createComplaintInSystemDto.reason,
+			from: createComplaintInSystemDto.from,
+			in: 'system',
+			inSystem: true,
+		});
+
+		if (!createdComplaint) {
+			throw new BadRequestException(
+				'Complaint cannot be submitted right now 😑',
+			);
+		}
+
+		await createdComplaint.save();
+
+		this.logger.log(
+			`New complaint recieved from ${createdComplaint.from} in SYSTEM.`,
+		);
+
+		return {
+			success: true,
+			message: 'Complaint created successfully 🤘🏻',
+		};
+	}
+
+	/**
 	 * List all complaints from db, sorted by date
 	 * @returns all complaint
 	 */
@@ -61,13 +89,31 @@ export class ComplaintService {
 		adminFilterComplaintQueryDto?: AdminFilterComplaintQueryDto,
 	): Promise<Complaint[]> {
 		let complaints: Complaint[] = await this.complaintModel
-			.find(adminFilterComplaintQueryDto)
+			.find({ ...adminFilterComplaintQueryDto, inSystem: false })
 			.populate(['from', 'in'])
 			.sort({
-				createdAt: -1,
+				createdAt: 1,
 			});
 
 		this.logger.debug('Retrieving all submitted complaints...');
+
+		return complaints;
+	}
+
+	/**
+	 * List all complaints that in system
+	 * @returns all complaint
+	 */
+	async findAllSystemComplaints(): Promise<Complaint[]> {
+		let complaints: Complaint[] = await this.complaintModel
+			.find({
+				inSystem: true,
+			})
+			.sort({
+				createdAt: 1,
+			});
+
+		this.logger.debug('Retrieving all submitted complaints in system...');
 
 		return complaints;
 	}

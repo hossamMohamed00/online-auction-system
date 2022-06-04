@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -15,7 +15,6 @@ import { ResponseResult } from 'src/common/types';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { ImageType } from '../shared-user/schema/image.type';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
-import { Seller } from '../seller/schema/seller.schema';
 
 @Injectable()
 export class BuyerService {
@@ -23,7 +22,6 @@ export class BuyerService {
 	constructor(
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
-		private readonly complaintService: ComplaintService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
@@ -148,6 +146,13 @@ export class BuyerService {
 		if (!validationResult.success) {
 			throw new BadRequestException(validationResult.message);
 		}
+
+		//* Block the assurance of the auction from bidder wallet
+		await this.auctionService.blockAssuranceFromWallet(auctionId, buyer);
+
+		/*
+			START ADDING BIDDER TO AUCTION
+		*/
 
 		//* Add the buyer to the list of auction's bidders
 		let isAdded: boolean = await this.auctionService.appendBidder(

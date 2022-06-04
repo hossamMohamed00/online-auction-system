@@ -36,6 +36,9 @@ export class TransactionDto {
 	transactionType: TransactionType;
 
 	@Expose()
+	isBlockAssuranceTransaction: boolean;
+
+	@Expose()
 	paymentIntentId: string;
 
 	@Expose()
