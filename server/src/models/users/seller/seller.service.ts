@@ -1,4 +1,10 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import {
+	Injectable,
+	Logger,
+	BadRequestException,
+	Inject,
+	forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -8,8 +14,6 @@ import {
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
-import { CreateComplaintDto } from 'src/models/complaint/dto';
-import { UserDocument } from '../shared-user/schema/user.schema';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
@@ -26,8 +30,9 @@ export class SellerService {
 	constructor(
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionsService: AuctionsService,
-		private readonly complaintService: ComplaintService,
+		@Inject(forwardRef(() => ReviewService))
 		private readonly reviewService: ReviewService,
 		private cloudinary: CloudinaryService,
 	) {}

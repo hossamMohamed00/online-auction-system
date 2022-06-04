@@ -153,7 +153,7 @@ export default class WalletService {
 			user._id.toString(),
 		);
 
-		if (amount >= walletBalance) {
+		if (amount > walletBalance) {
 			throw new BadRequestException(
 				'You can not refund more than your wallet balance ❌❌',
 			);
