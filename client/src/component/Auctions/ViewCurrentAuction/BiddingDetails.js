@@ -21,7 +21,7 @@ const BiddingDetails = ({roomData }) => {
 					<div className={`${classes.BiddingDetails} bg-danger`}>
 						<h6> Winner Bidder </h6>
 						{/* <p> {roomData && roomData['winningBuyer'] ? roomData['winningBuyer']  : 'name'}  </p> */}
-						<p>  name  </p>
+						<p>  {roomData.winningBuyer.name}  </p>
 
 					</div>
 				)

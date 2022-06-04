@@ -54,7 +54,7 @@ const AddCategory = props => {
 					<div className={`${classes.container2}`}>
 						<form onSubmit={submitHandler}>
 							<label
-								for="add"
+								htmlFor="add"
 								className={`form-label ${classes.formLabel} fw-bolder`}
 							>
 								Category Name

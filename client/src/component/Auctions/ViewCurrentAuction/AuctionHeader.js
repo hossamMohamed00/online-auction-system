@@ -15,11 +15,8 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , 
 	};
 
 	const btnBidsHandler = () => {
-		if(isShownBidsProp){
-			setIsShownDetails(false);
-			setIsShownBids(true);
-		}
-
+		setIsShownDetails(false);
+		setIsShownBids(true);
 	};
 
 	// start show bid when bidder joined in auction and want to bid
@@ -43,31 +40,30 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , 
 				>
 					Details
 				</button>
-				{AuctionData && AuctionData.status === 'ongoing' && (
+
 					<button
 						className={`btn ${isShownBids ? classes.ActiveLink : ''} ${classes.showBidsBtn}`}
 						onClick={btnBidsHandler}
-						disabled = {AuctionData && AuctionData.status ==='status' }
 					>
 						Bids
 					</button>
-				)}
+
 			</div>
 			{isShownDetails && <AuctionDetails
 				data={AuctionData && AuctionData}
 				AuctionEndMessage = {AuctionEndMessage}
-
-				// data={(AuctionData && AuctionData.status === 'ongoing' && roomData) ? roomData.auctionDetails : AuctionData}
 				/>
 			}
-			{isShownBids &&
-				<Bids
-					isShownBidsProp = {isShownBids}
+			{isShownBids &&	<Bids
 					socket={socket}
 					BidderIsBid={BidderIsBid}
-					roomData={roomData && roomData }
+					roomData={(AuctionData.status!=='ongoing') ? AuctionData : roomData   }
+					AuctionEndMessage = {AuctionEndMessage}
+
 				/>
 			}
+
+
 		</Fragment>
 	);
 }

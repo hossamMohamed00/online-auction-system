@@ -3,22 +3,24 @@ import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { SaveAuctionApi } from '../../../../Api/BuyerApi';
+import { getWalletBalance, SaveAuctionApi } from '../../../../Api/BuyerApi';
 import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
 const ModalUi = props => {
 
-	const [BidValue, setBidValue] = useState(1500);
+
+	const [BidValue, setBidValue] = useState();
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 	const AmountRef = useRef()
 
 	const role = useSelector(store => store.AuthData.role);
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+	const idToken = useSelector(store => store.AuthData.idToken);
+
 
 	// start Saved Auction Handler
-	const idToken = useSelector(store => store.AuthData.idToken);
 	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
 
 	const btnSavedHandler = () => {
@@ -43,6 +45,10 @@ const ModalUi = props => {
 	},[statusForSaveAuction])
 
 	// end Saved Auction Handler
+
+
+	// start get balance of bidder
+	const {sendRequest:sendRequestForGetBalance, status:statusForGetBalance , data:dataForGetBalance , error:errorForGetBalance } = useHttp(getWalletBalance);
 
 
 	const BidValueValidation = e => {
@@ -114,10 +120,11 @@ const ModalUi = props => {
 									<input
 										type="number"
 										className="form-control"
-										min="1500"
+										min={props.MinimumBidAllowed}
 										value={BidValue}
 										onChange={BidValueValidation}
 										ref = {AmountRef}
+										placeholder={props.MinimumBidAllowed}
 									/>
 									<span
 										className={` input-group-text ${classes['input-group-text']} `}
@@ -137,11 +144,6 @@ const ModalUi = props => {
 								<div className="d-flex justify-content-between">
 									<p> Your Balance </p>
 									<p> 75,200 $ </p>
-								</div>
-
-								<div className="d-flex justify-content-between">
-									<p> Service Fee </p>
-									<p> 5 $ </p>
 								</div>
 
 								<div className="d-flex justify-content-between">

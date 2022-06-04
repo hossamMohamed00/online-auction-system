@@ -83,7 +83,6 @@ const ViewCurrentAuction = React.memo(() => {
 				console.log(data)
 				setBidderWinner(data)
 				// toast.success(data.message)
-				localStorage.removeItem('BidderIsJoined')
 				setIsShowBids(false)
 			})
 		}

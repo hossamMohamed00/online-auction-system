@@ -7,9 +7,8 @@
 .FilterAuctions {
 	background-color: #262726;
 	color: white;
-	max-height: 100vh;
+	min-height: 100vh;
 	margin-top: 55.9px;
-	padding: 15px;
 	border-top: 1px solid white;
 	position: fixed;
 	width: fit-content;
@@ -19,6 +18,8 @@
 .FilterAuctions > h4 {
 	color: var(--main-color);
 	font-weight: bold;
+	padding: 15px;
+
 }
 
 .AllAuction {
@@ -29,12 +30,15 @@
 .AuctionCategory{
 	max-height: 35vh;
 	overflow-y:scroll;
+	padding: 15px;
+
 }
 .AuctionType label,
 .AuctionCategory label {
 	color: var(--paragraph-color) !important;
 	font-weight: lighter !important;
 	cursor: pointer;
+
 }
 .AuctionType label:hover,
 .AuctionCategory label:hover {
@@ -42,6 +46,8 @@
 }
 .AuctionType {
 	border-bottom: 1px solid #4a4949;
+	padding: 10px;
+
 }
 .AuctionPrice > div > input {
 	background-color: var(--overlay-dark) !important ;
@@ -56,6 +62,8 @@
 	margin-top: 20px !important;
 	background-color: #34588f;
 	color: white;
+	position: absolute;
+	bottom: 50px;
 }
 
 @media (max-width: 767.98px) {

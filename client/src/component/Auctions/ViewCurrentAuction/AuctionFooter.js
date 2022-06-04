@@ -38,7 +38,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
 	// const SavedAuctionStatus = AuctionStatus === 'saved';
 
-	console.log(UpComingStatus);
 	// handle delete
 	const {
 		data: dataForDelete,
@@ -139,20 +138,28 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = (value) => {
 
+
 		socket.emit('place-bid', {
 			auctionId : AuctionId,
 			bidValue : value
 		})
-
-		BiddingAmount(value)
 		// view exception error in modal
 		socket.on('exception', data => {
 			setIsExistErrorWhenJoinAuction(data.message)
 			setModalShow(true)
+			const time = setTimeout(()=>{
+				setIsExistErrorWhenJoinAuction('')
+				if(modalShow){
+					setModalShow(false)
+				}
+			},[2000])
+			return () => time.clearTimeOut()
 		})
 		setModalShow(false)
 
 	}
+
+
 
 	// end join auction handler
 	// ! to be handled
