@@ -14,6 +14,8 @@ export class CloudinaryService {
 	async uploadImage(
 		file: Express.Multer.File,
 	): Promise<UploadApiResponse | UploadApiErrorResponse> {
+		console.log('Uploading image to cloudinary');
+
 		//* Try to upload the file and resolve the response if success or reject in case of error
 		return new Promise((resolve, reject) => {
 			//* Upload the file to cloudinary

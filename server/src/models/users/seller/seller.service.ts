@@ -17,10 +17,9 @@ import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
-import { ImageType } from '../shared-user/schema/image.type';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
-import { ResponseResult } from 'src/common/types';
+import { ImageType, ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class SellerService {
@@ -72,7 +71,6 @@ export class SellerService {
 		if (updateSellerDto.image) {
 			imageUpdated = true;
 			this.logger.debug('Uploading image to cloudinary...');
-			image = new ImageType();
 
 			try {
 				// Upload image to cloudinary
@@ -83,8 +81,8 @@ export class SellerService {
 				//* If upload success, save image url and public id to db
 				if (savedImage.url) {
 					this.logger.log('User Image uploaded successfully!');
-					image.url = savedImage.url;
-					image.publicId = savedImage.public_id;
+
+					image = new ImageType(savedImage.url, savedImage.public_id);
 				}
 			} catch (error) {
 				this.logger.error('Cannot upload user image to cloudinary ❌');

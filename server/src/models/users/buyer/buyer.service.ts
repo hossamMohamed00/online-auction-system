@@ -6,8 +6,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
-import { ComplaintService } from 'src/models/complaint/complaint.service';
+import { Model } from 'mongoose';
 import { AuctionValidationService } from 'src/models/auction/auction-validation.service';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { Auction } from 'src/models/auction/schema/auction.schema';
@@ -17,9 +16,8 @@ import { Review } from 'src/models/review/schema/review.schema';
 import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { ListBidderAuctionsQueryDto } from './dto';
 import { BidderAuctionsEnumQuery } from './enums';
-import { ResponseResult } from 'src/common/types';
+import { ImageType, ResponseResult } from 'src/common/types';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
-import { ImageType } from '../shared-user/schema/image.type';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 
 @Injectable()
@@ -72,7 +70,6 @@ export class BuyerService {
 		if (updateBuyerDto.image) {
 			imageUpdated = true;
 			this.logger.debug('Uploading image to cloudinary...');
-			image = new ImageType();
 
 			try {
 				// Upload image to cloudinary
@@ -83,8 +80,8 @@ export class BuyerService {
 				//* If upload success, save image url and public id to db
 				if (savedImage.url) {
 					this.logger.log('User Image uploaded successfully!');
-					image.url = savedImage.url;
-					image.publicId = savedImage.public_id;
+
+					image = new ImageType(savedImage.url, savedImage.public_id);
 				}
 			} catch (error) {
 				this.logger.error('Cannot upload user image to cloudinary ❌');

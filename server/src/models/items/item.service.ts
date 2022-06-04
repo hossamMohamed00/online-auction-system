@@ -1,18 +1,21 @@
 import {
 	BadRequestException,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ImageType } from 'src/common/types';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { CreateItemDto } from './dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { ImageType } from './schema/image.type';
 import { Item, ItemDocument } from './schema/item.schema';
 
 @Injectable()
 export class ItemService {
+	private logger: Logger = new Logger(ItemService.name);
+
 	constructor(
 		@InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
 		private cloudinary: CloudinaryService,
@@ -25,16 +28,24 @@ export class ItemService {
 	 */
 	async create(itemData: CreateItemDto) {
 		//* First of all, save the image to cloudinary
-		let image: ImageType = new ImageType();
+		let images: ImageType[] = [];
 		try {
-			// Upload image to cloudinary
-			const savedImage = await this.cloudinary.uploadImage(itemData.image);
+			this.logger.debug(
+				`Uploading ${itemData.images.length} images to cloudinary`,
+			);
 
-			//* If upload success, save image url and public id to db
-			if (savedImage.url) {
-				image.url = savedImage.url;
-				image.publicId = savedImage.public_id;
-			}
+			//* Loop over the uploaded images
+			const uploadedImages = itemData.images;
+			uploadedImages.forEach(async image => {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(image);
+
+				//? If upload success, save image url and public id to db
+				if (savedImage.url) {
+					//* Push the image to the list of images
+					images.push({ url: savedImage.url, publicId: savedImage.public_id });
+				}
+			});
 		} catch (error) {
 			console.log(error);
 
@@ -45,7 +56,7 @@ export class ItemService {
 		}
 
 		//* Create new item
-		const createdItem = new this.itemModel({ ...itemData, image });
+		const createdItem = new this.itemModel({ ...itemData, images });
 
 		//* Save the item
 		await createdItem.save();
