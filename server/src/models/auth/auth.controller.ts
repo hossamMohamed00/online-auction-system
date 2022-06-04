@@ -21,6 +21,7 @@ import { TokensAndRole } from './types';
 import { Serialize } from 'src/common/interceptors';
 import { UserDto } from '../users/shared-user/dto';
 import { EmailConfirmationService } from 'src/providers/auth';
+import { FormDataRequest } from 'nestjs-form-data';
 
 /**
  * These endpoints responsible for user authentication
@@ -40,6 +41,7 @@ export class AuthController {
 	 */
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.CREATED)
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Post('register')
 	async register(
 		@Body() registerUserDto: RegisterUserDto,

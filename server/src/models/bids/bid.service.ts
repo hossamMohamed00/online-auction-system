@@ -119,4 +119,30 @@ export class BidService {
 			createdAt: createdBid.createdAt,
 		};
 	}
+
+	/**
+	 * Get all bids in given auction
+	 * @param auctionId
+	 * @returns List of all bids for the given auction
+	 */
+	async getAuctionBids(auctionId: string): Promise<any> {
+		const bids: Bid[] = await this.bidModel.find({
+			auction: auctionId,
+		});
+
+		//* Return only specific data
+		const serializedBids = bids.map((bid: Bid) => {
+			return {
+				user: {
+					_id: bid.user._id,
+					name: bid.user.name,
+					email: bid.user.email,
+				},
+				amount: bid.amount,
+				createdAt: bid.createdAt,
+			};
+		});
+
+		return serializedBids;
+	}
 }

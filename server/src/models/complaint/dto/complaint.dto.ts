@@ -29,5 +29,8 @@ export class ComplaintDto {
 	markedAsRead: boolean;
 
 	@Expose()
+	inSystem: boolean;
+
+	@Expose()
 	createdAt: Date;
 }

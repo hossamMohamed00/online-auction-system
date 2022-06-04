@@ -24,10 +24,11 @@
 		"react-toastify": "^9.0.1",
 		"redux": "^4.1.2",
 		"socket.io-client": "^4.5.0",
+		"styled-components": "^5.3.5",
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "react-scripts --openssl-legacy-provider  start",
+		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"format": "prettier --write \"src/**/*.js\" \"src/**/*.css\"",
 		"test": "react-scripts test",

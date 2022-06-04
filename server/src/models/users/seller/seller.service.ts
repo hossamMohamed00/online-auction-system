@@ -13,6 +13,10 @@ import { UserDocument } from '../shared-user/schema/user.schema';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
+import { ImageType } from '../shared-user/schema/image.type';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class SellerService {
@@ -25,6 +29,7 @@ export class SellerService {
 		private readonly auctionsService: AuctionsService,
 		private readonly complaintService: ComplaintService,
 		private readonly reviewService: ReviewService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/* Handle Profile Functions logic*/
@@ -44,6 +49,62 @@ export class SellerService {
 		const reviews: Review[] = await this.listSellerReviews(sellerId);
 
 		return { seller, auctions, reviews };
+	}
+
+	/**
+	 * Edit seller profile data
+	 * @param sellerId
+	 * @param updateSellerDto
+	 * @returns updated seller instance
+	 */
+	async editProfile(
+		sellerId: string,
+		updateSellerDto: UserUpdateDto,
+	): Promise<ResponseResult> {
+		//* Check if seller upload new image to upload it to cloudinary
+		let image: ImageType;
+		let imageUpdated = false;
+		if (updateSellerDto.image) {
+			imageUpdated = true;
+			this.logger.debug('Uploading image to cloudinary...');
+			image = new ImageType();
+
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					updateSellerDto.image,
+				);
+
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					this.logger.log('User Image uploaded successfully!');
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				this.logger.error('Cannot upload user image to cloudinary ❌');
+				throw new BadRequestException('Cannot upload image to cloudinary ❌');
+			}
+
+			//* Override image field to the uploaded image
+			updateSellerDto.image = image;
+		}
+
+		//* Find the seller and update his data
+		const seller = await this.sellerModel.findByIdAndUpdate(sellerId, {
+			...updateSellerDto,
+		});
+
+		//? Remove old image if there was one
+		if (imageUpdated && seller.image) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(seller.image.publicId);
+		}
+
+		return {
+			success: true,
+			message: 'Seller data updated successfully ✔✔',
+		};
 	}
 
 	/* Handle Auctions Functions logic*/

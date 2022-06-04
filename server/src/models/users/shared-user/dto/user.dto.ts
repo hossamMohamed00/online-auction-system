@@ -19,14 +19,11 @@ export class UserDto {
 	role: string;
 
 	@Expose()
-	isBlocked: boolean;
+	image: any;
 
 	@Expose()
-	blockReason: string;
+	phoneNumber: Number;
 
 	@Expose()
-	isWarned: boolean;
-
-	@Expose()
-	warningMessage: string;
+	address: String;
 }
