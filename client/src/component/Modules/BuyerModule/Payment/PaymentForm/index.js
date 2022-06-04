@@ -13,7 +13,7 @@ const PaymentForm = props => {
 	// Get the handle submit method
 	const AmountRef = useRef();
 	const [AmountErrorMessage, setAmountErrorMessage] = useState(
-		'please enter Amount To charge your wallet ❌',
+		'Charge amount must be more than 100 USD',
 	);
 	const { handleSubmit, PaymentIntentId, Loading } = usePaymentForm(
 		props.onReload,
@@ -35,7 +35,6 @@ const PaymentForm = props => {
 			);
 		}
 	};
-
 
 	//* Return the form that responsible for payment
 	return (
@@ -78,7 +77,6 @@ const PaymentForm = props => {
 							: 'float-left btn-success col-sm-12'
 					} `}
 				>
-
 					Charge Wallet Now
 				</button>
 			</form>

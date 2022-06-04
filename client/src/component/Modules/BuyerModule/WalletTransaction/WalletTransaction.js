@@ -80,13 +80,9 @@ const WalletTransaction = () => {
 
 	const columns = [
 		{
-			name: 'Name',
-			selector: row => 'System',
-			sortable: true,
-		},
-		{
 			name: 'Type',
 			selector: row => row.transactionType.toUpperCase(),
+			sortable: true,
 		},
 		{
 			name: 'Amount',
@@ -95,8 +91,15 @@ const WalletTransaction = () => {
 		},
 		{
 			name: 'Date',
-			selector: row => moment(row.createdAt).format('L'),
+			selector: row =>
+				moment(row.createdAt).format('ddd DD/MM [at] hh:mm:ss a'),
 			sortable: true,
+		},
+		{
+			name: 'Auction Assurance',
+			selector: row => (row.isBlockAssuranceTransaction ? 'YES' : 'NO'),
+			sortable: true,
+			center: true,
 		},
 		{
 			name: 'Actions',
