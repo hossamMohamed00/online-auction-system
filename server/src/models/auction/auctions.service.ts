@@ -537,6 +537,10 @@ export class AuctionsService
 
 		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
 
+		/*---------------------*/
+		// Recover all joined bidders auction assurance (except winner bidder)
+		await this.recoverAuctionAssurance(auctionId);
+
 		return true;
 
 		//TODO: Check who the winner of the auction
@@ -838,6 +842,37 @@ export class AuctionsService
 			name: auctionWinner.name,
 			email: auctionWinner.email,
 		};
+	}
+
+	/**
+	 * Recover auction's assurance to all bidders
+	 * @param auctionId
+	 */
+	async recoverAuctionAssurance(auctionId: string) {
+		const auction = await this.auctionModel
+			.findById(auctionId)
+			.populate('bidders')
+			.populate('winningBuyer');
+
+		//* Filter bidders to remove winner
+		let bidders = auction.bidders;
+
+		//* Get assurance and recover to bidders wallet
+		const assuranceValue = auction.chairCost;
+
+		const winnerBuyer = auction.winningBuyer;
+
+		bidders.forEach(async bidder => {
+			//* Skip the winner
+			if (bidder._id.toString() == winnerBuyer?._id.toString()) {
+				this.logger.debug('Winner bidder, skipping...');
+				return;
+			}
+
+			await this.walletService.recoverAssuranceToBidder(bidder, assuranceValue);
+		});
+
+		return true;
 	}
 	/*-------------------------*/
 	/* Helper functions */

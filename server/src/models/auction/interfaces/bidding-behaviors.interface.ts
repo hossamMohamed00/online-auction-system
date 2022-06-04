@@ -34,4 +34,7 @@ export interface BiddingBehaviors {
 
 	//* Get the winner of the auction
 	getAuctionWinner(auctionId: string);
+
+	//* Recover all blocked assurance from bidders
+	recoverAuctionAssurance(auctionId: string): Promise<boolean>;
 }

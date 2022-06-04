@@ -1,11 +1,4 @@
-import {
-	IsString,
-	IsNotEmpty,
-	IsNumber,
-	Min,
-	Max,
-	IsEnum,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, Min, IsEnum, IsBoolean } from 'class-validator';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { TransactionType } from '../enums';
 
@@ -23,6 +16,9 @@ export class CreateTransactionDto {
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;
+
+	@IsBoolean()
+	isBlockAssuranceTransaction: boolean;
 
 	@IsNotEmpty()
 	paymentIntentId: string;

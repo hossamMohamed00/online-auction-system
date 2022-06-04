@@ -126,6 +126,7 @@ export default class WalletService {
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Deposit,
+			isBlockAssuranceTransaction: false,
 			sender: user,
 			recipient: user,
 			paymentIntentId: successOrFailRes.data.paymentIntentId,
@@ -183,6 +184,7 @@ export default class WalletService {
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Withdrawal,
+			isBlockAssuranceTransaction: false,
 			sender: user,
 			recipient: user,
 			paymentIntentId: paymentIntentId,
@@ -201,6 +203,9 @@ export default class WalletService {
 	 * @param assuranceValue
 	 */
 	public async blockAssuranceFromWallet(bidder: Buyer, assuranceValue: number) {
+		this.logger.debug(
+			`Blocking ${assuranceValue} from bidder ${bidder.name} wallet`,
+		);
 		//* Get bidder wallet
 		const wallet = this.walletModel.findOne({ user: bidder });
 
@@ -214,9 +219,10 @@ export default class WalletService {
 		//* Save the transaction into db
 		const transaction = await this.transactionService.createTransaction({
 			amount: assuranceValue,
-			transactionType: TransactionType.Assurance,
-			sender: bidder,
-			recipient: '627fec04821fa4ccde7ceb79',
+			transactionType: TransactionType.BlockAssurance,
+			sender: null,
+			recipient: null,
+			isBlockAssuranceTransaction: false,
 			paymentIntentId: null,
 		});
 
@@ -226,6 +232,44 @@ export default class WalletService {
 
 		return true;
 	}
+
+	/**
+	 * Recover assurance to bidder wallet
+	 * @param bidder
+	 * @param assuranceValue
+	 */
+	public async recoverAssuranceToBidder(bidder: Buyer, assuranceValue: number) {
+		this.logger.debug(
+			`Recovering ${assuranceValue} to bidder ${bidder.name} wallet...`,
+		);
+
+		//* Get bidder wallet
+		const wallet = this.walletModel.findOne({ user: bidder });
+
+		if (!wallet) {
+			throw new BadRequestException('Wallet not found for that user!!');
+		}
+
+		//* Update bidder wallet balance
+		await this.updateWalletBalance(bidder, assuranceValue, false);
+
+		//* Save the transaction into db
+		const transaction = await this.transactionService.createTransaction({
+			amount: assuranceValue,
+			transactionType: TransactionType.RecoverAssurance,
+			sender: null,
+			recipient: null,
+			isBlockAssuranceTransaction: true,
+			paymentIntentId: null,
+		});
+
+		if (!transaction) {
+			throw new BadRequestException('Transaction not created!!');
+		}
+
+		return true;
+	}
+
 	/*--------------------------------*/
 	//* Helper methods
 

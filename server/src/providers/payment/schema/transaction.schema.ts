@@ -18,20 +18,22 @@ export class Transaction {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: User.name,
 		autopopulate: true,
-		required: true,
 	})
-	sender: User;
+	sender: User | null;
 
 	@Prop({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: User.name,
 		autopopulate: true,
-		required: true,
 	})
-	recipient: User | string;
+	recipient: User | null;
 
 	@Prop({ enum: Object.values(TransactionType), required: true })
 	transactionType: TransactionType;
+
+	//* This field only true if the transaction is related to auction assurance
+	@Prop({ default: false })
+	isBlockAssuranceTransaction: boolean;
 
 	@Prop()
 	paymentIntentId: string | null;
