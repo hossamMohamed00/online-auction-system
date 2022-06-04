@@ -779,6 +779,9 @@ export class AuctionsService
 				bidIncrement, // Set the bid increment
 				minimumBidAllowed: newMinimumBid, // Set the new minimum bid
 				winningBuyer: bid.user, // Set the winning bidder
+				$push: {
+					bids: bid,
+				},
 			},
 			{ new: true },
 		);
