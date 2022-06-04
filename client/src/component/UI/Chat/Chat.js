@@ -10,15 +10,19 @@ import ChatHistory from './ChatHistory';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
+import Modal_ from '../Modal/modal';
+import { useNavigate } from 'react-router-dom';
 
 const Chat = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [chatWith, setChatWith] = useState('');
+	const [ShowModal, setShowModal] = useState(true);
+
 	const [showChatHistory, setShowChatHistory] = useState(true);
 
-
+	const redirectUserToHomePage = useNavigate()
 	// establish socket connection
 	const socket = io('http://localhost:8000/chat', {
 		extraHeaders: {
@@ -35,7 +39,7 @@ const Chat = (props) => {
 
 	return (
 		<>
-		{isLoggedIn && (
+		{isLoggedIn ? (
 			<PageContent className={`${classes.PageContentClasses}`}>
 				<Row className="h-100 m-0">
 					<Col
@@ -44,16 +48,12 @@ const Chat = (props) => {
 						sm={12}
 						className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
 					>
-						{/* {role !== 'employee' ? */}
 							<ChatHistory
 								chatWith={getChatWith}
 								className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
 								onShow = {ShowChatHistoryHandler}
 								getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
 							/>
-						{/* : */}
-							{/* <p> Employee</p> */}
-						{/* } */}
 					</Col>
 					<Col
 						lg={8}
@@ -75,7 +75,14 @@ const Chat = (props) => {
 				</Row>
 			</PageContent>
 			)
-			// else not logged in => will show modal
+			:
+			<Modal_
+				show={ShowModal}
+				onHide={()=> setShowModal(false)}
+				title= "Please Logged in First, before Chatting  "
+				btnName={'Log in' }
+				btnHandler={() => redirectUserToHomePage('/login')}
+			/>
 		}
 		</>
 	);

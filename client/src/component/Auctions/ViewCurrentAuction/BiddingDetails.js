@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classes from './ViewCurrentAuction.module.css';
 
-const BiddingDetails = ({socket , isShowBids}) => {
-	const [roomData , setRoomData] = useState([])
+const BiddingDetails = ({roomData }) => {
 
-	useEffect(()=>{
-		socket.on('room-data' , data => {
-			console.log('room data' , data)
-			setRoomData(data.auctionDetails)
-		})
-		socket.on('new-bid', data => {
-			console.log('new-bid' , data)
-			// setNewBidData(data)
-		});
-	},[socket])
+
+
 	return (
-		<div className={`d-flex justify-content-center ${isShowBids ? 'd-flex': 'd-none'}`}>
-			<div className={classes.BiddingDetails}>
+		<div className={`d-flex justify-content-center`}>
+			<div className={`${classes.BiddingDetails} ${roomData.status === 'closed' ? 'd-none' : 'd-block'}`}>
 				<h6> Minimum Bid Allowed </h6>
 					<p> {roomData && roomData['minimumBidAllowed']}  </p>
 			</div>
@@ -25,6 +16,16 @@ const BiddingDetails = ({socket , isShowBids}) => {
 				<h6> Current bid Now </h6>
 				<p> {roomData && roomData['currentBid'] ?roomData['currentBid']  : 0}  </p>
 			</div>
+			{
+				roomData.status === 'closed' && (
+					<div className={`${classes.BiddingDetails} bg-danger`}>
+						<h6> Winner Bidder </h6>
+						{/* <p> {roomData && roomData['winningBuyer'] ? roomData['winningBuyer']  : 'name'}  </p> */}
+						<p>  name  </p>
+
+					</div>
+				)
+			}
 		</div>
 	);
 }

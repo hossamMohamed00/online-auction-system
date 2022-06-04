@@ -4,7 +4,7 @@ import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionHeader({ AuctionData , isShownBidsProp , socket}) {
+function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , BiddingAmount , roomData , AuctionEndMessage}) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 
@@ -27,6 +27,9 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket}) {
 		if(isShownBidsProp){
 			btnBidsHandler()
 		}
+		else{
+			btnDetailsHandler()
+		}
 	},[isShownBidsProp])
 	// end show bid when bidder joined in auction and want to bid
 
@@ -35,7 +38,7 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket}) {
 		<Fragment>
 			<div className={classes.AuctionHeader}>
 				<button
-					className={`btn ${isShownDetails ? classes.ActiveLink : ''}`}
+					className={`btn ${isShownDetails && !isShownBids ? classes.ActiveLink : ''}`}
 					onClick={btnDetailsHandler}
 				>
 					Details
@@ -44,14 +47,27 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket}) {
 					<button
 						className={`btn ${isShownBids ? classes.ActiveLink : ''} ${classes.showBidsBtn}`}
 						onClick={btnBidsHandler}
-						disabled = {!isShownBidsProp}
+						disabled = {AuctionData && AuctionData.status ==='status' }
 					>
 						Bids
 					</button>
 				)}
 			</div>
-			{isShownDetails && <AuctionDetails data={AuctionData} />}
-			{isShownBids && <Bids isShownBidsProp = {isShownBidsProp} socket={socket} />}
+			{isShownDetails && <AuctionDetails
+				data={AuctionData && AuctionData}
+				AuctionEndMessage = {AuctionEndMessage}
+
+				// data={(AuctionData && AuctionData.status === 'ongoing' && roomData) ? roomData.auctionDetails : AuctionData}
+				/>
+			}
+			{isShownBids &&
+				<Bids
+					isShownBidsProp = {isShownBids}
+					socket={socket}
+					BidderIsBid={BidderIsBid}
+					roomData={roomData && roomData }
+				/>
+			}
 		</Fragment>
 	);
 }

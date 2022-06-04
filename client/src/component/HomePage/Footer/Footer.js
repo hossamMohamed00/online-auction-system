@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
 	faEnvelope,
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import classes from './Footer.module.css';
 import { useSelector } from 'react-redux';
+import Modal_ from '../../UI/Modal/modal';
 
 function Footer() {
 	// start contact us
@@ -30,6 +31,12 @@ function Footer() {
 	// start footer chat path
 
 	const role = useSelector(store => store.AuthData.role);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+
+	const [ShowModal, setShowModal] = useState(false);
+	const redirectUserToHomePage = useNavigate()
+
+
 	const ChatPath = () => {
 		if(role==='seller'){
 			return '/seller-dashboard/chat?email=Support@email.com'
@@ -88,15 +95,27 @@ function Footer() {
 			)}
 			<ul>
 				{data.links.map((_link, index) => (
-					<li key={index} className={_link.name==='Chat now' && HideContactChat ? 'd-none' : 'd-block' }>
-						<Link
-							to={_link.path}
-							className={`text-decoration-none ${
-								classes.footerLinks
-							} ${_link.className && classes[_link.className]}`}
-						>
-							{_link.name}
-						</Link>
+					<li key={index} className={_link.name ==='Chat now' && HideContactChat ? 'd-none' : 'd-block' }>
+						{!isLoggedIn && _link.name === 'Chat now' ?
+							<button
+								className={` ${
+									classes.footerLinks
+								} ${_link.className && classes[_link.className]}`}
+								onClick = {()=> setShowModal(true)}
+							>
+								{_link.name}
+							</button>
+							:
+								<Link
+									to={_link.path}
+									className={`text-decoration-none ${
+										classes.footerLinks
+									} ${_link.className && classes[_link.className]}`}
+								>
+									{_link.name}
+								</Link>
+
+						}
 					</li>
 				))}
 			</ul>
@@ -106,23 +125,37 @@ function Footer() {
 	//end footerMoreDetails
 
 	return (
-		<div className={`${classes.Footer} `}>
-			{/* start contact details */}
-			<div className={classes.ContactUs}>
-				<Row className="m-0 p-0">{ContactUs} </Row>
-			</div>
-			{/* end contact details */}
+		<>
+			<div className={`${classes.Footer} `}>
+				{/* start contact details */}
+				<div className={classes.ContactUs}>
+					<Row className="m-0 p-0">{ContactUs} </Row>
+				</div>
+				{/* end contact details */}
 
-			{/* start footer links and details */}
-			<div className={classes.FooterMoreDetails}>
-				<Row className="m-0 p-0">{FooterMoreDetails}</Row>
-			</div>
-			{/* end footer links and details */}
+				{/* start footer links and details */}
+				<div className={classes.FooterMoreDetails}>
+					<Row className="m-0 p-0">{FooterMoreDetails}</Row>
+				</div>
+				{/* end footer links and details */}
 
-			<div className={classes.SocialMediaIcons}>
-				<p> &copy; 2022 OnlineAuction.com</p>
+				<div className={classes.SocialMediaIcons}>
+					<p> &copy; 2022 OnlineAuction.com</p>
+				</div>
 			</div>
-		</div>
+
+			{/* start Modal when unauthorized user want to chat with agent */}
+			{ShowModal && <Modal_
+				show={ShowModal}
+				onHide={()=> setShowModal(false)}
+				title= "Please Logged in First, before Chatting  "
+				btnName={'Log in' }
+				btnHandler={() => redirectUserToHomePage('/login')}
+			/>}
+			{/* end Modal when unauthorized user want to chat with agent */}
+
+		</>
+
 	);
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Col, Row } from 'react-bootstrap';
@@ -17,27 +17,80 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getSingleAuction } from '../../../Api/AuctionsApi';
 import { io } from 'socket.io-client';
 import BiddingDetails from './BiddingDetails';
+import { toast } from 'react-toastify';
+import Modal_ from '../../UI/Modal/modal';
 
-const ViewCurrentAuction = () => {
+const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	const role = useSelector(store => store.AuthData.role);
 
 	// show all bids when bidder is joined
 	const [isShowBids , setIsShowBids] = useState('')
+	const [BidderIsJoined , setBidderIsJoined] = useState('')
+	const [BidderIsBid , setBidderIsBid] = useState('')
+	const [BiddingAmount , setBiddingAmount] = useState('')
+
+
+
+	const [socket , setSocket] = useState(null)
+	const [roomData , setRoomData] = useState([])
+
 
 	const { sendRequest, status, data } = useHttp(getSingleAuction);
 
 	// start join auction
 	const accessToken = useSelector(store => store.AuthData.idToken);
-
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+	const [AuctionEndMessage , setAuctionEndMessage] = useState('')
+	const [BidderWinner,setBidderWinner] = useState('')
 
 	// establish socket connection
-	const socket = io('http://localhost:8000/auction/bidding', {
-		extraHeaders: {
-			authorization: `Bearer ${accessToken}`,
-		},
-	});
+	useEffect(()=>{
+		if(BidderIsJoined && accessToken){
+			setSocket(io('http://localhost:8000/auction/bidding', {
+					extraHeaders: {
+						authorization: `Bearer ${accessToken}`,
+					}}
+			))
+		}
+	},[BidderIsJoined,accessToken])
+
+	useEffect(()=>{
+		if(socket && BidderIsJoined && isLoggedIn){
+			socket.on('room-data' , data => {
+				setRoomData(data)
+			})
+		}
+	},[BidderIsJoined, socket])
+
+	useEffect(()=>{
+		if(!!socket ){
+			socket.on('auction-ended' , data => {
+				setAuctionEndMessage(data.message)
+				localStorage.removeItem('BidderIsJoined')
+				setIsShowBids(false)
+				toast.success(data.message)
+			})
+
+		}
+	},[!!socket])
+
+	useEffect(()=>{
+		if(AuctionEndMessage){
+			socket.emit('get-winner')
+			socket.on('winner-bidder' , data => {
+				console.log(data)
+				setBidderWinner(data)
+				// toast.success(data.message)
+				localStorage.removeItem('BidderIsJoined')
+				setIsShowBids(false)
+			})
+		}
+
+	},[AuctionEndMessage])
+
+	// start new Bidding
 
 
 	// end join auction
@@ -55,7 +108,13 @@ const ViewCurrentAuction = () => {
 			<Row className={`${classes.ViewCurrentAuction} m-0 p-0 h-100`}>
 				<Col lg={5} className={classes.ItemImage}>
 					{/* start Bidding Details */}
-						<BiddingDetails socket={socket} isShowBids={isShowBids} />
+						{ AuctionData && (AuctionData.status === 'ongoing' || 'closed') &&
+							<BiddingDetails
+								roomData={roomData.auctionDetails ? roomData.auctionDetails : AuctionData}
+								isShowBids={isShowBids}
+								BidderIsBid = {BidderIsBid}
+							/>
+						}
 					{/* end Bidding Details */}
 
 					{data && data.item.image && data.item.image.length === 1 ? (
@@ -81,14 +140,43 @@ const ViewCurrentAuction = () => {
 				</Col>
 
 				<Col lg={7} className={classes.Auction}>
-					<AuctionHeader AuctionData={AuctionData} isShownBidsProp = {isShowBids} socket ={socket} />
+					{<AuctionHeader
+						AuctionData={AuctionData}
+						isShownBidsProp = {isShowBids}
+						socket ={socket}
+						BidderIsJoined={BidderIsJoined}
+						BidderIsBid = {BidderIsBid}
+						roomData={roomData ? roomData : AuctionData}
+						AuctionEndMessage = {AuctionEndMessage}
+						BidderWinner = {BidderWinner}
+						/>
+					 }
 					{!ClosedAuction && (
-						<AuctionFooter AuctionStatus={AuctionData && AuctionData.status} showBids={(value) => setIsShowBids(value)} socket ={socket} />
+						<AuctionFooter
+							AuctionStatus={AuctionData && AuctionData.status}
+							showBids={(value) => setIsShowBids(value)}
+							socket ={socket}
+							setBidderJoin={(value) => setBidderIsJoined(value)}
+							setBidderIsBid={(value)=>setBidderIsBid(value)}
+							MinimumBidAllowed = {roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']}
+							BiddingAmount = {(value)=> setBiddingAmount(value)}
+							AuctionEndMessage = {!!AuctionEndMessage}
+
+						/>
 					)}
 				</Col>
 			</Row>
+
+			{/* Modal to Show Bidder-Winner */}
+			{BidderWinner && <Modal_
+				show={BidderWinner}
+				onHide={()=> setBidderWinner(false)}
+				title= "Bidder Winner"
+
+			/>}
+
 		</div>
 	);
-};
+})
 
 export default ViewCurrentAuction;

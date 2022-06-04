@@ -1,16 +1,18 @@
 /* .ViewAllAuctions{
 	margin-top: 10vh;
 } */
-
+/* .ViewAllAuctions {
+	min-height: 140vh!important;
+} */
 .FilterAuctions {
 	background-color: #262726;
 	color: white;
-	min-height: 100vh;
+	max-height: 100vh;
 	margin-top: 55.9px;
 	padding: 15px;
 	border-top: 1px solid white;
 	position: fixed;
-	width: inherit;
+	width: fit-content;
 	z-index: 1000;
 }
 
@@ -24,7 +26,10 @@
 	margin-bottom: 25px;
 	position: relative;
 }
-
+.AuctionCategory{
+	max-height: 35vh;
+	overflow-y:scroll;
+}
 .AuctionType label,
 .AuctionCategory label {
 	color: var(--paragraph-color) !important;
@@ -35,8 +40,7 @@
 .AuctionCategory label:hover {
 	color: var(--main-color) !important;
 }
-.AuctionType,
-.AuctionCategory {
+.AuctionType {
 	border-bottom: 1px solid #4a4949;
 }
 .AuctionPrice > div > input {
@@ -49,7 +53,7 @@
 }
 
 .btnFilter {
-	margin-top: 50px !important;
+	margin-top: 20px !important;
 	background-color: #34588f;
 	color: white;
 }

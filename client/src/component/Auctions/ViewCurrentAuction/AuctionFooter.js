@@ -9,9 +9,8 @@ import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { joinAuctionApi } from '../../../Api/BuyerApi';
-// import { io } from 'socket.io-client';
 
-function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
+function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , BiddingAmount , AuctionEndMessage}) {
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -26,7 +25,6 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
 	const [isExistErrorWhenJoinAuction , setIsExistErrorWhenJoinAuction] = useState(false)
-
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
@@ -86,26 +84,18 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 
 	// start join auction handler
 	const joinAuctionHandler = (OnGoingStatus) =>{
+
 		// start send request to join auction
-		if(OnGoingStatus && !isJoined){
+		if(OnGoingStatus && !isJoined && accessToken){
 			console.log('join auction')
 			const idToken = accessToken
 			const id = AuctionId
 			sendRequestForJoinAuction({ idToken, id})
 		}
+		// start to place bid
 		else if(isJoined && OnGoingStatus){
-			console.log("joined and want to place a bid")
-			socket.emit('place-bid', {
-				auctionId : "629a157933c157eddd21b097",
-				bidValue : 2000
-				}
-			);
-			// view exception error in modal
-			socket.on('exception', data => {
-				console.log('exception' , data.message)
-				setIsExistErrorWhenJoinAuction(data.message)
-				setModalShow(true)
-			});
+			setBidderIsBid(Math.random())
+			setModalShow(true)
 		}
 		else{
 			setModalShow(true);
@@ -125,8 +115,31 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 	},[statusForJoinAuction])
 
 	useEffect(()=> {
-		showBids(true)
+		if(isJoined){
+			showBids(Math.random())
+			setBidderJoin(Math.random())
+		}
+
 	},[isJoined])
+
+
+	// start get bidding amount from modal and send to bid
+	const btnBiddingHandler = (value) => {
+
+		socket.emit('place-bid', {
+			auctionId : AuctionId,
+			bidValue : value
+		})
+
+		BiddingAmount(value)
+		// view exception error in modal
+		socket.on('exception', data => {
+			setIsExistErrorWhenJoinAuction(data.message)
+			setModalShow(true)
+		})
+		setModalShow(false)
+
+	}
 
 	// end join auction handler
 	return (
@@ -150,7 +163,7 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 				</div>
 			)}
 			{/* start when auction ongoing */}
-			{role === 'buyer' && OnGoingStatus && (
+			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage &&(
 
 				<button
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid} ${!isJoined && OnGoingStatus && 'bg-danger'}`}
@@ -162,7 +175,6 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 			)}
 			{/* start when auction upcoming */}
 			{role === 'buyer' && UpComingStatus && (
-
 				<button
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
@@ -214,7 +226,12 @@ function AuctionFooter({ AuctionStatus , showBids , socket , setNewBidData}) {
 				rejectHandler={rejectHandler}
 				btnSaved={btnSaved}
 				SavedAuctionId	= {AuctionId}
+				// start bidding
+				btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
 				errorWhenJoinAuction = {isExistErrorWhenJoinAuction && isExistErrorWhenJoinAuction}
+				MinimumBidAllowed = {MinimumBidAllowed}
+				// end bidding
+
 			/>
 		</>
 	);

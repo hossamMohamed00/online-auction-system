@@ -12,6 +12,7 @@ const ModalUi = props => {
 	const [BidValue, setBidValue] = useState(1500);
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
+	const AmountRef = useRef()
 
 	const role = useSelector(store => store.AuthData.role);
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
@@ -46,7 +47,7 @@ const ModalUi = props => {
 
 	const BidValueValidation = e => {
 		setBidValue(e.target.value);
-		if (e.target.value.trim() < 1500) {
+		if (e.target.value.trim() < props.MinimumBidAllowed) {
 			setIsBidValid(false);
 		} else {
 			setIsBidValid(true);
@@ -107,6 +108,7 @@ const ModalUi = props => {
 										min="1500"
 										value={BidValue}
 										onChange={BidValueValidation}
+										ref = {AmountRef}
 									/>
 									<span
 										className={` input-group-text ${classes['input-group-text']} `}
@@ -116,8 +118,8 @@ const ModalUi = props => {
 								</div>
 								{!isBidValid && (
 									<p className="px-2">
-										You must bid at least{' '}
-										<span className={classes.bidValue}> 1500 $ </span>
+										You must bid at least
+										<span className={classes.bidValue}> {props.MinimumBidAllowed} </span>
 									</p>
 								)}
 							</div>
@@ -159,6 +161,7 @@ const ModalUi = props => {
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
 							type="button"
+							onClick={()=> props && props.btnBiddingHandler(AmountRef.current.value)}
 						>
 							Place My Bid
 						</button>
