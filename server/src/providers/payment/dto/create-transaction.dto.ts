@@ -1,14 +1,5 @@
-import {
-	IsString,
-	IsNotEmpty,
-	IsNumber,
-	Min,
-	Max,
-	IsEnum,
-} from 'class-validator';
-import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
-import { Seller } from 'src/models/users/seller/schema/seller.schema';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { IsNotEmpty, IsNumber, Min, IsEnum, IsBoolean } from 'class-validator';
+import { ObjectId } from 'mongoose';
 import { TransactionType } from '../enums';
 
 export class CreateTransactionDto {
@@ -18,13 +9,16 @@ export class CreateTransactionDto {
 	amount: number;
 
 	@IsNotEmpty()
-	sender: User;
+	sender: ObjectId;
 
 	@IsNotEmpty()
-	recipient: User;
+	recipient: ObjectId;
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;
+
+	@IsBoolean()
+	isBlockAssuranceTransaction: boolean;
 
 	@IsNotEmpty()
 	paymentIntentId: string;
