@@ -1,6 +1,8 @@
 import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
+import { ResponseResult } from 'src/common/types';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Review } from 'src/models/review/schema/review.schema';
+import { UserUpdateDto } from '../../shared-user/dto/update-user.dto';
 import { Seller } from '../schema/seller.schema';
 
 export interface SellerProfileBehaviors {
@@ -10,4 +12,10 @@ export interface SellerProfileBehaviors {
 		auctions: Auction[];
 		reviews: Review[];
 	}>;
+
+	//* Edit seller profile
+	editProfile(
+		userUpdateDto: UserUpdateDto,
+		userId: string,
+	): Promise<ResponseResult>;
 }

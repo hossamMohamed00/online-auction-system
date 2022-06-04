@@ -12,6 +12,9 @@ export interface AdminComplaintsBehavior {
 		adminFilterComplaintQueryDto: AdminFilterComplaintQueryDto,
 	): Promise<Complaint[]>;
 
+	//* List all Complaint in system for the admin
+	listAllComplaintInSystem(): Promise<Complaint[]>;
+
 	//* Mark an complaint as read
 	markAsRead(complaintId: MongoObjectIdDto): Promise<ResponseResult>;
 

@@ -21,6 +21,8 @@ import WalletService from 'src/providers/payment/wallet.service';
 import { Seller, SellerDocument } from '../users/seller/schema/seller.schema';
 import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
 import { AvailableRolesForRegister } from '../users/shared-user/enums';
+import { ImageType } from '../items/schema/image.type';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +38,7 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
 		private readonly walletService: WalletService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	private logger: Logger = new Logger('AuthService');
@@ -57,6 +60,31 @@ export class AuthService {
 			registerUserDto.role,
 		);
 
+		//* Upload image to cloudinary
+		let image: ImageType = new ImageType();
+		if (registerUserDto.image) {
+			this.logger.debug('Uploading user image to cloudinary...');
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					registerUserDto.image,
+				);
+
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					this.logger.log('User image uploaded to cloudinary successfully ✔✔');
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				this.logger.error('Unable to upload image to cloudinary');
+				throw new BadRequestException(
+					'Cannot upload image to cloudinary, ',
+					error,
+				);
+			}
+		}
+
 		//? Check whether the user is buyer or seller
 		let createdUser;
 		if (registerUserDto.role === AvailableRolesForRegister.Buyer) {
@@ -64,6 +92,7 @@ export class AuthService {
 			createdUser = new this.buyerModel({
 				...registerUserDto,
 				stripeCustomerId: stripeCustomer.id,
+				image,
 			});
 
 			//? Create new wallet to the seller
@@ -73,6 +102,7 @@ export class AuthService {
 			createdUser = new this.sellerModel({
 				...registerUserDto,
 				stripeCustomerId: stripeCustomer.id,
+				image,
 			});
 
 			//? Create new wallet to the buyer

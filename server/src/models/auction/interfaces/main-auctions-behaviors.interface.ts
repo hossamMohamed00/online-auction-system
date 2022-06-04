@@ -18,7 +18,11 @@ export interface MainAuctionsBehaviors {
 	//* Get single auction
 	findById(_id: string): Promise<Auction>;
 
+	//* Get all auction of specific status
 	getAuctionByStatus(status: AuctionStatus): Promise<AuctionDocument[]>;
+
+	//* Get all auction in one category
+	getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]>;
 
 	//* Update auction
 	update(

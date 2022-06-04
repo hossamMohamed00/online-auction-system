@@ -69,31 +69,11 @@ export class CategoryService {
 	 * @returns array of auctions
 	 */
 	async getAuctionsOfCategory(categoryId: string): Promise<AuctionDocument[]> {
+		this.logger.log('Retrieving all auctions for ' + categoryId + '...');
+
 		//* Find the category
-		const category = await this.findOne(categoryId);
-
-		if (!category) {
-			throw new BadRequestException('Category not found ❌');
-		}
-
-		//* Populate the virtual auctions property
-		await category.populate({
-			path: 'auctions',
-			populate: [
-				{
-					path: 'item',
-				},
-				{
-					path: 'category',
-				},
-			],
-		});
-
-		// FIXME: Fix this error
-		// @ts-ignore: Unreachable code error
-		const auctions: AuctionDocument[] = category.auctions;
-
-		this.logger.log('Retrieving all auctions for ' + category.name);
+		const auctions: AuctionDocument[] =
+			await this.auctionService.getAuctionByCategory(categoryId);
 
 		return auctions;
 	}

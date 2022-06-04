@@ -12,6 +12,10 @@ import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { ListBidderAuctionsQueryDto } from './dto';
 import { BidderAuctionsEnumQuery } from './enums';
 import { ResponseResult } from 'src/common/types';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ImageType } from '../shared-user/schema/image.type';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { Seller } from '../seller/schema/seller.schema';
 
 @Injectable()
 export class BuyerService {
@@ -23,6 +27,7 @@ export class BuyerService {
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly auctionService: AuctionsService,
 		private readonly reviewService: ReviewService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/* Profile Functions Logic */
@@ -44,6 +49,55 @@ export class BuyerService {
 		}
 
 		return buyer;
+	}
+	async editProfile(
+		buyerId: string,
+		updateBuyerDto: UserUpdateDto,
+	): Promise<ResponseResult> {
+		//* Check if buyer upload new image to upload it to cloudinary
+		let image: ImageType;
+		let imageUpdated = false;
+		if (updateBuyerDto.image) {
+			imageUpdated = true;
+			this.logger.debug('Uploading image to cloudinary...');
+			image = new ImageType();
+
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					updateBuyerDto.image,
+				);
+
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					this.logger.log('User Image uploaded successfully!');
+					image.url = savedImage.url;
+					image.publicId = savedImage.public_id;
+				}
+			} catch (error) {
+				this.logger.error('Cannot upload user image to cloudinary ❌');
+				throw new BadRequestException('Cannot upload image to cloudinary ❌');
+			}
+
+			//* Override image field to the uploaded image
+			updateBuyerDto.image = image;
+		}
+
+		//* Find the buyer and update his data
+		const buyer = await this.buyerModel.findByIdAndUpdate(buyerId, {
+			...updateBuyerDto,
+		});
+
+		//? Remove old image if there was one
+		if (imageUpdated && buyer.image) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(buyer.image.publicId);
+		}
+
+		return {
+			success: true,
+			message: 'Buyer data updated successfully ✔✔',
+		};
 	}
 
 	/* Auctions Functions Logic */
@@ -193,6 +247,33 @@ export class BuyerService {
 			message:
 				'Auction saved successfully, you will be notified when auction start.',
 		};
+	}
+
+	/**
+	 * Check if given auction is saved or not
+	 * @param buyer
+	 * @param auctionId
+	 */
+	async isSavedAuction(
+		buyer: Buyer,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		this.logger.debug(`Check if ${buyer.name} is saved auction ${auctionId}!`);
+
+		const savedAuction = await this.buyerModel.countDocuments({
+			_id: buyer._id,
+			savedAuctions: auctionId,
+		});
+
+		return savedAuction == 0
+			? {
+					success: false,
+					message: 'Auction is not saved ✖✖',
+			  }
+			: {
+					success: true,
+					message: 'Auction is saved ✔✔',
+			  };
 	}
 
 	/**

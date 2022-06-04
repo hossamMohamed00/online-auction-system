@@ -35,6 +35,8 @@ import { Buyer, BuyerDocument } from './schema/buyer.schema';
 import { FindReviewInSeller } from './../../review/dto/find-review-in-seller.dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ResponseResult } from 'src/common/types';
+import { FormDataRequest } from 'nestjs-form-data';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 
 @ApiTags('Buyer')
 @Controller('buyer')
@@ -54,6 +56,16 @@ export class BuyerController
 	@HttpCode(HttpStatus.OK)
 	async getProfile(@Param() { id: buyerId }: MongoObjectIdDto): Promise<Buyer> {
 		return this.buyerService.getProfile(buyerId);
+	}
+
+	@Roles(Role.Buyer)
+	@Patch('profile')
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
+	editProfile(
+		@Body() userUpdateDto: UserUpdateDto,
+		@GetCurrentUserData('_id') buyerId: string,
+	): Promise<ResponseResult> {
+		return this.buyerService.editProfile(buyerId, userUpdateDto);
 	}
 
 	/* Handle Auctions Functions */
@@ -109,6 +121,16 @@ export class BuyerController
 		@Param() { id }: MongoObjectIdDto,
 	): Promise<ResponseResult> {
 		return this.buyerService.saveAuctionForLater(buyer, id);
+	}
+
+	@Roles(Role.Buyer)
+	@Get('auction/is-saved/:id')
+	@HttpCode(HttpStatus.OK)
+	isSavedAuction(
+		@GetCurrentUserData() buyer: Buyer,
+		@Param() { id: auctionId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.buyerService.isSavedAuction(buyer, auctionId);
 	}
 
 	/*--------------------*/
