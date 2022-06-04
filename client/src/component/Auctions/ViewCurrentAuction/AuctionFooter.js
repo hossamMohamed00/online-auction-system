@@ -27,7 +27,6 @@ function AuctionFooter({ AuctionStatus, sellerEmail, RejectionMessage }) {
 
 	// const SavedAuctionStatus = AuctionStatus === 'saved';
 
-	console.log(UpComingStatus);
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
 	// handle delete
@@ -43,8 +42,6 @@ function AuctionFooter({ AuctionStatus, sellerEmail, RejectionMessage }) {
 	const url = 'http://localhost:8000';
 	const email = useSelector(store => store.AuthData.email);
 
-	console.log(AuctionStatus);
-	// console.log(AuctionStatus);
 	useEffect(() => {
 		if (status === 'completed') {
 			sendRequest({ AuctionId: AuctionId, idToken: accessToken });

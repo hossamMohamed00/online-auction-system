@@ -14,7 +14,7 @@ const AdminDashboard = props => {
 		{
 			title: 'All complaints',
 			icon: faComment,
-			path: '/managersDashboard/allCompliments',
+			path: '/managersDashboard/allComplaints',
 		},
 	];
 	const dropdownListForInquiries = [
