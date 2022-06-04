@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, Min, IsEnum, IsBoolean } from 'class-validator';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
+import { ObjectId } from 'mongoose';
 import { TransactionType } from '../enums';
 
 export class CreateTransactionDto {
@@ -9,10 +9,10 @@ export class CreateTransactionDto {
 	amount: number;
 
 	@IsNotEmpty()
-	sender: User;
+	sender: ObjectId;
 
 	@IsNotEmpty()
-	recipient: User | string;
+	recipient: ObjectId;
 
 	@IsEnum(TransactionType)
 	transactionType: TransactionType;

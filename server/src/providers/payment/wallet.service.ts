@@ -220,9 +220,9 @@ export default class WalletService {
 		const transaction = await this.transactionService.createTransaction({
 			amount: assuranceValue,
 			transactionType: TransactionType.BlockAssurance,
-			sender: null,
+			sender: bidder._id,
 			recipient: null,
-			isBlockAssuranceTransaction: false,
+			isBlockAssuranceTransaction: true,
 			paymentIntentId: null,
 		});
 
@@ -258,7 +258,7 @@ export default class WalletService {
 			amount: assuranceValue,
 			transactionType: TransactionType.RecoverAssurance,
 			sender: null,
-			recipient: null,
+			recipient: bidder._id,
 			isBlockAssuranceTransaction: true,
 			paymentIntentId: null,
 		});
