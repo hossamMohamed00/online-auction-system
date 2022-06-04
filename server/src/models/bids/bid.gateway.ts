@@ -24,6 +24,7 @@ import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
+import { Bid } from './schema/bid.schema';
 
 /**
  * Its job is to handle the bidding process.
@@ -282,11 +283,15 @@ export class BidGateway
 				auctionId.toString(),
 			);
 
+		//* Get auction list of bids
+		const bids = await this.bidService.getAuctionBids(auctionId);
+
 		//* Emit room data to the client-side
 		this.server.to(auctionId.toString()).emit('room-data', {
 			room: auctionId,
 			bidders,
 			auctionDetails,
+			bids,
 		});
 	}
 }
