@@ -80,13 +80,13 @@ const AllCompliments = () => {
 
 	const columns = [
 		{
-			name: 'BuyerName',
+			name: 'From',
 			selector: row => row.from.name,
 			sortable: true,
 			center: true,
 		},
 		{
-			name: 'SellerName',
+			name: 'In',
 			selector: row => row.in.name,
 			center: true,
 			sortable: true,
@@ -119,6 +119,7 @@ const AllCompliments = () => {
 		{
 			name: 'Status',
 			center: true,
+			sortable: true,
 			cell: props => {
 				return (
 					<span className="text-info">
