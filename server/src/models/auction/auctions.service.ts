@@ -32,6 +32,7 @@ import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
+import { BuyerService } from '../users/buyer/buyer.service';
 
 @Injectable()
 export class AuctionsService
@@ -46,6 +47,7 @@ export class AuctionsService
 	constructor(
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
+		private readonly buyerService: BuyerService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly biddingIncrementRules: BiddingIncrementRules,
 		private readonly itemService: ItemService,
@@ -726,6 +728,12 @@ export class AuctionsService
 
 		//* Save the auction
 		await auction.save();
+
+		//? Remove the auction from bidder joined auctions list
+		await this.buyerService.removeAuctionFromJoinedAuctions(
+			bidder._id.toString(),
+			auctionId,
+		);
 
 		return {
 			success: true,

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { WsException } from '@nestjs/websockets';
 import { Model, ObjectId } from 'mongoose';
 import { Socket } from 'socket.io';
+import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from '../auction/auctions.service';
 
 import { AuthService } from '../auth/auth.service';
@@ -127,10 +128,13 @@ export class BidService {
 	 * @param auctionId
 	 */
 	async retreatBidderFromAuction(bidder: Buyer, auctionId: string) {
-		const result = this.auctionService.retreatBidderFromAuction(
-			bidder,
-			auctionId,
-		);
+		const result: ResponseResult =
+			await this.auctionService.retreatBidderFromAuction(bidder, auctionId);
+
+		if (!result.success) {
+			this.logger.error('Bidder not retreated 🤷‍♂️');
+			throw new WsException(result.message);
+		}
 
 		return result;
 	}

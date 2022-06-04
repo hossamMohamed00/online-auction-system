@@ -184,10 +184,7 @@ export class BidGateway
 		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		if (
-			!auctionId ||
-			!this.auctionService.isValidAuctionForBidding(auctionId)
-		) {
+		if (!auctionId) {
 			throw new WsException('You must provide valid auction id 😉');
 		}
 
@@ -212,7 +209,7 @@ export class BidGateway
 			);
 
 			this.server.to(removedBidder.room).emit('message-to-client', {
-				message: 'With sorry, a bidder left 😑',
+				message: `With sorry, ${bidder.email} left 😑`,
 				system: true, // To be used to identify the message as system message
 			});
 
