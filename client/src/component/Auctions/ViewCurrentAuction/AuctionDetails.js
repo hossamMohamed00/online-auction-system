@@ -6,8 +6,6 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data , AuctionEndMessage}) => {
-	console.log(data)
-	// const AuctionData = data.auctionDetails
 	const AuctionDate = data && data.endDate;
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 
@@ -22,9 +20,7 @@ const AuctionDetails = ({ data , AuctionEndMessage}) => {
 
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
-								Dell 20W6001LUS ThinkPad P15s Gen 2 15.6″ FHD Touchscreen
-								i7-1165G7 2.8GHz NVIDIA Quadro T500 4GB 16GB RAM 512GB SSD Win
-								10 Pro Black – Certified Refurbished
+								{data && data['item']['detailedDescription']}
 							</p>
 						</div>
 						<hr className="text-light  my-2 "></hr>

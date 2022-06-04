@@ -5,21 +5,13 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import classes from './Bids.module.css';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
-import { toast } from 'react-toastify';
 import moment from 'moment';
 
 
-const Bids = React.memo(({socket , BidderIsBid , roomData}) => {
+const Bids =({socket , BidderIsBid , roomData}) => {
 
 	const [messageToClient , setMessageToClient] = useState('')
 
-
-	useEffect(()=>{
-		if(socket && BidderIsBid){
-			socket.on('new-bid', data_ => {
-				toast.success("new Bid is Adding Successfully ❤️‍🔥 ")
-		})}
-	},[BidderIsBid])
 
 	useEffect(()=>{
 		if(socket){
@@ -44,7 +36,7 @@ const Bids = React.memo(({socket , BidderIsBid , roomData}) => {
 						/>
 
 						<strong className="me-auto text-light "> {(bidDetails['user'] && bidDetails['user']['name']) || bidDetails.userEmail} </strong>
-						<small className="text-danger fw-bold">  {moment(bidDetails.createdAt).format('LT') }</small>
+						<small className="text-danger fw-bold">  {moment(bidDetails.createdAt).format('LTS') }</small>
 
 					</div>
 					<div className="toast-body text-light">{bidDetails.amount }  </div>
@@ -61,6 +53,6 @@ const Bids = React.memo(({socket , BidderIsBid , roomData}) => {
 
 		</div>
 	);
-})
+}
 
 export default Bids;

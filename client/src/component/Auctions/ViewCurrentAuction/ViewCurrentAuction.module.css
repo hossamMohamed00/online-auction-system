@@ -60,11 +60,22 @@
 	color: white;
 	position: absolute;
 	bottom: 0px;
-	width: 90% !important;
-	right: 15px;
+	width: 45% !important;
+	left: 15px;
 	font-size: 20px;
 	transition: all 0.5s;
 	box-shadow: none !important;
+}
+.btnLeaveBid{
+	position: absolute;
+	right: 15px;
+	font-size: 20px;
+	transition: all 0.5s;
+	bottom: -4px;
+	box-shadow: none !important;
+	background-color: #244273;
+	width: 45% !important;
+
 }
 
 .btnPlaceBid:hover {

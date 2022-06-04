@@ -72,7 +72,7 @@ const ModalUi = props => {
 
 			<Modal.Header closeButton className={classes.BiddingModalHeader}>
 				<Modal.Title id="contained-modal-title-vcenter">
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) &&  !(!!props.RetreatModelTitle) && (
 						<h2 className="fw-bold">Place a Bid </h2>
 					)}
 
@@ -93,6 +93,14 @@ const ModalUi = props => {
 					{props.btnReject && role === 'admin' && (
 						<h5> write a reason for reject</h5>
 					)}
+
+					{/* start retreat From Auction */}
+					{props.RetreatModalTitle && props.RetreatModelHandler &&
+						<h5> {props.RetreatModalTitle} </h5>
+					}
+
+					{/* end retreat From Auction */}
+
 				</Modal.Title>
 			</Modal.Header>
 
@@ -109,7 +117,7 @@ const ModalUi = props => {
 					{/* end for seller  */}
 
 					{/* for buyer */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && !(!!props.RetreatModelTitle) &&(
 						<>
 							<div
 								className={` ${classes['ModalBodyForm']} ${
@@ -167,16 +175,8 @@ const ModalUi = props => {
 
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-					{/* buyer modal */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
-						<button
-							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
-							type="button"
-							onClick={()=> props && props.btnBiddingHandler(AmountRef.current.value)}
-						>
-							Place My Bid
-						</button>
-					)}
+
+					{/* start user not logged in */}
 					{!isLoggedIn && (
 						<Link
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -186,6 +186,23 @@ const ModalUi = props => {
 							Login
 						</Link>
 					)}
+					{/* end user not logged in */}
+
+					{/* start buyer modal */}
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && !(!!props.RetreatModelTitle) && (
+						<button
+							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
+							type="button"
+							onClick={()=> props && props.btnBiddingHandler(AmountRef.current.value)}
+						>
+							Place My Bid
+						</button>
+					)}
+
+					{isLoggedIn && props.RetreatModalTitle && props.RetreatModelHandler && !props.UpComingAuction && !(!!props.errorWhenJoinAuction) &&
+						<button onClick={props.RetreatModelHandler} className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}> ConFirm </button>
+					}
+
 					{isLoggedIn && props.UpComingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -195,7 +212,9 @@ const ModalUi = props => {
 							Save
 						</button>
 					)}
-					{/* Admin modal */}
+					{/* end buyer modal */}
+
+					{/* start Admin modal */}
 					{props.btnReject && role === 'admin' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -205,6 +224,9 @@ const ModalUi = props => {
 							Submit
 						</button>
 					)}
+					{/* start Admin modal */}
+
+					{/* start seller modal */}
 					{isLoggedIn && role === 'seller' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -214,6 +236,8 @@ const ModalUi = props => {
 							Delete
 						</button>
 					)}
+					{/* end seller modal */}
+
 					<button
 						className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`}
 						type="button"

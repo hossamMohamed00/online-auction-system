@@ -32,7 +32,6 @@ const ViewCurrentAuction = React.memo(() => {
 	const [BiddingAmount , setBiddingAmount] = useState('')
 
 
-
 	const [socket , setSocket] = useState(null)
 	const [roomData , setRoomData] = useState([])
 
@@ -44,6 +43,7 @@ const ViewCurrentAuction = React.memo(() => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const [AuctionEndMessage , setAuctionEndMessage] = useState('')
 	const [BidderWinner,setBidderWinner] = useState('')
+	const [BidderMessage,setBidderMessage] = useState('')
 
 	// establish socket connection
 	useEffect(()=>{
@@ -65,29 +65,31 @@ const ViewCurrentAuction = React.memo(() => {
 	},[BidderIsJoined, socket])
 
 	useEffect(()=>{
-		if(!!socket ){
+		if(!!socket){
 			socket.on('auction-ended' , data => {
 				setAuctionEndMessage(data.message)
-				localStorage.removeItem('BidderIsJoined')
+				socket.emit('get-winner' , {
+					auctionId : AuctionId
+				})
 				setIsShowBids(false)
 				toast.success(data.message)
+				localStorage.removeItem('BidderIsJoined')
+
 			})
 
 		}
 	},[!!socket])
 
 	useEffect(()=>{
-		if(AuctionEndMessage){
-			socket.emit('get-winner')
+		if(!!socket){
 			socket.on('winner-bidder' , data => {
-				console.log(data)
-				setBidderWinner(data)
-				// toast.success(data.message)
-				setIsShowBids(false)
+				setBidderWinner(true)
+				setBidderMessage(data.message)
 			})
 		}
+		setBidderMessage('')
 
-	},[AuctionEndMessage])
+	},[socket])
 
 	// start new Bidding
 
@@ -170,7 +172,8 @@ const ViewCurrentAuction = React.memo(() => {
 			{BidderWinner && <Modal_
 				show={BidderWinner}
 				onHide={()=> setBidderWinner(false)}
-				title= "Bidder Winner"
+				title= {BidderMessage}
+				btn= ''
 
 			/>}
 

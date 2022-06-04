@@ -20,8 +20,7 @@ const BiddingDetails = ({roomData }) => {
 				roomData.status === 'closed' && (
 					<div className={`${classes.BiddingDetails} bg-danger`}>
 						<h6> Winner Bidder </h6>
-						{/* <p> {roomData && roomData['winningBuyer'] ? roomData['winningBuyer']  : 'name'}  </p> */}
-						<p>  {roomData.winningBuyer.name}  </p>
+						<p>  {roomData.winningBuyer ? roomData.winningBuyer.name : 'no winner in this auction'}  </p>
 
 					</div>
 				)

@@ -57,8 +57,8 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , 
 			{isShownBids &&	<Bids
 					socket={socket}
 					BidderIsBid={BidderIsBid}
-					roomData={(AuctionData.status!=='ongoing') ? AuctionData : roomData   }
-					AuctionEndMessage = {AuctionEndMessage}
+					roomData={(AuctionData && AuctionData['status'] !== 'ongoing') ? AuctionData : roomData   }
+					// AuctionEndMessage = {AuctionEndMessage}
 
 				/>
 			}
