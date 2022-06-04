@@ -60,6 +60,9 @@ export class AuctionDto {
 	rejectionMessage: string;
 
 	@Expose()
+	extensionTime: number;
+
+	@Expose()
 	@Transform(({ obj }) => {
 		//* Serialize  the buyer object to remove the sensitive data
 		return SerializeIt(BuyerDto, obj.winningBuyer);

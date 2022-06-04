@@ -207,6 +207,31 @@ export class AdminService {
 
 		return approvedAuction;
 	}
+	/**
+	 *
+	 * @returns List of all auctions that are needed to extend time
+	 */
+	async getExtendedAuction(): Promise<Auction[]> {
+		return this.auctionService.getActionExtendedTime();
+	}
+	/**
+	 *
+	 * @param auctionId - auction id
+	 * @returns if auction is extended successfully or not
+	 */
+	async approveExtendAuction(auctionId: string): Promise<ResponseResult> {
+		const approvedAuction = await this.auctionService.extendTimeApprove(
+			auctionId,
+		);
+
+		//? Return true if the auction extend approved successfully
+		if (!approvedAuction)
+			throw new BadRequestException('Cannot extend this auction right now!');
+
+		//TODO: Send email to inform the seller
+
+		return approvedAuction;
+	}
 
 	/**
 	 * Reject specific auction by id

@@ -146,6 +146,15 @@ export class AdminController
 	): Promise<Auction[]> {
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
+	/**
+	 *
+	 * @returns List of all list of all auctions that need to be extended
+	 */
+	@Serialize(AuctionDto)
+	@Get('auction/extended-auction')
+	listAllExtendAuctions(): Promise<Auction[]> {
+		return this.adminService.getExtendedAuction();
+	}
 
 	@Post('auction/approve/:id')
 	@HttpCode(HttpStatus.OK)
@@ -153,6 +162,18 @@ export class AdminController
 		@Param() { id: auctionId }: MongoObjectIdDto,
 	): Promise<ResponseResult> {
 		return this.adminService.approveAuction(auctionId);
+	}
+	/**
+	 *
+	 * @param param0 id of the auction
+	 * @returns auction that is approved
+	 */
+	@Post('auction/approve-extend/:id')
+	@HttpCode(HttpStatus.OK)
+	approveExtendAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.approveExtendAuction(auctionId);
 	}
 
 	@Post('auction/reject/:id')

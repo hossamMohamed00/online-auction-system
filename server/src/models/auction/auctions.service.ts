@@ -250,6 +250,72 @@ export class AuctionsService
 
 		return auction;
 	}
+	/**
+	 *
+	 * @param auctionId
+	 * @param sellerId
+	 * @param time
+	 * @returns auction with ExtendTime
+	 */
+	async extendTime(auctionId: string, sellerId: string, time: number) {
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			seller: sellerId,
+		});
+		if (!auction)
+			throw new NotFoundException('Auction not found for that seller❌');
+
+		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				extensionTime: time,
+			},
+			{ new: true },
+		);
+
+		this.logger.log(' auction extended Time and now waiting for approval ✔✔');
+
+		return updatedAuction;
+	}
+	/**
+	 *
+	 * @returns all auctions need to approve with extensionTime to admin
+	 */
+	async getActionExtendedTime(): Promise<Auction[]> {
+		const auction = await this.auctionModel.find({
+			extensionTime: { $ne: null },
+		});
+		console.log(auction);
+		if (!auction) throw new NotFoundException('No Auction Need To extend ❌');
+		return auction;
+	}
+	async extendTimeApprove(auctionId: string): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findById(auctionId);
+		if (!auction) return null;
+
+		const newEndDate = new Date(auction.endDate);
+		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate.setDate(
+					newEndDate.getDate() + auction.extensionTime,
+				),
+				extensionTime: null,
+			},
+			{ new: true },
+		);
+
+		this.logger.log('approved auction extended Time  ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction extend successfully ✔✔',
+			data: {
+				startDate: updatedAuction.startDate,
+				endDate: updatedAuction.endDate,
+			},
+		};
+	}
 
 	/**
 	 * Check if there is any auctions that has status ongoing or upcoming in category

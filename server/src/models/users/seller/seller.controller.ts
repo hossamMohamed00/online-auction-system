@@ -8,6 +8,7 @@ import {
 	Param,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { time } from 'console';
 import { FormDataRequest } from 'nestjs-form-data';
 import {
 	GetCurrentUserData,
@@ -97,6 +98,17 @@ export class SellerController
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.editAuction(id, sellerId, updateAuctionDto);
+	}
+
+	@Roles(Role.Seller)
+	@Serialize(AuctionDto)
+	@Patch('auction/extend/:id')
+	extendAuction(
+		@Param() { id }: MongoObjectIdDto, // auction id
+		@Body() data: { time: number },
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<Auction> {
+		return this.sellerService.extendTime(id, sellerId, data.time);
 	}
 
 	@Roles(Role.Seller)

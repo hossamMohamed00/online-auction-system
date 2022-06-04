@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, StringSchemaDefinition } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { CreateAuctionDto, UpdateAuctionDto } from 'src/models/auction/dto';
 import {
@@ -177,6 +177,16 @@ export class SellerService {
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
+	}
+	/**
+	 *
+	 * @param auctionId
+	 * @param sellerId
+	 * @param time
+	 * @returns action result of extend auction time
+	 */
+	async extendTime(auctionId: string, sellerId: string, time: number) {
+		return this.auctionsService.extendTime(auctionId, sellerId, time);
 	}
 
 	/* Handle Reviews Functions logic */
