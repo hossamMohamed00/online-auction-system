@@ -101,7 +101,6 @@ const ViewCurrentAuction = React.memo(() => {
 
 	const AuctionData = data && status === 'completed' && data;
 	const ClosedAuction = AuctionData && AuctionData.status === 'closed';
-
 	return (
 		<div className="container-fluid">
 			{role !== 'admin' && <Navbar />}
@@ -162,6 +161,7 @@ const ViewCurrentAuction = React.memo(() => {
 							BiddingAmount = {(value)=> setBiddingAmount(value)}
 							AuctionEndMessage = {!!AuctionEndMessage}
 
+							RejectionMessage={AuctionData && AuctionData.rejectionMessage}
 						/>
 					)}
 				</Col>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getSingleAuction } from '../../../Api/Admin';
+import { DeleteAuctionHandler } from '../../../Api/AuctionsApi';
 import ModalUi from './BiddingForm/Modal';
 import useHttp from '../../../CustomHooks/useHttp';
 
@@ -10,7 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { joinAuctionApi } from '../../../Api/BuyerApi';
 
-function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , BiddingAmount , AuctionEndMessage}) {
+function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , BiddingAmount , AuctionEndMessage }) {
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -28,14 +29,27 @@ function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , se
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
-	const DeniedStatus = AuctionStatus === 'pending';
-	// const SavedAuctionStatus = AuctionStatus === 'saved';
+	const PendingStatus = AuctionStatus === 'pending';
+	const DeniedStatus = AuctionStatus === 'denied';
 
 	// handle Rejection
-	const { sendRequest, status } = useHttp(getSingleAuction);
+	const { data, sendRequest, status } = useHttp(getSingleAuction);
+
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
+	// const SavedAuctionStatus = AuctionStatus === 'saved';
+
+	console.log(UpComingStatus);
+	// handle delete
+	const {
+		data: dataForDelete,
+		sendRequest: sendRequestForDelete,
+		status: statusForDelete,
+		error: errorForDelete,
+	} = useHttp(DeleteAuctionHandler);
+
 	const role = useSelector(store => store.AuthData.role);
 	const url = 'http://localhost:8000';
+	const email = useSelector(store => store.AuthData.email);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -75,7 +89,6 @@ function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , se
 			},
 		}).then(res => {
 			if (!res.ok) {
-				console.log('failed');
 			}
 			setModalShow(false);
 		});
@@ -142,6 +155,20 @@ function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , se
 	}
 
 	// end join auction handler
+	// ! to be handled
+	const DeleteAuction = AuctionId => {
+		sendRequestForDelete({ AuctionId: AuctionId, accessToken });
+
+		if (statusForDelete === 'completed') {
+			setModalShow(false);
+
+			toast.success('Auction Deleted Successfully');
+		} else if (statusForDelete === 'error') {
+			setModalShow(false);
+			toast.error(errorForDelete);
+		}
+	};
+
 	return (
 		<>
 			<ToastContainer theme="dark" />
@@ -179,12 +206,13 @@ function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , se
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
-					disabled = {btnSavedValue==='saved'}
+					disabled={btnSavedValue === 'saved'}
 				>
 				{UpComingStatus && btnSavedValue }
 				</button>
 			)}
 
+			{/* ******************** start Admin Actions ******************** */}
 			{role === 'admin' && AuctionStatus === 'pending' && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
@@ -218,14 +246,49 @@ function AuctionFooter({ AuctionStatus , showBids , socket ,  setBidderJoin , se
 				</button>
 			)}
 
+			{/* ******************** start seller Actions ******************** */}
+			{/*  start update Auction  */}
+			{role === 'seller' && sellerEmail === email && (
+				<div className="d-flex justify-content-evenly mt-3">
+					<button
+						className={`btn w-100 fw-bold btn-success`}
+						type="button"
+						//	onClick={() => setModalShow(true)}
+					>
+						Update
+					</button>
+					<button
+						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+						type="button"
+						onClick={() => setModalShow(true)}
+					>
+						delete
+					</button>
+				</div>
+			)}
+			{/*  end update Auction  */}
+
+			{/*  start denied Auction  */}
+			{role === 'seller' && DeniedStatus && (
+				<div className=" bg-warning mt-3 p-3">
+					<h5 className=" text-black fw-bold">
+						Rejected because : {RejectionMessage}
+					</h5>
+				</div>
+			)}
+			{/*  end denied Auction  */}
+
+
 			<ModalUi
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 				UpComingAuction={UpComingStatus}
-				btnReject={DeniedStatus}
+				btnReject={PendingStatus}
 				rejectHandler={rejectHandler}
+				btnRemove={() => DeleteAuction(AuctionId)}
 				btnSaved={btnSaved}
 				SavedAuctionId	= {AuctionId}
+
 				// start bidding
 				btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
 				errorWhenJoinAuction = {isExistErrorWhenJoinAuction && isExistErrorWhenJoinAuction}

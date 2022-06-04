@@ -19,7 +19,7 @@ const activeLink = navData =>
 	`${navData.isActive ? classes.active : ''} fw-bold ${classes['navLink']} `;
 
 const Navbar = props => {
-		const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [isShownNavContent, setIsShownNavContent] = useState(false);
 	const [isShownCategoriesContent, setIsShownCategoriesContent] = useState(
@@ -55,16 +55,13 @@ const Navbar = props => {
 				{' '}
 				Auctions{' '}
 			</NavLink>
-			<NavLink to="/how-bid" className={activeLink}>
-				{' '}
-				How Bid{' '}
-			</NavLink>
 			<NavLink to="/contact-us" className={activeLink}>
 				{' '}
 				Contact Us{' '}
 			</NavLink>
 		</>
 	);
+
 	const showCategories = (
 		<div
 			className={`text-start pb-0 fw-bold ${classes.navLink} `}

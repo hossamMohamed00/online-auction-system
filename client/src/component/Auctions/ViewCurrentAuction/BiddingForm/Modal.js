@@ -93,6 +93,15 @@ const ModalUi = props => {
 			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
+
+					{/* start for seller  */}
+						{isLoggedIn && role === 'seller' && (
+							<h1 className="text-light text-center">
+								Are you sure to delete this auction
+							</h1>
+						)}
+					{/* end for seller  */}
+
 					{/* for buyer */}
 					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && (
 						<>
@@ -194,7 +203,15 @@ const ModalUi = props => {
 							Submit
 						</button>
 					)}
-
+					{isLoggedIn && role === 'seller' && (
+						<button
+							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
+							type="button"
+							onClick={props.btnRemove}
+						>
+							Delete
+						</button>
+					)}
 					<button
 						className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`}
 						type="button"

@@ -16,14 +16,12 @@ import LoginPage from './Pages/Login';
 import HomePage from './Pages/HomePage';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
-import HowBidPage from './Pages/HowBidPage';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
 // end home Pages
 
 // start admin pages
-import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
 import ListAllEmployees from './component/AdminModule/AdminDashboard/ManageEmployees/ListAllEmployees/listAllEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
@@ -50,6 +48,7 @@ import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAl
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+import UpdateAccount from './component/Modules/SellerModule/SellerPages/UpdateAccount';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
@@ -61,7 +60,6 @@ import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
 // end seller pages
 
 function App() {
-
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
@@ -76,7 +74,6 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<LoginPage />} />
 
-				<Route path="/how-bid" element={<HowBidPage />} />
 				<Route path="/about-us" element={<AboutUsPage />} />
 				<Route path="/contact-us" element={<ContactUsPage />} />
 
@@ -108,7 +105,6 @@ function App() {
 					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
-				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
 				<Route
 					path="/managersDashboard/sellersPage"
 					element={<SellersPage />}
@@ -130,7 +126,7 @@ function App() {
 				{/* start route Employees */}
 				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
 				<Route
-					path="/managersDashboard/allCompliments"
+					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
 				/>
 				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
@@ -176,6 +172,10 @@ function App() {
 						<Route
 							path="/seller-dashboard/AddAuction"
 							element={<AddAuction />}
+						/>
+						<Route
+							path="/seller-dashboard/UpdateAccount"
+							element={<UpdateAccount />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
 					</>
