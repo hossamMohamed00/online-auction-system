@@ -12,7 +12,7 @@ import { ReviewModule } from 'src/models/review/review.module';
 	imports: [
 		//? Import Nestjs form data handler middleware
 		NestjsFormDataModule,
-		AuctionsModule,
+		forwardRef(() => AuctionsModule),
 		CloudinaryModule,
 		ComplaintModule,
 		forwardRef(() => ReviewModule),
