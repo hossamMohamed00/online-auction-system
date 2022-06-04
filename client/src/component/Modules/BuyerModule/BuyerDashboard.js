@@ -20,9 +20,8 @@ const BuyerDashboardContent = props => {
 		{
 			title: 'Edit Account',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
-		}
-
+			path: '/buyer-dashboard/UpdateAccount',
+		},
 	];
 
 	const dropdownListViewAuctions = [

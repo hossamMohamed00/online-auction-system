@@ -466,6 +466,7 @@ export class AuctionsService
 		const closedAuctions = await this.auctionModel
 			.find({
 				status: AuctionStatus.Closed,
+				winningBuyer: { $exists: true },
 			})
 			.populate('winningBuyer')
 			.sort({ startDate: -1 });
@@ -476,8 +477,8 @@ export class AuctionsService
 		closedAuctions.forEach(auction => {
 			winnersBidders.push({
 				winningBuyer: {
-					_id: auction.winningBuyer._id,
-					email: auction.winningBuyer.email,
+					_id: auction.winningBuyer?._id,
+					email: auction.winningBuyer?.email,
 				},
 				auction: {
 					_id: auction._id,
