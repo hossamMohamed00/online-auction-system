@@ -1,17 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 
 import SellerDashboardContent from '../SellerModule';
-
-
-
 
 import UpdateAccountForUsers from './../../../UI/UpdateAccount/UpdateAccount';
 
 const UpdateAccountForSeller = () => {
-
-
-
-
 	return (
 		<>
 			<SellerDashboardContent>
