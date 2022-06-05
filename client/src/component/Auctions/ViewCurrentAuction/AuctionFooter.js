@@ -38,12 +38,33 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
 
-	// const SavedAuctionStatus = AuctionStatus === 'saved';
-	// check if upcoming auction saved or not
-	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , data:dataForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
-	const savedHandler = () => {
+	// start check if upcoming auction saved or not
+	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
 
-	}
+	useEffect(()=>{
+		const idToken = accessToken
+		const id = AuctionId
+		sendRequestForSavedAuction({idToken , id})
+	},[sendRequestForSavedAuction])
+
+	useEffect(()=>{
+		if(statusForSavedAuction === 'completed'){
+			setBtnSavedValue('Saved')
+		}
+	},[statusForSavedAuction])
+
+	useEffect(()=>{
+		if(statusForSavedAuction === 'error'){
+			setBtnSavedValue('Save Auction')
+			toast.error(errorForSavedAuction)
+		}
+	},[statusForSavedAuction])
+
+	const btnSaved = btnSavedValue => {
+		setBtnSavedValue(btnSavedValue);
+	};
+	// end check if upcoming auction saved or not
+
 
 	// handle delete
 	const {
@@ -62,9 +83,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		}
 	}, [sendRequest]);
 
-	const btnSaved = btnSavedValue => {
-		setBtnSavedValue(btnSavedValue);
-	};
+
 
 	const approveHandler = () => {
 		fetch(`${url}/admin/auction/approve/${AuctionId}`, {
@@ -259,7 +278,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 					className={`btn w-100 fw-bold ${classes.btnPlaceBid}`}
 					type="button"
 					onClick={() => setModalShow(true)}
-					disabled={btnSavedValue === 'saved'}
+					disabled={btnSavedValue === 'Saved'}
 				>
 				{UpComingStatus && btnSavedValue }
 				</button>

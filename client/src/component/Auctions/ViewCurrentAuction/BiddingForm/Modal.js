@@ -33,7 +33,7 @@ const ModalUi = props => {
 	useEffect(()=>{
 		if(statusForSaveAuction === 'completed'){
 			toast.success(dataForSaveAuction.message)
-			props.btnSaved('saved')
+			props.btnSaved('Saved')
 			props.onHide()
 		}
 	},[statusForSaveAuction])
