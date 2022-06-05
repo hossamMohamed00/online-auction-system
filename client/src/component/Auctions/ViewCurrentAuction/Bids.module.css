@@ -1,12 +1,13 @@
 .Bids {
 	width: 100%;
-	margin-top: -5px;
-	max-height: 50vh !important;
+	margin-top: 35px;
+	max-height: 60vh !important;
 	overflow-y: scroll;
 	padding: 10px;
 	padding-bottom: 5px;
 	margin-bottom: 3vh;
 	border: 0 !important;
+	position: relative;
 }
 
 .Bids::-webkit-scrollbar-thumb {
@@ -17,7 +18,18 @@
 }
 
 .BidsHeader {
-	background-color: var(--paragraph-color) !important;
+	background-color: var(--nav-color) !important;
+	color: white;
+}
+
+.messageToClient{
+	color: var(--alert-color);
+	font-weight: bold;
+	text-align: center;
+	margin: -35px 0px 0px 0px;
+	position: fixed;
+	/* top: 0; */
+	left: 55%;
 }
 
 @media (max-width: 992px) {

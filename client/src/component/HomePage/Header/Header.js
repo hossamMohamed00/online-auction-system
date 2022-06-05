@@ -3,18 +3,13 @@ import Navbar from './Navbar';
 
 import classes from './Header.module.css';
 import Services from './Services';
-import Wallet from '../../Modules/BuyerModule/Payment/Wallet.';
 
 const Header = () => {
-	const [showWallet, setShowWallet] = useState(false);
 
-	const showWalletHandler = () => {
-		setShowWallet(true);
-	};
 	return (
 		<Fragment>
 			<div className="position-relative">
-				<Navbar showWalletHandler={showWalletHandler} start='im here' />
+				<Navbar start='im here' />
 				{/* start Header  */}
 				<div className={classes.Header}></div>
 
@@ -39,11 +34,6 @@ const Header = () => {
 
 			{/* start services */}
 			<Services />
-
-			{/* wallet */}
-			{showWallet && (
-				<Wallet show={showWallet} onHide={() => setShowWallet(false)} />
-			)}
 		</Fragment>
 	);
 };

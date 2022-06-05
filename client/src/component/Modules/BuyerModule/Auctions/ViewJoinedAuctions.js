@@ -3,9 +3,7 @@ import React, { useEffect } from 'react';
 import useHttp from '../../../../CustomHooks/useHttp';
 
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
-import ViewAuctionDetails from '../../../UI/ViewAuctionDetails/ViewAuctionDetails';
 import PageHeader from '../../../UI/Page Header/pageHeader';
-import NoData from '../../../UI/NoData';
 
 import classes from './ViewParticipatingAuctions.module.css';
 
@@ -18,15 +16,12 @@ import { useSelector } from 'react-redux';
 const ViewJoinedAuctions_buyer = () => {
 	const { sendRequest, status, data } = useHttp(getJoinedAuctions);
 
-	// static id
-	// const id= "6289833e24c958b626b72f9a"
 	const idToken = useSelector(store=>store.AuthData.idToken)
 
 	useEffect(() => {
 		sendRequest(idToken);
 	}, [sendRequest]);
 
-	console.log(data && data);
 	const columns = [
 		{
 			name: 'Title',

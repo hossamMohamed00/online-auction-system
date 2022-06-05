@@ -36,7 +36,7 @@ const ContactDetails = () => {
 				<div className="mt-2">
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />
 					<p> you can chat with Administrator</p>
-					<Link className={`${classes.ChatNow} `} to="/">
+					<Link className={`${classes.ChatNow} `} to="/buyer-dashboard/chat?email=Support@email.com">
 						{' '}
 						Chat Now{' '}
 					</Link>

@@ -33,13 +33,14 @@ const AddAuction = () => {
 
 	// start refs
 	const TitleRef = useRef();
-	const PrudectNameRef = useRef();
+	const ProductNameRef = useRef();
 	const BrandRef = useRef();
 	const StatusRef = useRef();
 	const BasePriceRef = useRef();
 	const StartDateRef = useRef();
-	const PrudectShortDescRef = useRef();
-	const PrudectDetaildDescRef = useRef();
+	const ProductShortDescRef = useRef();
+	const ProductDetailsDescRef = useRef();
+	const ImageRef = useRef()
 	// end refs
 
 	const [CategoryId, setCategoryId] = useState();
@@ -58,31 +59,10 @@ const AddAuction = () => {
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
 	const ProductImagesHandler = e => {
-		if (e.target.files.length < 3) {
-			setProductImageErrorMessage('Please Select more than three images');
-		} else {
-			const files = e.target.files;
-			setProductImageErrorMessage('');
+		const files = e.target.files;
+		setProductImages([...files])
 
-			for (const key in files) {
-				if (Object.hasOwnProperty.call(files, key)) {
-					const image = files[key];
-					if (
-						!image.size < 1000000 &&
-						!(
-							image.type === 'image/jpg' ||
-							image.type === 'image/jpeg' ||
-							image.type === 'image/png'
-						)
-					) {
-						setProductImageErrorMessage('Image Size Must Be Less Than 1000000');
-					} else {
-						setProductImages(prevState => [...prevState, image]);
-					}
-				}
-			}
-		}
-	};
+	}
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -107,8 +87,8 @@ const AddAuction = () => {
 	const ValidateForm = () => {
 		if (
 			validateText(TitleRef.current.value) &&
-			validateText(PrudectNameRef.current.value) &&
-			validateText(PrudectShortDescRef.current.value) &&
+			validateText(ProductNameRef.current.value) &&
+			validateText(ProductShortDescRef.current.value) &&
 			validateText(BasePriceRef.current.value) &&
 			ValidateDate(StartDateRef.current.value)
 		) {
@@ -121,22 +101,22 @@ const AddAuction = () => {
 			return;
 		}
 	};
-	const submitHandeler = e => {
+	const submitHandler = e => {
 		e.preventDefault();
 		if (ValidateForm()) {
 			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
-			console.log(ProductImages);
+
 			const AuctionDetails = {
 				title: TitleRef.current.value,
 				item: {
-					name: PrudectNameRef.current.value,
-					shortDescription: PrudectShortDescRef.current.value,
+					name: ProductNameRef.current.value,
+					shortDescription: ProductShortDescRef.current.value,
 					brand: BrandRef.current.value,
-					detailedDescription: PrudectDetaildDescRef.current.value
-						? PrudectDetaildDescRef.current.value
-						: PrudectShortDescRef.current.value,
+					detailedDescription: ProductDetailsDescRef.current.value
+						? ProductDetailsDescRef.current.value
+						: ProductShortDescRef.current.value,
 					status: StatusRef.current.value,
-					image: ProductImages,
+					images: ProductImages,
 				},
 				startDate: StartDateRef.current.value,
 				category: CategoryId,
@@ -165,7 +145,7 @@ const AddAuction = () => {
 				<ToastContainer theme="dark" />
 				<PageHeader text="Add New Auction" />
 				<div>
-					<form onSubmit={submitHandeler}>
+					<form onSubmit={submitHandler}>
 						<div className="container">
 							<div className="row">
 								{/* start Product Title */}
@@ -174,14 +154,14 @@ const AddAuction = () => {
 										htmlFor="Title"
 										className={'text-light fw-bold fs-6 py-2'}
 									>
-										Titel
+										Title
 									</label>
 									<Input
 										type="text"
 										placeholder=""
 										validateText={validateText}
 										ref={TitleRef}
-										errorMassage="please enter Prudect Title "
+										errorMassage="please enter Product Title "
 										inputValue=" Title"
 										id="Title"
 									/>
@@ -190,7 +170,7 @@ const AddAuction = () => {
 								{/* start Product Name */}
 								<div className={`col-lg`}>
 									<label
-										htmlFor="PrudectName"
+										htmlFor="ProductName"
 										className={'text-light fw-bold fs-6 py-2'}
 									>
 										product Name
@@ -199,10 +179,9 @@ const AddAuction = () => {
 										type="text"
 										placeholder=""
 										validateText={validateText}
-										ref={PrudectNameRef}
-										errorMassage="please enter Prudect Name "
-										inputValue=" prudect Name"
-										id="PrudectName"
+										ref={ProductNameRef}
+										errorMassage="please enter Product Name "
+										id="ProductName"
 									/>
 								</div>
 							</div>
@@ -221,8 +200,7 @@ const AddAuction = () => {
 										placeholder=""
 										validateText={validateText}
 										ref={BrandRef}
-										errorMassage="please enter Prudect Describtion "
-										inputValue=" prudect Describtion"
+										errorMassage="please enter Product Description "
 										id="Brand"
 									/>
 								</div>
@@ -248,8 +226,7 @@ const AddAuction = () => {
 										validateText={validateText}
 										ref={BasePriceRef}
 										errorMassage="please enter Base Price "
-										inputValue=" prudect Describtion"
-										id="prudectPrice"
+										id="ProductPrice"
 									/>
 								</div>
 
@@ -273,35 +250,35 @@ const AddAuction = () => {
 								{/* start short desc */}
 								<div className={`col-lg-6`}>
 									<label
-										htmlFor="prudectDesc"
+										htmlFor="productDesc"
 										className={'text-light fw-bold fs-6 py-2 '}
 									>
-										product short Describtion
+										product short Description
 									</label>
 									<Input
 										type="text"
 										placeholder=""
 										validateText={validateText}
-										ref={PrudectShortDescRef}
-										errorMassage="please enter Prudect Describtion "
-										inputValue=" prudect Describtion"
-										id="prudectDesc"
+										ref={ProductShortDescRef}
+										errorMassage="please enter Product Description "
+										inputValue=" Product Description"
+										id="ProductDesc"
 									/>
 								</div>
 
-								{/* start detaild desc */}
+								{/* start details desc */}
 								<div className={`col-lg-6`}>
 									<label
-										htmlFor="prudectDelitelDesc"
+										htmlFor="DetailsDesc"
 										className={'text-light fw-bold fs-6 py-2 '}
 									>
-										product Detiles Describtion
+										product Details Description
 									</label>
 									<textarea
-										placeholder="type heree..."
-										className={`form-control ${classes.ProdulctDetailed}`}
-										id="prudectDelitelDesc"
-										ref={PrudectDetaildDescRef}
+										placeholder="type here..."
+										className={`form-control ${classes.ProductDetailed}`}
+										id="DetailsDesc"
+										ref={ProductDetailsDescRef}
 									></textarea>
 								</div>
 							</div>
@@ -335,12 +312,12 @@ const AddAuction = () => {
 										name="name"
 										multiple
 										className={`form-control ${classes.productImage}`}
-										// ref={ImageRef}
+										ref={ImageRef}
 										onChange={ProductImagesHandler}
 									/>
-									{ProductImageErrorMessage && (
+									{/* {ProductImageErrorMessage && (
 										<p className="text-danger"> {ProductImageErrorMessage} </p>
-									)}
+									)} */}
 								</div>
 							</div>
 

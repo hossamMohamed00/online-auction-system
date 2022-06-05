@@ -20,6 +20,7 @@ const ViewAllAuctions = () => {
 	const [Data, setData] = useState(null);
 
 	const [FilterAuction, setFilterAuction] = useState(false);
+	//eslint.disable:true
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
@@ -107,13 +108,17 @@ const ViewAllAuctions = () => {
 							{Data && !FilterAuction && status === 'completed' && (
 								<ViewAuctionDetails AuctionData={Data} animate={false} />
 							)}
-							<NoData
-								text="No Auctions Now"
-								data={data && data}
-								error={error && error}
-							/>
 						</div>
+
 					)}
+					<div className='pt-5'>
+						<NoData
+							text="No Auctions Now"
+							data={data && data}
+							error={error && error}
+						/>
+					</div>
+
 				</Col>
 			</Row>
 		</div>

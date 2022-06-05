@@ -55,16 +55,19 @@ const DropDownBox = props => {
 					Profile
 				</Link>
 			</li>
+			{(role === 'seller' || 'buyer') &&
 			<li>
-				<button
-					className="px-1 text-light bg-none fw-bold"
+				<Link
+					to ={role==='buyer' ? '/buyer-dashboard/chargeWallet' : '/'}
+					className="px-1 text-light bg-none fw-bold text-decoration-none"
 					type='button'
-					onClick={handleShownWallet}
+					// onClick={handleShownWallet}
 				>
 					<FontAwesomeIcon icon={faCartPlus} className="pe-2 text-primary" />
 					Wallet
-				</button>
+				</Link>
 			</li>
+			}
 			<li>
 				<button
 					className="px-1 text-danger bg-none fw-bold "

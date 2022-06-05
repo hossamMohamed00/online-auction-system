@@ -11,7 +11,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
-import Modal_ from '../../../UI/Modal/modal';
+import ModalUi from '../../../UI/Modal/modal';
 
 const AllCategories = props => {
 	const [ModalShow, setModalShow] = useState(false);
@@ -132,7 +132,7 @@ const AllCategories = props => {
 			)}
 
 			{ModalShow && (
-				<Modal_
+				<ModalUi
 					show={ModalShow}
 					onHide={() => setModalShow(false)}
 					btnHandler={() => removeHandler(categoryId)}

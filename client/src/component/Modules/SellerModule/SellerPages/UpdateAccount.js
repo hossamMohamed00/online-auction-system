@@ -1,21 +1,18 @@
 import React, { useRef, useState } from 'react';
-import { ReactReduxContext } from 'react-redux';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import SellerDashboardContent from '../SellerModule';
 import userImg from '../../../../assets/user.png';
 import classes from './UpdateAccount.module.css';
 import Input from '../../../UI/Input/input';
-import useHttp from '../SellerModule';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePen, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 
 const UpdateAccount = () => {
 	const TextRef = useRef();
 	const textRef = useRef();
 	const validateText = value => value !== '';
 	const ImageRef = useRef();
-	const [newImage, setNewImage] = useState(null);
 
 	const ChangeImageHandler = e => {
 		ImageRef.current.click();
