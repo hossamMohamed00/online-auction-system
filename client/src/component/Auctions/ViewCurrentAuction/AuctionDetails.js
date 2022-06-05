@@ -14,7 +14,7 @@ const AuctionDetails = ({ data}) => {
 			{data && (
 				<div className={classes.AuctionDetails}>
 					<div className={classes.AuctionDetailsContent}>
-						<h1 className="pt-2 pb-2 text-light"> {data && data['item']['name']} </h1>
+						<h3 className="pt-2 pb-2 text-light fw-bold text-center"> {data && data['title']} </h3>
 
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
@@ -74,24 +74,33 @@ const AuctionDetails = ({ data}) => {
 								</div>
 							</div>
 						</div>
-
 						<hr className="text-light mb-4 mt-2 "></hr>
 
-						<div className="d-flex justify-content-evenly w-100 text-center">
+						<div className={ data && data.status!=='closed' ? 'd-flex justify-content-evenly w-100 text-center' : 'd-none'}>
+
 							<div>
-								<h6 className="fw-bold text-light px-3"> Minimum Bid </h6>
+								<h6 className="fw-bold text-light px-3"> Auction Will Start With </h6>
 								<span className={`ps-2 fs-6 fw-bold ${classes.MinimumBidValue}`}>
-									{data.minimumBidAllowed}
+									{data.basePrice}
 								</span>
 							</div>
 							<div className={classes.hrRight}></div>
+
+							{/* show when auction not end  */}
 							<div>
 								<h6 className="fw-bold  text-light"> Auction Will End In </h6>
 								<span className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}>
 									{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}{' '}
 								</span>
 							</div>
+
 						</div>
+
+						{/* start when auction ended */}
+						<div className={` ${classes.AuctionEndedStyle} ${data && data.status==='closed' ? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2 pt-3 rounded-3' : 'd-none'}`}>
+							<h5 className="fw-bold  text-light"> Auction Ended </h5>
+						</div>
+
 					</div>
 
 				</div>

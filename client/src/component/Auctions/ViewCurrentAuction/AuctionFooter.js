@@ -9,7 +9,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { joinAuctionApi } from '../../../Api/BuyerApi';
+import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
 
 function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , BiddingAmount , AuctionEndMessage }) {
 
@@ -25,8 +25,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const [RetreatModalTitle , setRetreatModalTitle] = useState('');
 	const [IsBidding , setIsBidding] = useState('');
 
-
-
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
 	const [isExistErrorWhenJoinAuction , setIsExistErrorWhenJoinAuction] = useState(false)
@@ -38,9 +36,14 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	// handle Rejection
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
-
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
+
 	// const SavedAuctionStatus = AuctionStatus === 'saved';
+	// check if upcoming auction saved or not
+	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , data:dataForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
+	const savedHandler = () => {
+
+	}
 
 	// handle delete
 	const {
@@ -163,7 +166,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			auctionId : AuctionId,
 			bidValue : value
 		})
-		// setIsBidding(Math.random)
 		// view exception error in modal
 		socket.on('exception', data => {
 			setIsExistErrorWhenJoinAuction(data.message)
@@ -229,7 +231,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
 				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : 'd-block' } `}>
 					<button
-						className={`btn fw-bold  fs-5  ${classes.btnPlaceBid} ${!isJoined  ? classes.btnJoinActive : ''}`}
+						className={`btn fw-bold  fs-5  ${classes.btnPlaceBid_} ${!isJoined  ? classes.btnJoinActive : ''}`}
 						type="button"
 						onClick={() => joinAuctionHandler(OnGoingStatus)}
 						>

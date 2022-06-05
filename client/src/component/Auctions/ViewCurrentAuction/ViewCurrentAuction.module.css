@@ -1,5 +1,6 @@
 .ViewCurrentAuction {
-	height: 100vh !important;
+	min-height: 100vh !important;
+
 }
 
 .ItemImage {
@@ -15,11 +16,11 @@
 }
 
 .Auction {
-	height: 95vh;
-	position: relative;
+	min-height: 90vh;
 	border-left: 0.5px solid #3d3b3b96;
-	padding-top: 5vh;
+	padding-top: 4vh;
 	padding-left: 3%;
+	position: relative!important;
 }
 
 .AuctionHeader {
@@ -55,16 +56,22 @@
 	box-shadow: none;
 }
 /* start btns in footer */
-.btnPlaceBid {
+.btnPlaceBid , .btnPlaceBid_ {
 	background-color: #244273;
 	color: white;
 	position: absolute;
-	bottom: 0px;
-	width: 45% !important;
+	bottom: 10px;
+	width: 90% !important;
+	margin-left: 3%;
 	left: 15px;
-	font-size: 20px;
+	/* font-size: 20px;s */
 	transition: all 0.5s;
 	box-shadow: none !important;
+}
+
+.btnPlaceBid_{
+	width: 45% !important;
+
 }
 .btnJoinActive{
 	width: 90%!important;
@@ -75,7 +82,7 @@
 	right: 15px;
 	font-size: 20px;
 	transition: all 0.5s;
-	bottom: -4px;
+	bottom: 10px;
 	box-shadow: none !important;
 	background-color: #244273;
 	width: 45% !important;
@@ -116,6 +123,7 @@
 	text-align: center;
 	font-weight: bold;
 	border-radius: 10px;
+	width: 50%;
 }
 .BiddingDetails:first-of-type{
 	background-color: var(--nav-color);

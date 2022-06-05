@@ -70,4 +70,11 @@ export const joinAuctionApi = async ({idToken , id}) => {
 	return data;
 };
 
+// start check if this auction is saved before or not
+
+export const CheckIfAuctionSaved = async ({idToken,id}) =>
+	getAPI(`${url}/buyer/auction/is-saved/${id}`, idToken);
+
+
+
 

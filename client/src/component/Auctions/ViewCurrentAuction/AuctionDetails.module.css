@@ -35,3 +35,15 @@
 	margin-top: -24px;
 	opacity: 0.25;
 }
+
+.AuctionEndedStyle{
+	color: white;
+	position: absolute;
+	bottom: 50px;
+	width: 90% !important;
+	margin-left: 3%;
+	left: 15px;
+	/* font-size: 20px;s */
+	transition: all 0.5s;
+	box-shadow: none !important;
+}
