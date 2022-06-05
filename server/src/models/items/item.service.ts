@@ -27,39 +27,8 @@ export class ItemService {
 	 * @returns Created item instance
 	 */
 	async create(itemData: CreateItemDto) {
-		//* First of all, save the image to cloudinary
-		let images: ImageType[] = [];
-		try {
-			this.logger.debug(
-				`Uploading ${itemData.images.length} images to cloudinary`,
-			);
-
-			//* Loop over the uploaded images
-			const uploadedImages = itemData.images;
-
-			//* Await the uploading operation
-			await Promise.all(
-				uploadedImages.map(async image => {
-					const savedImage = await this.cloudinary.uploadImage(image);
-
-					//? If upload success, save image url and public id to db
-					if (savedImage.url) {
-						//* Push the image to the list of images
-						images.push({
-							url: savedImage.url,
-							publicId: savedImage.public_id,
-						});
-					}
-				}),
-			);
-		} catch (error) {
-			console.log(error);
-
-			throw new BadRequestException(
-				'Cannot upload image to cloudinary, ',
-				error,
-			);
-		}
+		//* Upload all uploaded files to cloudinary
+		const images = await this.uploadItemImageToCloudinary(itemData.images);
 
 		//* Create new item
 		const createdItem = new this.itemModel({ ...itemData, images });
@@ -79,15 +48,33 @@ export class ItemService {
 		//* Omit the _id
 		delete updateItemDto._id;
 
+		let imagesUpdated = false;
+		if (updateItemDto.images) {
+			//* Upload the new images
+			const images: ImageType[] = await this.uploadItemImageToCloudinary(
+				updateItemDto.images,
+			);
+
+			//* Add the images to the update data
+			updateItemDto.images = images;
+
+			imagesUpdated = true;
+		}
+
 		const updatedItem = await this.itemModel.findByIdAndUpdate(
 			_id,
 			updateItemDto,
-			{
-				new: true,
-			},
 		);
 
-		if (updatedItem) return true;
+		if (updatedItem) {
+			//? Remove old image if there was one
+			if (imagesUpdated && updatedItem.images) {
+				//* Remove all existing images
+				await this.cloudinary.destroyArrayOfImages(updatedItem.images);
+			}
+
+			return true;
+		}
 
 		return false;
 	}
@@ -106,5 +93,16 @@ export class ItemService {
 		await item.remove();
 
 		return true;
+	}
+
+	/*-------------*/
+
+	/**
+	 * Upload array of uploaded images to cloudinary
+	 * @param uploadedImages
+	 * @returns
+	 */
+	async uploadItemImageToCloudinary(uploadedImages: any) {
+		return this.cloudinary.uploadArrayOfImages(uploadedImages);
 	}
 }

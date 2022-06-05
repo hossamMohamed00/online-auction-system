@@ -90,6 +90,7 @@ export class SellerController
 
 	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Patch('auction/:id')
 	editAuction(
 		@Param() { id }: MongoObjectIdDto, // auction id

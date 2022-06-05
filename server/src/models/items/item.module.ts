@@ -21,8 +21,8 @@ import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service
 					schema.pre<ItemDocument>('remove', async function () {
 						logger.log('Removing item image....🧺');
 
-						//* Remove the image by public id
-						await cloudinaryService.destroyImage(this.images[0].publicId);
+						//* Remove all item images
+						await cloudinaryService.destroyArrayOfImages(this.images);
 					});
 
 					return schema;
