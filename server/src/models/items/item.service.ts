@@ -36,16 +36,22 @@ export class ItemService {
 
 			//* Loop over the uploaded images
 			const uploadedImages = itemData.images;
-			uploadedImages.forEach(async image => {
-				// Upload image to cloudinary
-				const savedImage = await this.cloudinary.uploadImage(image);
 
-				//? If upload success, save image url and public id to db
-				if (savedImage.url) {
-					//* Push the image to the list of images
-					images.push({ url: savedImage.url, publicId: savedImage.public_id });
-				}
-			});
+			//* Await the uploading operation
+			await Promise.all(
+				uploadedImages.map(async image => {
+					const savedImage = await this.cloudinary.uploadImage(image);
+
+					//? If upload success, save image url and public id to db
+					if (savedImage.url) {
+						//* Push the image to the list of images
+						images.push({
+							url: savedImage.url,
+							publicId: savedImage.public_id,
+						});
+					}
+				}),
+			);
 		} catch (error) {
 			console.log(error);
 
