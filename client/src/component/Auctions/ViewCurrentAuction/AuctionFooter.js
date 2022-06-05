@@ -11,7 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
 
-function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , BiddingAmount , AuctionEndMessage }) {
+function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , chairCost, AuctionEndMessage }) {
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -23,7 +23,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	const [auctionDenied, setAuctionDenied] = useState(false);
 	const [RetreatModalTitle , setRetreatModalTitle] = useState('');
-	const [IsBidding , setIsBidding] = useState('');
 
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
@@ -42,10 +41,13 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
 
 	useEffect(()=>{
-		const idToken = accessToken
-		const id = AuctionId
-		sendRequestForSavedAuction({idToken , id})
-	},[sendRequestForSavedAuction])
+		if(UpComingStatus && role==='buyer'){
+			const idToken = accessToken
+			const id = AuctionId
+			sendRequestForSavedAuction({idToken , id})
+		}
+
+	},[sendRequestForSavedAuction , UpComingStatus , role])
 
 	useEffect(()=>{
 		if(statusForSavedAuction === 'completed'){
@@ -160,6 +162,9 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	useEffect(()=>{
 		if(statusForJoinAuction === 'completed'){
 			toast.success(dataForJoinAuction.message)
+			toast.success(`We Will Block this Chair Cost ${chairCost} from Your Balance `)
+
+
 			localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
 
 			setIsJoined(localStorage.getItem('BidderIsJoined'))

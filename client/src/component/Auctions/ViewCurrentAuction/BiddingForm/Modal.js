@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getWalletBalance, SaveAuctionApi } from '../../../../Api/BuyerApi';
+import { SaveAuctionApi } from '../../../../Api/BuyerApi';
 import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
@@ -11,8 +11,6 @@ const ModalUi = props => {
 
 
 	const [BidValue, setBidValue] = useState();
-	const [BalanceValue, setBalanceValue] = useState();
-
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 	const AmountRef = useRef()
@@ -47,21 +45,6 @@ const ModalUi = props => {
 	},[statusForSaveAuction])
 
 	// end Saved Auction Handler
-
-
-	// start get balance of bidder
-	const {sendRequest:sendRequestForGetBalance, status:statusForGetBalance , data:dataForGetBalance , error:errorForGetBalance } = useHttp(getWalletBalance);
-	useEffect(()=>{
-		sendRequestForGetBalance(idToken)
-	},[sendRequestForGetBalance])
-
-	useEffect(()=>{
-		if(statusForGetBalance === 'completed'){
-			setBalanceValue(dataForGetBalance.balance)
-		}
-	},[statusForGetBalance])
-
-	// end get balance of bidder
 
 
 	const BidValueValidation = e => {
@@ -163,13 +146,13 @@ const ModalUi = props => {
 
 							<div className="pt-4">
 								<div className="d-flex justify-content-between">
-									<p> Your Balance </p>
-									<p> {BalanceValue} </p>
+									<p> Minimum Bid  </p>
+									<p> {props.MinimumBidAllowed} </p>
 								</div>
 
 								<div className="d-flex justify-content-between">
-									<p> Your Balance After Bidding </p>
-									<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue&& BalanceValue &&  (parseInt(BalanceValue)- parseInt(BidValue))  } $ </p>
+									<p> Minimum Bid After Your Bidding </p>
+									<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue  &&  (parseInt(props.MinimumBidAllowed) + parseInt(BidValue))  } $ </p>
 								</div>
 							</div>
 						</>

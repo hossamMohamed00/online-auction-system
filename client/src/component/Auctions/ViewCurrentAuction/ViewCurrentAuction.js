@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Col, Row } from 'react-bootstrap';
@@ -53,15 +53,15 @@ const ViewCurrentAuction = React.memo(() => {
 					}}
 			))
 		}
-	},[BidderIsJoined,accessToken])
+	},[BidderIsJoined, accessToken])
 
 	useEffect(()=>{
-		if(socket && BidderIsJoined && isLoggedIn){
+		if(!!socket && BidderIsJoined && isLoggedIn){
 			socket.on('room-data' , data => {
 				setRoomData(data)
 			})
 		}
-	},[BidderIsJoined, socket])
+	},[BidderIsJoined, !!socket])
 
 	useEffect(()=>{
 		if(!!socket){
@@ -88,7 +88,7 @@ const ViewCurrentAuction = React.memo(() => {
 		}
 		setBidderMessage('')
 
-	},[socket])
+	},[!!socket])
 
 	// start new Bidding
 
@@ -157,6 +157,8 @@ const ViewCurrentAuction = React.memo(() => {
 							setBidderJoin={(value) => setBidderIsJoined(value)}
 							setBidderIsBid={(value)=>setBidderIsBid(value)}
 							MinimumBidAllowed = {roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']}
+							chairCost = {roomData.auctionDetails && roomData.auctionDetails['chairCost']}
+
 							AuctionEndMessage = {!!AuctionEndMessage}
 
 							RejectionMessage={AuctionData && AuctionData.rejectionMessage}
