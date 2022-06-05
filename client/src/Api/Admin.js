@@ -186,3 +186,18 @@ export const getAllComplaints = async ({ idToken, path }) => {
 	}
 	return data;
 };
+
+export const getAllComplaintsInSystem = async ( idToken ) => {
+	const response = await fetch(`${url}/complaints-in-system`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};

@@ -14,6 +14,13 @@ const AdminDashboard = props => {
 			path: '/managersDashboard/allComplaints',
 		},
 	];
+		const dropdownListForComplaintsInSystem = [
+			{
+				title: 'All complaints',
+				icon: faComment,
+				path: '/adminDashboard/allComplaintsInSystem',
+			},
+		];
 	const dropdownListForInquiries = [
 		{
 			title: 'Inquiries ',
@@ -90,6 +97,10 @@ const AdminDashboard = props => {
 			compliments={{
 				name: 'Manage complaints',
 				list: dropdownListForComplaints,
+			}}
+			complaintsInSystem={{
+				name: 'Manage complaints in system',
+				list: dropdownListForComplaintsInSystem,
 			}}
 			inquiries={{
 				name: 'Inquiries',

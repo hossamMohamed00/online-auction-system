@@ -57,6 +57,7 @@ import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
 import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
+import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllComplaints/AllComplains';
 // end seller pages
 
 function App() {
@@ -128,6 +129,10 @@ function App() {
 				<Route
 					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
+				/>
+				<Route
+					path="/adminDashboard/allComplaintsInSystem"
+					element={<AllComplaintsInSystem />}
 				/>
 				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
 

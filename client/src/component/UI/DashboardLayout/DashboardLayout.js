@@ -85,6 +85,12 @@ const Wrapper = props => {
 			icon: faListAlt,
 			class: 'categories',
 		},
+		compliments: {
+			list: props.complaintsInSystem.list,
+			name: props.complaintsInSystem.name,
+			icon: faComment,
+			class: 'requests',
+		},
 	};
 
 	const sidebarBuyer = role === 'buyer' && {
