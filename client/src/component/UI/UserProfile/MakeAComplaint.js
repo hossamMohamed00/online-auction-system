@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import LoadingSpinner from '../Loading/LoadingSpinner';
-import Modal_ from './../Modal/modal';
+import ModalUi from './../Modal/modal';
 import './profile.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +28,7 @@ export const MakeAComplaintModal = props => {
 		</>
 	);
 	const addUserComplaintHandler = () => {
+		setLoading(true)
 		const compliantData = {
 			reason: reason.current.value,
 			in: props.id && props.id,
@@ -44,8 +45,11 @@ export const MakeAComplaintModal = props => {
 		}).then(response => {
 			if (!response.ok) {
 				console.log(response);
+				setLoading(false)
+
 				return;
 			}
+			setLoading(false)
 			toast.success('Done, your complaint added successfully 💖🐱‍👤');
 
 			// props.onHide();
@@ -59,7 +63,7 @@ export const MakeAComplaintModal = props => {
 			<ToastContainer theme="dark" />
 			{loading && <LoadingSpinner />}
 
-			<Modal_
+			<ModalUi
 				show={props.show}
 				onHide={props.onHide}
 				title={ComplaintTitle}

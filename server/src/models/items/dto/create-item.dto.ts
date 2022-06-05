@@ -1,4 +1,6 @@
 import {
+	ArrayMaxSize,
+	ArrayMinSize,
 	IsEnum,
 	IsNotEmpty,
 	IsOptional,
@@ -8,6 +10,7 @@ import {
 import {
 	HasMimeType,
 	IsFile,
+	IsFiles,
 	MaxFileSize,
 	MemoryStoredFile,
 } from 'nestjs-form-data';
@@ -43,10 +46,14 @@ export class CreateItemDto {
 	@IsOptional()
 	investigationLocation?: string; // Location on map
 
-	@IsNotEmpty({ message: 'Please provide valid item image 📷' })
-	@IsFile()
-	@MaxFileSize(1e6)
-	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
+	@IsNotEmpty({ message: 'Please provide valid item images 📷' })
+	@ArrayMinSize(3, { message: 'Please provide at least 3 images 📷' })
+	@ArrayMaxSize(5, { message: 'Please provide at most 5 images 📷' })
+	@IsFiles()
+	@MaxFileSize(1e6, { each: true })
+	@HasMimeType(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'], {
+		each: true,
+	})
 	// image: MemoryStoredFile;
-	image: any;
+	images: any;
 }

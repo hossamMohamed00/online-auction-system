@@ -21,8 +21,8 @@ import WalletService from 'src/providers/payment/wallet.service';
 import { Seller, SellerDocument } from '../users/seller/schema/seller.schema';
 import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
 import { AvailableRolesForRegister } from '../users/shared-user/enums';
-import { ImageType } from '../items/schema/image.type';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { ImageType } from 'src/common/types';
 
 @Injectable()
 export class AuthService {
@@ -61,7 +61,7 @@ export class AuthService {
 		);
 
 		//* Upload image to cloudinary
-		let image: ImageType = new ImageType();
+		let image: ImageType;
 		if (registerUserDto.image) {
 			this.logger.debug('Uploading user image to cloudinary...');
 			try {
@@ -73,8 +73,7 @@ export class AuthService {
 				//* If upload success, save image url and public id to db
 				if (savedImage.url) {
 					this.logger.log('User image uploaded to cloudinary successfully ✔✔');
-					image.url = savedImage.url;
-					image.publicId = savedImage.public_id;
+					image = new ImageType(savedImage.url, savedImage.public_id);
 				}
 			} catch (error) {
 				this.logger.error('Unable to upload image to cloudinary');

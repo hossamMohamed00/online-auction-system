@@ -34,7 +34,6 @@ const AllCompliments = () => {
 	);
 
 	useEffect(() => {
-		console.log('hiiiiiiiiiiii');
 		sendRequest({
 			idToken: idToken,
 			path: 'complaints',
@@ -116,7 +115,7 @@ const AllCompliments = () => {
 		},
 		{
 			name: 'In',
-			selector: row => row.in.name,
+			selector: row => row.in && row.in.name,
 			center: true,
 			sortable: true,
 		},

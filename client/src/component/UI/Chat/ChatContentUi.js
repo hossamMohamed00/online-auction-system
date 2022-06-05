@@ -13,6 +13,7 @@ function ChatContentUi({Message , sendMessage , className , getChatWithEmail}) {
 
 	const email = useSelector(store => store.AuthData.email);
 	const [MessageValue, setMessageValue] = useState('');
+	const [isShownEmailAddress , setIsShownEmailAddress] = useState(true)
 
 
 	const getTime = time => {
@@ -58,7 +59,10 @@ function ChatContentUi({Message , sendMessage , className , getChatWithEmail}) {
 							</p>
 							<div className={classes.MessageContent}>
 								<p> {message.message} </p>
+							{isShownEmailAddress && <span className={`${classes.isShownEmailAddress} ${message.senderEmail === email ? 'text-end' : 'text-start'} `}> {message.senderEmail} </span>}
+
 							</div>
+
 						</div>
 						<p
 							className={`${classes.MessageTime} ${

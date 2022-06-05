@@ -9,16 +9,19 @@ import classes from './Modal.module.css';
 
 const ModalUi = props => {
 
-	const [BidValue, setBidValue] = useState(1500);
+
+	const [BidValue, setBidValue] = useState();
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
+	const AmountRef = useRef()
 
 	const role = useSelector(store => store.AuthData.role);
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+	const idToken = useSelector(store => store.AuthData.idToken);
+
 
 	// start Saved Auction Handler
 	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
-	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const btnSavedHandler = () => {
 		const id = props.SavedAuctionId
@@ -28,7 +31,7 @@ const ModalUi = props => {
 	useEffect(()=>{
 		if(statusForSaveAuction === 'completed'){
 			toast.success(dataForSaveAuction.message)
-			props.btnSaved('saved')
+			props.btnSaved('Saved')
 			props.onHide()
 		}
 	},[statusForSaveAuction])
@@ -46,7 +49,7 @@ const ModalUi = props => {
 
 	const BidValueValidation = e => {
 		setBidValue(e.target.value);
-		if (e.target.value.trim() < 1500) {
+		if (e.target.value.trim() < props.MinimumBidAllowed) {
 			setIsBidValid(false);
 		} else {
 			setIsBidValid(true);
@@ -65,8 +68,13 @@ const ModalUi = props => {
 
 			<Modal.Header closeButton className={classes.BiddingModalHeader}>
 				<Modal.Title id="contained-modal-title-vcenter">
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) &&  !(!!props.RetreatModelTitle) && (
 						<h2 className="fw-bold">Place a Bid </h2>
+					)}
+
+					{/* start View exception when true to join  */}
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (!!props.errorWhenJoinAuction) && (
+						<h2 className="fw-bold"> {props.errorWhenJoinAuction} </h2>
 					)}
 					{!isLoggedIn && (
 						<h5 className="text-center pt-3">
@@ -81,19 +89,31 @@ const ModalUi = props => {
 					{props.btnReject && role === 'admin' && (
 						<h5> write a reason for reject</h5>
 					)}
+
+					{/* start retreat From Auction */}
+					{props.RetreatModalTitle && props.RetreatModelHandler &&
+						<h5> {props.RetreatModalTitle} </h5>
+					}
+
+					{/* end retreat From Auction */}
+
 				</Modal.Title>
 			</Modal.Header>
 
 			{/* Modal Body when user Is loggedIn && Auction status is ongoing  */}
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
+
+					{/* start for seller  */}
+						{isLoggedIn && role === 'seller' && (
+							<h1 className="text-light text-center">
+								Are you sure to delete this auction
+							</h1>
+						)}
+					{/* end for seller  */}
+
 					{/* for buyer */}
-					{isLoggedIn && role === 'seller' && (
-						<h1 className="text-light text-center">
-							Are you sure to delete this auction
-						</h1>
-					)}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && !(!!props.RetreatModelTitle) &&(
 						<>
 							<div
 								className={` ${classes['ModalBodyForm']} ${
@@ -104,9 +124,11 @@ const ModalUi = props => {
 									<input
 										type="number"
 										className="form-control"
-										min="1500"
+										min={props.MinimumBidAllowed}
 										value={BidValue}
 										onChange={BidValueValidation}
+										ref = {AmountRef}
+										placeholder={props.MinimumBidAllowed}
 									/>
 									<span
 										className={` input-group-text ${classes['input-group-text']} `}
@@ -116,26 +138,21 @@ const ModalUi = props => {
 								</div>
 								{!isBidValid && (
 									<p className="px-2">
-										You must bid at least{' '}
-										<span className={classes.bidValue}> 1500 $ </span>
+										You must bid at least
+										<span className={classes.bidValue}> {props.MinimumBidAllowed} </span>
 									</p>
 								)}
 							</div>
 
 							<div className="pt-4">
 								<div className="d-flex justify-content-between">
-									<p> Your Balance </p>
-									<p> 75,200 $ </p>
+									<p> Minimum Bid  </p>
+									<p> {props.MinimumBidAllowed} </p>
 								</div>
 
 								<div className="d-flex justify-content-between">
-									<p> Service Fee </p>
-									<p> 5 $ </p>
-								</div>
-
-								<div className="d-flex justify-content-between">
-									<p> Total Bid </p>
-									{/* <p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p> */}
+									<p> Minimum Bid After Your Bidding </p>
+									<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue  &&  (parseInt(props.MinimumBidAllowed) + parseInt(BidValue))  } $ </p>
 								</div>
 							</div>
 						</>
@@ -154,15 +171,8 @@ const ModalUi = props => {
 
 			<Modal.Footer className={classes['HideBorder']}>
 				<div className="d-flex gap-2 col-12 mx-auto">
-					{/* buyer modal */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && (
-						<button
-							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
-							type="button"
-						>
-							Place My Bid
-						</button>
-					)}
+
+					{/* start user not logged in */}
 					{!isLoggedIn && (
 						<Link
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -172,6 +182,23 @@ const ModalUi = props => {
 							Login
 						</Link>
 					)}
+					{/* end user not logged in */}
+
+					{/* start buyer modal */}
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && !(!!props.RetreatModelTitle) && (
+						<button
+							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
+							type="button"
+							onClick={()=> props && props.btnBiddingHandler(AmountRef.current.value)}
+						>
+							Place My Bid
+						</button>
+					)}
+
+					{isLoggedIn && props.RetreatModalTitle && props.RetreatModelHandler && !props.UpComingAuction && !(!!props.errorWhenJoinAuction) &&
+						<button onClick={props.RetreatModelHandler} className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}> ConFirm </button>
+					}
+
 					{isLoggedIn && props.UpComingAuction && role === 'buyer' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -181,7 +208,9 @@ const ModalUi = props => {
 							Save
 						</button>
 					)}
-					{/* Admin modal */}
+					{/* end buyer modal */}
+
+					{/* start Admin modal */}
 					{props.btnReject && role === 'admin' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -191,6 +220,9 @@ const ModalUi = props => {
 							Submit
 						</button>
 					)}
+					{/* start Admin modal */}
+
+					{/* start seller modal */}
 					{isLoggedIn && role === 'seller' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
@@ -200,6 +232,8 @@ const ModalUi = props => {
 							Delete
 						</button>
 					)}
+					{/* end seller modal */}
+
 					<button
 						className={`btn col-6 fw-bold bg-danger ${classes.btnCloseModal}`}
 						type="button"

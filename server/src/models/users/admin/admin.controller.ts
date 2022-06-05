@@ -50,6 +50,7 @@ import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { ResponseResult } from 'src/common/types';
 import { WarningMessagesEnum, BlockUserReasonsEnum } from './enums';
+import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -162,6 +163,46 @@ export class AdminController
 		@Body() rejectAuctionDto: RejectAuctionDto,
 	): Promise<ResponseResult> {
 		return this.adminService.rejectAuction(auctionId, rejectAuctionDto);
+	}
+
+	/**
+	 *
+	 * @returns List of all list of all auctions that need to be extended
+	 */
+	@Get('auction/extended-auction')
+	listAllTimeExtensionRequests(): Promise<any> {
+		return this.adminService.getTimeExtensionRequests();
+	}
+
+	/**
+	 *
+	 * @param param0 id of the auction
+	 * @returns auction that is approved
+	 */
+	@Post('auction/approve-extend/:id')
+	@HttpCode(HttpStatus.OK)
+	approveExtendAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+	): Promise<ResponseResult> {
+		return this.adminService.approveExtendAuction(auctionId);
+	}
+
+	/**
+	 * Reject extension time request for an auction
+	 * @param Auction id
+	 * @param rejectExtendAuctionDto
+	 * @returns ResponseResult
+	 */
+	@Post('auction/reject-extend/:id')
+	@HttpCode(HttpStatus.OK)
+	rejectExtendAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() rejectExtendAuctionDto: RejectExtendTimeDto,
+	): Promise<ResponseResult> {
+		return this.adminService.rejectExtendAuction(
+			auctionId,
+			rejectExtendAuctionDto,
+		);
 	}
 
 	/* Handle Employee Behaviors */

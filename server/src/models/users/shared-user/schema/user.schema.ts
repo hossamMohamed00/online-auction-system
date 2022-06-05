@@ -3,7 +3,7 @@ import { Document, ObjectId } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { Role } from '../enums';
 import { Transform } from 'class-transformer';
-import { ImageType } from 'src/models/items/schema/image.type';
+import { ImageType } from 'src/common/types';
 
 export type UserDocument = User & Document;
 

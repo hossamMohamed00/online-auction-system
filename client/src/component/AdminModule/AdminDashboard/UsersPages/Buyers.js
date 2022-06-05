@@ -95,7 +95,7 @@ const UsersPage = () => {
 		},
 	];
 
-	const { sendRequest, status, data } = useHttp(getUsers);
+	const { sendRequest, data } = useHttp(getUsers);
 
 	useEffect(() => {
 		sendRequest({
@@ -134,8 +134,6 @@ const UsersPage = () => {
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
-
-	const failed = status !== 'completed';
 
 	return (
 		<React.Fragment>

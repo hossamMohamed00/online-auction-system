@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
-import Modal_ from '../../../UI/Modal/modal';
+import ModalUi from '../../../UI/Modal/modal';
 
 const RecoverMoney = props => {
 	const [ModalTitle, setModalTitle] = useState('Refund transaction amount?');
@@ -43,7 +43,7 @@ const RecoverMoney = props => {
 	return (
 		<>
 			{loading && <LoadingSpinner />}
-			<Modal_
+			<ModalUi
 				show={props.show}
 				onHide={props.onHide}
 				title={ModalTitle}

@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
-// import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 import {
 	faCoins,
@@ -8,10 +7,7 @@ import {
 	faCreditCardAlt,
 	faGavel,
 } from '@fortawesome/free-solid-svg-icons';
-import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
-import BuyerProfile from './buyerProfile/buyerProfile';
 
-// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const BuyerDashboardContent = props => {
 	const email = localStorage.getItem('email');

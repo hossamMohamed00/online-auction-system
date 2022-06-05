@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import useHttp from '../../../CustomHooks/useHttp';
 
-import Modal_ from '../Modal/modal'
+import ModalUi from '../Modal/modal'
 import LoadingSpinner from '../Loading/LoadingSpinner'
 import './WarnModal.css'
 import { getJoinedAuctions } from '../../../Api/BuyerApi';
@@ -120,7 +120,7 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 		<>
 			{loading && <LoadingSpinner/>}
 
-			<Modal_
+			<ModalUi
 				show={show}
 				onHide={onHide}
 				title= {ModalTitle}

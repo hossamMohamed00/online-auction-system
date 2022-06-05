@@ -20,6 +20,7 @@ import { ResponseResult } from 'src/common/types';
 import {
 	AuctionDto,
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
@@ -27,7 +28,7 @@ import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { Role } from '../shared-user/enums';
-import { SellerDto, SellerProfileDto } from './dto';
+import { SellerProfileDto } from './dto';
 import {
 	SellerAuctionsBehaviors,
 	SellerProfileBehaviors,
@@ -90,6 +91,7 @@ export class SellerController
 
 	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Patch('auction/:id')
 	editAuction(
 		@Param() { id }: MongoObjectIdDto, // auction id
@@ -97,6 +99,28 @@ export class SellerController
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.editAuction(id, sellerId, updateAuctionDto);
+	}
+
+	@Roles(Role.Seller)
+	@Patch('auction/extend/:id')
+	extendAuctionTime(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() extendAuctionTimeDto: ExtendAuctionTimeDto,
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<ResponseResult> {
+		return this.sellerService.extendAuctionTime(
+			auctionId,
+			sellerId,
+			extendAuctionTimeDto,
+		);
+	}
+
+	@Roles(Role.Seller)
+	@Get('auction/extension-requests')
+	listMyAuctionExtensionTimeRequests(
+		@GetCurrentUserData() seller: SellerDocument,
+	): Promise<any> {
+		return this.sellerService.listMyAuctionExtensionTimeRequests(seller);
 	}
 
 	@Roles(Role.Seller)

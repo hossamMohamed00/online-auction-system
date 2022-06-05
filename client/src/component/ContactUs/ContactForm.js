@@ -35,14 +35,21 @@ const ContactForm = props => {
 			email: EmailRef.current.value,
 			message: Messagevalue,
 		};
-		props.SendComplaint(values);
+		let isValid = true
+		if(validateEmail(EmailRef.current.value) && validateText(nameRef.current.value) && validateText(Messagevalue) ){
+			isValid = true
+		}
+		else{
+			isValid = false
+		}
+		props.SendComplaint(isValid ? values : null);
 	};
 	const FormControlStyle = `form-control ${classes['formControl']}`;
 
 	return (
 		<React.Fragment>
 			<div className={` ${classes.ContactForm} p-0`}>
-				<h2 className="text-center">
+				<h2 className="text-center fw-bold">
 					{' '}
 					<span className={classes.AnotherWay}> Or Send </span> A Complaint
 				</h2>
@@ -56,7 +63,7 @@ const ContactForm = props => {
 							validateText={validateText}
 							ref={nameRef}
 							errorMassage={errorNameMessage}
-						/>
+					/>
 					</div>
 
 					<div className="d-flex flex-column w-100">

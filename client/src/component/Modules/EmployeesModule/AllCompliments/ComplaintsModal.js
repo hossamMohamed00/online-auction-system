@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
-import Modal_ from './../../../UI/Modal/modal';
+import ModalUi from './../../../UI/Modal/modal';
 import './complaint.css';
 
 export const ComplaintModal = props => {
@@ -20,7 +20,7 @@ export const ComplaintModal = props => {
 		<>
 			<ToastContainer theme="dark" />
 
-			<Modal_
+			<ModalUi
 				show={props.show}
 				onHide={props.onHide}
 				title={ComplaintTitle}

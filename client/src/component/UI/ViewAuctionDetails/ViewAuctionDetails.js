@@ -59,8 +59,8 @@ const ViewAuctionDetails = props => {
 									</Link>
 								</div>
 								{(viewAllAuctionPage || homePage )&& (
-									<p>
-										Category :  
+									<div>
+										Category :
 										<Link
 											to={`/categories?id=${item.category &&
 												item.category._id}`}
@@ -70,10 +70,9 @@ const ViewAuctionDetails = props => {
 												{item.category && item.category.name}
 											</span>
 										</Link>
-									</p>
+									</div>
 								)}
 								<p className={classes.MinmumBid}>
-									{' '}
 									Minimum Bid Allowed: {item['minimumBidAllowed']}{' '}
 								</p>
 							</Card.Text>

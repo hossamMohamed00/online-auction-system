@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { ImageType } from 'src/common/types';
 import { ItemStatus } from '../enums/item-status.enum';
-import { ImageType } from './image.type';
 
 export type ItemDocument = Item & Document;
 
@@ -29,7 +29,7 @@ export class Item {
 	investigationLocation?: string; // Location on map
 
 	@Prop({ required: true })
-	image: ImageType;
+	images: ImageType[];
 }
 
 export const ItemSchema = SchemaFactory.createForClass(Item);

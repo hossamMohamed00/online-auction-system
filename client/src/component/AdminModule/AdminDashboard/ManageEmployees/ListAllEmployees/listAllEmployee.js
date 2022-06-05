@@ -18,7 +18,7 @@ import './allEmployees.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import Modal_ from './../../../../UI/Modal/modal';
+import ModalUi from './../../../../UI/Modal/modal';
 
 const ListAllEmployees = props => {
 
@@ -130,7 +130,7 @@ const ListAllEmployees = props => {
 						/>
 					)}
 					{ModalShow && (
-						<Modal_
+						<ModalUi
 							show={ModalShow}
 							onHide={() => setModalShow(false)}
 							btnHandler={() => removeHandler(employeeId)}
