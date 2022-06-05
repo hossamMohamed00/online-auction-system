@@ -382,6 +382,44 @@ export class AuctionsService
 			},
 		};
 	}
+	/**
+	 *
+	 * @param auctionId
+	 * @param rejectExtendTime
+	 * @returns if rejected successfully
+	 */
+	async rejectTimeExtensionRequest(
+		auctionId: string,
+		rejectExtendTime: RejectAuctionDto,
+	): Promise<ResponseResult> {
+		//* Find only auctions that not closed or denied
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			extensionTime: { $ne: null },
+		});
+
+		if (!auction)
+			return {
+				success: false,
+				message: 'Auction not found or already closed ❌',
+			};
+
+		//* reject the extension time request and update the auction and use rejection message to know why it was rejected
+		const RejectedExtendTime = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				extensionTime: null,
+				rejectionMessage: rejectExtendTime.message,
+			},
+			{ new: true },
+		);
+		this.logger.log('Auction extension time request rejected successfully ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction time extend rejected successfully ✔✔',
+		};
+	}
 
 	/**
 	 * Check if there is any auctions that has status ongoing or upcoming in category

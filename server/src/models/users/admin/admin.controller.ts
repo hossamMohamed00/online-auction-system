@@ -50,6 +50,7 @@ import { ComplaintDto } from 'src/models/complaint/dto';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { ResponseResult } from 'src/common/types';
 import { WarningMessagesEnum, BlockUserReasonsEnum } from './enums';
+import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -184,6 +185,23 @@ export class AdminController
 		@Param() { id: auctionId }: MongoObjectIdDto,
 	): Promise<ResponseResult> {
 		return this.adminService.approveExtendAuction(auctionId);
+	}
+	/**
+	 *
+	 * @param param0 id of the auction
+	 * @param rejectExtendAuctionDto
+	 * @returns auction that is rejected
+	 */
+	@Post('auction/reject-extend/:id')
+	@HttpCode(HttpStatus.OK)
+	rejectExtendAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() rejectExtendAuctionDto: RejectExtendTimeDto,
+	): Promise<ResponseResult> {
+		return this.adminService.rejectExtendAuction(
+			auctionId,
+			rejectExtendAuctionDto,
+		);
 	}
 
 	/* Handle Employee Behaviors */

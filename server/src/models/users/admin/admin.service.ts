@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { RejectAuctionDto } from 'src/models/auction/dto';
+import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { DashboardAuctionsCount } from 'src/models/auction/types';
 import { CategoryService } from 'src/models/category/category.service';
@@ -221,6 +222,23 @@ export class AdminService {
 
 		//TODO: Send email to inform the bidders that auction time increased
 
+		return responseResult;
+	}
+	/**
+	 *
+	 * @param auctionId
+	 * @param rejectExtendTomeDto
+	 * @returns if auction is rejected successfully or not
+	 */
+	async rejectExtendAuction(
+		auctionId: string,
+		rejectExtendTomeDto: RejectExtendTimeDto,
+	): Promise<ResponseResult> {
+		const responseResult: ResponseResult =
+			await this.auctionService.rejectTimeExtensionRequest(
+				auctionId,
+				rejectExtendTomeDto,
+			);
 		return responseResult;
 	}
 
