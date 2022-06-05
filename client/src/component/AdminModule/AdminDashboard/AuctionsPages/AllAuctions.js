@@ -90,7 +90,7 @@ const AllAuctions = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
-					<PageHeader text="Current Auctions" showLink={false} />{' '}
+					<PageHeader text="All Auctions" showLink={false} />{' '}
 					{ongoingAuctions && (
 						<DataTable
 							columns={columns}

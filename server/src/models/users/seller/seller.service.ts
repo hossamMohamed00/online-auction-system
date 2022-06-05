@@ -1,4 +1,10 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import {
+	Injectable,
+	Logger,
+	BadRequestException,
+	Inject,
+	forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, StringSchemaDefinition } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
@@ -8,15 +14,12 @@ import {
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
-import { CreateComplaintDto } from 'src/models/complaint/dto';
-import { UserDocument } from '../shared-user/schema/user.schema';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
-import { ImageType } from '../shared-user/schema/image.type';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
-import { ResponseResult } from 'src/common/types';
+import { ImageType, ResponseResult } from 'src/common/types';
 
 @Injectable()
 export class SellerService {
@@ -26,8 +29,9 @@ export class SellerService {
 	constructor(
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionsService: AuctionsService,
-		private readonly complaintService: ComplaintService,
+		@Inject(forwardRef(() => ReviewService))
 		private readonly reviewService: ReviewService,
 		private cloudinary: CloudinaryService,
 	) {}
@@ -67,7 +71,6 @@ export class SellerService {
 		if (updateSellerDto.image) {
 			imageUpdated = true;
 			this.logger.debug('Uploading image to cloudinary...');
-			image = new ImageType();
 
 			try {
 				// Upload image to cloudinary
@@ -78,8 +81,8 @@ export class SellerService {
 				//* If upload success, save image url and public id to db
 				if (savedImage.url) {
 					this.logger.log('User Image uploaded successfully!');
-					image.url = savedImage.url;
-					image.publicId = savedImage.public_id;
+
+					image = new ImageType(savedImage.url, savedImage.public_id);
 				}
 			} catch (error) {
 				this.logger.error('Cannot upload user image to cloudinary ❌');

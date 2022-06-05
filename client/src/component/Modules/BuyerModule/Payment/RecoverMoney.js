@@ -5,9 +5,7 @@ import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 import Modal_ from '../../../UI/Modal/modal';
 
 const RecoverMoney = props => {
-	const [ModalTitle, setModalTitle] = useState(
-		'Are You Sure You Want To Recover Your Money',
-	);
+	const [ModalTitle, setModalTitle] = useState('Refund transaction amount?');
 	const [btnName, setBtnName] = useState('Recover Money');
 
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -33,8 +31,7 @@ const RecoverMoney = props => {
 			setLoading(false);
 			setModalTitle(message);
 			props.onReload(Math.random());
-			props.onHide()
-
+			props.onHide();
 		} else {
 			setLoading(false);
 			setModalTitle(message);
@@ -52,7 +49,7 @@ const RecoverMoney = props => {
 				title={ModalTitle}
 				btnName={btnName}
 				btnHandler={RecoverMoneyHandler}
-				onReload = {props.onReload}
+				onReload={props.onReload}
 			/>
 		</>
 	);

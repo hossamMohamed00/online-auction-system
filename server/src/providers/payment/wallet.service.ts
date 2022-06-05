@@ -126,6 +126,7 @@ export default class WalletService {
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Deposit,
+			isBlockAssuranceTransaction: false,
 			sender: user,
 			recipient: user,
 			paymentIntentId: successOrFailRes.data.paymentIntentId,
@@ -147,6 +148,16 @@ export default class WalletService {
 		const amount = await this.transactionService.getTransactionAmount(
 			paymentIntentId,
 		);
+
+		const { balance: walletBalance } = await this.getWalletBalance(
+			user._id.toString(),
+		);
+
+		if (amount > walletBalance) {
+			throw new BadRequestException(
+				'You can not refund more than your wallet balance ❌❌',
+			);
+		}
 
 		//* Create the refund on stripe
 		try {
@@ -173,6 +184,7 @@ export default class WalletService {
 		await this.transactionService.createTransaction({
 			amount,
 			transactionType: TransactionType.Withdrawal,
+			isBlockAssuranceTransaction: false,
 			sender: user,
 			recipient: user,
 			paymentIntentId: paymentIntentId,
@@ -184,6 +196,80 @@ export default class WalletService {
 			data: null,
 		};
 	}
+
+	/**
+	 * Block specific value from user wallet
+	 * @param bidder
+	 * @param assuranceValue
+	 */
+	public async blockAssuranceFromWallet(bidder: Buyer, assuranceValue: number) {
+		this.logger.debug(
+			`Blocking ${assuranceValue} from bidder ${bidder.name} wallet`,
+		);
+		//* Get bidder wallet
+		const wallet = this.walletModel.findOne({ user: bidder });
+
+		if (!wallet) {
+			throw new BadRequestException('Wallet not found for that user!!');
+		}
+
+		//* Update bidder wallet balance
+		await this.updateWalletBalance(bidder, assuranceValue, true);
+
+		//* Save the transaction into db
+		const transaction = await this.transactionService.createTransaction({
+			amount: assuranceValue,
+			transactionType: TransactionType.BlockAssurance,
+			sender: bidder._id,
+			recipient: null,
+			isBlockAssuranceTransaction: true,
+			paymentIntentId: null,
+		});
+
+		if (!transaction) {
+			throw new BadRequestException('Transaction not created!!');
+		}
+
+		return true;
+	}
+
+	/**
+	 * Recover assurance to bidder wallet
+	 * @param bidder
+	 * @param assuranceValue
+	 */
+	public async recoverAssuranceToBidder(bidder: Buyer, assuranceValue: number) {
+		this.logger.debug(
+			`Recovering ${assuranceValue} to bidder ${bidder.name} wallet...`,
+		);
+
+		//* Get bidder wallet
+		const wallet = this.walletModel.findOne({ user: bidder });
+
+		if (!wallet) {
+			throw new BadRequestException('Wallet not found for that user!!');
+		}
+
+		//* Update bidder wallet balance
+		await this.updateWalletBalance(bidder, assuranceValue, false);
+
+		//* Save the transaction into db
+		const transaction = await this.transactionService.createTransaction({
+			amount: assuranceValue,
+			transactionType: TransactionType.RecoverAssurance,
+			sender: null,
+			recipient: bidder._id,
+			isBlockAssuranceTransaction: true,
+			paymentIntentId: null,
+		});
+
+		if (!transaction) {
+			throw new BadRequestException('Transaction not created!!');
+		}
+
+		return true;
+	}
+
 	/*--------------------------------*/
 	//* Helper methods
 
@@ -233,12 +319,12 @@ export default class WalletService {
 	 * @param amount
 	 */
 	private async updateWalletBalance(
-		user: User,
+		user: User | Buyer,
 		amount: number,
-		isWithdrawal: boolean,
+		isWithdrawalOrAssurance: boolean,
 	) {
 		//? Check if the transaction is Withdrawal, so add negative sign to the amount to be decremented.
-		if (isWithdrawal) {
+		if (isWithdrawalOrAssurance) {
 			amount = -amount;
 		}
 

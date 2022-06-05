@@ -11,6 +11,7 @@ import CountDownTimer from '../CountDownTimer/CountDownTimer';
 const ViewAuctionDetails = props => {
 	const location = useLocation();
 	const viewAllAuctionPage = location.pathname === '/auctions';
+	const homePage = location.pathname === '/home-page';
 	const getAuctionDetails = (Items, animate) => {
 		return (
 			Items &&
@@ -51,19 +52,24 @@ const ViewAuctionDetails = props => {
 								<div>
 									Creator :
 									<Link
-									className={`fs-6 fw-light text-decoration-none`}
-									to={`/seller?id=${item.seller._id}`}
-								>
-									{item.seller.name}
-								</Link>
+										className={`fs-6 fw-light text-decoration-none`}
+										to={`/seller?id=${item.seller._id}`}
+									>
+										{item.seller.name}
+									</Link>
 								</div>
-								{viewAllAuctionPage && (
+								{(viewAllAuctionPage || homePage )&& (
 									<p>
-										{' '}
-										Category :{' '}
-										<span className="fs-6 fw-light">
-											{item.category && item.category.name}
-										</span>{' '}
+										Category :  
+										<Link
+											to={`/categories?id=${item.category &&
+												item.category._id}`}
+											className="text-decoration-none"
+										>
+											<span className="fs-6 fw-light">
+												{item.category && item.category.name}
+											</span>
+										</Link>
 									</p>
 								)}
 								<p className={classes.MinmumBid}>

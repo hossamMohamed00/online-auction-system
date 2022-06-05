@@ -28,9 +28,9 @@ export class ItemDto {
 	investigationLocation?: string; // Location on map
 
 	@Expose()
-	@Transform(({ obj }) => {
-		//* Just return the url of the image
-		return obj.image?.url;
-	})
-	image: string;
+	// @Transform(({ obj }) => {
+	// 	//* Just return the url of the image
+	// 	return obj.image?.url;
+	// })
+	images: string[];
 }

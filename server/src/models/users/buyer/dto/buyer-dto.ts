@@ -6,6 +6,18 @@ import { UserDto } from '../../shared-user/dto';
 
 export class BuyerDto extends UserDto {
 	@Expose()
+	isBlocked: boolean;
+
+	@Expose()
+	blockReason: string;
+
+	@Expose()
+	isWarned: boolean;
+
+	@Expose()
+	warningMessage: string;
+
+	@Expose()
 	@Transform(({ obj }) => {
 		return SerializeIt(AuctionDto, obj.joinedAuctions);
 	})

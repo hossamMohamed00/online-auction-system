@@ -19,6 +19,20 @@
 	background-size: cover;
 	background-position: center;
 }
+.logo {
+	background-color: #191c24;
+	box-shadow: 2px 5px 6px #1f1f1f;
+	/* position: fixed; */
+	z-index: 1000;
+	/* margin: 0 auto; */
+	/* width: 25%; */
+
+	padding: 10px;
+}
+.logo span {
+	color: #07b2ef;
+}
+
 
 h1 {
 	font-family: var(--main-font);

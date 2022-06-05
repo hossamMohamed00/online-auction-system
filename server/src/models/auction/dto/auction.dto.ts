@@ -10,6 +10,8 @@ import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import { SellerDto } from 'src/models/users/seller/dto';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { BuyerDto } from 'src/models/users/buyer/dto';
+import { Bid } from 'src/models/bids/schema/bid.schema';
+import { BidDto } from 'src/models/bids/dto';
 
 /**
  * Auction dto - Describe what auction data to be sent over the network
@@ -88,6 +90,12 @@ export class AuctionDto {
 		return SerializeIt(BuyerDto, obj.bidders);
 	})
 	bidders: [Buyer];
+
+	@Expose()
+	@Transform(({ obj }) => {
+		return SerializeIt(BidDto, obj.bids);
+	})
+	bids: [Bid];
 
 	@Expose()
 	@Transform(({ obj }) => {

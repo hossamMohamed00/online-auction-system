@@ -1,18 +1,21 @@
 import {
 	BadRequestException,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ImageType } from 'src/common/types';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { CreateItemDto } from './dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { ImageType } from './schema/image.type';
 import { Item, ItemDocument } from './schema/item.schema';
 
 @Injectable()
 export class ItemService {
+	private logger: Logger = new Logger(ItemService.name);
+
 	constructor(
 		@InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
 		private cloudinary: CloudinaryService,
@@ -24,28 +27,11 @@ export class ItemService {
 	 * @returns Created item instance
 	 */
 	async create(itemData: CreateItemDto) {
-		//* First of all, save the image to cloudinary
-		let image: ImageType = new ImageType();
-		try {
-			// Upload image to cloudinary
-			const savedImage = await this.cloudinary.uploadImage(itemData.image);
-
-			//* If upload success, save image url and public id to db
-			if (savedImage.url) {
-				image.url = savedImage.url;
-				image.publicId = savedImage.public_id;
-			}
-		} catch (error) {
-			console.log(error);
-
-			throw new BadRequestException(
-				'Cannot upload image to cloudinary, ',
-				error,
-			);
-		}
+		//* Upload all uploaded files to cloudinary
+		const images = await this.uploadItemImageToCloudinary(itemData.images);
 
 		//* Create new item
-		const createdItem = new this.itemModel({ ...itemData, image });
+		const createdItem = new this.itemModel({ ...itemData, images });
 
 		//* Save the item
 		await createdItem.save();
@@ -62,15 +48,33 @@ export class ItemService {
 		//* Omit the _id
 		delete updateItemDto._id;
 
+		let imagesUpdated = false;
+		if (updateItemDto.images) {
+			//* Upload the new images
+			const images: ImageType[] = await this.uploadItemImageToCloudinary(
+				updateItemDto.images,
+			);
+
+			//* Add the images to the update data
+			updateItemDto.images = images;
+
+			imagesUpdated = true;
+		}
+
 		const updatedItem = await this.itemModel.findByIdAndUpdate(
 			_id,
 			updateItemDto,
-			{
-				new: true,
-			},
 		);
 
-		if (updatedItem) return true;
+		if (updatedItem) {
+			//? Remove old image if there was one
+			if (imagesUpdated && updatedItem.images) {
+				//* Remove all existing images
+				await this.cloudinary.destroyArrayOfImages(updatedItem.images);
+			}
+
+			return true;
+		}
 
 		return false;
 	}
@@ -89,5 +93,16 @@ export class ItemService {
 		await item.remove();
 
 		return true;
+	}
+
+	/*-------------*/
+
+	/**
+	 * Upload array of uploaded images to cloudinary
+	 * @param uploadedImages
+	 * @returns
+	 */
+	async uploadItemImageToCloudinary(uploadedImages: any) {
+		return this.cloudinary.uploadArrayOfImages(uploadedImages);
 	}
 }

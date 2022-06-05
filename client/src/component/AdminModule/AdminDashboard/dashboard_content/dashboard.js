@@ -139,6 +139,7 @@ const DashboardContent = props => {
 			center: true,
 		},
 	];
+	console.log(dataForAuctions && dataForAuctions);
 	const items = dataForWinners ? dataForWinners : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	return (
@@ -155,7 +156,7 @@ const DashboardContent = props => {
 				<div className="top_auctions">
 					<h2 className="text-light mt-3 fw-bold">Top ongoing Auctions</h2>
 					<div className="row mt-4 auction_container">
-						{dataForAuctions &&
+						{dataForAuctions && dataForAuctions.length !== 0 ? (
 							dataForAuctions.map((item, index) => {
 								return (
 									<>
@@ -176,7 +177,12 @@ const DashboardContent = props => {
 										</div>
 									</>
 								);
-							})}
+							})
+						) : (
+							<h3 className="text-light text-center fw-bold">
+								No ongoing auctions right now
+							</h3>
+						)}
 					</div>
 				</div>
 

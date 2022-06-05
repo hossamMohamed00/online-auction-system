@@ -80,7 +80,7 @@ const CurrentAuctionsPage = () => {
 					</span>
 				);
 			},
-		}
+		},
 	];
 	//filter
 	const items = ongoingAuctions ? ongoingAuctions : [];

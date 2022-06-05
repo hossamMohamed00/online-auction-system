@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { CreateTransactionDto } from './dto';
 import { TransactionType } from './enums';
 
@@ -63,7 +62,7 @@ export default class TransactionService {
 	 * @param paymentIntentId
 	 */
 	async markTransactionAsRefunded(paymentIntentId: string) {
-		const transaction = await this.transactionModel.updateMany(
+		await this.transactionModel.updateMany(
 			{
 				paymentIntentId,
 			},

@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import toStream = require('buffer-to-stream');
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
+import { ImageType } from 'src/common/types';
 
 @Injectable()
 export class CloudinaryService {
@@ -34,10 +35,71 @@ export class CloudinaryService {
 		});
 	}
 
-	async destroyImage(publicId: string) {
-		const result = await v2.uploader.destroy(publicId);
-		console.log(result);
+	/**
+	 * Upload array of images to cloudinary
+	 * @param uploadedImages
+	 * @returns images array of ImageType
+	 */
+	async uploadArrayOfImages(uploadedImages: any): Promise<ImageType[]> {
+		let images: ImageType[] = [];
+		try {
+			this.logger.debug(
+				`Uploading ${uploadedImages.length} images to cloudinary`,
+			);
 
-		this.logger.log('Image removed 👏🏻');
+			//* Loop over the uploaded images
+
+			//* Await the uploading operation
+			await Promise.all(
+				uploadedImages.map(async image => {
+					const savedImage = await this.uploadImage(image);
+
+					//? If upload success, save image url and public id to db
+					if (savedImage.url) {
+						//* Push the image to the list of images
+						images.push({
+							url: savedImage.url,
+							publicId: savedImage.public_id,
+						});
+					}
+				}),
+			);
+		} catch (error) {
+			this.logger.error('Cannot upload images to cloudinary, ', error);
+		}
+
+		return images;
+	}
+
+	/**
+	 * Destroy single image from cloudinary
+	 * @param publicId
+	 */
+	async destroyImage(publicId: string) {
+		try {
+			await v2.uploader.destroy(publicId);
+
+			this.logger.log('Image removed 👏🏻');
+		} catch (error) {
+			this.logger.error('Cannot remove image from cloudinary, ', error);
+		}
+	}
+
+	/**
+	 * Destroy array of images from cloudinary
+	 * @param images
+	 */
+	async destroyArrayOfImages(images: ImageType[]) {
+		this.logger.debug(`Deleting ${images.length} images from cloudinary`);
+		try {
+			//* Loop over the images and remove one by one
+			await Promise.all(
+				images.map(async image => {
+					await this.destroyImage(image.publicId);
+				}),
+			);
+		} catch (error) {
+			this.logger.error('Cannot remove images from cloudinary, ', error);
+		}
 	}
 }

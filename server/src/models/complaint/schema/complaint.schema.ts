@@ -8,25 +8,28 @@ export type ComplaintDocument = Complaint & Document;
 
 @Schema({ timestamps: true })
 export class Complaint {
+	@Prop({
+		type: Types.ObjectId,
+		ref: User.name,
+		required: true,
+	})
+	from: Seller | Buyer | string;
+
+	@Prop({
+		type: Types.ObjectId,
+		ref: User.name,
+		required: true,
+	})
+	in: Seller | Buyer | string;
+
 	@Prop({ required: true, minlength: 5, maxlength: 100 })
 	reason: string;
 
-	@Prop({
-		type: Types.ObjectId,
-		ref: User.name,
-		required: true,
-	})
-	from: Seller | Buyer;
-
-	@Prop({
-		type: Types.ObjectId,
-		ref: User.name,
-		required: true,
-	})
-	in: Seller | Buyer;
-
 	@Prop({ default: false })
 	markedAsRead: boolean; // To check whether admin read the complaints or not
+
+	@Prop({ default: false })
+	inSystem: boolean; // To check whether complaint is in system or not
 }
 
 export const ComplaintSchema = SchemaFactory.createForClass(Complaint);

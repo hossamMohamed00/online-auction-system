@@ -10,11 +10,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {
-	const dropdownListForCompliments = [
+	const dropdownListForComplaints = [
 		{
-			title: 'All Compliments',
+			title: 'All complaints',
 			icon: faComment,
-			path: '/managersDashboard/manageInquiries',
+			path: '/managersDashboard/allComplaints',
 		},
 	];
 	const dropdownListForInquiries = [
@@ -56,11 +56,6 @@ const AdminDashboard = props => {
 	];
 
 	const dropdownListManageUsers = [
-		{
-			title: 'All Users',
-			icon: faUser,
-			path: '/managersDashboard/allUsersPage',
-		},
 		{ title: 'Sellers', icon: faUser, path: '/managersDashboard/sellersPage' },
 		{ title: 'Buyers', icon: faUser, path: '/managersDashboard/buyersPage' },
 	];
@@ -96,13 +91,12 @@ const AdminDashboard = props => {
 				list: dropdownListManageCategories,
 			}}
 			compliments={{
-				name: 'Manage Compliments',
-				list: dropdownListForCompliments,
+				name: 'Manage complaints',
+				list: dropdownListForComplaints,
 			}}
 			inquiries={{
 				name: 'Inquiries',
 				list: dropdownListForInquiries,
-
 			}}
 		>
 			{contentExist ? props.children : <DashboardContent />}

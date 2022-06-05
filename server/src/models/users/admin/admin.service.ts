@@ -348,6 +348,14 @@ export class AdminService {
 	}
 
 	/**
+	 * List all submitted complaints in system
+	 * @returns array of complaints
+	 */
+	listAllComplaintInSystem(): Promise<Complaint[]> {
+		return this.complaintService.findAllSystemComplaints();
+	}
+
+	/**
 	 * Mark a complaint as read
 	 * @param complaintId
 	 * @returns true or false
