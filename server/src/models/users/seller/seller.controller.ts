@@ -8,7 +8,6 @@ import {
 	Param,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { time } from 'console';
 import { FormDataRequest } from 'nestjs-form-data';
 import {
 	GetCurrentUserData,
@@ -21,6 +20,7 @@ import { ResponseResult } from 'src/common/types';
 import {
 	AuctionDto,
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
@@ -102,14 +102,17 @@ export class SellerController
 	}
 
 	@Roles(Role.Seller)
-	@Serialize(AuctionDto)
 	@Patch('auction/extend/:id')
-	extendAuction(
-		@Param() { id }: MongoObjectIdDto, // auction id
-		@Body() data: { time: number },
+	extendAuctionTime(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() extendAuctionTimeDto: ExtendAuctionTimeDto,
 		@GetCurrentUserData('_id') sellerId: string,
-	): Promise<Auction> {
-		return this.sellerService.extendTime(id, sellerId, data.time);
+	): Promise<ResponseResult> {
+		return this.sellerService.extendAuctionTime(
+			auctionId,
+			sellerId,
+			extendAuctionTimeDto,
+		);
 	}
 
 	@Roles(Role.Seller)

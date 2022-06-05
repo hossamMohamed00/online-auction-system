@@ -4,9 +4,10 @@ import { AuctionStatus } from '../enums';
 import { Item } from 'src/models/items/schema/item.schema';
 import { Category } from 'src/models/category/schema/category.schema';
 import { User } from 'src/models/users/shared-user/schema/user.schema';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { Bid } from 'src/models/bids/schema/bid.schema';
+import { ExtendAuctionTimeType } from '../types';
 
 export type AuctionDocument = Auction & Document;
 
@@ -54,8 +55,9 @@ export class Auction {
 	@Prop({ min: 0, default: 0 })
 	numOfBids: number; //? Current number of bids
 
-	@Prop({ default: null })
-	extensionTime: number; //? The time (in seconds) by which the auction counter will be increased with each bid. This will be applicable only towards the end of the auction
+	//*Create new prop with type ExtendAuctionTimeType
+	@Prop({ type: ExtendAuctionTimeType, default: null })
+	extensionTime: ExtendAuctionTimeType; //? Time to extend auction duration
 
 	@Prop({ enum: AuctionStatus, default: AuctionStatus.Pending })
 	status: AuctionStatus;

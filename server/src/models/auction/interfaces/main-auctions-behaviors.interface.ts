@@ -2,6 +2,7 @@ import { ResponseResult } from 'src/common/types';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	FilterAuctionQueryDto,
 	UpdateAuctionDto,
 } from '../dto';
@@ -44,4 +45,15 @@ export interface MainAuctionsBehaviors {
 
 	//* Check if auction exists or not
 	isExists(auctionId: string, sellerId: string): Promise<boolean>;
+
+	//* Extend auction duration by specific time
+	extendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	);
+
+	getAuctionsTimeExtensionRequests();
+
+	getAuctionsTimeExtensionRequests(auctionId: string);
 }

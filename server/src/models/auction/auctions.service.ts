@@ -10,6 +10,7 @@ import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 	UpdateAuctionDto,
@@ -266,68 +267,117 @@ export class AuctionsService
 
 		return auction;
 	}
+
 	/**
-	 *
+	 * Extend the auction by adding more time
 	 * @param auctionId
 	 * @param sellerId
 	 * @param time
-	 * @returns auction with ExtendTime
+	 * @returns Promise<ResponseResult>
 	 */
-	async extendTime(auctionId: string, sellerId: string, time: number) {
-		const auction = await this.auctionModel.findOne({
+	async extendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	) {
+		//* Get auction for the seller
+		let auction = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,
 		});
+
 		if (!auction)
 			throw new NotFoundException('Auction not found for that seller❌');
 
-		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
-			auctionId,
-			{
-				extensionTime: time,
-			},
-			{ new: true },
+		if (auction.status !== AuctionStatus.OnGoing) {
+			throw new BadRequestException('Auction not started yet ✖✖');
+		}
+
+		//* Add the time to the auction
+		await this.auctionModel.findByIdAndUpdate(auctionId, {
+			extensionTime: extendAuctionTimeDto,
+		});
+
+		this.logger.log(
+			'Time extension request sent and now waiting for approval ✔✔',
 		);
 
-		this.logger.log(' auction extended Time and now waiting for approval ✔✔');
-
-		return updatedAuction;
+		return {
+			success: true,
+			message: 'Time extension request sent and now waiting for approval ✔✔',
+		};
 	}
+
 	/**
-	 *
-	 * @returns all auctions need to approve with extensionTime to admin
+	 * Get all auctions with time extension requests
+	 * @returns Array of auctions with time extension requests
 	 */
-	async getActionExtendedTime(): Promise<Auction[]> {
-		const auction = await this.auctionModel.find({
+	async getAuctionsTimeExtensionRequests(): Promise<any> {
+		//* Get all auctions with time extension not equal null
+		const auctions: Auction[] = await this.auctionModel.find({
 			extensionTime: { $ne: null },
 		});
-		console.log(auction);
-		if (!auction) throw new NotFoundException('No Auction Need To extend ❌');
-		return auction;
-	}
-	async extendTimeApprove(auctionId: string): Promise<ResponseResult> {
-		const auction = await this.auctionModel.findById(auctionId);
-		if (!auction) return null;
 
-		const newEndDate = new Date(auction.endDate);
+		//* Return only specific data
+		const serializedRequests = auctions.map((auction: Auction) => {
+			return {
+				_id: auction._id,
+				sellerId: auction.seller,
+				extensionTime: auction.extensionTime,
+				endDate: auction.endDate,
+				status: auction.status,
+			};
+		});
+
+		return serializedRequests;
+	}
+
+	/**
+	 * Enable admin to approve time extension request
+	 */
+	async approveTimeExtensionRequest(
+		auctionId: string,
+	): Promise<ResponseResult> {
+		//* Find only auctions that not closed or denied
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			extensionTime: { $ne: null },
+		});
+
+		if (!auction)
+			return {
+				success: false,
+				message: 'Auction not found or already closed ❌',
+			};
+
+		//* Get auction new end date after extension time is added
+		const newEndDate = HandleDateService.appendExtensionAndGetNewEndDate(
+			auction.endDate,
+			auction.extensionTime,
+		);
+
 		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
-				endDate: newEndDate.setDate(
-					newEndDate.getDate() + auction.extensionTime,
-				),
+				endDate: newEndDate,
 				extensionTime: null,
 			},
 			{ new: true },
 		);
 
-		this.logger.log('approved auction extended Time  ✔✔');
+		if (!updatedAuction) {
+			return {
+				success: false,
+				message: 'Cannot approve this extension time request ❌',
+			};
+		}
+
+		this.logger.log('Auction extension time request approved successfully ✔✔');
 
 		return {
 			success: true,
-			message: 'Auction extend successfully ✔✔',
+			message: 'Auction time extend successfully ✔✔',
 			data: {
-				startDate: updatedAuction.startDate,
 				endDate: updatedAuction.endDate,
 			},
 		};

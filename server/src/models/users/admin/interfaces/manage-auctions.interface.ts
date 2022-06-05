@@ -21,4 +21,8 @@ export interface AdminAuctionsBehavior {
 		id: MongoObjectIdDto,
 		rejectAuctionDto: RejectAuctionDto,
 	): Promise<ResponseResult>;
+
+	listAllTimeExtensionRequests();
+
+	approveExtendAuction({ id: auctionId }: MongoObjectIdDto);
 }

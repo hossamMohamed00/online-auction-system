@@ -146,15 +146,6 @@ export class AdminController
 	): Promise<Auction[]> {
 		return this.adminService.listAllAuctions(filterAuctionQuery);
 	}
-	/**
-	 *
-	 * @returns List of all list of all auctions that need to be extended
-	 */
-	@Serialize(AuctionDto)
-	@Get('auction/extended-auction')
-	listAllExtendAuctions(): Promise<Auction[]> {
-		return this.adminService.getExtendedAuction();
-	}
 
 	@Post('auction/approve/:id')
 	@HttpCode(HttpStatus.OK)
@@ -163,6 +154,25 @@ export class AdminController
 	): Promise<ResponseResult> {
 		return this.adminService.approveAuction(auctionId);
 	}
+
+	@Post('auction/reject/:id')
+	@HttpCode(HttpStatus.OK)
+	rejectAuction(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() rejectAuctionDto: RejectAuctionDto,
+	): Promise<ResponseResult> {
+		return this.adminService.rejectAuction(auctionId, rejectAuctionDto);
+	}
+
+	/**
+	 *
+	 * @returns List of all list of all auctions that need to be extended
+	 */
+	@Get('auction/extended-auction')
+	listAllTimeExtensionRequests(): Promise<any> {
+		return this.adminService.getTimeExtensionRequests();
+	}
+
 	/**
 	 *
 	 * @param param0 id of the auction
@@ -174,15 +184,6 @@ export class AdminController
 		@Param() { id: auctionId }: MongoObjectIdDto,
 	): Promise<ResponseResult> {
 		return this.adminService.approveExtendAuction(auctionId);
-	}
-
-	@Post('auction/reject/:id')
-	@HttpCode(HttpStatus.OK)
-	rejectAuction(
-		@Param() { id: auctionId }: MongoObjectIdDto,
-		@Body() rejectAuctionDto: RejectAuctionDto,
-	): Promise<ResponseResult> {
-		return this.adminService.rejectAuction(auctionId, rejectAuctionDto);
 	}
 
 	/* Handle Employee Behaviors */

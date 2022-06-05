@@ -1,22 +1,15 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
-import {
-	FilterAuctionQueryDto,
-	RejectAuctionDto,
-} from 'src/models/auction/dto';
+import { RejectAuctionDto } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { DashboardAuctionsCount } from 'src/models/auction/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
-import {
-	Complaint,
-	ComplaintDocument,
-} from 'src/models/complaint/schema/complaint.schema';
+import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
@@ -208,29 +201,27 @@ export class AdminService {
 		return approvedAuction;
 	}
 	/**
-	 *
+	 * Get all the auctions that has time extension requests
 	 * @returns List of all auctions that are needed to extend time
 	 */
-	async getExtendedAuction(): Promise<Auction[]> {
-		return this.auctionService.getActionExtendedTime();
+	async getTimeExtensionRequests(): Promise<any> {
+		return this.auctionService.getAuctionsTimeExtensionRequests();
 	}
+
 	/**
 	 *
 	 * @param auctionId - auction id
 	 * @returns if auction is extended successfully or not
 	 */
 	async approveExtendAuction(auctionId: string): Promise<ResponseResult> {
-		const approvedAuction = await this.auctionService.extendTimeApprove(
-			auctionId,
-		);
+		const responseResult: ResponseResult =
+			await this.auctionService.approveTimeExtensionRequest(auctionId);
 
-		//? Return true if the auction extend approved successfully
-		if (!approvedAuction)
-			throw new BadRequestException('Cannot extend this auction right now!');
+		//TODO: Send email to inform the seller that auction time increased
 
-		//TODO: Send email to inform the seller
+		//TODO: Send email to inform the bidders that auction time increased
 
-		return approvedAuction;
+		return responseResult;
 	}
 
 	/**
