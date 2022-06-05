@@ -41,3 +41,28 @@ export const DeleteAuctionHandler = async ({ AuctionId, accessToken }) => {
 		throw new Error(data.message);
 	}
 };
+
+
+
+export const UpdateAuctionHandler = async ({
+	AuctionId,
+	auctionData,
+	idToken,
+}) => {
+	const response = await fetch(
+		`http://localhost:8000/seller/auction/${AuctionId}`,
+		{
+			method: 'PATCH',
+			body: JSON.stringify(auctionData),
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'content-type': 'application/json',
+			},
+		},
+	);
+	const data = await response.json();
+
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+};
