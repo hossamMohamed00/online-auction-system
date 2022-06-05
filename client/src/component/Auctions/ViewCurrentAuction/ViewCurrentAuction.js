@@ -152,6 +152,7 @@ const ViewCurrentAuction = React.memo(() => {
 					{!ClosedAuction && (
 						<AuctionFooter
 							AuctionStatus={AuctionData && AuctionData.status}
+							sellerEmail = {AuctionData && AuctionData.seller.email}
 							showBids={(value) => setIsShowBids(value)}
 							socket ={socket}
 							setBidderJoin={(value) => setBidderIsJoined(value)}
