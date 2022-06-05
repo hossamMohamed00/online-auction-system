@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
+import { ExtendAuctionTimeType } from 'src/models/auction/types';
 
 /**
  * This service combine all methods that work with date
@@ -36,6 +37,24 @@ export class HandleDateService {
 
 		//* JUST FOR TESTING PURPOSE
 		return moment(auctionStartDate).add(10, 'minutes');
+	}
+
+	/**
+	 * Append extension time to end date
+	 * @param endDate
+	 * @param extensionTime
+	 * @returns new end date
+	 */
+	public static appendExtensionAndGetNewEndDate(
+		endDate: Date,
+		extensionTime: ExtendAuctionTimeType,
+	) {
+		//* Add extension days , hours and minutes to the end date
+		return moment(endDate)
+			.add(extensionTime.days, 'days')
+			.add(extensionTime.hours, 'hours')
+			.add(extensionTime.minutes, 'minutes')
+			.toDate();
 	}
 
 	/**

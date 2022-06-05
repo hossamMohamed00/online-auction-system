@@ -35,12 +35,15 @@ export default class TransactionService {
 	}
 
 	async listTransactionsForUser(user: any) {
-		return this.transactionModel
-			.find({
-				$or: [{ sender: user._id }, { recipient: user._id }],
-			})
-			.sort([['createdAt', -1]])
-			.exec();
+		return (
+			this.transactionModel
+				.find({
+					$or: [{ sender: user._id }, { recipient: user._id }],
+				})
+				//* Sort by created at
+				.sort({ createdAt: -1 })
+				.exec()
+		);
 	}
 
 	/**

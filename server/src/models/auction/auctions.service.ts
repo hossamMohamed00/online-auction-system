@@ -10,6 +10,7 @@ import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 	UpdateAuctionDto,
@@ -265,6 +266,175 @@ export class AuctionsService
 		await auction.remove();
 
 		return auction;
+	}
+
+	/**
+	 * Extend the auction by adding more time
+	 * @param auctionId
+	 * @param sellerId
+	 * @param extendAuctionTimeDto: ExtendAuctionTimeDto,
+	 * @returns Promise<ResponseResult>
+	 */
+	async requestExtendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	) {
+		//* Get auction for the seller
+		let auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			seller: sellerId,
+		});
+
+		if (!auction)
+			throw new NotFoundException('Auction not found for that seller❌');
+
+		if (auction.status !== AuctionStatus.OnGoing) {
+			throw new BadRequestException('Auction not started yet ✖✖');
+		}
+
+		if (auction.isExtended) {
+			throw new BadRequestException('Auction already extended before ❌');
+		}
+
+		//* Add the time to the auction
+		await this.auctionModel.findByIdAndUpdate(auctionId, {
+			extensionTime: extendAuctionTimeDto,
+			rejectionMessage: null,
+		});
+
+		this.logger.log(
+			'Time extension request sent and now waiting for approval ✔✔',
+		);
+
+		return {
+			success: true,
+			message: 'Time extension request sent and now waiting for approval ✔✔',
+		};
+	}
+
+	/**
+	 * Get all auctions with time extension requests
+	 * @returns Array of auctions with time extension requests
+	 */
+	async getAuctionsTimeExtensionRequests(): Promise<any> {
+		//* Get all auctions with time extension not equal null
+		const auctions: Auction[] = await this.auctionModel
+			.find({
+				extensionTime: { $ne: null },
+				isExtended: false,
+			})
+			.populate('seller');
+
+		//* Return only specific data
+		const serializedRequests = auctions.map((auction: Auction) => {
+			return {
+				_id: auction._id,
+				seller: {
+					_id: auction.seller._id,
+					name: auction.seller.name,
+				},
+				extensionTime: auction.extensionTime,
+				endDate: auction.endDate,
+				status: auction.status,
+			};
+		});
+
+		return serializedRequests;
+	}
+
+	/**
+	 * Enable admin to approve time extension request
+	 */
+	async approveTimeExtensionRequest(
+		auctionId: string,
+	): Promise<ResponseResult> {
+		//* Find only auctions that not closed or denied
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			isExtended: false,
+		});
+
+		if (!auction)
+			return {
+				success: false,
+				message: 'Auction not found or already extended before ❌',
+			};
+
+		//* Get auction new end date after extension time is added
+		const newEndDate = HandleDateService.appendExtensionAndGetNewEndDate(
+			auction.endDate,
+			auction.extensionTime,
+		);
+
+		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate,
+				isExtended: true,
+				rejectionMessage: null,
+			},
+			{ new: true },
+		);
+
+		if (!updatedAuction) {
+			return {
+				success: false,
+				message: 'Cannot approve this extension time request ❌',
+			};
+		}
+
+		this.logger.log('Auction extension time request approved successfully ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction time extend successfully ✔✔',
+			data: {
+				endDate: updatedAuction.endDate,
+			},
+		};
+	}
+
+	/**
+	 * Reject time extension request
+	 * @param auctionId
+	 * @param rejectExtendTime
+	 * @returns if rejected successfully
+	 */
+	async rejectTimeExtensionRequest(
+		auctionId: string,
+		rejectExtendTime: RejectAuctionDto,
+	): Promise<ResponseResult> {
+		//* Find the auction
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			extensionTime: { $ne: null },
+			isExtended: false,
+		});
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'Auction not found or already closed ❌',
+			};
+		}
+
+		//* reject the extension time request and update the auction and use rejection message to know why it was rejected
+		await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				extensionTime: null,
+				rejectionMessage: rejectExtendTime.message,
+			},
+			{ new: true },
+		);
+
+		this.logger.log('Auction extension time request rejected successfully ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction time extension request rejected successfully ✔✔',
+		};
 	}
 
 	/**

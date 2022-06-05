@@ -20,6 +20,7 @@ import { ResponseResult } from 'src/common/types';
 import {
 	AuctionDto,
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	UpdateAuctionDto,
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
@@ -98,6 +99,28 @@ export class SellerController
 		@GetCurrentUserData('_id') sellerId: string,
 	): Promise<Auction> {
 		return this.sellerService.editAuction(id, sellerId, updateAuctionDto);
+	}
+
+	@Roles(Role.Seller)
+	@Patch('auction/extend/:id')
+	extendAuctionTime(
+		@Param() { id: auctionId }: MongoObjectIdDto,
+		@Body() extendAuctionTimeDto: ExtendAuctionTimeDto,
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<ResponseResult> {
+		return this.sellerService.extendAuctionTime(
+			auctionId,
+			sellerId,
+			extendAuctionTimeDto,
+		);
+	}
+
+	@Roles(Role.Seller)
+	@Get('auction/extension-requests')
+	listMyAuctionExtensionTimeRequests(
+		@GetCurrentUserData() seller: SellerDocument,
+	): Promise<any> {
+		return this.sellerService.listMyAuctionExtensionTimeRequests(seller);
 	}
 
 	@Roles(Role.Seller)

@@ -1,13 +1,7 @@
-import { Body, Controller, Get, Param } from '@nestjs/common';
-import { th } from 'date-fns/locale';
-import {
-	GetCurrentUserData,
-	IsPublicRoute,
-	Roles,
-} from 'src/common/decorators';
-import { SellerDocument } from '../users/seller/schema/seller.schema';
+import { Controller, Get, Param } from '@nestjs/common';
+import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { Role } from '../users/shared-user/enums';
-import { User, UserDocument } from '../users/shared-user/schema/user.schema';
+import { UserDocument } from '../users/shared-user/schema/user.schema';
 
 import { ChatService } from './chat.service';
 
