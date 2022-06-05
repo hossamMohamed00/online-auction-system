@@ -4,7 +4,7 @@ import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , BiddingAmount , roomData , AuctionEndMessage}) {
+function AuctionHeader({ AuctionData , isShownBidsProp , socket , roomData }) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 
@@ -51,15 +51,11 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , BidderIsBid , 
 			</div>
 			{isShownDetails && <AuctionDetails
 				data={AuctionData && AuctionData}
-				AuctionEndMessage = {AuctionEndMessage}
 				/>
 			}
 			{isShownBids &&	<Bids
 					socket={socket}
-					BidderIsBid={BidderIsBid}
 					roomData={(AuctionData && AuctionData['status'] !== 'ongoing') ? AuctionData : roomData   }
-					// AuctionEndMessage = {AuctionEndMessage}
-
 				/>
 			}
 

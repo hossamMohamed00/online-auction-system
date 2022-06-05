@@ -23,6 +23,9 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	const [auctionDenied, setAuctionDenied] = useState(false);
 	const [RetreatModalTitle , setRetreatModalTitle] = useState('');
+	const [IsBidding , setIsBidding] = useState('');
+
+
 
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
@@ -41,7 +44,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	// handle delete
 	const {
-		data: dataForDelete,
 		sendRequest: sendRequestForDelete,
 		status: statusForDelete,
 		error: errorForDelete,
@@ -157,11 +159,11 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = (value) => {
-
 		socket.emit('place-bid', {
 			auctionId : AuctionId,
 			bidValue : value
 		})
+		// setIsBidding(Math.random)
 		// view exception error in modal
 		socket.on('exception', data => {
 			setIsExistErrorWhenJoinAuction(data.message)
@@ -225,9 +227,9 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			)}
 			{/* start when auction ongoing */}
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
-				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : '' } `}>
+				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : 'd-block' } `}>
 					<button
-						className={`btn fw-bold  ${classes.btnPlaceBid} ${!isJoined  ? 'bg-danger w-100 d-block' : ''}`}
+						className={`btn fw-bold  fs-5  ${classes.btnPlaceBid} ${!isJoined  ? classes.btnJoinActive : ''}`}
 						type="button"
 						onClick={() => joinAuctionHandler(OnGoingStatus)}
 						>
@@ -237,7 +239,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 					{
 						isJoined &&
 							<button
-							className={`btn fw-bold text-light ${classes.btnLeaveBid} ${isJoined && OnGoingStatus && 'bg-danger'}`}
+							className={`btn fw-bold text-light  fs-5   ${classes.btnLeaveBid} ${isJoined && OnGoingStatus && 'bg-danger'}`}
 							type="button"
 							onClick={LeaveAuctionHandler}
 							>

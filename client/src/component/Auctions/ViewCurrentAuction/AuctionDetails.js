@@ -5,7 +5,7 @@ import useTimer from '../../../CustomHooks/useTimer';
 
 import classes from './AuctionDetails.module.css';
 
-const AuctionDetails = ({ data , AuctionEndMessage}) => {
+const AuctionDetails = ({ data}) => {
 	const AuctionDate = data && data.endDate;
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 
@@ -13,8 +13,6 @@ const AuctionDetails = ({ data , AuctionEndMessage}) => {
 		<Fragment>
 			{data && (
 				<div className={classes.AuctionDetails}>
-					{(AuctionEndMessage && <h3 className='text-danger fw-bold text-center'> {AuctionEndMessage} </h3>)   }
-
 					<div className={classes.AuctionDetailsContent}>
 						<h1 className="pt-2 pb-2 text-light"> {data && data['item']['name']} </h1>
 

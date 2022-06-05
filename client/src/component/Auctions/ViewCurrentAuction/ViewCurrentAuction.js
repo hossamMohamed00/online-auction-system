@@ -29,7 +29,6 @@ const ViewCurrentAuction = React.memo(() => {
 	const [isShowBids , setIsShowBids] = useState('')
 	const [BidderIsJoined , setBidderIsJoined] = useState('')
 	const [BidderIsBid , setBidderIsBid] = useState('')
-	const [BiddingAmount , setBiddingAmount] = useState('')
 
 
 	const [socket , setSocket] = useState(null)
@@ -147,7 +146,6 @@ const ViewCurrentAuction = React.memo(() => {
 						BidderIsJoined={BidderIsJoined}
 						BidderIsBid = {BidderIsBid}
 						roomData={roomData ? roomData : AuctionData}
-						AuctionEndMessage = {AuctionEndMessage}
 						BidderWinner = {BidderWinner}
 						/>
 					 }
@@ -159,7 +157,6 @@ const ViewCurrentAuction = React.memo(() => {
 							setBidderJoin={(value) => setBidderIsJoined(value)}
 							setBidderIsBid={(value)=>setBidderIsBid(value)}
 							MinimumBidAllowed = {roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']}
-							BiddingAmount = {(value)=> setBiddingAmount(value)}
 							AuctionEndMessage = {!!AuctionEndMessage}
 
 							RejectionMessage={AuctionData && AuctionData.rejectionMessage}

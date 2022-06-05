@@ -66,6 +66,10 @@
 	transition: all 0.5s;
 	box-shadow: none !important;
 }
+.btnJoinActive{
+	width: 90%!important;
+	background-color: var(--alert-color);
+}
 .btnLeaveBid{
 	position: absolute;
 	right: 15px;

@@ -8,7 +8,7 @@ import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import moment from 'moment';
 
 
-const Bids =({socket , BidderIsBid , roomData}) => {
+const Bids =({socket , roomData}) => {
 
 	const [messageToClient , setMessageToClient] = useState('')
 

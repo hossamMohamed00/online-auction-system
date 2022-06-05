@@ -11,6 +11,8 @@ const ModalUi = props => {
 
 
 	const [BidValue, setBidValue] = useState();
+	const [BalanceValue, setBalanceValue] = useState();
+
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 	const AmountRef = useRef()
@@ -49,6 +51,17 @@ const ModalUi = props => {
 
 	// start get balance of bidder
 	const {sendRequest:sendRequestForGetBalance, status:statusForGetBalance , data:dataForGetBalance , error:errorForGetBalance } = useHttp(getWalletBalance);
+	useEffect(()=>{
+		sendRequestForGetBalance(idToken)
+	},[sendRequestForGetBalance])
+
+	useEffect(()=>{
+		if(statusForGetBalance === 'completed'){
+			setBalanceValue(dataForGetBalance.balance)
+		}
+	},[statusForGetBalance])
+
+	// end get balance of bidder
 
 
 	const BidValueValidation = e => {
@@ -151,12 +164,12 @@ const ModalUi = props => {
 							<div className="pt-4">
 								<div className="d-flex justify-content-between">
 									<p> Your Balance </p>
-									<p> 75,200 $ </p>
+									<p> {BalanceValue} </p>
 								</div>
 
 								<div className="d-flex justify-content-between">
-									<p> Total Bid </p>
-									{/* <p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue ? parseInt(BidValue) + 5 : 5 } $ </p> */}
+									<p> Your Balance After Bidding </p>
+									<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue&& BalanceValue &&  (parseInt(BalanceValue)- parseInt(BidValue))  } $ </p>
 								</div>
 							</div>
 						</>
