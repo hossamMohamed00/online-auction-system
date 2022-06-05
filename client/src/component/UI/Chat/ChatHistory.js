@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
@@ -17,7 +17,6 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 	const { sendRequest, status, data } = useHttp(getChats);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const ChatEmail = useSelector(store => store.AuthData.email);
-	// const role = useSelector(store => store.AuthData.role);
 
 
 	const location = useLocation()
@@ -32,7 +31,6 @@ const ChatHistory = ({ chatWith , className , onShow}) => {
 		if (status === 'completed') {
 			data.map(chat => {
 				if (chat.messages.length !== 0) {
-					console.log(chat.user1, chat.user2, email, chat.user1 === ChatEmail);
 					let email = chat.user1 === ChatEmail ? chat.user2 : chat.user1;
 					let lastMessage = chat.messages[chat.messages.length - 1].message;
 					let lastMessageTime = chat.messages[chat.messages.length - 1].sentAt;
