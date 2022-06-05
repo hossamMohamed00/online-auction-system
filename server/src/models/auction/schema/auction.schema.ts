@@ -8,6 +8,7 @@ import { Transform, Type } from 'class-transformer';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { Bid } from 'src/models/bids/schema/bid.schema';
 import { ExtendAuctionTimeType } from '../types';
+import { Seller } from 'src/models/users/seller/schema/seller.schema';
 
 export type AuctionDocument = Auction & Document;
 
@@ -76,7 +77,7 @@ export class Auction {
 		type: Types.ObjectId,
 		ref: User.name,
 	})
-	seller: Types.ObjectId;
+	seller: Seller;
 
 	@Prop({
 		type: Types.ObjectId,

@@ -224,8 +224,9 @@ export class AdminService {
 
 		return responseResult;
 	}
+
 	/**
-	 *
+	 * Reject time extension request
 	 * @param auctionId
 	 * @param rejectExtendTomeDto
 	 * @returns if auction is rejected successfully or not
@@ -239,6 +240,9 @@ export class AdminService {
 				auctionId,
 				rejectExtendTomeDto,
 			);
+
+		//TODO: Send email to inform the seller that auction time request rejected
+
 		return responseResult;
 	}
 

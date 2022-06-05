@@ -314,15 +314,20 @@ export class AuctionsService
 	 */
 	async getAuctionsTimeExtensionRequests(): Promise<any> {
 		//* Get all auctions with time extension not equal null
-		const auctions: Auction[] = await this.auctionModel.find({
-			extensionTime: { $ne: null },
-		});
+		const auctions: Auction[] = await this.auctionModel
+			.find({
+				extensionTime: { $ne: null },
+			})
+			.populate('seller');
 
 		//* Return only specific data
 		const serializedRequests = auctions.map((auction: Auction) => {
 			return {
 				_id: auction._id,
-				sellerId: auction.seller,
+				seller: {
+					_id: auction.seller._id,
+					name: auction.seller.name,
+				},
 				extensionTime: auction.extensionTime,
 				endDate: auction.endDate,
 				status: auction.status,
@@ -383,7 +388,7 @@ export class AuctionsService
 		};
 	}
 	/**
-	 *
+	 * Reject time extension request
 	 * @param auctionId
 	 * @param rejectExtendTime
 	 * @returns if rejected successfully
@@ -392,20 +397,21 @@ export class AuctionsService
 		auctionId: string,
 		rejectExtendTime: RejectAuctionDto,
 	): Promise<ResponseResult> {
-		//* Find only auctions that not closed or denied
+		//* Find the auction
 		const auction = await this.auctionModel.findOne({
 			_id: auctionId,
 			extensionTime: { $ne: null },
 		});
 
-		if (!auction)
+		if (!auction) {
 			return {
 				success: false,
 				message: 'Auction not found or already closed ❌',
 			};
+		}
 
 		//* reject the extension time request and update the auction and use rejection message to know why it was rejected
-		const RejectedExtendTime = await this.auctionModel.findByIdAndUpdate(
+		await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			{
 				extensionTime: null,
@@ -413,11 +419,12 @@ export class AuctionsService
 			},
 			{ new: true },
 		);
+
 		this.logger.log('Auction extension time request rejected successfully ✔✔');
 
 		return {
 			success: true,
-			message: 'Auction time extend rejected successfully ✔✔',
+			message: 'Auction time extension request rejected successfully ✔✔',
 		};
 	}
 

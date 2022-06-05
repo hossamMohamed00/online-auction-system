@@ -6,6 +6,7 @@ import {
 } from 'src/models/auction/dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { AdminFilterAuctionQueryDto } from '../dto';
+import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
 
 export interface AdminAuctionsBehavior {
 	//* List all auctions for the admin
@@ -24,5 +25,12 @@ export interface AdminAuctionsBehavior {
 
 	listAllTimeExtensionRequests();
 
-	approveExtendAuction({ id: auctionId }: MongoObjectIdDto);
+	approveExtendAuction({
+		id: auctionId,
+	}: MongoObjectIdDto): Promise<ResponseResult>;
+
+	rejectExtendAuction(
+		{ id: auctionId }: MongoObjectIdDto,
+		rejectExtendAuctionDto: RejectExtendTimeDto,
+	): Promise<ResponseResult>;
 }

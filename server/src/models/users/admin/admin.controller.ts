@@ -186,11 +186,12 @@ export class AdminController
 	): Promise<ResponseResult> {
 		return this.adminService.approveExtendAuction(auctionId);
 	}
+
 	/**
-	 *
-	 * @param param0 id of the auction
+	 * Reject extension time request for an auction
+	 * @param Auction id
 	 * @param rejectExtendAuctionDto
-	 * @returns auction that is rejected
+	 * @returns ResponseResult
 	 */
 	@Post('auction/reject-extend/:id')
 	@HttpCode(HttpStatus.OK)
