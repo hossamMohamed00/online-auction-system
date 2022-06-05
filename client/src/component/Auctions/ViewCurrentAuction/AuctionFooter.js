@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getSingleAuction } from '../../../Api/Admin';
 import { DeleteAuctionHandler } from '../../../Api/AuctionsApi';
 import ModalUi from './BiddingForm/Modal';
@@ -78,6 +78,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const role = useSelector(store => store.AuthData.role);
 	const url = 'http://localhost:8000';
 	const email = useSelector(store => store.AuthData.email);
+	console.log(email + ' ' + sellerEmail);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -234,6 +235,14 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	return (
 		<>
 			<ToastContainer theme="dark" />
+
+			{role === 'seller' && DeniedStatus && (
+				<div className=" bg-warning mt-3 p-3">
+					<h5 className=" text-black fw-bold">
+						Rejected because : {RejectionMessage}
+					</h5>
+					</div>
+					)}
 			{role === 'seller' && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
@@ -329,11 +338,15 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			{role === 'seller' && sellerEmail === email && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
-						className={`btn w-100 fw-bold btn-success`}
+						className={`btn w-100 fw-bold btn-success text-light`}
 						type="button"
-						//	onClick={() => setModalShow(true)}
 					>
-						Update
+						<Link
+							to={`/seller-dashboard/UpdateAuction?id=${AuctionId}`}
+							className="text-light text-decoration-none"
+						>
+							Update
+						</Link>
 					</button>
 					<button
 						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}

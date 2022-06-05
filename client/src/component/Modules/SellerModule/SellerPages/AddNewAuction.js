@@ -70,7 +70,7 @@ const AddAuction = () => {
 			className="form-select"
 			onChange={e => setCategoryId(e.target.value)}
 		>
-			<option value="none" selected disabled hidden>
+			<option value="none" selected disabled >
 				Select an category
 			</option>
 			{dataCategoryList.map(category => (

@@ -47,13 +47,15 @@ import SellerDashboard from './Pages/SellerDashboard';
 import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
+import UpdateAccountForSeller from './component/Modules/SellerModule/SellerPages/UpdateAccount';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
-import UpdateAccount from './component/Modules/SellerModule/SellerPages/UpdateAccount';
+import UpdateAccount from './component/UI/UpdateAccount/UpdateAccount';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
+import UpdateAuction from './component/Modules/SellerModule/SellerPages/UpdateAuction';
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
 import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
@@ -61,6 +63,10 @@ import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllCom
 // end seller pages
 
 function App() {
+	const location = useLocation();
+	const pathname = location.pathname;
+	const pathnameParts = pathname.split('/').filter(Boolean);
+	const expectedResults = pathnameParts[0];
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
@@ -178,15 +184,24 @@ function App() {
 							path="/seller-dashboard/AddAuction"
 							element={<AddAuction />}
 						/>
+
 						<Route
-							path="/seller-dashboard/UpdateAccount"
-							element={<UpdateAccount />}
+							path="/seller-dashboard/UpdateAuction"
+							element={<UpdateAuction />}
 						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
+
+						<Route
+							path="/seller-dashboard/UpdateAccount"
+							element={<UpdateAccountForSeller />}
+						/>
 					</>
 				)}
 				{/* end seller routes  */}
-
+				{/* <Route */}
+					{/* path={`/${expectedResults}/UpdateAccount`}
+					element={<UpdateAccount />}
+				/> */}
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
