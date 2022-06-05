@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import './modal.css';
 
-const Modal_ = props => {
+const ModalUi = props => {
 	const btnHandler = () => {
 		if (props.Id) {
 			props.btnHandler(props.Id);
@@ -58,4 +58,4 @@ const Modal_ = props => {
 	);
 };
 
-export default Modal_;
+export default ModalUi;

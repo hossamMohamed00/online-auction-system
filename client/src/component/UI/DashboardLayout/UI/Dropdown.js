@@ -12,7 +12,7 @@ const Dropdown = props => {
 					classes[props.className ? props.className : '']
 				}`}
 			>
-				<FontAwesomeIcon icon={props.icon ? props.icon : ''} />
+				{props.icon && <FontAwesomeIcon icon={props.icon} /> }
 			</div>
 
 			<a
@@ -40,7 +40,7 @@ const Dropdown = props => {
 							{item.icon && <FontAwesomeIcon icon={item.icon} />}
 						</div>
 						<Link
-							to={item.path ? item.path : ''}
+							to={item.path ? item.path : '/'}
 							className={`card card-body fw-bold ${classes.listLink}`}
 						>
 							{item.title}

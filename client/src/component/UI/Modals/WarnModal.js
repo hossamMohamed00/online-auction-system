@@ -9,7 +9,7 @@ import {
 } from '../../../Api/Admin';
 import useHttp from '../../../CustomHooks/useHttp';
 
-import Modal_ from '../Modal/modal';
+import ModalUi from '../Modal/modal';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 import './WarnModal.css';
 
@@ -117,7 +117,7 @@ const WarnModal = ({ id, show, onHide, isWarned, onReload }) => {
 		<>
 			{loading && <LoadingSpinner />}
 
-			<Modal_
+			<ModalUi
 				show={show}
 				onHide={onHide}
 				title={WarnTitle}

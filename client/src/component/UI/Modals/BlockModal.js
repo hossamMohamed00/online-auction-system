@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getReasons, Warn_Or_Block_User , Remove_Warning_Or_Blocking_Badge} from '../../../Api/Admin';
 import useHttp from '../../../CustomHooks/useHttp';
 
-import Modal_ from '../Modal/modal'
+import ModalUi from '../Modal/modal'
 import LoadingSpinner from '../Loading/LoadingSpinner'
 import './WarnModal.css'
 
@@ -99,7 +99,7 @@ const BlockModal = ({id , show , onHide , isBlocked , onReload}) => {
 		<>
 			{loading && <LoadingSpinner/>}
 
-			<Modal_
+			<ModalUi
 				show={show}
 				onHide={onHide}
 				title= {BlockTitle}

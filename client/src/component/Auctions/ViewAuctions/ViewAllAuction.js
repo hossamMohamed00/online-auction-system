@@ -20,6 +20,7 @@ const ViewAllAuctions = () => {
 	const [Data, setData] = useState(null);
 
 	const [FilterAuction, setFilterAuction] = useState(false);
+	//eslint.disable:true
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);

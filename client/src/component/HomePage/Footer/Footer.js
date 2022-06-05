@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import classes from './Footer.module.css';
 import { useSelector } from 'react-redux';
-import Modal_ from '../../UI/Modal/modal';
+import ModalUi from '../../UI/Modal/modal';
 
 function Footer() {
 	// start contact us
@@ -86,7 +86,6 @@ function Footer() {
 
 	const FooterMoreDetails = FooterMoreDetailsData.map((data, index) => (
 		<Col lg={!HideContactChat ? 3 : 4} sm={4} xs={12} key={index}>
-			<FontAwesomeIcon icon={data.icon} className={classes.ContactIcon} />
 			<h5 className={ `${(HideContactChat && (data.text === 'Contact Us') ) ? 'd-none': 'd-block'} ${data.text === 'Contact Us' && classes.ContactStyle } `}>
 				{data.text}
 			</h5>
@@ -145,7 +144,7 @@ function Footer() {
 			</div>
 
 			{/* start Modal when unauthorized user want to chat with agent */}
-			{ShowModal && <Modal_
+			{ShowModal && <ModalUi
 				show={ShowModal}
 				onHide={()=> setShowModal(false)}
 				title= "Please Logged in First, before Chatting  "

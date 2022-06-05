@@ -10,7 +10,7 @@ import ChatHistory from './ChatHistory';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
-import Modal_ from '../Modal/modal';
+import ModalUi from '../Modal/modal';
 import { useNavigate } from 'react-router-dom';
 
 const Chat = (props) => {
@@ -76,7 +76,7 @@ const Chat = (props) => {
 			</PageContent>
 			)
 			:
-			<Modal_
+			<ModalUi
 				show={ShowModal}
 				onHide={()=> setShowModal(false)}
 				title= "Please Logged in First, before Chatting  "

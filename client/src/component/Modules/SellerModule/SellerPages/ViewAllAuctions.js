@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import useHttp from '../../../../CustomHooks/useHttp';
 import moment from 'moment';
 import { getAllAuctions } from '../../../../Api/AuctionsApi';
-import ViewAuctionDetails from '../../../UI/ViewAuctionDetails/ViewAuctionDetails';
 import SellerDashboardContent from '../SellerModule';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
@@ -12,9 +11,8 @@ import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 
 const ViewAllAuctions = () => {
-	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { sendRequest, status: statusForGet, data, error } = useHttp(
+	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllAuctions,
 	);
 	useEffect(() => {

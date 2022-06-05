@@ -1,12 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import Categories from './../../../HomePage/Categories/Categories';
-// import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
 import { faComment, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-// import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {

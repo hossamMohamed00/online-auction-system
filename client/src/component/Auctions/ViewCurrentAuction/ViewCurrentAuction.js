@@ -18,7 +18,7 @@ import { getSingleAuction } from '../../../Api/AuctionsApi';
 import { io } from 'socket.io-client';
 import BiddingDetails from './BiddingDetails';
 import { toast } from 'react-toastify';
-import Modal_ from '../../UI/Modal/modal';
+import ModalUi from '../../UI/Modal/modal';
 
 const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
@@ -168,7 +168,7 @@ const ViewCurrentAuction = React.memo(() => {
 			</Row>
 
 			{/* Modal to Show Bidder-Winner */}
-			{BidderWinner && <Modal_
+			{BidderWinner && <ModalUi
 				show={BidderWinner}
 				onHide={()=> setBidderWinner(false)}
 				title= {BidderMessage}
