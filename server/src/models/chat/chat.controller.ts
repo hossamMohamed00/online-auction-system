@@ -1,9 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import {
-	GetCurrentUserData,
-	IsPublicRoute,
-	Roles,
-} from 'src/common/decorators';
+import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { Role } from '../users/shared-user/enums';
 import { UserDocument } from '../users/shared-user/schema/user.schema';
 

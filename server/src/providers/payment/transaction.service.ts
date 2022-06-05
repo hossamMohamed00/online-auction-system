@@ -40,7 +40,8 @@ export default class TransactionService {
 				.find({
 					$or: [{ sender: user._id }, { recipient: user._id }],
 				})
-				// .sort([['createdAt', -1]])
+				//* Sort by created at
+				.sort({ createdAt: -1 })
 				.exec()
 		);
 	}
