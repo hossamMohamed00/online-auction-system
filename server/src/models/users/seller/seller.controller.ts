@@ -27,7 +27,7 @@ import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { Role } from '../shared-user/enums';
-import { SellerDto, SellerProfileDto } from './dto';
+import { SellerProfileDto } from './dto';
 import {
 	SellerAuctionsBehaviors,
 	SellerProfileBehaviors,
@@ -90,6 +90,7 @@ export class SellerController
 
 	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
 	@Patch('auction/:id')
 	editAuction(
 		@Param() { id }: MongoObjectIdDto, // auction id
