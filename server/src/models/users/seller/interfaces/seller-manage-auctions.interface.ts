@@ -32,6 +32,9 @@ export interface SellerAuctionsBehaviors {
 		sellerId: string,
 	): Promise<ResponseResult>;
 
+	//* List all requests to the seller
+	listMyAuctionExtensionTimeRequests(seller: SellerDocument): Promise<any>;
+
 	//* Remove auction of that seller
 	removeAuction(
 		auctionId: MongoObjectIdDto,

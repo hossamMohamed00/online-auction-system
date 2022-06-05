@@ -24,6 +24,7 @@ import { ReviewService } from 'src/models/review/review.service';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { ImageType, ResponseResult } from 'src/common/types';
+import { AuctionStatus } from 'src/models/auction/enums';
 
 @Injectable()
 export class SellerService {
@@ -187,7 +188,7 @@ export class SellerService {
 	}
 
 	/**
-	 *
+	 * Send request to extend an auction time
 	 * @param auctionId
 	 * @param sellerId
 	 * @param time
@@ -198,11 +199,62 @@ export class SellerService {
 		sellerId: string,
 		extendAuctionTimeDto: ExtendAuctionTimeDto,
 	): Promise<ResponseResult> {
-		return this.auctionsService.extendAuctionTime(
+		return this.auctionsService.requestExtendAuctionTime(
 			auctionId,
 			sellerId,
 			extendAuctionTimeDto,
 		);
+	}
+
+	/**
+	 * List all sent requests of time extension
+	 * @param sellerId
+	 */
+	async listMyAuctionExtensionTimeRequests(
+		seller: SellerDocument,
+	): Promise<any> {
+		this.logger.log('Getting seller time extension requests... ');
+
+		await seller.populate({
+			path: 'auctions',
+		});
+
+		// @ts-ignore: Unreachable code error
+		const auctions: AuctionDocument[] = seller.auctions;
+
+		//* Filter the auctions to get the requests
+		const requests: AuctionDocument[] = auctions.filter(auction => {
+			if (
+				auction.status === AuctionStatus.OnGoing &&
+				//* Approved
+				(auction.isExtended ||
+					//* Rejected
+					auction.rejectionMessage ||
+					//* Pending
+					auction.extensionTime)
+			) {
+				return true;
+			}
+		});
+
+		//* Return only specific data
+		const serializedRequests = requests.map((auction: Auction) => {
+			return {
+				_id: auction._id,
+				extensionTime: auction.extensionTime,
+				isExtended: auction.isExtended,
+				rejectionMessage: auction.rejectionMessage,
+				endDate: auction.endDate,
+				status: auction.status,
+				requestStatus: auction.isExtended
+					? 'approved'
+					: auction.rejectionMessage
+					? 'rejected'
+					: 'pending',
+			};
+		});
+
+		return serializedRequests;
 	}
 
 	/* Handle Reviews Functions logic */

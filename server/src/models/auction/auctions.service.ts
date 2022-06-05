@@ -272,10 +272,10 @@ export class AuctionsService
 	 * Extend the auction by adding more time
 	 * @param auctionId
 	 * @param sellerId
-	 * @param time
+	 * @param extendAuctionTimeDto: ExtendAuctionTimeDto,
 	 * @returns Promise<ResponseResult>
 	 */
-	async extendAuctionTime(
+	async requestExtendAuctionTime(
 		auctionId: string,
 		sellerId: string,
 		extendAuctionTimeDto: ExtendAuctionTimeDto,
@@ -293,9 +293,14 @@ export class AuctionsService
 			throw new BadRequestException('Auction not started yet ✖✖');
 		}
 
+		if (auction.isExtended) {
+			throw new BadRequestException('Auction already extended before ❌');
+		}
+
 		//* Add the time to the auction
 		await this.auctionModel.findByIdAndUpdate(auctionId, {
 			extensionTime: extendAuctionTimeDto,
+			rejectionMessage: null,
 		});
 
 		this.logger.log(
@@ -317,6 +322,7 @@ export class AuctionsService
 		const auctions: Auction[] = await this.auctionModel
 			.find({
 				extensionTime: { $ne: null },
+				isExtended: false,
 			})
 			.populate('seller');
 
@@ -346,13 +352,13 @@ export class AuctionsService
 		//* Find only auctions that not closed or denied
 		const auction = await this.auctionModel.findOne({
 			_id: auctionId,
-			extensionTime: { $ne: null },
+			isExtended: false,
 		});
 
 		if (!auction)
 			return {
 				success: false,
-				message: 'Auction not found or already closed ❌',
+				message: 'Auction not found or already extended before ❌',
 			};
 
 		//* Get auction new end date after extension time is added
@@ -365,7 +371,8 @@ export class AuctionsService
 			auctionId,
 			{
 				endDate: newEndDate,
-				extensionTime: null,
+				isExtended: true,
+				rejectionMessage: null,
 			},
 			{ new: true },
 		);
@@ -387,6 +394,7 @@ export class AuctionsService
 			},
 		};
 	}
+
 	/**
 	 * Reject time extension request
 	 * @param auctionId
@@ -401,6 +409,7 @@ export class AuctionsService
 		const auction = await this.auctionModel.findOne({
 			_id: auctionId,
 			extensionTime: { $ne: null },
+			isExtended: false,
 		});
 
 		if (!auction) {

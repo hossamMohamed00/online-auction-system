@@ -65,6 +65,9 @@ export class AuctionDto {
 	extensionTime: number;
 
 	@Expose()
+	isExtended: boolean;
+
+	@Expose()
 	@Transform(({ obj }) => {
 		//* Serialize  the buyer object to remove the sensitive data
 		return SerializeIt(BuyerDto, obj.winningBuyer);

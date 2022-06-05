@@ -9,6 +9,7 @@ import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { Bid } from 'src/models/bids/schema/bid.schema';
 import { ExtendAuctionTimeType } from '../types';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
+import { boolean } from '@hapi/joi';
 
 export type AuctionDocument = Auction & Document;
 
@@ -59,6 +60,9 @@ export class Auction {
 	//*Create new prop with type ExtendAuctionTimeType
 	@Prop({ type: ExtendAuctionTimeType, default: null })
 	extensionTime: ExtendAuctionTimeType; //? Time to extend auction duration
+
+	@Prop({ default: false })
+	isExtended: boolean; //? Is auction duration extended?
 
 	@Prop({ enum: AuctionStatus, default: AuctionStatus.Pending })
 	status: AuctionStatus;

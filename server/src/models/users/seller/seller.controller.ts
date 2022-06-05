@@ -116,6 +116,14 @@ export class SellerController
 	}
 
 	@Roles(Role.Seller)
+	@Get('auction/extension-requests')
+	listMyAuctionExtensionTimeRequests(
+		@GetCurrentUserData() seller: SellerDocument,
+	): Promise<any> {
+		return this.sellerService.listMyAuctionExtensionTimeRequests(seller);
+	}
+
+	@Roles(Role.Seller)
 	@Serialize(AuctionDto)
 	@Delete('auction/:id')
 	removeAuction(

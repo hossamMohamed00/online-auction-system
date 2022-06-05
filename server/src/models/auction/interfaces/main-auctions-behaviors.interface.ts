@@ -47,7 +47,7 @@ export interface MainAuctionsBehaviors {
 	isExists(auctionId: string, sellerId: string): Promise<boolean>;
 
 	//* Extend auction duration by specific time
-	extendAuctionTime(
+	requestExtendAuctionTime(
 		auctionId: string,
 		sellerId: string,
 		extendAuctionTimeDto: ExtendAuctionTimeDto,
