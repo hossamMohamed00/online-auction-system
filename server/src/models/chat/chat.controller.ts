@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param } from '@nestjs/common';
-import { th } from 'date-fns/locale';
 import {
 	GetCurrentUserData,
 	IsPublicRoute,
