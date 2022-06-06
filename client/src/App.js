@@ -51,7 +51,6 @@ import UpdateAccountForSeller from './component/Modules/SellerModule/SellerPages
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
 import UpdateAccount from './component/UI/UpdateAccount/UpdateAccount';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
-import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
@@ -59,7 +58,9 @@ import UpdateAuction from './component/Modules/SellerModule/SellerPages/UpdateAu
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
 import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
-// import sellerExte from
+import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllComplaints/AllComplains';
+import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
+import ExtendTimeRequests from './component/Modules/EmployeesModule/ExtendTimeRequests/ExtendTimeRequests';
 // end seller pages
 
 function App() {
@@ -136,7 +137,12 @@ function App() {
 					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
 				/>
+				<Route
+					path="/adminDashboard/allComplaintsInSystem"
+					element={<AllComplaintsInSystem />}
+				/>
 				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
+				<Route path="/employeeDashBoard/extendRequests" element={<ExtendTimeRequests />} />
 
 				{/* start buyer routes  */}
 
@@ -195,7 +201,7 @@ function App() {
 				)}
 				{/* end seller routes  */}
 				{/* <Route */}
-					{/* path={`/${expectedResults}/UpdateAccount`}
+				{/* path={`/${expectedResults}/UpdateAccount`}
 					element={<UpdateAccount />}
 				/> */}
 				<Route path="*" element={<PageNotFound />} />
