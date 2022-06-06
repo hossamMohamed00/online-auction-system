@@ -23,7 +23,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 				</div>
 
 				<div
-					className={`col-md-8 col-lg-8 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
+					className={`col-md-7 col-lg-7 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
 				>
 					<h2 className="fw-bold text-center pb-1"> {Item.title} </h2>
 					{/* start Upgoing Auction details */}

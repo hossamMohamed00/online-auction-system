@@ -59,6 +59,7 @@ import UpdateAuction from './component/Modules/SellerModule/SellerPages/UpdateAu
 // import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
 import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
+// import sellerExte from
 // end seller pages
 
 function App() {
