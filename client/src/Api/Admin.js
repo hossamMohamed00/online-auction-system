@@ -201,3 +201,50 @@ export const getAllComplaintsInSystem = async ( idToken ) => {
 	}
 	return data;
 };
+
+// get extend time requests
+export const getAllExtendTimeRequests = async idToken => {
+	const response = await fetch(`${url}/auction/extended-auction`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+
+export const ApproveExtend = async ({idToken , id}) => {
+	const response = await fetch(`${url}/auction/approve-extend/${id}`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+
+export const rejectExtend = async ({ idToken, id , rejectionData}) => {
+	const response = await fetch(`${url}/auction/reject-extend/${id}`, {
+		method: 'POST',
+		body: JSON.stringify(rejectionData),
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'content-type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};

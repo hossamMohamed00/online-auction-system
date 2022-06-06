@@ -83,7 +83,6 @@ const AllComplaintsInSystem = () => {
 				return;
 			}
 		});
-		setReload(Math.random());
 	};
 	const deleteComplaint = complaintId => {
 		let count = Math.random();
@@ -99,7 +98,7 @@ const AllComplaintsInSystem = () => {
 				return;
 			}
 			toast.success('Deleted Successfully 💖🐱‍👤');
-			setReload(count);
+			setReload(Math.random());
 		});
 	};
 
@@ -110,7 +109,7 @@ const AllComplaintsInSystem = () => {
 			sortable: true,
 			center: true,
 		},
-	
+
 		{
 			name: 'Date',
 			selector: row => row.createdAt,

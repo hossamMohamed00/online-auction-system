@@ -40,44 +40,44 @@ const Wrapper = props => {
 		},
 	};
 	// console.log("role2" , role , props)
-		const sidebarEmployee = role === 'employee' && {
-			admin: { name: props.admin.name, path: '/employeeDashboard' },
-			profile: {
-				list: props.profile.list,
-				name: props.profile.name,
-				icon: faIdBadge,
-			},
-			users: {
-				list: props.users.list,
-				name: props.users.name,
-				icon: faUsers,
-				class: 'users',
-			},
-			auctions: {
-				list: props.auctions.list,
-				name: props.auctions.name,
-				icon: faGavel,
-				class: 'auctions',
-			},
-			requests: {
-				list: props.requests.list,
-				name: props.requests.name,
-				icon: faTh,
-				class: 'requests',
-			},
-			compliments: {
-				list: props.compliments.list,
-				name: props.compliments.name,
-				icon: faComment,
-				class: 'auctions',
-			},
-			Inquiries: {
-				list: props.inquiries.list,
-				name: props.inquiries.name,
-				icon: faComment,
-				class: 'requests',
-			},
-		};
+	const sidebarEmployee = role === 'employee' && {
+		admin: { name: props.admin.name, path: '/employeeDashboard' },
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+		},
+		users: {
+			list: props.users.list,
+			name: props.users.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		auctions: {
+			list: props.auctions.list,
+			name: props.auctions.name,
+			icon: faGavel,
+			class: 'auctions',
+		},
+		requests: {
+			list: props.requestsForEmployee.list,
+			name: props.requestsForEmployee.name,
+			icon: faTh,
+			class: 'requests',
+		},
+		compliments: {
+			list: props.compliments.list,
+			name: props.compliments.name,
+			icon: faComment,
+			class: 'auctions',
+		},
+		Inquiries: {
+			list: props.inquiries.list,
+			name: props.inquiries.name,
+			icon: faComment,
+			class: 'requests',
+		},
+	};
 	const sidebarAdmin = role === 'admin' && {
 		admin: { name: props.admin.name, path: '/adminDashboard' },
 		employees: {
@@ -117,9 +117,6 @@ const Wrapper = props => {
 			class: 'requests',
 		},
 	};
-
-
-
 
 	const sidebarSeller = role === 'seller' && {
 		seller: { name: props.seller.name, path: '/seller-dashboard' },

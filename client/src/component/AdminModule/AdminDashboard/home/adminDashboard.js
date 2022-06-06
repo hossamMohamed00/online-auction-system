@@ -78,6 +78,18 @@ const AdminDashboard = props => {
 			path: '/managersDashboard/pendingAuctions',
 		},
 	];
+		const dropdownListRequests = [
+			{
+				title: 'Pending auctions',
+				icon: faTh,
+				path: '/managersDashboard/pendingAuctions',
+			},
+			{
+				title: 'Extensions requests',
+				icon: faTh,
+				path: '/employeeDashboard/extendRequests',
+			},
+		];
 	const dropdownListManageCategories = [
 		{
 			title: 'Manage Categories',
@@ -90,7 +102,7 @@ const AdminDashboard = props => {
 
 	return (
 		<DashboardLayout
-		profile={{name : 'profile' , list: dropdownListProfile}}
+			profile={{ name: 'profile', list: dropdownListProfile }}
 			admin={{ name: email ? email : 'user' }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
@@ -98,6 +110,10 @@ const AdminDashboard = props => {
 			requests={{
 				name: 'Manage Requests   ',
 				list: dropdownListAuctionsRequests,
+			}}
+			requestsForEmployee={{
+				name: 'Manage Requests   ',
+				list: dropdownListRequests,
 			}}
 			categories={{
 				name: 'Manage Categories',
