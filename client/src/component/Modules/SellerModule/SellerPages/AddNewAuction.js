@@ -14,6 +14,7 @@ import useHttp from '../../../../CustomHooks/useHttp';
 
 import { toast, ToastContainer } from 'react-toastify';
 import { isBefore } from 'date-fns';
+import { useForm } from 'react-hook-form';
 
 const AddAuction = () => {
 	const [AddAuction, setAddAuction] = useState('');
@@ -40,7 +41,7 @@ const AddAuction = () => {
 	const StartDateRef = useRef();
 	const ProductShortDescRef = useRef();
 	const ProductDetailsDescRef = useRef();
-	const ImageRef = useRef()
+	const ImageRef = useRef();
 	// end refs
 
 	const [CategoryId, setCategoryId] = useState();
@@ -58,11 +59,11 @@ const AddAuction = () => {
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
-	const ProductImagesHandler = e => {
-		const files = e.target.files;
-		setProductImages([...files])
+	// const ProductImagesHandler = e => {
+	// 	const files = e.target.files;
+	// 	setProductImages([...files])
 
-	}
+	// }
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -70,7 +71,7 @@ const AddAuction = () => {
 			className="form-select"
 			onChange={e => setCategoryId(e.target.value)}
 		>
-			<option value="none" selected disabled >
+			<option value="none" selected disabled>
 				Select an category
 			</option>
 			{dataCategoryList.map(category => (
@@ -101,11 +102,24 @@ const AddAuction = () => {
 			return;
 		}
 	};
+
+	// handle upload image
+	const [pictures, setPictures] = useState([]);
+	let tempArr = [];
+
+	const handleImageUpload = e => {
+		[...e.target.files].map(file => {
+			tempArr.push(file);
+		});
+
+		setPictures(tempArr);
+	};
+	// end handle upload image
 	const submitHandler = e => {
 		e.preventDefault();
 		if (ValidateForm()) {
 			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
-
+			console.log({ pictures });
 			const AuctionDetails = {
 				title: TitleRef.current.value,
 				item: {
@@ -116,7 +130,7 @@ const AddAuction = () => {
 						? ProductDetailsDescRef.current.value
 						: ProductShortDescRef.current.value,
 					status: StatusRef.current.value,
-					images: ProductImages,
+					images: pictures,
 				},
 				startDate: StartDateRef.current.value,
 				category: CategoryId,
@@ -313,7 +327,7 @@ const AddAuction = () => {
 										multiple
 										className={`form-control ${classes.productImage}`}
 										ref={ImageRef}
-										onChange={ProductImagesHandler}
+										onChange={handleImageUpload}
 									/>
 									{/* {ProductImageErrorMessage && (
 										<p className="text-danger"> {ProductImageErrorMessage} </p>

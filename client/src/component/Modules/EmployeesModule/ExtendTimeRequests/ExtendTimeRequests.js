@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ApproveExtend, getAllExtendTimeRequests, rejectExtend } from '../../../../Api/Admin';
+import {
+	ApproveExtend,
+	getAllExtendTimeRequests,
+	rejectExtend,
+} from '../../../../Api/Admin';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
@@ -38,6 +42,7 @@ const ExtendTimeRequests = () => {
 		sendRequest: sendRequestFoApprove,
 		status: statusForApprove,
 		data: dataForApprove,
+		error: errorForApprove,
 	} = useHttp(ApproveExtend);
 
 	// get request for all extend time requests
@@ -78,6 +83,7 @@ const ExtendTimeRequests = () => {
 	const approveHandler = id => {
 		console.log('Token is ', idToken);
 		sendRequestFoApprove({ idToken, id });
+		setReload(id);
 	};
 	const rejectHandler = id => {
 		const rejectionData = { message: reasonRef.current.value };
@@ -86,6 +92,7 @@ const ExtendTimeRequests = () => {
 			id: id,
 			rejectionData: rejectionData,
 		});
+		setReload(id);
 	};
 
 	//
@@ -111,21 +118,26 @@ const ExtendTimeRequests = () => {
 
 			setRequests(data);
 		}
+	}, [statusForGet]);
 
-		if (statusForApprove === 'completed') {
+	useEffect(() => {
+		if (!errorForApprove && statusForApprove === 'completed') {
 			toast.success('Extend time request approved successfully');
-			setReload(Math.random());
 		} else {
 			toast.error('failed to approve extend time request');
 		}
+		setIsShownRejectModal(false);
+	}, [statusForApprove]);
+
+	useEffect(() => {
 		console.log(statusForReject);
-		if (!error ) {
+		if (!error && statusForReject === 'completed') {
 			toast.success('Extend time request rejected successfully');
-			setReload(Math.random());
 		} else {
 			toast.error('failed to reject extend time request');
 		}
-	}, [statusForGet]);
+		setIsShownRejectModal(false);
+	}, [statusForReject, reload]);
 	// table columns
 
 	const columns = [
@@ -226,7 +238,7 @@ const ExtendTimeRequests = () => {
 							title={modalTitle}
 							body={modalBody}
 							btnName="Reject"
-							btnHandler={()=>rejectHandler(auctionId)}
+							btnHandler={() => rejectHandler(auctionId)}
 							onReload={value => setReload(value)}
 						/>
 					)}

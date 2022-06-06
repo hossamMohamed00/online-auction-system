@@ -25,6 +25,7 @@ import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
 import { Bid } from './schema/bid.schema';
+import { Role } from 'src/models/users/shared-user/enums';
 
 /**
  * Its job is to handle the bidding process.
@@ -77,6 +78,10 @@ export class BidGateway
 		//* Check if the client already in auction, to add him to the room
 		//* Get the user
 		const bidder = await this.bidService.getConnectedClientUserObject(client);
+
+		if (bidder.role !== Role.Buyer) {
+			return;
+		}
 
 		//* Get the auctions that the bidder involved in
 		const bidderAuctions: Auction[] = await this.buyerService.listMyAuctions(
