@@ -3,8 +3,6 @@ import { Card, Col, Row } from 'react-bootstrap';
 
 import { Link, useLocation } from 'react-router-dom';
 
-import itemImage1 from '../../../assets/pexels-designecologist-1779487.jpg';
-
 import classes from './ViewAuctionDetails.module.css';
 import CountDownTimer from '../CountDownTimer/CountDownTimer';
 
@@ -26,7 +24,7 @@ const ViewAuctionDetails = props => {
 						<Card.Img
 							className="position-relative"
 							variant="top"
-							src={item.item.image ? item.item.image : itemImage1}
+							src={item.item.images[0].url}
 						/>
 						<div
 							className={`${classes.CardItemCategory} ${

@@ -56,6 +56,7 @@ const ModalUi = props => {
 			setIsBidValid(true);
 		}
 	};
+	console.log(isLoggedIn && !props.UpComingAuction && role === 'buyer' && (!!props.errorWhenJoinAuction) &&  !(!!props.RetreatModelTitle) && !(!!props.ConfirmJoin) && props.BidNow)
 	return (
 		<Modal
 			show={props.show}
@@ -69,7 +70,7 @@ const ModalUi = props => {
 
 			<Modal.Header closeButton className={classes.BiddingModalHeader}>
 				<Modal.Title id="contained-modal-title-vcenter">
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) &&  !(!!props.RetreatModelTitle) && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && props.BidNow &&  !(!!props.RetreatModelTitle) && !(!!props.ConfirmJoin) && (
 						<h2 className="fw-bold">Place a Bid </h2>
 					)}
 
@@ -92,11 +93,18 @@ const ModalUi = props => {
 					)}
 
 					{/* start retreat From Auction */}
-					{props.RetreatModalTitle && props.RetreatModelHandler &&
+					{isLoggedIn && props.RetreatModalTitle && props.RetreatModelHandler &&
 						<h5> {props.RetreatModalTitle} </h5>
 					}
-
 					{/* end retreat From Auction */}
+
+					{/* start ConfirmJoin */}
+					{props.ConfirmJoin && props.btnConfirmationHandler && isLoggedIn &&
+						<h5> {props.ConfirmJoin} </h5>
+
+					}
+					{/* end ConfirmJoin */}
+
 
 				</Modal.Title>
 			</Modal.Header>
@@ -114,8 +122,8 @@ const ModalUi = props => {
 					{/* end for seller  */}
 
 					{/* for buyer */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && !(!!props.RetreatModelTitle) &&(
-						<>
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && props.BidNow &&  !(!!props.RetreatModelTitle) && !(!!props.ConfirmJoin) &&(
+					<>
 							<div
 								className={` ${classes['ModalBodyForm']} ${
 									!isBidValid ? 'pb-2' : ''
@@ -153,7 +161,7 @@ const ModalUi = props => {
 
 								<div className="d-flex justify-content-between">
 									<p> Minimum Bid After Your Bidding </p>
-									<p className={!isBidValid ? classes['Alarm'] : ''} > {BidValue  &&  (parseInt(props.MinimumBidAllowed) + parseInt(BidValue))  } $ </p>
+									<p className={!isBidValid ? classes['Alarm'] : ''} > {parseInt(BidValue) ? parseInt(BidValue) +100 :  + props.MinimumBidAllowed } $ </p>
 								</div>
 							</div>
 						</>
@@ -186,7 +194,7 @@ const ModalUi = props => {
 					{/* end user not logged in */}
 
 					{/* start buyer modal */}
-					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction) && !(!!props.RetreatModelTitle) && (
+					{isLoggedIn && !props.UpComingAuction && role === 'buyer' && !(!!props.errorWhenJoinAuction)  && props.BidNow &&  !(!!props.RetreatModelTitle) && !(!!props.ConfirmJoin) && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}
 							type="button"
@@ -196,8 +204,12 @@ const ModalUi = props => {
 						</button>
 					)}
 
-					{isLoggedIn && props.RetreatModalTitle && props.RetreatModelHandler && !props.UpComingAuction && !(!!props.errorWhenJoinAuction) &&
+					{isLoggedIn && props.RetreatModalTitle && props.RetreatModelHandler && !props.UpComingAuction && !(!!props.errorWhenJoinAuction) && !(props.BidNow) &&
 						<button onClick={props.RetreatModelHandler} className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}> ConFirm </button>
+					}
+
+					{isLoggedIn && props.btnConfirmationHandler && props.ConfirmJoin && !props.UpComingAuction && !(!!props.errorWhenJoinAuction) && !(props.BidNow) &&
+						<button onClick={props.btnConfirmationHandler} className={`btn col fw-bold bg-light ${classes.btnPlaceMyBid}`}> ConFirm </button>
 					}
 
 					{isLoggedIn && props.UpComingAuction && role === 'buyer' && (

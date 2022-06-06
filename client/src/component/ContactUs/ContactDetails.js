@@ -7,11 +7,13 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {useSelector} from 'react-redux'
 
 // import style of Contact us
 import classes from './ContactDetails.module.css';
 
 const ContactDetails = () => {
+	const role = useSelector(store => store.AuthData.role)
 	return (
 		<React.Fragment>
 			<div className={` ${classes.ContactDetails} p-0`}>
@@ -33,10 +35,10 @@ const ContactDetails = () => {
 					<p> onlineAuction@email.com </p>
 				</div>
 
-				<div className="mt-2">
+				<div  className={(role !== 'buyer' || 'seller' ) ? 'd-none' : 'd-block mt-2'}>
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />
 					<p> you can chat with Administrator</p>
-					<Link className={`${classes.ChatNow} `} to="/buyer-dashboard/chat?email=Support@email.com">
+					<Link className={`${classes.ChatNow} `} to={`${role==='buyer' ? '/buyer-dashboard/chat?email=Support@email.com' : '/seller-dashboard/chat?email=Support@email.com'} `}>
 						{' '}
 						Chat Now{' '}
 					</Link>

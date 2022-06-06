@@ -20,13 +20,14 @@
 /* .itemImage{position: relative;} */
 .itemImage > img {
 	width: 100%;
+	/* margin-left: 30%; */
 	height: 350px;
 	border-bottom-left-radius: 15px;
 	border-top-left-radius: 15px;
 }
 
 .upGoingAuctionData {
-	width: 49%;
+	/* width: 49%; */
 	box-shadow: 0px 4px 6px var(--overlay-dark);
 	border-bottom-right-radius: 15px !important;
 	border-top-right-radius: 15px !important;

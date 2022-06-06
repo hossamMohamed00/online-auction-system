@@ -42,7 +42,7 @@ const ViewCurrentAuction = React.memo(() => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const [AuctionEndMessage , setAuctionEndMessage] = useState('')
 	const [BidderWinner,setBidderWinner] = useState('')
-	const [BidderMessage,setBidderMessage] = useState('')
+	const [BidderMessage,setBidderMessage] = useState([])
 
 	// establish socket connection
 	useEffect(()=>{
@@ -72,8 +72,6 @@ const ViewCurrentAuction = React.memo(() => {
 				})
 				setIsShowBids(false)
 				toast.success(data.message)
-				localStorage.removeItem('BidderIsJoined')
-
 			})
 
 		}
@@ -84,10 +82,17 @@ const ViewCurrentAuction = React.memo(() => {
 			socket.on('winner-bidder' , data => {
 				setBidderWinner(true)
 				console.log(data)
-				setBidderMessage(data.message)
+				setBidderMessage([data.message])
+
+				if(data.isWinner){
+					setBidderMessage(prev => prev ? [...prev, data.message] : [data.message] )
+				}
+				localStorage.removeItem('BidderIsJoined')
+
 			})
 		}
-		setBidderMessage('')
+
+		setBidderMessage([])
 
 	},[!!socket])
 
@@ -152,7 +157,7 @@ const ViewCurrentAuction = React.memo(() => {
 								setBidderJoin={(value) => setBidderIsJoined(value)}
 								setBidderIsBid={(value)=>setBidderIsBid(value)}
 								MinimumBidAllowed = {roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']}
-								chairCost = {roomData.auctionDetails && roomData.auctionDetails['chairCost']}
+								chairCost = {AuctionData && AuctionData.chairCost}
 
 								AuctionEndMessage = {!!AuctionEndMessage}
 
@@ -166,9 +171,9 @@ const ViewCurrentAuction = React.memo(() => {
 				{BidderWinner && <ModalUi
 					show={BidderWinner}
 					onHide={()=> setBidderWinner(false)}
-					title= {BidderMessage}
+					title= ''
+					body = {BidderMessage.map((winner)=> <h1> { winner } </h1> )}
 					btn= ''
-
 				/>}
 
 			</div>

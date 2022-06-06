@@ -9,7 +9,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CheckIfAuctionSaved, joinAuctionApi , SaveAuctionApi } from '../../../Api/BuyerApi';
+import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
 
 function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , chairCost, AuctionEndMessage }) {
 
@@ -26,6 +26,10 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
+	// confirmation join auction
+	const [ConfirmJoin , setConfirmJoin] = useState('')
+	const [BidNow , setBidsNow] = useState(false)
+
 	const [isExistErrorWhenJoinAuction , setIsExistErrorWhenJoinAuction] = useState(false)
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
@@ -123,17 +127,17 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	// start join auction handler
 	const joinAuctionHandler = (OnGoingStatus) =>{
 		setBidderIsBid(false)
-
-		// start send request to join auction
 		if(OnGoingStatus && !isJoined && accessToken){
-			console.log('join auction')
-			const idToken = accessToken
-			const id = AuctionId
-			sendRequestForJoinAuction({ idToken, id})
+			setModalShow(true)
+			setConfirmJoin(Math.random())
 		}
 		// start to place bid
-		else if(isJoined && OnGoingStatus){
+		if(isJoined && OnGoingStatus){
+			setRetreatModalTitle('')
+			setConfirmJoin('')
+
 			setBidderIsBid(true)
+			setBidsNow(true)
 			setModalShow(true)
 		}
 		else{
@@ -142,6 +146,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	}
 
 	const LeaveAuctionHandler = () => {
+		setBidsNow(false)
 		setModalShow(true)
 		setRetreatModalTitle('Are You Sure You Want To RetreatFrom This Auction ? ')
 	}
@@ -151,19 +156,21 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		socket.emit('leave-auction' , {
 			auctionId : AuctionId
 		})
-		socket.on('exception' , (data) => {
-			toast.error(data)
-		})
-		setRetreatModalTitle('')
 		localStorage.removeItem('BidderIsJoined')
+		socket.on('exception', data => {
+			localStorage.setItem('BidderIsJoined' , true)
+
+		})
+		setModalShow(false)
+		setRetreatModalTitle('')
+
 	}
 
 	useEffect(()=>{
 		if(statusForJoinAuction === 'completed'){
+			setConfirmJoin('')
+			setModalShow(false)
 			toast.success(dataForJoinAuction.message)
-			toast.success(`We Will Block this Chair Cost ${chairCost} from Your Balance `)
-
-
 			localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
 
 			setIsJoined(localStorage.getItem('BidderIsJoined'))
@@ -173,6 +180,16 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			toast.error(errorForJoinAuction)
 		}
 	},[statusForJoinAuction])
+
+	// if bidder accept block money from your wallet
+	const btnConfirmationHandler = () => {
+		// start send request to join auction
+					console.log('join auction')
+					const idToken = accessToken
+					const id = AuctionId
+					sendRequestForJoinAuction({ idToken, id})
+				}
+
 
 	useEffect(()=> {
 		if(isJoined){
@@ -349,18 +366,26 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 				btnSaved={btnSaved}
 				SavedAuctionId	= {AuctionId}
 
-				// start bidding
-				btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
+			// *********** start bidding ************ //
+
+				// start join Auction
+					btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
+					BidNow = {BidNow}
+					// if bidder accept block money from your wallet
+					btnConfirmationHandler = {btnConfirmationHandler}
+					ConfirmJoin = {ConfirmJoin && `We Will Block this Chair Cost ${chairCost} from Your Balance`}
+				// end join Auction
+
 				errorWhenJoinAuction = {isExistErrorWhenJoinAuction && isExistErrorWhenJoinAuction}
 				MinimumBidAllowed = {MinimumBidAllowed}
+				chairCost = {chairCost}
 
 				// start RetreatModal
 				RetreatModalTitle = {RetreatModalTitle}
 				RetreatModelHandler = {RetreatModelHandler}
 				// end RetreatModal
 
-
-				// end bidding
+			// *********** end bidding ************ //
 
 			/>
 		</>
