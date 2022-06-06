@@ -34,7 +34,16 @@ const ViewAuctionDetails = props => {
 							{viewAllAuctionPage ? item.status : item.status}
 						</div>
 						<div className={classes.Timer}>
-							{CountDownTimer(new Date(item.endDate))}
+							{item.status !=='closed' ?
+								CountDownTimer(new Date(item.endDate))
+								: <>
+										<span> 0 </span>
+										<span> 0 </span>
+										<span> 0 </span>
+										<span> 0 </span>
+
+									</>
+							}
 						</div>
 
 						<Card.Body>

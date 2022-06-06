@@ -13,7 +13,9 @@ const getAuctions = async url => {
 // ongoing
 // closed
 
-export const getAllAuctions = async () => getAuctions(`${url}?populate=true`);
+export const getAllAuctions = async (queryParams) => getAuctions(`${url}${queryParams ? queryParams : '?'}populate=true`);
+// export const getFilterAuction = async (queryParams) => getAuctions(`${url}${queryParams}populate=true`);
+
 export const getUpComingAuctions = async () =>
 	getAuctions(`${url}?status=upcoming&populate=true`);
 export const getOnGoingAuctions = async () =>
