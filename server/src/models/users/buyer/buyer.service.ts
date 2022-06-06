@@ -204,7 +204,7 @@ export class BuyerService {
 			.populate('joinedAuctions');
 
 		//* Return only the joinedAuctions array
-		return buyerDoc.joinedAuctions;
+		return buyerDoc?.joinedAuctions;
 	}
 
 	async retreatFromAuction(buyer: Buyer, id: string): Promise<boolean> {

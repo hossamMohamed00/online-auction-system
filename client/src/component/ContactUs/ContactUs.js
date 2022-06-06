@@ -18,15 +18,13 @@ const ContactUs = () => {
 	const {sendRequest , status , error } = useHttp(SubmitComplaintInSystem)
 
 	const SendComplaintHandler = values => {
-		if(!idToken){
-			toast.error("Can't Send Complaint Please Login First ⚠️ ")
-		}
-		else if(values && idToken){
+
+	 if(values){
 			const CompliantDetails = {
 				"reason" : values.message ,
 				"from" : values.email
 			}
-			sendRequest({CompliantDetails , idToken })
+			sendRequest(CompliantDetails )
 		}
 		else{
 			toast.error(" Please Fill All Required Data to submit a compliant ❓")

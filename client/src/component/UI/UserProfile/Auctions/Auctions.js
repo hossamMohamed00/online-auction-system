@@ -15,7 +15,9 @@ const Auctions = props => {
 					{props.auctionsData.length !== 0 ? (
 						<ViewAuctionDetails AuctionData={props.auctionsData} lg={4} />
 					) : (
-						<NoData />
+						<div className="mb-0">
+							<NoData text=" No Auctions yet " />
+						</div>
 					)}
 				</div>
 			</div>

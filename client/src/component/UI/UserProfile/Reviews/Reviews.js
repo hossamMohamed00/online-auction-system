@@ -12,7 +12,7 @@ import { AddBuyerReview } from './AddBuyerReview';
 const Reviews = props => {
 	const role = useSelector(store => store.AuthData.role);
 	const idToken = useSelector(store => store.AuthData.idToken);
-	const { data, status, sendRequest, error } = useHttp(getBuyerReview);
+	const { data,  sendRequest, error } = useHttp(getBuyerReview);
 	const sellerId = props.seller._id;
 
 	// ! Check if buyer has already review this seller if has get it
@@ -63,7 +63,9 @@ const Reviews = props => {
 						);
 					})
 				) : (
-					<NoData text=" No reviews yet " />
+					<div className='mb-0'>
+						<NoData text=" No reviews yet " />
+					</div>
 				)}
 			</div>
 		</>
