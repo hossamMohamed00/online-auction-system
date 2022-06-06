@@ -24,6 +24,8 @@ const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	const role = useSelector(store => store.AuthData.role);
+	const email = useSelector(store => store.AuthData.email);
+
 
 	// show all bids when bidder is joined
 	const [isShowBids , setIsShowBids] = useState('')
@@ -42,7 +44,7 @@ const ViewCurrentAuction = React.memo(() => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const [AuctionEndMessage , setAuctionEndMessage] = useState('')
 	const [BidderWinner,setBidderWinner] = useState('')
-	const [BidderMessage,setBidderMessage] = useState([])
+	const [BidderMessage,setBidderMessage] = useState()
 
 	// establish socket connection
 	useEffect(()=>{
@@ -82,17 +84,22 @@ const ViewCurrentAuction = React.memo(() => {
 			socket.on('winner-bidder' , data => {
 				setBidderWinner(true)
 				console.log(data)
-				setBidderMessage([data.message])
-
-				if(data.isWinner){
-					setBidderMessage(prev => prev ? [...prev, data.message] : [data.message] )
+				if(data.winnerEmail === email){
+					setBidderMessage(data.winnerMessage)
 				}
-				localStorage.removeItem('BidderIsJoined')
+				else{
+					setBidderMessage(data.message)
+				}
+
+				const timer = setTimeout(()=>{
+					localStorage.removeItem('BidderIsJoined')
+					window.location.reload()
+
+				},[3000])
+				return () => clearTimeout(timer)
 
 			})
 		}
-
-		setBidderMessage([])
 
 	},[!!socket])
 
@@ -171,8 +178,7 @@ const ViewCurrentAuction = React.memo(() => {
 				{BidderWinner && <ModalUi
 					show={BidderWinner}
 					onHide={()=> setBidderWinner(false)}
-					title= ''
-					body = {BidderMessage.map((winner)=> <h1> { winner } </h1> )}
+					title= {BidderMessage}
 					btn= ''
 				/>}
 

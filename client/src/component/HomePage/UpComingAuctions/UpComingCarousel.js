@@ -9,8 +9,8 @@ import classes from './UpComingAuctions.module.css';
 const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 	const ShowCarouselItems = ongoingAuctionData.map((Item, index) => {
 		return (
-			<div className="row" key={index}>
-				<div className="col-md-4 col-lg-4 pe-0 ps-5">
+			<div className="row ps-5" key={index}>
+				<div className="col-md-4 col-lg-4 pe-0 ">
 					<div className={classes.itemImage}>
 						<img src={Item.item.images[0].url} alt={`itemImage ${index}`} />
 						<p

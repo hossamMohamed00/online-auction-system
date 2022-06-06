@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { SaveAuctionApi } from '../../../../Api/BuyerApi';
+import { ExtendAuctionAi } from '../../../../Api/SellerApi';
 import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
@@ -19,6 +20,14 @@ const ModalUi = props => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const idToken = useSelector(store => store.AuthData.idToken);
 
+
+	// start Extend Auction Time
+	const [ExtendDay , setExtendDay] = useState(0)
+	const [ExtendHour , setExtendHour] = useState(0)
+	const [ExtendMinutes , setExtendMinutes] = useState(0)
+
+	// start sendRequestForExtendAuction
+	const {sendRequest:sendRequestForExtendAuction, status:statusForExtendAuction  ,data:dataForExtendAuction,error:errorForExtendAuction } = useHttp(ExtendAuctionAi);
 
 	// start Saved Auction Handler
 	const {sendRequest:sendRequestForSaveAuction, status:statusForSaveAuction , data:dataForSaveAuction , error:errorForSaveAuction } = useHttp(SaveAuctionApi);
@@ -56,7 +65,34 @@ const ModalUi = props => {
 			setIsBidValid(true);
 		}
 	};
-	console.log(isLoggedIn && !props.UpComingAuction && role === 'buyer' && (!!props.errorWhenJoinAuction) &&  !(!!props.RetreatModelTitle) && !(!!props.ConfirmJoin) && props.BidNow)
+
+	// start btnExtendAuctionHandler in seller
+	const btnExtendAuctionHandler = () => {
+		const AuctionId = props.btnExtendAuction
+		const ExtendData = {
+			"days" :   ExtendDay ? parseInt(ExtendDay)  : 0 ,
+			"hours" :  ExtendHour ? parseInt(ExtendHour)  : 0 ,
+			"minutes": ExtendMinutes ? parseInt(ExtendMinutes)   : 0
+		}
+		sendRequestForExtendAuction({AuctionId , idToken , ExtendData})
+	}
+
+	useEffect(()=>{
+		if(statusForExtendAuction === 'completed'){
+		console.log(dataForExtendAuction && dataForExtendAuction)
+			toast.success("Send Extend Request For These Auction")
+		}
+		else if(statusForExtendAuction === 'error'){
+			toast.error(errorForExtendAuction)
+		}
+
+	} , [statusForExtendAuction])
+
+
+
+	// end btnExtendAuctionHandler in seller
+
+
 	return (
 		<Modal
 			show={props.show}
@@ -101,10 +137,14 @@ const ModalUi = props => {
 					{/* start ConfirmJoin */}
 					{props.ConfirmJoin && props.btnConfirmationHandler && isLoggedIn &&
 						<h5> {props.ConfirmJoin} </h5>
-
 					}
 					{/* end ConfirmJoin */}
 
+					{/* start Extend Auction Time */}
+					{isLoggedIn && props.btnExtendAuction && role ==='seller'  && !props.UpComingAuction  &&
+						<h2 className='fw-bold'> Extend Auction Time </h2>
+					}
+					{/* end Extend Auction Time */}
 
 				</Modal.Title>
 			</Modal.Header>
@@ -113,12 +153,56 @@ const ModalUi = props => {
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
 
-					{/* start for seller  */}
-						{isLoggedIn && role === 'seller' && (
+					{/* *********** start for seller ********************  */}
+						{isLoggedIn && role === 'seller' && props.UpComingAuction && (
 							<h1 className="text-light text-center">
 								Are you sure to delete this auction
 							</h1>
 						)}
+						{/* start Extend Auction Time */}
+						{props.btnExtendAuction && role ==='seller' && isLoggedIn  && !props.UpComingAuction  &&
+							<div className={classes.ExtendAuctionContainer}>
+								<div className={`${classes.Days} d-flex flex-column`}>
+									<p> Days</p>
+									<input
+										type="number"
+										className={`${classes.Extend} form-control`}
+										min={0}
+										max={30}
+										value={ExtendDay}
+										onChange={(e)=> setExtendDay(e.target.value)}
+									/>
+								</div>
+								<div className={`${classes.Hours} d-flex flex-column `}>
+									<p> Hours</p>
+									<input
+										type="number"
+										className={`${classes.Extend} form-control`}
+										min={0}
+										max={12}
+										value={ExtendHour}
+										onChange={(e)=> setExtendHour(e.target.value)}
+									/>
+								</div>
+								<div className={`${classes.Minutes} d-flex flex-column`}>
+									<p> Hours</p>
+									<input
+										type="number"
+										className={`${classes.Extend} form-control`}
+										min={0}
+										max={60}
+										value={ExtendMinutes}
+										onChange={(e)=> setExtendMinutes(e.target.value)}
+									/>
+								</div>
+
+							</div>
+						}
+						{/* end Extend Auction Time */}
+
+					{/* *********** start for seller ********************  */}
+
+
 					{/* end for seller  */}
 
 					{/* for buyer */}
@@ -236,7 +320,7 @@ const ModalUi = props => {
 					{/* start Admin modal */}
 
 					{/* start seller modal */}
-					{isLoggedIn && role === 'seller' && (
+					{isLoggedIn && role === 'seller' && props.UpComingAuction && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"
@@ -245,6 +329,21 @@ const ModalUi = props => {
 							Delete
 						</button>
 					)}
+
+					{/* start Extend Auction Time  */}
+					{/*  && !props.UpComingAuction */}
+					{props.btnExtendAuction && role ==='seller' && isLoggedIn   && !props.UpComingAuction  &&
+						<button
+							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
+							type="button"
+							onClick={btnExtendAuctionHandler}
+						>
+							Extend
+						</button>
+					}
+					{/* end Extend Auction Time  */}
+
+
 					{/* end seller modal */}
 
 					<button

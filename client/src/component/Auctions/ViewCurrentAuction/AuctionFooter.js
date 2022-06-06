@@ -32,6 +32,9 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	const [isExistErrorWhenJoinAuction , setIsExistErrorWhenJoinAuction] = useState(false)
 
+	// extend Auction Time In Seller
+	const [ExtendAuctionId  , setExtendAuctionId ]   = useState('')
+
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
 	const PendingStatus = AuctionStatus === 'pending';
@@ -81,7 +84,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const role = useSelector(store => store.AuthData.role);
 	const url = 'http://localhost:8000';
 	const email = useSelector(store => store.AuthData.email);
-	console.log(email + ' ' + sellerEmail);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -158,13 +160,25 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			auctionId : AuctionId
 		})
 		localStorage.removeItem('BidderIsJoined')
+		setIsJoined(false)
+
+
 		socket.on('exception', data => {
 			localStorage.setItem('BidderIsJoined' , true)
+			setIsJoined(true)
 
+			setIsExistErrorWhenJoinAuction(data.message)
+			setModalShow(true)
+			const time = setTimeout(()=>{
+				setIsExistErrorWhenJoinAuction('')
+				if(modalShow){
+					setModalShow(false)
+				}
+			},[2000])
+			return () => time.clearTimeOut()
 		})
 		setModalShow(false)
 		setRetreatModalTitle('')
-
 	}
 
 	useEffect(()=>{
@@ -186,10 +200,11 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const btnConfirmationHandler = () => {
 		// start send request to join auction
 					console.log('join auction')
+					console.log(isJoined)
 					const idToken = accessToken
 					const id = AuctionId
 					sendRequestForJoinAuction({ idToken, id})
-				}
+	}
 
 
 	useEffect(()=> {
@@ -231,9 +246,10 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		}
 	},[socket])
 	// end new Bid Listener
-
-
 	// end join auction handler
+
+	//  ************************  end Bidding Handler ****************************
+	// start seller Handler
 	// ! to be handled
 	const DeleteAuction = AuctionId => {
 		sendRequestForDelete({ AuctionId: AuctionId, accessToken });
@@ -248,34 +264,17 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		}
 	};
 
+	const ExtendAuctionTimeModalHandler = (AuctionId) =>{
+		setExtendAuctionId(AuctionId)
+		setModalShow(true)
+	}
+
 	return (
 		<>
 			<ToastContainer theme="dark" />
 
-			{role === 'seller' && DeniedStatus && (
-				<div className=" bg-warning mt-3 p-3">
-					<h5 className=" text-black fw-bold">
-						Rejected because : {RejectionMessage}
-					</h5>
-				</div>
-			)}
-			{role === 'seller' && (
-				<div className="d-flex justify-content-evenly mt-3">
-					<button
-						className={`btn w-100 fw-bold btn-success`}
-						type="button"
-					>
-						Update
-					</button>
-					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
-						type="button"
-						onClick={() => setModalShow(true)}
-					>
-						delete
-					</button>
-				</div>
-			)}
+
+			{/* start buyer */}
 			{/* start when auction ongoing */}
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
 				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : 'd-block' } `}>
@@ -351,7 +350,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 			{/* ******************** start seller Actions ******************** */}
 			{/*  start update Auction  */}
-			{role === 'seller' && sellerEmail === email && (
+			{role === 'seller' && sellerEmail === email && !OnGoingStatus && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
 						className={`btn w-100 fw-bold btn-success text-light`}
@@ -383,7 +382,19 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 					</h5>
 				</div>
 			)}
-			{/*  end denied Auction  */}
+			{/* start extend auction time */}
+					{/*  */}
+			{role === 'seller'  && !AuctionEndMessage && !UpComingStatus && OnGoingStatus &&(
+				<div className="d-flex justify-content-evenly mt-3">
+					<button
+						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+						type="button"
+						onClick={() => ExtendAuctionTimeModalHandler(AuctionId)}
+					>
+						Extend Auction Time
+					</button>
+				</div>
+			)}
 
 
 			<ModalUi
@@ -392,11 +403,13 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 				UpComingAuction={UpComingStatus}
 				btnReject={PendingStatus}
 				rejectHandler={rejectHandler}
-				btnRemove={() => DeleteAuction(AuctionId)}
 				btnSaved={btnSaved}
 				SavedAuctionId	= {AuctionId}
 
-			// *********** start bidding ************ //
+				btnRemove={() => DeleteAuction(AuctionId)}
+				btnExtendAuction = {ExtendAuctionId}
+
+				// *********** start bidding ************ //
 
 				// start join Auction
 					btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
