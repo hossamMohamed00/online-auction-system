@@ -3,6 +3,8 @@ import {
 	Injectable,
 	NotFoundException,
 	Logger,
+	forwardRef,
+	Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -34,6 +36,7 @@ import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { BuyerService } from '../users/buyer/buyer.service';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class AuctionsService
@@ -52,6 +55,8 @@ export class AuctionsService
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly biddingIncrementRules: BiddingIncrementRules,
 		private readonly itemService: ItemService,
+		@Inject(forwardRef(() => CategoryService))
+		private readonly categoryService: CategoryService,
 		private readonly startAuctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
 	) {}
@@ -133,6 +138,19 @@ export class AuctionsService
 			delete filterAuctionQuery.populate;
 		}
 
+		//? Check if the category name provided to get its id
+		if (filterAuctionQuery?.category) {
+			const categoryId = await this.categoryService.getCategoryIdByName(
+				filterAuctionQuery.category,
+			);
+
+			if (categoryId) {
+				filterAuctionQuery.category = categoryId.toString();
+			} else {
+				delete filterAuctionQuery.category;
+			}
+		}
+
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate(populateFields);
@@ -148,7 +166,7 @@ export class AuctionsService
 	async findById(_id: string): Promise<Auction> {
 		const auction = await this.auctionModel
 			.findById(_id)
-			.populate(['seller', 'category', 'item', 'winningBuyer'])
+			.populate(['seller', 'category', 'item', 'winningBuyer', 'bidders'])
 			.exec();
 
 		if (!auction) throw new NotFoundException('Auction not found ❌');
@@ -178,6 +196,20 @@ export class AuctionsService
 			.populate(['seller', 'category', 'item', 'winningBuyer']);
 
 		return auctions ? auctions : [];
+	}
+
+	/**
+	 * Get auctions count for specific category
+	 * @param categoryId
+	 * @returns
+	 */
+	async getCategoryAuctionsCount(categoryId: string): Promise<number> {
+		//* Get count of auction in specific category
+		const count = await this.auctionModel.countDocuments({
+			category: categoryId,
+		});
+
+		return count;
 	}
 
 	/**

@@ -32,7 +32,7 @@ const AllCategories = props => {
 		},
 		{
 			name: 'Number of Auctions',
-			selector: row => row.num,
+			selector: row => row.auctionsCount,
 			center: true,
 		},
 
@@ -43,9 +43,6 @@ const AllCategories = props => {
 			cell: props => {
 				return (
 					<>
-						<button className="btn btn-success mx-1 my-2">
-							<FontAwesomeIcon icon={faEdit} />
-						</button>
 						<button
 							className="btn btn-danger my-2 "
 							onClick={() => showModel(props._id)}
@@ -93,16 +90,14 @@ const AllCategories = props => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);
-		// setReloadWhenRemoveCategory(Math.random());
-
+			// setReloadWhenRemoveCategory(Math.random());
 		} else if (statusForRemove === 'error') {
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
 			setModalTitle(errorForRemove);
 			setModalBtn('');
-		// setReloadWhenRemoveCategory(Math.random());
-
+			// setReloadWhenRemoveCategory(Math.random());
 		}
-	}, [statusForRemove, errorForRemove ,reloadWhenRemoveCategory]);
+	}, [statusForRemove, errorForRemove, reloadWhenRemoveCategory]);
 
 	// useEffect(() => {
 	// 	if (errorForRemove && statusForRemove === 'error') {
