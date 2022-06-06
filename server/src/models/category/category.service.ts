@@ -109,6 +109,16 @@ export class CategoryService {
 	}
 
 	/**
+	 * Get the category id by name if exists
+	 * @param categoryName
+	 */
+	async getCategoryIdByName(categoryName: string) {
+		const category = await this.categoryModel.findOne({ name: categoryName });
+
+		return category?._id;
+	}
+
+	/**
 	 * Update a category
 	 * @param categoryId  category id
 	 * @param updateCategoryDto

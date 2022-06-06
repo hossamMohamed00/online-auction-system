@@ -3,6 +3,8 @@ import {
 	Injectable,
 	NotFoundException,
 	Logger,
+	forwardRef,
+	Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -34,6 +36,7 @@ import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { BuyerService } from '../users/buyer/buyer.service';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class AuctionsService
@@ -52,6 +55,8 @@ export class AuctionsService
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly biddingIncrementRules: BiddingIncrementRules,
 		private readonly itemService: ItemService,
+		@Inject(forwardRef(() => CategoryService))
+		private readonly categoryService: CategoryService,
 		private readonly startAuctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
 	) {}
@@ -131,6 +136,19 @@ export class AuctionsService
 
 			// Delete the populate fields from the filterAuctionQuery
 			delete filterAuctionQuery.populate;
+		}
+
+		//? Check if the category name provided to get its id
+		if (filterAuctionQuery?.category) {
+			const categoryId = await this.categoryService.getCategoryIdByName(
+				filterAuctionQuery.category,
+			);
+
+			if (categoryId) {
+				filterAuctionQuery.category = categoryId.toString();
+			} else {
+				delete filterAuctionQuery.category;
+			}
 		}
 
 		const auctions = await this.auctionModel

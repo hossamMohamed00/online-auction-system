@@ -8,7 +8,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getAllCategories } from '../../../Api/CategoryApi';
 
 import classes from './ViewAllAuctions.module.css';
-import scrollbar from '../../UI/ScrollBar.module.css'
+import scrollbar from '../../UI/ScrollBar.module.css';
 import { useSelector } from 'react-redux';
 
 function FilterdAuctions(props) {
@@ -23,8 +23,6 @@ function FilterdAuctions(props) {
 	console.log('CategoryList', data && CategoryList);
 
 	let AuctionType, AuctionCategory;
-	const AuctionMinPriceRef = useRef();
-	const AuctionMaxPriceRef = useRef();
 
 	const getAuctionType = value => {
 		AuctionType = value;
@@ -37,8 +35,6 @@ function FilterdAuctions(props) {
 		const FilterValues = {
 			AuctionType: AuctionType,
 			AuctionCategory: AuctionCategory,
-			AuctionMinPriceRef: AuctionMinPriceRef.current.value,
-			AuctionMaxPriceRef: AuctionMaxPriceRef.current.value,
 		};
 		props.filterHandler(FilterValues);
 	};
@@ -70,7 +66,9 @@ function FilterdAuctions(props) {
 					/>
 				</div>
 
-				<div className={`${classes.AuctionCategory} ${scrollbar.scrollbar} my-4 mb-5`}>
+				<div
+					className={`${classes.AuctionCategory} ${scrollbar.scrollbar} my-4 mb-5`}
+				>
 					<h6>Auction Category</h6>
 					<RadioButton
 						name="AuctionCategory"

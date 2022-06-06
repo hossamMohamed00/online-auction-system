@@ -47,6 +47,6 @@ async function bootstrap() {
 		AuctionSchedulingService,
 	);
 
-	await auctionSchedulingService.loadCronJobsForAuctions();
+	// await auctionSchedulingService.loadCronJobsForAuctions();
 }
 bootstrap();
