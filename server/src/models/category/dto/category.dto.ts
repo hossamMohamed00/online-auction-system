@@ -11,4 +11,7 @@ export class CategoryDto {
 
 	@Expose()
 	name: string;
+
+	@Expose()
+	auctionsCount: number;
 }

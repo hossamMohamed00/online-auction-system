@@ -181,6 +181,20 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get auctions count for specific category
+	 * @param categoryId
+	 * @returns
+	 */
+	async getCategoryAuctionsCount(categoryId: string): Promise<number> {
+		//* Get count of auction in specific category
+		const count = await this.auctionModel.countDocuments({
+			category: categoryId,
+		});
+
+		return count;
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id

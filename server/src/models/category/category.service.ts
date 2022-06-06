@@ -54,11 +54,19 @@ export class CategoryService {
 	 * List all categories
 	 */
 	async listAll(name?: string) {
+		this.logger.log('Retrieving all saved categories...');
 		let categories = name
 			? await this.categoryModel.find({ name: name.toLowerCase() })
 			: await this.categoryModel.find();
 
-		this.logger.log('Retrieving all saved categories...');
+		for (const category of categories) {
+			const auctionsCount: number =
+				await this.auctionService.getCategoryAuctionsCount(
+					category._id.toString(),
+				);
+
+			category['auctionsCount'] = auctionsCount;
+		}
 
 		return categories;
 	}
