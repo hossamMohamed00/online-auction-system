@@ -1143,7 +1143,7 @@ export class AuctionsService
 
 		const winnerBuyer = auction.winningBuyer;
 
-		bidders.forEach(async bidder => {
+		for (const bidder of bidders) {
 			//* Skip the winner
 			if (bidder._id.toString() == winnerBuyer?._id.toString()) {
 				this.logger.debug('Winner bidder, skipping...');
@@ -1151,7 +1151,7 @@ export class AuctionsService
 			}
 
 			await this.walletService.recoverAssuranceToBidder(bidder, assuranceValue);
-		});
+		}
 
 		return true;
 	}
