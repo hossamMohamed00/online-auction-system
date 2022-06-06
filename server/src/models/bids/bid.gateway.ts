@@ -15,7 +15,7 @@ import {
 import { BidService } from './bid.service';
 import { SocketAuthGuard } from 'src/common/guards';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
-import { GetCurrentUserFromSocket } from 'src/common/decorators';
+import { GetCurrentUserFromSocket, Roles } from 'src/common/decorators';
 import { JoinOrLeaveAuctionDto, PlaceBidDto } from './dto';
 import { AuctionRoomService } from './auction-room.service';
 import { AuctionsService } from '../auction/auctions.service';
@@ -25,6 +25,7 @@ import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
 import { Bid } from './schema/bid.schema';
+import { Role } from '../users/shared-user/enums';
 
 /**
  * Its job is to handle the bidding process.
@@ -77,6 +78,11 @@ export class BidGateway
 		//* Check if the client already in auction, to add him to the room
 		//* Get the user
 		const bidder = await this.bidService.getConnectedClientUserObject(client);
+
+		//* Ensure that the connected client is bidder
+		if (bidder.role !== Role.Buyer) {
+			return this.logger.error('The client is not a bidder 🤔');
+		}
 
 		//* Get the auctions that the bidder involved in
 		const bidderAuctions: Auction[] = await this.buyerService.listMyAuctions(
