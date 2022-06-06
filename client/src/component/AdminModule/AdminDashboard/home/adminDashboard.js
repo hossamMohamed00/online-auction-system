@@ -7,6 +7,14 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {
+
+	const dropdownListProfile = [
+		{
+			title: 'Edit Account',
+			icon: faGavel,
+			path: '/employeeDashboard/UpdateAccount',
+		},
+	];
 	const dropdownListForComplaints = [
 		{
 			title: 'All complaints',
@@ -75,6 +83,7 @@ const AdminDashboard = props => {
 
 	return (
 		<DashboardLayout
+		profile={{name : 'profile' , list: dropdownListProfile}}
 			admin={{ name: email ? email : 'user' }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}

@@ -18,10 +18,35 @@ import {
 
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
-
+	const sidebarBuyer = role === 'buyer' && {
+		buyer: {
+			name: props.buyer.name,
+			path: '/buyer-dashboard',
+		},
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+		},
+		viewAuctions: {
+			list: props.viewAuctions.list,
+			name: props.viewAuctions.name,
+		},
+		chat: { list: props.chat.list, name: props.chat.name, icon: faComment },
+		payment: {
+			list: props.payment.list,
+			name: props.payment.name,
+			icon: faCreditCardAlt,
+		},
+	};
 	// console.log("role2" , role , props)
 		const sidebarEmployee = role === 'employee' && {
 			admin: { name: props.admin.name, path: '/employeeDashboard' },
+			profile: {
+				list: props.profile.list,
+				name: props.profile.name,
+				icon: faIdBadge,
+			},
 			users: {
 				list: props.users.list,
 				name: props.users.name,
@@ -87,27 +112,7 @@ const Wrapper = props => {
 		},
 	};
 
-	const sidebarBuyer = role === 'buyer' && {
-		buyer: {
-			name: props.buyer.name ,
-			path: '/buyer-dashboard',
-		},
-		profile: {
-			list: props.profile.list,
-			name: props.profile.name,
-			icon: faIdBadge,
-		},
-		viewAuctions: {
-			list: props.viewAuctions.list,
-			name: props.viewAuctions.name,
-		},
-		chat: { list: props.chat.list, name: props.chat.name, icon: faComment },
-		payment: {
-			list: props.payment.list,
-			name: props.payment.name,
-			icon: faCreditCardAlt,
-		},
-	};
+
 
 
 	const sidebarSeller = role === 'seller' && {

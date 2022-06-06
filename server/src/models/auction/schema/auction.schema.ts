@@ -80,16 +80,20 @@ export class Auction {
 	@Prop({
 		type: Types.ObjectId,
 		ref: User.name,
+		autopopulate: true,
 	})
 	seller: Seller;
 
 	@Prop({
 		type: Types.ObjectId,
 		ref: Category.name,
+		autopopulate: true,
 	})
 	category: Types.ObjectId;
 
-	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] }) //* This syntax is very important as the last was not populating all array
+	@Prop({
+		type: [{ type: Types.ObjectId, ref: User.name, autopopulate: true }],
+	}) //* This syntax is very important as the last was not populating all array
 	bidders: Buyer[];
 
 	@Prop({ type: [{ type: Types.ObjectId, ref: 'Bid', autopopulate: true }] })

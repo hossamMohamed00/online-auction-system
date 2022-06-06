@@ -245,26 +245,12 @@ export class BidGateway
 			return;
 		}
 
-		//* Get the bidder from the room
-		const winnerBidderSocketId = this.auctionRoomService.getWinnerBidder(
-			winnerBidder._id,
-			auctionId,
-		);
-
-		//* If winner is currently online, send congratulation message
-		if (winnerBidderSocketId) {
-			//* Send message to this bidder only
-			this.server.to(winnerBidderSocketId).emit('winner-bidder', {
-				message:
-					'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
-				isWinner: true,
-				system: true,
-			});
-		}
-
 		//* Send message to all bidders except this bidder
 		this.server.to(auctionId.toString()).emit('winner-bidder', {
 			message: `Winner is ${winnerBidder.email} 🐱‍🏍🏆`,
+			winnerEmail: winnerBidder.email,
+			winnerMessage:
+				'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
 			system: true,
 		});
 	}

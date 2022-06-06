@@ -25,6 +25,9 @@ export interface MainAuctionsBehaviors {
 	//* Get all auction in one category
 	getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]>;
 
+	//* Get count of auctions in specific category
+	getCategoryAuctionsCount(categoryId: string): Promise<number>;
+
 	//* Update auction
 	update(
 		auctionId: string,

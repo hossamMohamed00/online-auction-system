@@ -19,7 +19,7 @@ export class UserUpdateDto {
 
 	@IsOptional()
 	@Length(11)
-	phoneNumber: Number;
+	phoneNumber: any;
 
 	@IsOptional()
 	@IsString()
