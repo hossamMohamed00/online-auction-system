@@ -9,7 +9,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
+import { CheckIfAuctionSaved, joinAuctionApi , SaveAuctionApi } from '../../../Api/BuyerApi';
 
 function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBids , socket ,  setBidderJoin , setBidderIsBid , MinimumBidAllowed , chairCost, AuctionEndMessage }) {
 
@@ -37,34 +37,33 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
 
-	// start check if upcoming auction saved or not
-	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
+	// start save auction api
+	const { sendRequest : sendRequestForIfSavedAuction , status:statusForIfSavedAuction , data: dataForIfSavedAuction ,error:errorForIfSavedAuction } = useHttp(CheckIfAuctionSaved);
 
 	useEffect(()=>{
-		if(UpComingStatus && role==='buyer'){
+		if(UpComingStatus && role === 'buyer' && AuctionId){
 			const idToken = accessToken
 			const id = AuctionId
-			sendRequestForSavedAuction({idToken , id})
+			sendRequestForIfSavedAuction({idToken , id})
 		}
-
-	},[sendRequestForSavedAuction , UpComingStatus , role])
+	},[sendRequestForIfSavedAuction , UpComingStatus , role , AuctionId])
 
 	useEffect(()=>{
-		if(statusForSavedAuction === 'completed'){
+		if(statusForIfSavedAuction === 'completed'){
 			setBtnSavedValue('Saved')
 		}
-	},[statusForSavedAuction])
+	},[statusForIfSavedAuction])
 
 	useEffect(()=>{
-		if(statusForSavedAuction === 'error'){
+		if(statusForIfSavedAuction === 'error'){
 			setBtnSavedValue('Save Auction')
-			toast.error(errorForSavedAuction)
 		}
-	},[statusForSavedAuction])
+	},[statusForIfSavedAuction])
 
 	const btnSaved = btnSavedValue => {
 		setBtnSavedValue(btnSavedValue);
 	};
+
 	// end check if upcoming auction saved or not
 
 
@@ -82,9 +81,9 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	useEffect(() => {
 		if (status === 'completed') {
 			sendRequest({ AuctionId: AuctionId, idToken: accessToken });
+			window.reload()
 		}
 	}, [sendRequest]);
-
 
 
 	const approveHandler = () => {
@@ -149,14 +148,14 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	const RetreatModelHandler = () => {
 		console.log('retreat')
-		socket.emit('retreat-auction' , {
+		socket.emit('leave-auction' , {
 			auctionId : AuctionId
 		})
 		socket.on('exception' , (data) => {
-			console.log(data)
+			toast.error(data)
 		})
-		// setRetreatModalTitle('')
-
+		setRetreatModalTitle('')
+		localStorage.removeItem('BidderIsJoined')
 	}
 
 	useEffect(()=>{
@@ -234,23 +233,6 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	return (
 		<>
 			<ToastContainer theme="dark" />
-			{role === 'seller' && (
-				<div className="d-flex justify-content-evenly mt-3">
-					<button
-						className={`btn w-100 fw-bold btn-success`}
-						type="button"
-					>
-						Update
-					</button>
-					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
-						type="button"
-						onClick={() => setModalShow(true)}
-					>
-						delete
-					</button>
-				</div>
-			)}
 			{/* start when auction ongoing */}
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
 				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : 'd-block' } `}>

@@ -58,11 +58,25 @@ const AddAuction = () => {
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
+
 	const ProductImagesHandler = e => {
 		const files = e.target.files;
-		setProductImages([...files])
 
+		setProductImages([...files])
+		console.log([...files])
+		// Storage.ref(`${}`)
+	// 	const ImagesFormat = []
+	// 	setProductImages(files)
+	// 	for(let i in files){
+	// 		if (Object.hasOwnProperty.call(files, i)) {
+	// 			ImagesFormat.push(
+	// 			{File : {'name' : files[i]['name'] , 'size' :files[i]['size'] , 'type' :files[i]['type']}}
+	// )
+	// 		}
+	// 	}
+	// 	console.log(ImagesFormat)
 	}
+
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -102,10 +116,15 @@ const AddAuction = () => {
 		}
 	};
 	const submitHandler = e => {
+		console.log(ProductImages)
 		e.preventDefault();
 		if (ValidateForm()) {
 			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
+			const data = new FormData()
 
+			data.append("files" , ProductImages)
+
+			console.log(data)
 			const AuctionDetails = {
 				title: TitleRef.current.value,
 				item: {
@@ -116,7 +135,7 @@ const AddAuction = () => {
 						? ProductDetailsDescRef.current.value
 						: ProductShortDescRef.current.value,
 					status: StatusRef.current.value,
-					images: ProductImages,
+					images: [...data],
 				},
 				startDate: StartDateRef.current.value,
 				category: CategoryId,
@@ -309,7 +328,7 @@ const AddAuction = () => {
 									</label>
 									<input
 										type="file"
-										name="name"
+										name="image"
 										multiple
 										className={`form-control ${classes.productImage}`}
 										ref={ImageRef}

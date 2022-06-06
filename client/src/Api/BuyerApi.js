@@ -72,8 +72,21 @@ export const joinAuctionApi = async ({idToken , id}) => {
 
 // start check if this auction is saved before or not
 
-export const CheckIfAuctionSaved = async ({idToken,id}) =>
-	getAPI(`${url}/buyer/auction/is-saved/${id}`, idToken);
+export const CheckIfAuctionSaved = async ({idToken,id}) => {
+	const response = await fetch(`${url}/buyer/auction/is-saved/${id}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok || !data.success) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+
 
 
 

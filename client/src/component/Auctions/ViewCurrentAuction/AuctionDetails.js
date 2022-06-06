@@ -8,7 +8,7 @@ import classes from './AuctionDetails.module.css';
 const AuctionDetails = ({ data}) => {
 	const AuctionDate = data && data.endDate;
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
-	// console.log(data && data)
+	console.log(data && data)
 	return (
 		<Fragment>
 			{data && (

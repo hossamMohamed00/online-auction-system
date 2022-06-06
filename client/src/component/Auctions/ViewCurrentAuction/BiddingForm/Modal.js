@@ -30,6 +30,7 @@ const ModalUi = props => {
 
 	useEffect(()=>{
 		if(statusForSaveAuction === 'completed'){
+			console.log(dataForSaveAuction.message)
 			toast.success(dataForSaveAuction.message)
 			props.btnSaved('Saved')
 			props.onHide()
@@ -39,7 +40,7 @@ const ModalUi = props => {
 	useEffect(()=>{
 		if(statusForSaveAuction === 'error'){
 			toast.error(errorForSaveAuction)
-			props.btnSaved('saved')
+			props.btnSaved('Save Auction')
 			props.onHide()
 		}
 	},[statusForSaveAuction])
