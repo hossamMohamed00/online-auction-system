@@ -166,7 +166,7 @@ export class AuctionsService
 	async findById(_id: string): Promise<Auction> {
 		const auction = await this.auctionModel
 			.findById(_id)
-			.populate(['seller', 'category', 'item', 'winningBuyer'])
+			.populate(['seller', 'category', 'item', 'winningBuyer', 'bidders'])
 			.exec();
 
 		if (!auction) throw new NotFoundException('Auction not found ❌');
