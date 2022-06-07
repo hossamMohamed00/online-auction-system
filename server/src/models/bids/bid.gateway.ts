@@ -24,8 +24,7 @@ import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
-import { Bid } from './schema/bid.schema';
-import { Role } from '../users/shared-user/enums';
+import { Role } from 'src/models/users/shared-user/enums';
 
 /**
  * Its job is to handle the bidding process.

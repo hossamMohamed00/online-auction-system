@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faFilterCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 function FilterdAuctions(props) {
 	const { sendRequest, data } = useHttp(getAllCategories);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	// const [filterData ,setFilerData]  = useState()
 
 	useEffect(() => {
 		sendRequest(idToken);
@@ -37,6 +38,7 @@ function FilterdAuctions(props) {
 			AuctionCategory: AuctionCategory,
 		};
 		props.filterHandler(FilterValues);
+
 	};
 
 	return (
@@ -61,7 +63,7 @@ function FilterdAuctions(props) {
 					<h6>Auction type</h6>
 					<RadioButton
 						name="AuctionType"
-						values={['Upgoing', 'Current', 'Closed']}
+						values={['ongoing', 'upcoming', 'closed']}
 						getValue={getAuctionType}
 					/>
 				</div>
@@ -77,12 +79,13 @@ function FilterdAuctions(props) {
 					/>
 				</div>
 
+
 				<button
-					className={` ${classes.btnFilter} btn w-100 `}
-					onClick={filterAuctionHandler}
+					className={` ${classes.btnFilter} btn w-100 ${props.filter ? 'bg-danger' : ''}`}
+					onClick={!props.filter ? filterAuctionHandler : props.clearFilter}
 				>
-					{' '}
-					Filter
+					{props.filter ? 'Clear Filter' : 'Filter'}
+
 				</button>
 
 				{/* end filter content */}
