@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import UserProfile from '../../../UI/UserProfile/profile';
 import buyerImg from '../../../../assets/user.png';
 import { getProfileData } from '../../../UI/UserProfile/sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 
 const SellerProfile = props => {
-	console.log('Opening seller profile');
-	const { data, status, sendRequest } = useHttp(getProfileData);
+	const { data, sendRequest } = useHttp(getProfileData);
 	const [reload, setReload] = useState('');
 
 	useEffect(
@@ -19,7 +17,6 @@ const SellerProfile = props => {
 	[	sendRequest,
 		reload]
 	);
-	console.log(data);
 
 	return (
 		<UserProfile

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Modal_ from '../../../UI/Modal/modal';
+import ModalUi from '../../../UI/Modal/modal';
 
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
@@ -80,7 +80,7 @@ const Wallet = props => {
 		<>
 			{loading && <LoadingSpinner></LoadingSpinner>}
 
-			<Modal_
+			<ModalUi
 				show={props.show}
 				onHide={props.onHide}
 				title={ModalName}

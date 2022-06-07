@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faFilterCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -8,11 +8,13 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getAllCategories } from '../../../Api/CategoryApi';
 
 import classes from './ViewAllAuctions.module.css';
+import scrollbar from '../../UI/ScrollBar.module.css';
 import { useSelector } from 'react-redux';
 
 function FilterdAuctions(props) {
 	const { sendRequest, data } = useHttp(getAllCategories);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	// const [filterData ,setFilerData]  = useState()
 
 	useEffect(() => {
 		sendRequest(idToken);
@@ -22,8 +24,6 @@ function FilterdAuctions(props) {
 	console.log('CategoryList', data && CategoryList);
 
 	let AuctionType, AuctionCategory;
-	const AuctionMinPriceRef = useRef();
-	const AuctionMaxPriceRef = useRef();
 
 	const getAuctionType = value => {
 		AuctionType = value;
@@ -36,10 +36,9 @@ function FilterdAuctions(props) {
 		const FilterValues = {
 			AuctionType: AuctionType,
 			AuctionCategory: AuctionCategory,
-			AuctionMinPriceRef: AuctionMinPriceRef.current.value,
-			AuctionMaxPriceRef: AuctionMaxPriceRef.current.value,
 		};
 		props.filterHandler(FilterValues);
+
 	};
 
 	return (
@@ -64,12 +63,14 @@ function FilterdAuctions(props) {
 					<h6>Auction type</h6>
 					<RadioButton
 						name="AuctionType"
-						values={['Upgoing', 'Current', 'Closed']}
+						values={['ongoing', 'upcoming', 'closed']}
 						getValue={getAuctionType}
 					/>
 				</div>
 
-				<div className={`${classes.AuctionCategory} my-4`}>
+				<div
+					className={`${classes.AuctionCategory} ${scrollbar.scrollbar} my-4 mb-5`}
+				>
 					<h6>Auction Category</h6>
 					<RadioButton
 						name="AuctionCategory"
@@ -78,30 +79,13 @@ function FilterdAuctions(props) {
 					/>
 				</div>
 
-				<div className={`${classes.AuctionPrice} my-4`}>
-					<h6>Auction Price </h6>
-					<div className="input-group">
-						<input
-							type="number"
-							placeholder="min"
-							class="form-control"
-							ref={AuctionMinPriceRef}
-						/>
-						<input
-							type="number"
-							placeholder="max"
-							class="form-control"
-							ref={AuctionMaxPriceRef}
-						/>
-					</div>
-				</div>
 
 				<button
-					className={` ${classes.btnFilter} btn w-100 `}
-					onClick={filterAuctionHandler}
+					className={` ${classes.btnFilter} btn w-100 ${props.filter ? 'bg-danger' : ''}`}
+					onClick={!props.filter ? filterAuctionHandler : props.clearFilter}
 				>
-					{' '}
-					Filter
+					{props.filter ? 'Clear Filter' : 'Filter'}
+
 				</button>
 
 				{/* end filter content */}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StartComponent } from './StartComponent';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './reviews.css';
 import { DeleteReview, UpdateReviewForSeller } from '../sellerProfileData';
@@ -20,14 +19,13 @@ export const AddBuyerReview = props => {
 
 	let message = props.data && props.data.message;
 	const reviewId = props.data && props.data._id;
-	console.log(reviewId);
 
 	const getRateValue = value => {
 		setRateValue(value);
 	};
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { data, status, sendRequest, error } = useHttp(UpdateReviewForSeller);
+	const { status, sendRequest, error } = useHttp(UpdateReviewForSeller);
 	const {
 		status: statusForDelete,
 		sendRequest: sendRequestForDelete,
@@ -39,7 +37,6 @@ export const AddBuyerReview = props => {
 	};
 
 	const updateReview = () => {
-		console.log('hiiiiiiiiiiiiiiii');
 		const reviewData = {
 			message: nameInputRef.current.value,
 			review: rateValue,
@@ -51,7 +48,6 @@ export const AddBuyerReview = props => {
 		});
 	};
 	const deleteReview = () => {
-		console.log('hiiiiiiiiiiiiiiii');
 		sendRequestForDelete({
 			idToken: idToken,
 			reviewId: reviewId,

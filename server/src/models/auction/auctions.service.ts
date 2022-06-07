@@ -3,6 +3,8 @@ import {
 	Injectable,
 	NotFoundException,
 	Logger,
+	forwardRef,
+	Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -10,6 +12,7 @@ import { ItemService } from '../items/item.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	FilterAuctionQueryDto,
 	RejectAuctionDto,
 	UpdateAuctionDto,
@@ -31,6 +34,9 @@ import { AdminFilterAuctionQueryDto } from '../users/admin/dto';
 import { DashboardAuctionsCount } from './types';
 import { ResponseResult } from 'src/common/types';
 import { HandleDateService } from './../../common/utils/date/handle-date.service';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
+import { BuyerService } from '../users/buyer/buyer.service';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class AuctionsService
@@ -45,10 +51,13 @@ export class AuctionsService
 	constructor(
 		@InjectModel(Auction.name)
 		private readonly auctionModel: Model<AuctionDocument>,
+		private readonly buyerService: BuyerService,
 		private readonly auctionValidationService: AuctionValidationService,
 		private readonly biddingIncrementRules: BiddingIncrementRules,
 		private readonly itemService: ItemService,
-		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		@Inject(forwardRef(() => CategoryService))
+		private readonly categoryService: CategoryService,
+		private readonly auctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
 	) {}
 
@@ -129,6 +138,19 @@ export class AuctionsService
 			delete filterAuctionQuery.populate;
 		}
 
+		//? Check if the category name provided to get its id
+		if (filterAuctionQuery?.category) {
+			const categoryId = await this.categoryService.getCategoryIdByName(
+				filterAuctionQuery.category,
+			);
+
+			if (categoryId) {
+				filterAuctionQuery.category = categoryId.toString();
+			} else {
+				delete filterAuctionQuery.category;
+			}
+		}
+
 		const auctions = await this.auctionModel
 			.find(filterAuctionQuery)
 			.populate(populateFields);
@@ -144,7 +166,7 @@ export class AuctionsService
 	async findById(_id: string): Promise<Auction> {
 		const auction = await this.auctionModel
 			.findById(_id)
-			.populate(['seller', 'category', 'item', 'winningBuyer'])
+			.populate(['seller', 'category', 'item', 'winningBuyer', 'bidders'])
 			.exec();
 
 		if (!auction) throw new NotFoundException('Auction not found ❌');
@@ -164,6 +186,33 @@ export class AuctionsService
 	}
 
 	/**
+	 * Get list of auctions by category
+	 * @param categoryId
+	 * @returns Array of auctions
+	 */
+	async getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]> {
+		const auctions = await this.auctionModel
+			.find({ category: categoryId })
+			.populate(['seller', 'category', 'item', 'winningBuyer']);
+
+		return auctions ? auctions : [];
+	}
+
+	/**
+	 * Get auctions count for specific category
+	 * @param categoryId
+	 * @returns
+	 */
+	async getCategoryAuctionsCount(categoryId: string): Promise<number> {
+		//* Get count of auction in specific category
+		const count = await this.auctionModel.countDocuments({
+			category: categoryId,
+		});
+
+		return count;
+	}
+
+	/**
 	 * Update auction details
 	 * @param auctionId - Auction id
 	 * @param sellerId - Seller id
@@ -175,10 +224,26 @@ export class AuctionsService
 		sellerId: string,
 		{ item: itemNewData, ...updateAuctionDto }: UpdateAuctionDto,
 	): Promise<Auction> {
-		//? Check if the auction exists or not
-		const isExists = await this.isExists(auctionId, sellerId);
-		if (!isExists) {
-			throw new BadRequestException('Auction not found for that seller ❌');
+		//* Get the auction for this seller
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			seller: sellerId,
+		});
+
+		if (!auction)
+			throw new NotFoundException('Auction not found for this seller❌');
+
+		//* Ensure that the auction is in one of the following states (Upcoming, Pending, Rejected)
+		const permittedStatus = [
+			AuctionStatus.UpComing,
+			AuctionStatus.Pending,
+			AuctionStatus.Denied,
+		];
+
+		if (!permittedStatus.includes(auction.status)) {
+			throw new BadRequestException(
+				'Cannot update the auction in current status ❌',
+			);
 		}
 
 		//? Update the item first if it changed
@@ -190,13 +255,13 @@ export class AuctionsService
 		updateAuctionDto['status'] = AuctionStatus.Pending;
 
 		//* Find the auction and update it
-		const auction = await this.auctionModel.findByIdAndUpdate(
+		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
 			auctionId,
 			updateAuctionDto,
 			{ new: true },
 		);
 
-		return auction;
+		return updatedAuction;
 	}
 
 	/**
@@ -207,6 +272,7 @@ export class AuctionsService
 	 */
 	async remove(auctionId: string, sellerId: string): Promise<Auction> {
 		this.logger.log('Removing auction with id ' + auctionId + '... 🚚');
+
 		const auction: AuctionDocument = await this.auctionModel.findOne({
 			_id: auctionId,
 			seller: sellerId,
@@ -214,10 +280,193 @@ export class AuctionsService
 		if (!auction)
 			throw new NotFoundException('Auction not found for that seller❌');
 
+		//* Ensure that the auction is in one of the following states (Upcoming, Pending, Rejected)
+		const permittedStatus = [
+			AuctionStatus.UpComing,
+			AuctionStatus.Pending,
+			AuctionStatus.Denied,
+			AuctionStatus.Closed,
+		];
+
+		if (!permittedStatus.includes(auction.status)) {
+			throw new BadRequestException(
+				'Cannot remove currently running auction ❌',
+			);
+		}
+
 		//* Remove the auction using this approach to fire the pre hook event
 		await auction.remove();
 
 		return auction;
+	}
+
+	/**
+	 * Extend the auction by adding more time
+	 * @param auctionId
+	 * @param sellerId
+	 * @param extendAuctionTimeDto: ExtendAuctionTimeDto,
+	 * @returns Promise<ResponseResult>
+	 */
+	async requestExtendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	) {
+		//* Get auction for the seller
+		let auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			seller: sellerId,
+		});
+
+		if (!auction)
+			throw new NotFoundException('Auction not found for that seller❌');
+
+		if (auction.status !== AuctionStatus.OnGoing) {
+			throw new BadRequestException('Auction not started yet ✖✖');
+		}
+
+		if (auction.isExtended) {
+			throw new BadRequestException('Auction already extended before ❌');
+		}
+
+		//* Add the time to the auction
+		await this.auctionModel.findByIdAndUpdate(auctionId, {
+			extensionTime: extendAuctionTimeDto,
+			rejectionMessage: null,
+		});
+
+		this.logger.log(
+			'Time extension request sent and now waiting for approval ✔✔',
+		);
+
+		return {
+			success: true,
+			message: 'Time extension request sent and now waiting for approval ✔✔',
+		};
+	}
+
+	/**
+	 * Get all auctions with time extension requests
+	 * @returns Array of auctions with time extension requests
+	 */
+	async getAuctionsTimeExtensionRequests(): Promise<any> {
+		//* Get all auctions with time extension not equal null
+		const auctions: Auction[] = await this.auctionModel
+			.find({
+				extensionTime: { $ne: null },
+				isExtended: false,
+			})
+			.populate('seller');
+
+		//* Return only specific data
+		const serializedRequests = auctions.map((auction: Auction) => {
+			return {
+				_id: auction._id,
+				seller: {
+					_id: auction.seller._id,
+					name: auction.seller.name,
+				},
+				extensionTime: auction.extensionTime,
+				endDate: auction.endDate,
+				status: auction.status,
+			};
+		});
+
+		return serializedRequests;
+	}
+
+	/**
+	 * Enable admin to approve time extension request
+	 */
+	async approveTimeExtensionRequest(
+		auctionId: string,
+	): Promise<ResponseResult> {
+		//* Find only auctions that not closed or denied
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			isExtended: false,
+		});
+
+		if (!auction)
+			return {
+				success: false,
+				message: 'Auction not found or already extended before ❌',
+			};
+
+		//* Get auction new end date after extension time is added
+		const newEndDate = HandleDateService.appendExtensionAndGetNewEndDate(
+			auction.endDate,
+			auction.extensionTime,
+		);
+
+		const updatedAuction = await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate,
+				isExtended: true,
+				rejectionMessage: null,
+			},
+			{ new: true },
+		);
+
+		if (!updatedAuction) {
+			return {
+				success: false,
+				message: 'Cannot approve this extension time request ❌',
+			};
+		}
+
+		this.logger.log('Auction extension time request approved successfully ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction time extend successfully ✔✔',
+			data: {
+				endDate: updatedAuction.endDate,
+			},
+		};
+	}
+
+	/**
+	 * Reject time extension request
+	 * @param auctionId
+	 * @param rejectExtendTime
+	 * @returns if rejected successfully
+	 */
+	async rejectTimeExtensionRequest(
+		auctionId: string,
+		rejectExtendTime: RejectAuctionDto,
+	): Promise<ResponseResult> {
+		//* Find the auction
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			extensionTime: { $ne: null },
+			isExtended: false,
+		});
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'Auction not found or already closed ❌',
+			};
+		}
+
+		//* reject the extension time request and update the auction and use rejection message to know why it was rejected
+		await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				extensionTime: null,
+				rejectionMessage: rejectExtendTime.message,
+			},
+			{ new: true },
+		);
+
+		this.logger.log('Auction extension time request rejected successfully ✔✔');
+
+		return {
+			success: true,
+			message: 'Auction time extension request rejected successfully ✔✔',
+		};
 	}
 
 	/**
@@ -252,8 +501,6 @@ export class AuctionsService
 		}
 
 		this.logger.log('All auctions related to the category deleted ✔✔ ');
-
-		console.log({ auctions });
 
 		return { success: true };
 	}
@@ -298,7 +545,6 @@ export class AuctionsService
 		if (isStartDateInPast) {
 			//* Set the start date to tomorrow
 			const tomorrow = HandleDateService.getTomorrowDate();
-			console.log(`tomorrow: ${tomorrow}`);
 
 			auctionStartDate = tomorrow;
 
@@ -325,7 +571,7 @@ export class AuctionsService
 		);
 
 		//? Schedule the auction to run in start date automatically
-		this.startAuctionSchedulingService.addCronJobForStartAuction(
+		this.auctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
 		);
@@ -421,6 +667,7 @@ export class AuctionsService
 		const closedAuctions = await this.auctionModel
 			.find({
 				status: AuctionStatus.Closed,
+				winningBuyer: { $exists: true },
 			})
 			.populate('winningBuyer')
 			.sort({ startDate: -1 });
@@ -431,8 +678,8 @@ export class AuctionsService
 		closedAuctions.forEach(auction => {
 			winnersBidders.push({
 				winningBuyer: {
-					_id: auction.winningBuyer._id,
-					email: auction.winningBuyer.email,
+					_id: auction.winningBuyer?._id,
+					email: auction.winningBuyer?.email,
 				},
 				auction: {
 					_id: auction._id,
@@ -507,9 +754,11 @@ export class AuctionsService
 
 		this.logger.debug('Auction with id ' + auctionId + ' ended successfully!!');
 
-		return true;
+		/*---------------------*/
+		// Recover all joined bidders auction assurance (except winner bidder)
+		await this.recoverAuctionAssurance(auctionId);
 
-		//TODO: Check who the winner of the auction
+		return true;
 	}
 
 	/**
@@ -603,6 +852,24 @@ export class AuctionsService
 	}
 
 	/**
+	 * Transfer
+	 * @param auctionId
+	 * @param bidder
+	 */
+	async blockAssuranceFromWallet(
+		auctionId: string,
+		bidder: Buyer,
+	): Promise<boolean> {
+		//* Get auction's assurance
+		const auction = await this.auctionModel.findById(auctionId);
+		const assuranceValue = auction.chairCost;
+
+		await this.walletService.blockAssuranceFromWallet(bidder, assuranceValue);
+
+		return true;
+	}
+
+	/**
 	 * Add new bidder to the list of auction's bidders
 	 * @param auctionId - Auction id
 	 * @param bidderId - Bidder id
@@ -618,6 +885,64 @@ export class AuctionsService
 		);
 
 		return auction != null;
+	}
+
+	/**
+	 * Retreat bidder from auction
+	 * @param bidder
+	 * @param auctionId
+	 */
+	async retreatBidderFromAuction(
+		bidder: Buyer,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findOne({
+			_id: auctionId,
+			status: AuctionStatus.OnGoing,
+			bidders: bidder._id,
+		});
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'You are not a bidder of this auction',
+			};
+		}
+
+		//? Check if the bidder is the winner
+		const auctionWinner = auction.winningBuyer;
+
+		if (bidder._id.toString() === auctionWinner?._id.toString()) {
+			return {
+				success: false,
+				message:
+					'You cannot retreat from the auction as you have highest bid!!',
+			};
+		}
+
+		//* Update the auction by pull the bidder from the bidders list
+		await this.auctionModel.findByIdAndUpdate(auction._id, {
+			$pull: {
+				bidders: bidder._id,
+			},
+		});
+
+		//? Remove the auction from bidder joined auctions list
+		await this.buyerService.removeAuctionFromJoinedAuctions(
+			bidder._id.toString(),
+			auctionId,
+		);
+
+		//* Refund assurance to bidder wallet
+		await this.walletService.recoverAssuranceToBidder(
+			bidder,
+			auction.chairCost,
+		);
+
+		return {
+			success: true,
+			message: 'You have been retreated from the auction!!',
+		};
 	}
 
 	/**
@@ -716,6 +1041,9 @@ export class AuctionsService
 				bidIncrement, // Set the bid increment
 				minimumBidAllowed: newMinimumBid, // Set the new minimum bid
 				winningBuyer: bid.user, // Set the winning bidder
+				$push: {
+					bids: bid,
+				},
 			},
 			{ new: true },
 		);
@@ -725,6 +1053,68 @@ export class AuctionsService
 		}
 
 		return auction ? true : false;
+	}
+
+	/**
+	 * Check if the bid in the last minute in auction
+	 * @param auctionId
+	 * @param bidDate
+	 */
+	async handleIfBidInLastMinute(
+		auctionId: string,
+		bidDate: Date,
+	): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findById(auctionId.toString());
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'Auction not found❌',
+			};
+		}
+
+		const isInLastMinute = HandleDateService.isInLastMinute(
+			bidDate,
+			auction.endDate,
+		);
+
+		if (!isInLastMinute) {
+			return {
+				success: false,
+				message: 'Bid is not in last minute❌',
+			};
+		}
+
+		//* Append delay to auction endDate
+		const newEndDate = HandleDateService.appendDelayToDate(auction.endDate);
+
+		//* Update the auction
+		await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate,
+			},
+			{
+				new: true,
+			},
+		);
+
+		//* Remove current cron job and create new one for the new end date
+		this.auctionSchedulingService.deleteCron(auctionId);
+
+		this.auctionSchedulingService.addCronJobForEndAuction(
+			auctionId,
+			newEndDate,
+		);
+
+		this.logger.debug(
+			`Incoming bid is in last minute, so delay added and new end date: ${newEndDate}`,
+		);
+
+		return {
+			success: true,
+			message: 'Auction delay appended successfully!!',
+		};
 	}
 
 	/**
@@ -790,6 +1180,37 @@ export class AuctionsService
 			name: auctionWinner.name,
 			email: auctionWinner.email,
 		};
+	}
+
+	/**
+	 * Recover auction's assurance to all bidders
+	 * @param auctionId
+	 */
+	async recoverAuctionAssurance(auctionId: string) {
+		const auction = await this.auctionModel
+			.findById(auctionId)
+			.populate('bidders')
+			.populate('winningBuyer');
+
+		//* Filter bidders to remove winner
+		let bidders = auction.bidders;
+
+		//* Get assurance and recover to bidders wallet
+		const assuranceValue = auction.chairCost;
+
+		const winnerBuyer = auction.winningBuyer;
+
+		for (const bidder of bidders) {
+			//* Skip the winner
+			if (bidder._id.toString() == winnerBuyer?._id.toString()) {
+				this.logger.debug('Winner bidder, skipping...');
+				return;
+			}
+
+			await this.walletService.recoverAssuranceToBidder(bidder, assuranceValue);
+		}
+
+		return true;
 	}
 	/*-------------------------*/
 	/* Helper functions */

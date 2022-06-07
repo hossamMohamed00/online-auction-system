@@ -15,7 +15,7 @@ import {
 import { BidService } from './bid.service';
 import { SocketAuthGuard } from 'src/common/guards';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
-import { GetCurrentUserFromSocket } from 'src/common/decorators';
+import { GetCurrentUserFromSocket, Roles } from 'src/common/decorators';
 import { JoinOrLeaveAuctionDto, PlaceBidDto } from './dto';
 import { AuctionRoomService } from './auction-room.service';
 import { AuctionsService } from '../auction/auctions.service';
@@ -24,6 +24,8 @@ import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
+import { Role } from '../users/shared-user/enums';
+import { ResponseResult } from 'src/common/types';
 
 /**
  * Its job is to handle the bidding process.
@@ -76,6 +78,11 @@ export class BidGateway
 		//* Check if the client already in auction, to add him to the room
 		//* Get the user
 		const bidder = await this.bidService.getConnectedClientUserObject(client);
+
+		//* Ensure that the connected client is bidder
+		if (bidder.role !== Role.Buyer) {
+			return this.logger.error('The client is not a bidder 🤔');
+		}
 
 		//* Get the auctions that the bidder involved in
 		const bidderAuctions: Auction[] = await this.buyerService.listMyAuctions(
@@ -164,6 +171,19 @@ export class BidGateway
 			bidValue,
 		);
 
+		//? Check if the bid in last minute to add 3 minutes delay
+		const result: ResponseResult =
+			await this.bidService.handleIfBidInLastMinute(
+				createdBid.createdAt,
+				auctionId,
+			);
+
+		if (result.success) {
+			this.server.to(auctionId).emit('message-to-client', {
+				message: `Auction time extended by 3 minutes 🕒, as ${bidder.name} place bid in last minute.`,
+			});
+		}
+
 		//* Emit the bid to the client-side
 		this.server.to(auctionId).emit('new-bid', createdBid);
 
@@ -176,7 +196,6 @@ export class BidGateway
 		);
 	}
 
-	// TODO: Refactor this method
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('leave-auction')
 	async handleLeaveAuction(
@@ -184,20 +203,20 @@ export class BidGateway
 		@MessageBody() { auctionId }: JoinOrLeaveAuctionDto,
 		@GetCurrentUserFromSocket() bidder: Buyer,
 	) {
-		if (
-			!auctionId ||
-			!this.auctionService.isValidAuctionForBidding(auctionId)
-		) {
+		if (!auctionId) {
 			throw new WsException('You must provide valid auction id 😉');
 		}
 
 		this.logger.debug(
 			"'" +
 				bidder.email +
-				"' want to leave auction with id '" +
+				"' want to retreat from auction with id '" +
 				auctionId +
 				"'",
 		);
+
+		//* Check if the bidder can retreat or not
+		await this.bidService.retreatBidderFromAuction(bidder, auctionId);
 
 		//* Remove the bidder from the list
 		const removedBidder = this.auctionRoomService.removeBidder(client.id);
@@ -208,16 +227,20 @@ export class BidGateway
 				'Bidder left auction 👎🏻, with email: ' + removedBidder.email,
 			);
 
+			client.emit('message-to-client', {
+				message: `You left the auction 🚪, auction's assurance refunded to your wallet 👍🏻💲 `,
+			});
+
+			//* Leave the bidder from the room
+			client.leave(auctionId);
+
 			this.server.to(removedBidder.room).emit('message-to-client', {
-				message: 'With sorry, a bidder left 😑',
+				message: `With sorry, ${bidder.email} left 😑`,
 				system: true, // To be used to identify the message as system message
 			});
 
 			//* Handle the room data to be sent to the client
 			this.handleRoomData(removedBidder.room);
-
-			//* Leave the bidder from the room
-			client.leave(auctionId);
 		}
 	}
 
@@ -241,26 +264,12 @@ export class BidGateway
 			return;
 		}
 
-		//* Get the bidder from the room
-		const winnerBidderSocketId = this.auctionRoomService.getWinnerBidder(
-			winnerBidder._id,
-			auctionId,
-		);
-
-		//* If winner is currently online, send congratulation message
-		if (winnerBidderSocketId) {
-			//* Send message to this bidder only
-			this.server.to(winnerBidderSocketId).emit('winner-bidder', {
-				message:
-					'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
-				isWinner: true,
-				system: true,
-			});
-		}
-
 		//* Send message to all bidders except this bidder
 		this.server.to(auctionId.toString()).emit('winner-bidder', {
 			message: `Winner is ${winnerBidder.email} 🐱‍🏍🏆`,
+			winnerEmail: winnerBidder.email,
+			winnerMessage:
+				'You are the winner 🏆, congratulations!, check your email for the delivery details 😃',
 			system: true,
 		});
 	}
@@ -282,11 +291,15 @@ export class BidGateway
 				auctionId.toString(),
 			);
 
+		//* Get auction list of bids
+		const bids = await this.bidService.getAuctionBids(auctionId);
+
 		//* Emit room data to the client-side
 		this.server.to(auctionId.toString()).emit('room-data', {
 			room: auctionId,
 			bidders,
 			auctionDetails,
+			bids,
 		});
 	}
 }

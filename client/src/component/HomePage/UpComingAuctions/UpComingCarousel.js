@@ -9,10 +9,10 @@ import classes from './UpComingAuctions.module.css';
 const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 	const ShowCarouselItems = ongoingAuctionData.map((Item, index) => {
 		return (
-			<div className="row" key={index}>
-				<div className="col-md-6 col-lg-6 pe-0 ">
+			<div className="row ps-5" key={index}>
+				<div className="col-md-4 col-lg-4 pe-0 ">
 					<div className={classes.itemImage}>
-						<img src={Item.item.image} alt={`itemImage ${index}`} />
+						<img src={Item.item.images[0].url} alt={`itemImage ${index}`} />
 						<p
 							className={`${classes.UpgoingAuctionBadge} text-center p-1 m-0 fw-bold `}
 						>
@@ -23,9 +23,9 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 				</div>
 
 				<div
-					className={`col-md-6 col-lg-6 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
+					className={`col-md-7 col-lg-7 col-sm-12 px-0 pe-1 ${classes.upGoingAuctionData}`}
 				>
-					<h2 className="fw-bold text-center pb-1"> {Item.item.name} </h2>
+					<h2 className="fw-bold text-center pb-1"> {Item.title} </h2>
 					{/* start Upgoing Auction details */}
 					<div className="ps-3 pt-4">
 						<p className={` lead ${classes.ItemDescription} `}>
@@ -45,7 +45,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 								<h6 className="fw-bold d-inline-block"> Seller : </h6>
 								<Link
 									className={`d-inline-block px-2 text-decoration-none fw-bold ${classes.SellerName}`}
-									to={`/auctions?id=${Item._id}`}
+									to={`/seller?id=${Item.seller._id}`}
 								>
 									{' '}
 									{Item.seller.name}{' '}
@@ -66,7 +66,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 								<h6 className="fw-bold d-inline-block">Auction Start in :</h6>
 								<div className="d-inline-block px-0">
 									{' '}
-									{CountDownTimer(new Date(Item.endDate))}{' '}
+									{CountDownTimer(new Date(Item.startDate))}
 								</div>
 							</div>
 						</div>

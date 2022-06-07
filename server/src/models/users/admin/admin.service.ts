@@ -1,22 +1,16 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
-import {
-	FilterAuctionQueryDto,
-	RejectAuctionDto,
-} from 'src/models/auction/dto';
+import { RejectAuctionDto } from 'src/models/auction/dto';
+import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { DashboardAuctionsCount } from 'src/models/auction/types';
 import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
-import {
-	Complaint,
-	ComplaintDocument,
-} from 'src/models/complaint/schema/complaint.schema';
+import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
@@ -207,6 +201,50 @@ export class AdminService {
 
 		return approvedAuction;
 	}
+	/**
+	 * Get all the auctions that has time extension requests
+	 * @returns List of all auctions that are needed to extend time
+	 */
+	async getTimeExtensionRequests(): Promise<any> {
+		return this.auctionService.getAuctionsTimeExtensionRequests();
+	}
+
+	/**
+	 *
+	 * @param auctionId - auction id
+	 * @returns if auction is extended successfully or not
+	 */
+	async approveExtendAuction(auctionId: string): Promise<ResponseResult> {
+		const responseResult: ResponseResult =
+			await this.auctionService.approveTimeExtensionRequest(auctionId);
+
+		//TODO: Send email to inform the seller that auction time increased
+
+		//TODO: Send email to inform the bidders that auction time increased
+
+		return responseResult;
+	}
+
+	/**
+	 * Reject time extension request
+	 * @param auctionId
+	 * @param rejectExtendTomeDto
+	 * @returns if auction is rejected successfully or not
+	 */
+	async rejectExtendAuction(
+		auctionId: string,
+		rejectExtendTomeDto: RejectExtendTimeDto,
+	): Promise<ResponseResult> {
+		const responseResult: ResponseResult =
+			await this.auctionService.rejectTimeExtensionRequest(
+				auctionId,
+				rejectExtendTomeDto,
+			);
+
+		//TODO: Send email to inform the seller that auction time request rejected
+
+		return responseResult;
+	}
 
 	/**
 	 * Reject specific auction by id
@@ -320,6 +358,14 @@ export class AdminService {
 		adminFilterComplaintQueryDto?: AdminFilterComplaintQueryDto,
 	): Promise<Complaint[]> {
 		return this.complaintService.findAll(adminFilterComplaintQueryDto);
+	}
+
+	/**
+	 * List all submitted complaints in system
+	 * @returns array of complaints
+	 */
+	listAllComplaintInSystem(): Promise<Complaint[]> {
+		return this.complaintService.findAllSystemComplaints();
 	}
 
 	/**

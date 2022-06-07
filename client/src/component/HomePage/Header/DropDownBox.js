@@ -48,26 +48,29 @@ const DropDownBox = props => {
 		<ul className={`list-group  d-md-block text-start`}>
 			<li>
 				<Link
-					className="px-1 fs-6 text-decoration-none bg-none text-light"
+					className="px-1 text-decoration-none bg-none text-light"
 					to={profileLink()}
 				>
 					<FontAwesomeIcon icon={faAddressCard} className="pe-2" />
 					Profile
 				</Link>
 			</li>
+			{(role === 'seller' || 'buyer') &&
 			<li>
-				<button
-					className="px-1 text-light bg-none "
+				<Link
+					to ={role==='buyer' ? '/buyer-dashboard/chargeWallet' : '/'}
+					className="px-1 text-light bg-none fw-bold text-decoration-none"
 					type='button'
-					onClick={handleShownWallet}
+					// onClick={handleShownWallet}
 				>
 					<FontAwesomeIcon icon={faCartPlus} className="pe-2 text-primary" />
 					Wallet
-				</button>
+				</Link>
 			</li>
+			}
 			<li>
 				<button
-					className="btn py-0 px-1 text-decoration-none text-danger bg-none fw-bold"
+					className="px-1 text-danger bg-none fw-bold "
 					onClick={logoutHandler}
 				>
 					<FontAwesomeIcon

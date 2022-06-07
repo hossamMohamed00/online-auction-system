@@ -2,6 +2,7 @@ import { ResponseResult } from 'src/common/types';
 import { Seller } from 'src/models/users/seller/schema/seller.schema';
 import {
 	CreateAuctionDto,
+	ExtendAuctionTimeDto,
 	FilterAuctionQueryDto,
 	UpdateAuctionDto,
 } from '../dto';
@@ -18,7 +19,14 @@ export interface MainAuctionsBehaviors {
 	//* Get single auction
 	findById(_id: string): Promise<Auction>;
 
+	//* Get all auction of specific status
 	getAuctionByStatus(status: AuctionStatus): Promise<AuctionDocument[]>;
+
+	//* Get all auction in one category
+	getAuctionByCategory(categoryId: string): Promise<AuctionDocument[]>;
+
+	//* Get count of auctions in specific category
+	getCategoryAuctionsCount(categoryId: string): Promise<number>;
 
 	//* Update auction
 	update(
@@ -40,4 +48,15 @@ export interface MainAuctionsBehaviors {
 
 	//* Check if auction exists or not
 	isExists(auctionId: string, sellerId: string): Promise<boolean>;
+
+	//* Extend auction duration by specific time
+	requestExtendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	);
+
+	getAuctionsTimeExtensionRequests();
+
+	getAuctionsTimeExtensionRequests(auctionId: string);
 }

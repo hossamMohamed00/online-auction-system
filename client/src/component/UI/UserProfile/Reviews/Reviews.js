@@ -12,17 +12,13 @@ import { AddBuyerReview } from './AddBuyerReview';
 const Reviews = props => {
 	const role = useSelector(store => store.AuthData.role);
 	const idToken = useSelector(store => store.AuthData.idToken);
-	const { data, status, sendRequest, error } = useHttp(getBuyerReview);
+	const { data,  sendRequest, error } = useHttp(getBuyerReview);
 	const sellerId = props.seller._id;
 
 	// ! Check if buyer has already review this seller if has get it
-	React.useEffect(
-		() => {
-			sendRequest({ sellerId: sellerId, idToken });
-		},
-	[	sendRequest,
-		props.reload]
-	);
+	React.useEffect(() => {
+		sendRequest({ sellerId: sellerId, idToken });
+	}, [sendRequest, props.reload]);
 
 	// ! rendering
 	return (
@@ -52,7 +48,7 @@ const Reviews = props => {
 								<div className="reviews_card">
 									<h6 className="text-light fw-bold cardDate">{date}</h6>
 									<h5 className="text-light me-4 fw-bold d-inline-block">
-										{review.buyer.name} :{' '}
+										{review.buyer && review.buyer.name} :{' '}
 									</h5>
 									<p className="text-light me-4 d-inline-block">
 										{review.message}
@@ -67,7 +63,9 @@ const Reviews = props => {
 						);
 					})
 				) : (
-					<NoData text=" No reviews yet " />
+					<div className='mb-0'>
+						<NoData text=" No reviews yet " />
+					</div>
 				)}
 			</div>
 		</>

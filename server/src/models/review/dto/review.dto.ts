@@ -22,5 +22,5 @@ export class ReviewDto {
 	buyer: BuyerDto;
 
 	@Expose()
-	createdAt: string;
+	updatedAt: string;
 }

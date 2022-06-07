@@ -74,6 +74,33 @@
 	border-top: 0;
 }
 
+/* extend time */
+.ExtendAuctionContainer{
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+}
+.ExtendAuctionContainer p{
+	color: white;
+	text-align: center;
+}
+.Extend {
+	width: 100%!important;
+	background-color: rgba(0, 0, 0, 0.5);
+	margin: 0px 3px 0px 3px;
+	padding: 5px 10px 5px 10px;
+	text-align: center;
+	border: 0;
+	color: white;
+
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+
+
 @media (max-width: 992px) {
 	.BiddingModal > div > div {
 		width: 90%;

@@ -10,15 +10,19 @@ import ChatHistory from './ChatHistory';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import ChatContent from './ChatContent';
 import { useSelector } from 'react-redux';
-import SellerDashboardContent from '../../Modules/SellerModule/SellerModule';
+import ModalUi from '../Modal/modal';
+import { useNavigate } from 'react-router-dom';
 
-const Chat = () => {
+const Chat = (props) => {
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+
 	const [chatWith, setChatWith] = useState('');
+	const [ShowModal, setShowModal] = useState(true);
+
 	const [showChatHistory, setShowChatHistory] = useState(true);
 
-
-
+	const redirectUserToHomePage = useNavigate()
 	// establish socket connection
 	const socket = io('http://localhost:8000/chat', {
 		extraHeaders: {
@@ -34,39 +38,53 @@ const Chat = () => {
 	};
 
 	return (
-		<PageContent className={`${classes.PageContentClasses}`}>
-			<Row className="h-100 m-0">
-				<Col
-					lg={4}
-					md={6}
-					sm={12}
-					className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
-				>
-					<ChatHistory
-						chatWith={getChatWith}
-						className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
-						onShow = {ShowChatHistoryHandler}
-					/>
-				</Col>
-				<Col
-					lg={8}
-					md={6}
-					sm={12}
-					className={`${classes.ChatContent} ${scrollbarStyle.scrollbar} p-0 `}
-				>
-					<button
-						className={`btn bg-danger text-light position-fixed ${!showChatHistory ? 'd-block d-xs-block d-sm-block d-md-none' : 'd-none' }	`}
-						onClick={() => setShowChatHistory(true)}> X
-					</button>
-					<ChatContent
-						socket={socket}
-						getChatWithEmail={chatWith && chatWith}
-						className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } `}
-					/>
+		<>
+		{isLoggedIn ? (
+			<PageContent className={`${classes.PageContentClasses}`}>
+				<Row className="h-100 m-0">
+					<Col
+						lg={4}
+						md={6}
+						sm={12}
+						className={`${classes.chatList} ${scrollbarStyle.scrollbar}`}
+					>
+							<ChatHistory
+								chatWith={getChatWith}
+								className={` ${showChatHistory ? 'd-block' : 'd-none d-md-block' } `}
+								onShow = {ShowChatHistoryHandler}
+								getChatHistoryWith ={props.SellerEmail && props.SellerEmail}
+							/>
+					</Col>
+					<Col
+						lg={8}
+						md={6}
+						sm={12}
+						className={`${classes.ChatContent} ${scrollbarStyle.scrollbar} p-0 `}
+					>
+						<button
+							className={`btn bg-danger text-light position-fixed ${!showChatHistory ? 'd-block d-xs-block d-sm-block d-md-none' : 'd-none' }	`}
+							onClick={() => setShowChatHistory(true)}> X
+						</button>
+						<ChatContent
+							socket={socket}
+							getChatWithEmail={chatWith && chatWith}
+							className={` ${chatWith && !showChatHistory ? 'd-block d-xs-block' : 'd-none d-md-block' } `}
+						/>
 
-				</Col>
-			</Row>
-		</PageContent>
+					</Col>
+				</Row>
+			</PageContent>
+			)
+			:
+			<ModalUi
+				show={ShowModal}
+				onHide={()=> setShowModal(false)}
+				title= "Please Logged in First, before Chatting  "
+				btnName={'Log in' }
+				btnHandler={() => redirectUserToHomePage('/login')}
+			/>
+		}
+		</>
 	);
 };
 

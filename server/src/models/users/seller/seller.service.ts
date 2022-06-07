@@ -1,18 +1,30 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import {
+	Injectable,
+	Logger,
+	BadRequestException,
+	Inject,
+	forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, StringSchemaDefinition } from 'mongoose';
 import { AuctionsService } from 'src/models/auction/auctions.service';
-import { CreateAuctionDto, UpdateAuctionDto } from 'src/models/auction/dto';
+import {
+	CreateAuctionDto,
+	ExtendAuctionTimeDto,
+	UpdateAuctionDto,
+} from 'src/models/auction/dto';
 import {
 	Auction,
 	AuctionDocument,
 } from 'src/models/auction/schema/auction.schema';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
-import { CreateComplaintDto } from 'src/models/complaint/dto';
-import { UserDocument } from '../shared-user/schema/user.schema';
 import { Review } from 'src/models/review/schema/review.schema';
 import { Seller, SellerDocument } from './schema/seller.schema';
 import { ReviewService } from 'src/models/review/review.service';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ImageType, ResponseResult } from 'src/common/types';
+import { AuctionStatus } from 'src/models/auction/enums';
 
 @Injectable()
 export class SellerService {
@@ -22,9 +34,11 @@ export class SellerService {
 	constructor(
 		@InjectModel(Seller.name)
 		private readonly sellerModel: Model<SellerDocument>,
+		@Inject(forwardRef(() => AuctionsService)) // To avoid Circular dependency between the two services
 		private readonly auctionsService: AuctionsService,
-		private readonly complaintService: ComplaintService,
+		@Inject(forwardRef(() => ReviewService))
 		private readonly reviewService: ReviewService,
+		private cloudinary: CloudinaryService,
 	) {}
 
 	/* Handle Profile Functions logic*/
@@ -44,6 +58,61 @@ export class SellerService {
 		const reviews: Review[] = await this.listSellerReviews(sellerId);
 
 		return { seller, auctions, reviews };
+	}
+
+	/**
+	 * Edit seller profile data
+	 * @param sellerId
+	 * @param updateSellerDto
+	 * @returns updated seller instance
+	 */
+	async editProfile(
+		sellerId: string,
+		updateSellerDto: UserUpdateDto,
+	): Promise<ResponseResult> {
+		//* Check if seller upload new image to upload it to cloudinary
+		let image: ImageType;
+		let imageUpdated = false;
+		if (updateSellerDto.image) {
+			imageUpdated = true;
+			this.logger.debug('Uploading image to cloudinary...');
+
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					updateSellerDto.image,
+				);
+
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					this.logger.log('User Image uploaded successfully!');
+
+					image = new ImageType(savedImage.url, savedImage.public_id);
+				}
+			} catch (error) {
+				this.logger.error('Cannot upload user image to cloudinary ❌');
+				throw new BadRequestException('Cannot upload image to cloudinary ❌');
+			}
+
+			//* Override image field to the uploaded image
+			updateSellerDto.image = image;
+		}
+
+		//* Find the seller and update his data
+		const seller = await this.sellerModel.findByIdAndUpdate(sellerId, {
+			...updateSellerDto,
+		});
+
+		//? Remove old image if there was one
+		if (imageUpdated && seller.image) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(seller.image.publicId);
+		}
+
+		return {
+			success: true,
+			message: 'Seller data updated successfully ✔✔',
+		};
 	}
 
 	/* Handle Auctions Functions logic*/
@@ -116,6 +185,76 @@ export class SellerService {
 	 */
 	async removeAuction(auctionId: string, sellerId: string): Promise<Auction> {
 		return this.auctionsService.remove(auctionId, sellerId);
+	}
+
+	/**
+	 * Send request to extend an auction time
+	 * @param auctionId
+	 * @param sellerId
+	 * @param time
+	 * @returns action result of extend auction time
+	 */
+	async extendAuctionTime(
+		auctionId: string,
+		sellerId: string,
+		extendAuctionTimeDto: ExtendAuctionTimeDto,
+	): Promise<ResponseResult> {
+		return this.auctionsService.requestExtendAuctionTime(
+			auctionId,
+			sellerId,
+			extendAuctionTimeDto,
+		);
+	}
+
+	/**
+	 * List all sent requests of time extension
+	 * @param sellerId
+	 */
+	async listMyAuctionExtensionTimeRequests(
+		seller: SellerDocument,
+	): Promise<any> {
+		this.logger.log('Getting seller time extension requests... ');
+
+		await seller.populate({
+			path: 'auctions',
+		});
+
+		// @ts-ignore: Unreachable code error
+		const auctions: AuctionDocument[] = seller.auctions;
+
+		//* Filter the auctions to get the requests
+		const requests: AuctionDocument[] = auctions.filter(auction => {
+			if (
+				auction.status === AuctionStatus.OnGoing &&
+				//* Approved
+				(auction.isExtended ||
+					//* Rejected
+					auction.rejectionMessage ||
+					//* Pending
+					auction.extensionTime)
+			) {
+				return true;
+			}
+		});
+
+		//* Return only specific data
+		const serializedRequests = requests.map((auction: Auction) => {
+			return {
+				_id: auction._id,
+				extensionTime: auction.extensionTime,
+				isExtended: auction.isExtended,
+				rejectionMessage: auction.rejectionMessage,
+				endDate: auction.endDate,
+				status: auction.status,
+				requestStatus: auction.isExtended
+					? 'approved'
+					: auction.rejectionMessage
+					? 'rejected'
+					: 'pending',
+			};
+		});
+
+		return serializedRequests;
 	}
 
 	/* Handle Reviews Functions logic */

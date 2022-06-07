@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
-// import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 import {
 	faCoins,
@@ -8,29 +7,16 @@ import {
 	faCreditCardAlt,
 	faGavel,
 } from '@fortawesome/free-solid-svg-icons';
-import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
-import BuyerProfile from './buyerProfile/buyerProfile';
 
-// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 
 const BuyerDashboardContent = props => {
 	const email = localStorage.getItem('email');
 
 	const dropdownListProfile = [
 		{
-			title: 'View Info',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
 			title: 'Edit Account',
 			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
-		},
-		{
-			title: 'Change Password',
-			icon: faGavel,
-			path: '/adminDashboard/ongoingAuctions',
+			path: '/buyer-dashboard/UpdateAccount',
 		},
 	];
 
@@ -43,7 +29,7 @@ const BuyerDashboardContent = props => {
 		{
 			title: 'View Participating Auctions',
 			icon: faGavel,
-			path: '/buyer-dashboard/participating-auctions',
+			path: '/buyer-dashboard/joinedAuctions',
 		},
 	];
 

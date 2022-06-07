@@ -14,7 +14,7 @@ import WarnModal from '../../../UI/Modals/WarnModal';
 import { ToastContainer } from 'react-toastify';
 import './users.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import JoinedAuctionModal from '../../../UI/Modals/JoinedAuctionModal';
+import JoinedAuctionModal from '../../../UI/Modals/ViewJoinedAuctions_buyer';
 
 
 const UsersPage = () => {
@@ -95,7 +95,7 @@ const UsersPage = () => {
 		},
 	];
 
-	const { sendRequest, status, data } = useHttp(getUsers);
+	const { sendRequest, data } = useHttp(getUsers);
 
 	useEffect(() => {
 		sendRequest({
@@ -135,8 +135,6 @@ const UsersPage = () => {
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
-	const failed = status !== 'completed';
-
 	return (
 		<React.Fragment>
 			<AdminDashboard>
@@ -147,7 +145,7 @@ const UsersPage = () => {
 					<PageHeader text="Buyers" showLink={false} />
 					{data && (
 						<DataTable
-							// selectableRows
+							selectableRows
 							columns={columns}
 							data={filteredItems}
 							subHeader

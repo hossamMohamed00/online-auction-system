@@ -18,8 +18,20 @@ import './allEmployees.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import ModalUi from './../../../../UI/Modal/modal';
 
 const ListAllEmployees = props => {
+
+	// handle modal
+	const [employeeId, setEmployeeId] = useState('');
+
+	const [ModalShow, setModalShow] = useState(false);
+
+		const [ModalTitle, setModalTitle] = useState(
+			'Are you sure to Delete this employee?',
+		);
+		const [ModalBtn, setModalBtn] = useState('Confirm');
+	// *******************************************************
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [reloadData, setReloadData] = useState('');
 
@@ -35,20 +47,19 @@ const ListAllEmployees = props => {
 	}, [sendRequest, reloadData]);
 
 	const removeHandler = employeeId => {
-		const result = window.confirm('Are you sure to delete this Employee ?');
-		if (result) {
+
 			sendRequestForRemove({
 				path: `employee/${employeeId}`,
 				accessToken: idToken,
-			});
-		}
+
+		})
 		setReloadData(employeeId);
 	};
 
 	useEffect(() => {
 		if (statusForRemove === 'completed') {
-			console.log('deleted');
 			toast.success('Deleted Successfully 💖🐱‍👤');
+			setModalShow(false);
 		}
 	}, [statusForRemove, reloadData]);
 
@@ -57,24 +68,29 @@ const ListAllEmployees = props => {
 			name: 'Name',
 			selector: row => row.name,
 			sortable: true,
+			center: true,
 		},
 		{
 			name: 'E-mail',
 			selector: row => row.email,
+			center: true,
 		},
 		{
 			name: 'Role',
 			selector: row => row.role,
+			center: true,
 		},
 		{
 			name: 'Actions',
 			selector: row => row.action,
+			center: true,
+
 			cell: props => {
 				return (
 					<>
 						<button
 							className="btn btn-danger my-2 "
-							onClick={() => removeHandler(props._id)}
+							onClick={() => showModel(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />
 						</button>
@@ -84,13 +100,17 @@ const ListAllEmployees = props => {
 		},
 	];
 
+	const showModel = employee_Id => {
+		setEmployeeId(employee_Id);
+		setModalShow(true);
+	};
+
 	//filter
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
 	const failed = status !== 'completed';
-	console.log(failed);
 
 	return (
 		<React.Fragment>
@@ -107,6 +127,15 @@ const ListAllEmployees = props => {
 							subHeaderComponent={filterFun}
 							theme="dark"
 							pagination
+						/>
+					)}
+					{ModalShow && (
+						<ModalUi
+							show={ModalShow}
+							onHide={() => setModalShow(false)}
+							btnHandler={() => removeHandler(employeeId)}
+							title={ModalTitle}
+							btnName={ModalBtn}
 						/>
 					)}
 				</PageContent>

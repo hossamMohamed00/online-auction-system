@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import { getAllAuctions, getOnGoingAuctions } from '../../../Api/AuctionsApi';
+import { getAllAuctions, getFilterAuction } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
@@ -23,19 +23,27 @@ const ViewAllAuctions = () => {
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
-	const {
-		sendRequest: sendFilterdRequest,
-		status: FilterdRequestStatus,
-		data: FilterdRequestData,
-	} = useHttp(getOnGoingAuctions);
+	// const {
+	// 	sendRequest: sendFilterdRequest,
+	// 	status: FilterdRequestStatus,
+	// 	data: data,
+	// } = useHttp(getFilterAuction);
 
 	useEffect(() => {
 		if (!FilterAuction) {
-			sendRequest();
-		} else {
-			sendFilterdRequest();
+			console.log('query1')
+			sendRequest('');
+		} else{
+			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
+			console.log(queryParams)
+			sendRequest(queryParams);
+			}
+			// setFilterdDetails(null)
+			// setFilterAuction(false)
 		}
-	}, [sendRequest, FilterAuction]);
+
+	}, [sendRequest, FilterAuction , FilterdDetails]);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -56,7 +64,6 @@ const ViewAllAuctions = () => {
 
 	const filterHandler = values => {
 		if (values) {
-			console.log(values);
 			setFilterAuction(true);
 			setFilterdDetails(values);
 		} else {
@@ -73,11 +80,14 @@ const ViewAllAuctions = () => {
 						hideFilter={hideFilterHandler}
 						showFilter={showFilter}
 						filterHandler={filterHandler}
+						filter={FilterAuction}
+						clearFilter={() => setFilterAuction(false)}
+
 					/>
 				</Col>
 
 				<Col md={8} lg={10}>
-					{data && data.length > 0 && (
+					{data && data.length > 0 ? (
 						<div className={classes.AllAuction}>
 							<PageHeader text="View All Auctions" showLink={false} />
 
@@ -98,22 +108,29 @@ const ViewAllAuctions = () => {
 								)}
 							</div>
 
-							{FilterdRequestData && FilterdRequestStatus === 'completed' && (
+							{data && status === 'completed' && (
 								<ViewAuctionDetails
-									AuctionData={FilterdRequestData}
+									AuctionData={data}
 									animate={false}
 								/>
 							)}
-							{Data && !FilterAuction && status === 'completed' && (
-								<ViewAuctionDetails AuctionData={Data} animate={false} />
-							)}
-							<NoData
-								text="No Auctions Now"
-								data={data && data}
-								error={error && error}
-							/>
+
 						</div>
-					)}
+
+					):
+					<div className='pt-3'>
+						<NoData
+							text="No Auctions Now"
+							// data={data & data}
+							// error={error && error}
+						/>
+					</div>
+
+
+
+				}
+
+
 				</Col>
 			</Row>
 		</div>

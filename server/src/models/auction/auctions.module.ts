@@ -14,11 +14,13 @@ import { AuctionsController } from './auctions.controller';
 import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction-scheduling.service';
 import { WalletModule } from 'src/providers/payment/wallet.module';
 import { BiddingIncrementRules } from 'src/providers/bids';
+import { BuyerModule } from '../users/buyer/buyer.module';
 
 @Module({
 	imports: [
 		ItemModule,
 		forwardRef(() => CategoryModule),
+		forwardRef(() => BuyerModule),
 		WalletModule,
 		MongooseModule.forFeatureAsync([
 			{

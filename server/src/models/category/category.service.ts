@@ -54,11 +54,19 @@ export class CategoryService {
 	 * List all categories
 	 */
 	async listAll(name?: string) {
+		this.logger.log('Retrieving all saved categories...');
 		let categories = name
 			? await this.categoryModel.find({ name: name.toLowerCase() })
 			: await this.categoryModel.find();
 
-		this.logger.log('Retrieving all saved categories...');
+		for (const category of categories) {
+			const auctionsCount: number =
+				await this.auctionService.getCategoryAuctionsCount(
+					category._id.toString(),
+				);
+
+			category['auctionsCount'] = auctionsCount;
+		}
 
 		return categories;
 	}
@@ -69,31 +77,11 @@ export class CategoryService {
 	 * @returns array of auctions
 	 */
 	async getAuctionsOfCategory(categoryId: string): Promise<AuctionDocument[]> {
+		this.logger.log('Retrieving all auctions for ' + categoryId + '...');
+
 		//* Find the category
-		const category = await this.findOne(categoryId);
-
-		if (!category) {
-			throw new BadRequestException('Category not found ❌');
-		}
-
-		//* Populate the virtual auctions property
-		await category.populate({
-			path: 'auctions',
-			populate: [
-				{
-					path: 'item',
-				},
-				{
-					path: 'category',
-				},
-			],
-		});
-
-		// FIXME: Fix this error
-		// @ts-ignore: Unreachable code error
-		const auctions: AuctionDocument[] = category.auctions;
-
-		this.logger.log('Retrieving all auctions for ' + category.name);
+		const auctions: AuctionDocument[] =
+			await this.auctionService.getAuctionByCategory(categoryId);
 
 		return auctions;
 	}
@@ -118,6 +106,16 @@ export class CategoryService {
 	async isExists(categoryId: ObjectId): Promise<boolean> {
 		const count = await this.categoryModel.countDocuments({ _id: categoryId });
 		return count > 0;
+	}
+
+	/**
+	 * Get the category id by name if exists
+	 * @param categoryName
+	 */
+	async getCategoryIdByName(categoryName: string) {
+		const category = await this.categoryModel.findOne({ name: categoryName });
+
+		return category?._id;
 	}
 
 	/**

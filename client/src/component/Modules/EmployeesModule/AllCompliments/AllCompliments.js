@@ -9,14 +9,24 @@ import useHttp from './../../../../CustomHooks/useHttp';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faEnvelopeOpen } from '@fortawesome/free-solid-svg-icons';
+import {
+	faEnvelope,
+	faEnvelopeOpen,
+	faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { ComplaintModal } from './ComplaintsModal';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// start component
 
 const AllCompliments = () => {
 	const url = 'http://localhost:8000';
 
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
+	const [reload, setReload] = useState('');
+	const [Readable, setReadable] = useState(false);
 
 	const [complaintReason, setComplaintReason] = useState('');
 	const { sendRequest, status: statusForGet, data, error } = useHttp(
@@ -28,7 +38,7 @@ const AllCompliments = () => {
 			idToken: idToken,
 			path: 'complaints',
 		});
-	}, [sendRequest]);
+	}, [sendRequest, reload]);
 	const [complaints, setComplaints] = useState([]);
 	useEffect(() => {
 		if (statusForGet === 'completed') {
@@ -43,7 +53,6 @@ const AllCompliments = () => {
 			setComplaints(data);
 		}
 	}, [statusForGet]);
-
 	// handle ComplaintModal
 	const ComplaintHandler = (id, reason, status) => {
 		console.log({ id, reason, status });
@@ -57,7 +66,9 @@ const AllCompliments = () => {
 		if (!status) {
 			//* Send request to change read property
 			MarkAsRead(id);
+			// setReload(Math.random());
 		}
+		// setReload(Math.random());
 	};
 
 	// handle read
@@ -74,20 +85,37 @@ const AllCompliments = () => {
 				console.log(response);
 				return;
 			}
-			// toast.success('Done, your complaint added successfully 💖🐱‍👤');
+		});
+		setReload(Math.random());
+	};
+	const deleteComplaint = complaintId => {
+		let count = Math.random();
+		fetch(`${url}/admin/complaints/${complaintId}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'content-type': 'application/json',
+			},
+		}).then(response => {
+			if (!response.ok) {
+				console.log(response);
+				return;
+			}
+			toast.success('Deleted Successfully 💖🐱‍👤');
+			setReload(count);
 		});
 	};
 
 	const columns = [
 		{
-			name: 'BuyerName',
+			name: 'From',
 			selector: row => row.from.name,
 			sortable: true,
 			center: true,
 		},
 		{
-			name: 'SellerName',
-			selector: row => row.in.name,
+			name: 'In',
+			selector: row => row.in && row.in.name,
 			center: true,
 			sortable: true,
 		},
@@ -105,7 +133,7 @@ const AllCompliments = () => {
 				return (
 					<span className="text-info">
 						<button
-							className="btn btn-danger"
+							className="btn text-light  btn_read"
 							onClick={() =>
 								ComplaintHandler(props._id, props.reason, props.markedAsRead)
 							}
@@ -119,20 +147,37 @@ const AllCompliments = () => {
 		{
 			name: 'Status',
 			center: true,
+			sortable: true,
 			cell: props => {
+				console.log(props);
 				return (
 					<span className="text-info">
-						{!props.markedAsRead && (
+						{props.markedAsRead ? (
+							<button className="btn btn-success" disabled>
+								<FontAwesomeIcon icon={faEnvelopeOpen} />
+							</button>
+						) : (
 							<button className="btn btn-success">
 								<FontAwesomeIcon icon={faEnvelope} />
 							</button>
 						)}
-						{props.markedAsRead && (
-							<button className="btn btn-success" disabled>
-								<FontAwesomeIcon icon={faEnvelopeOpen} />
-							</button>
-						)}
 					</span>
+				);
+			},
+		},
+		{
+			name: 'Actions',
+			center: true,
+			cell: props => {
+				return (
+					<>
+						<button
+							className="btn btn-danger my-2 "
+							onClick={() => deleteComplaint(props._id)}
+						>
+							<FontAwesomeIcon icon={faXmark} />
+						</button>
+					</>
 				);
 			},
 		},
@@ -146,6 +191,7 @@ const AllCompliments = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
+					<ToastContainer theme="dark" />
 					<PageHeader text="Complaints" showLink={false} />{' '}
 					<DataTable
 						columns={columns}
@@ -160,6 +206,7 @@ const AllCompliments = () => {
 							show={isShownComplaintModal}
 							onHide={() => setIsShownComplaintModal(false)}
 							complaintReason={complaintReason && complaintReason}
+							onReload={value => setReload(value)}
 						/>
 					)}
 				</PageContent>

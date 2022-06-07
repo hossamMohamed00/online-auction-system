@@ -10,7 +10,6 @@ const reducerFun = (state, action) => {
 	}
 
 	if (action.type === 'SUCCESS') {
-		console.log('SUCCESS');
 		return {
 			status: 'completed',
 			data: action.Data,
@@ -41,7 +40,6 @@ const useHttp = requestFun => {
 				const responseData = await requestFun(requestData);
 				dispatch({ type: 'SUCCESS', Data: responseData });
 			} catch (error) {
-				console.log(error.message);
 				dispatch({
 					type: 'ERROR',
 					errorMessage: error.message,

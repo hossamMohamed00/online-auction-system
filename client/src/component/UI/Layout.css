@@ -11,7 +11,7 @@
 	--main-color: #5595b7;
 	--overlay-blue: #164da8;
 
-	--alert-color: #da452a;
+	--alert-color: #913525;
 }
 
 * {
@@ -66,15 +66,6 @@ html {
 	padding-right: 0px!important;
 }
 
-/* .gelpCx::-webkit-scrollbar-track {
-	background: var(--scrollbarBG);
-}
-
-.gelpCx::-webkit-scrollbar-thumb {
-	background-color: var(--thumbBG);
-	border-radius: 6px;
-	border: 3px solid var(--scrollbarBG);
-} */
 .rdt_TableHeadRow {
 	background-color: black !important;
 	font-size: 16px;
@@ -126,6 +117,12 @@ html {
 .text-danger {
 	color: var(--alert-color) !important;
 }
+.text-alert{
+	color: #c2523e;
+}
+.bg-alert{ background-color: #c2523e!important; opacity: 0.9;}
+.text-main {color : #34588f!important}
+.bg-main {background-color: #34588f!important}
 .bg-none {
 	background: none;
 	border: 0 !important;

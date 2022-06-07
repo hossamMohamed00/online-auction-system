@@ -1,27 +1,39 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import Categories from './../../../HomePage/Categories/Categories';
-// import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import DashboardLayout from '../../../UI/DashboardLayout/DashboardLayout';
 import { faComment, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-// import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {
-	const dropdownListForCompliments = [
+
+	const dropdownListProfile = [
 		{
-			title: 'All Compliments',
-			icon: faComment,
-			path: '/managersDashboard/manageInquiries',
+			title: 'Edit Account',
+			icon: faGavel,
+			path: '/employeeDashboard/UpdateAccount',
 		},
 	];
+	const dropdownListForComplaints = [
+		{
+			title: 'All complaints',
+			icon: faComment,
+			path: '/managersDashboard/allComplaints',
+		},
+	];
+		const dropdownListForComplaintsInSystem = [
+			{
+				title: 'All complaints',
+				icon: faComment,
+				path: '/adminDashboard/allComplaintsInSystem',
+			},
+		];
 	const dropdownListForInquiries = [
 		{
 			title: 'Inquiries ',
 			icon: faComment,
-			path: '/managersDashboard/allCompliments',
+			path: '/employeeDashBoard/chat',
 		},
 	];
 	const dropdownListForEmployees = [
@@ -56,11 +68,6 @@ const AdminDashboard = props => {
 	];
 
 	const dropdownListManageUsers = [
-		{
-			title: 'All Users',
-			icon: faUser,
-			path: '/managersDashboard/allUsersPage',
-		},
 		{ title: 'Sellers', icon: faUser, path: '/managersDashboard/sellersPage' },
 		{ title: 'Buyers', icon: faUser, path: '/managersDashboard/buyersPage' },
 	];
@@ -71,6 +78,18 @@ const AdminDashboard = props => {
 			path: '/managersDashboard/pendingAuctions',
 		},
 	];
+		const dropdownListRequests = [
+			{
+				title: 'Pending auctions',
+				icon: faTh,
+				path: '/managersDashboard/pendingAuctions',
+			},
+			{
+				title: 'Extensions requests',
+				icon: faTh,
+				path: '/employeeDashboard/extendRequests',
+			},
+		];
 	const dropdownListManageCategories = [
 		{
 			title: 'Manage Categories',
@@ -83,6 +102,7 @@ const AdminDashboard = props => {
 
 	return (
 		<DashboardLayout
+			profile={{ name: 'profile', list: dropdownListProfile }}
 			admin={{ name: email ? email : 'user' }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
@@ -91,13 +111,21 @@ const AdminDashboard = props => {
 				name: 'Manage Requests   ',
 				list: dropdownListAuctionsRequests,
 			}}
+			requestsForEmployee={{
+				name: 'Manage Requests   ',
+				list: dropdownListRequests,
+			}}
 			categories={{
 				name: 'Manage Categories',
 				list: dropdownListManageCategories,
 			}}
 			compliments={{
-				name: 'Manage Compliments',
-				list: dropdownListForCompliments,
+				name: 'Manage complaints',
+				list: dropdownListForComplaints,
+			}}
+			complaintsInSystem={{
+				name: 'Manage complaints in system',
+				list: dropdownListForComplaintsInSystem,
 			}}
 			inquiries={{
 				name: 'Inquiries',

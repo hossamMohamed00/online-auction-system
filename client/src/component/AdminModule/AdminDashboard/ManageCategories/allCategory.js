@@ -11,7 +11,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
-import Modal_ from '../../../UI/Modal/modal';
+import ModalUi from '../../../UI/Modal/modal';
 
 const AllCategories = props => {
 	const [ModalShow, setModalShow] = useState(false);
@@ -32,7 +32,7 @@ const AllCategories = props => {
 		},
 		{
 			name: 'Number of Auctions',
-			selector: row => row.num,
+			selector: row => row.auctionsCount,
 			center: true,
 		},
 
@@ -43,9 +43,6 @@ const AllCategories = props => {
 			cell: props => {
 				return (
 					<>
-						<button className="btn btn-success mx-1 my-2">
-							<FontAwesomeIcon icon={faEdit} />
-						</button>
 						<button
 							className="btn btn-danger my-2 "
 							onClick={() => showModel(props._id)}
@@ -57,7 +54,12 @@ const AllCategories = props => {
 			},
 		},
 	];
+	// handle get all categories
 	const { sendRequest, data } = useHttp(getAllCategoriesForAdmin);
+	const idToken = useSelector(store => store.AuthData.idToken);
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest, props.reload, reloadWhenRemoveCategory]);
 	// remove api
 	const {
 		sendRequest: sendRequestForRemove,
@@ -84,38 +86,37 @@ const AllCategories = props => {
 	};
 
 	useEffect(() => {
+		console.log(statusForRemove);
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);
-			setReloadWhenRemoveCategory(categoryId);
-		}
-	}, [statusForRemove, reloadWhenRemoveCategory]);
-
-	useEffect(() => {
-		if (errorForRemove && statusForRemove === 'error') {
+			// setReloadWhenRemoveCategory(Math.random());
+		} else if (statusForRemove === 'error') {
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
 			setModalTitle(errorForRemove);
 			setModalBtn('');
+			// setReloadWhenRemoveCategory(Math.random());
 		}
-	}, [errorForRemove, statusForRemove]);
-	// ! end remove
+	}, [statusForRemove, errorForRemove, reloadWhenRemoveCategory]);
 
-	const idToken = useSelector(store => store.AuthData.idToken);
-	useEffect(() => {
-		sendRequest(idToken);
-	}, [sendRequest, props.reload, reloadWhenRemoveCategory]);
+	// useEffect(() => {
+	// 	if (errorForRemove && statusForRemove === 'error') {
+	// 		toast.error(`${errorForRemove} 💖🐱‍👤`);
+	// 		setModalTitle(errorForRemove);
+	// 		setModalBtn('');
+	// 	}
+	// }, [errorForRemove, statusForRemove]);
+	// ! end remove
 
 	//filter
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
-	console.log(categoryId);
 	return (
 		<>
 			{/* <ToastContainer theme="dark" /> */}
 			{data && (
 				<DataTable
-					// selectableRows
 					columns={columns}
 					data={filteredItems}
 					subHeader
@@ -126,14 +127,13 @@ const AllCategories = props => {
 			)}
 
 			{ModalShow && (
-				<Modal_
+				<ModalUi
 					show={ModalShow}
 					onHide={() => setModalShow(false)}
-					btnHandler={removeHandler}
-					Id={categoryId && categoryId}
+					btnHandler={() => removeHandler(categoryId)}
+					// Id={categoryId && categoryId}
 					title={ModalTitle}
 					btnName={ModalBtn}
-					// error = {error && error}
 				/>
 			)}
 		</>

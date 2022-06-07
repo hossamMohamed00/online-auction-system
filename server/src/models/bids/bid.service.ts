@@ -3,9 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { WsException } from '@nestjs/websockets';
 import { Model, ObjectId } from 'mongoose';
 import { Socket } from 'socket.io';
+import { ResponseResult } from 'src/common/types';
 import { AuctionsService } from '../auction/auctions.service';
 
 import { AuthService } from '../auth/auth.service';
+import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { User } from '../users/shared-user/schema/user.schema';
 import { BidDocument, Bid } from './schema/bid.schema';
 import { NewBid } from './types/new-bid.type';
@@ -118,5 +120,59 @@ export class BidService {
 			},
 			createdAt: createdBid.createdAt,
 		};
+	}
+
+	/**
+	 * Handle if the bid is in last minute or not
+	 * @param bidDate - bid created at
+	 * @param auctionId - auction id
+	 */
+	async handleIfBidInLastMinute(
+		bidDate: Date,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		return this.auctionService.handleIfBidInLastMinute(auctionId, bidDate);
+	}
+
+	/**
+	 * Retreat given bidder from given auction
+	 * @param bidder
+	 * @param auctionId
+	 */
+	async retreatBidderFromAuction(bidder: Buyer, auctionId: string) {
+		const result: ResponseResult =
+			await this.auctionService.retreatBidderFromAuction(bidder, auctionId);
+
+		if (!result.success) {
+			this.logger.error('Cannot retreat you right now 🤷‍♂️');
+			throw new WsException(result.message);
+		}
+
+		return result;
+	}
+
+	/* Get all bids in given auction
+	 * @param auctionId
+	 * @returns List of all bids for the given auction
+	 */
+	async getAuctionBids(auctionId: string): Promise<any> {
+		const bids: Bid[] = await this.bidModel.find({
+			auction: auctionId,
+		});
+
+		//* Return only specific data
+		const serializedBids = bids.map((bid: Bid) => {
+			return {
+				user: {
+					_id: bid.user._id,
+					name: bid.user.name,
+					email: bid.user.email,
+				},
+				amount: bid.amount,
+				createdAt: bid.createdAt,
+			};
+		});
+
+		return serializedBids;
 	}
 }

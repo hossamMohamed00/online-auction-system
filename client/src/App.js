@@ -16,14 +16,12 @@ import LoginPage from './Pages/Login';
 import HomePage from './Pages/HomePage';
 import AboutUsPage from './Pages/AboutUsPage';
 import ContactUsPage from './Pages/ContactUsPage';
-import HowBidPage from './Pages/HowBidPage';
 import PageNotFound from './Pages/PageNotFound';
 import ViewCategoryAuctions from './component/Auctions/ViewCategoryAuctions/ViewCategoryAuctions';
 import ViewAuctions from './Pages/ViewAuctions';
 // end home Pages
 
 // start admin pages
-import UsersPage from './component/AdminModule/AdminDashboard/UsersPages/Users';
 import AddEmployee from './component/AdminModule/AdminDashboard/ManageEmployees/AddEmployee';
 import ListAllEmployees from './component/AdminModule/AdminDashboard/ManageEmployees/ListAllEmployees/listAllEmployee';
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
@@ -41,7 +39,7 @@ import BuyerProfile from './Pages/buyerProilePage';
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
-import ViewParticipatingAuctions from './component/Modules/BuyerModule/Auctions/ViewParticipatingAuctions';
+import ViewJoinedAuctions_buyer from './component/Modules/BuyerModule/Auctions/ViewJoinedAuctions';
 // end buyer pages
 
 // start seller pages
@@ -49,17 +47,28 @@ import SellerDashboard from './Pages/SellerDashboard';
 import ViewAllAuctions from './component/Modules/SellerModule/SellerPages/ViewAllAuctions';
 import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat';
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
+import UpdateAccountForSeller from './component/Modules/SellerModule/SellerPages/UpdateAccount';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
+import UpdateAccount from './component/UI/UpdateAccount/UpdateAccount';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
-import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
 import WalletTransaction from './component/Modules/BuyerModule/WalletTransaction/WalletTransaction';
+import UpdateAuction from './component/Modules/SellerModule/SellerPages/UpdateAuction';
+// import ViewJoinedAuctions from './component/Modules/BuyerModule/Auctions/ViewjoinedAuctions';
 import SellerProfilePage from './Pages/SellerProfilePage';
+import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
+import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllComplaints/AllComplains';
+import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
+import ExtendTimeRequests from './component/Modules/EmployeesModule/ExtendTimeRequests/ExtendTimeRequests';
+import SellerExtendAuctions from './component/Modules/SellerModule/SellerPages/SellerExtendAuction';
 // end seller pages
 
 function App() {
-
+	const location = useLocation();
+	const pathname = location.pathname;
+	const pathnameParts = pathname.split('/').filter(Boolean);
+	const expectedResults = pathnameParts[0];
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
@@ -74,7 +83,6 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<LoginPage />} />
 
-				<Route path="/how-bid" element={<HowBidPage />} />
 				<Route path="/about-us" element={<AboutUsPage />} />
 				<Route path="/contact-us" element={<ContactUsPage />} />
 
@@ -106,7 +114,6 @@ function App() {
 					path="/managersDashboard/pendingAuctions"
 					element={<PendingAuctions />}
 				/>
-				<Route path="/managersDashboard/allUsersPage" element={<UsersPage />} />
 				<Route
 					path="/managersDashboard/sellersPage"
 					element={<SellersPage />}
@@ -128,9 +135,15 @@ function App() {
 				{/* start route Employees */}
 				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
 				<Route
-					path="/managersDashboard/allCompliments"
+					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
 				/>
+				<Route
+					path="/adminDashboard/allComplaintsInSystem"
+					element={<AllComplaintsInSystem />}
+				/>
+				<Route path="/employeeDashBoard/chat" element={<ChatWithAgent />} />
+				<Route path="/employeeDashBoard/extendRequests" element={<ExtendTimeRequests />} />
 
 				{/* start buyer routes  */}
 
@@ -144,8 +157,8 @@ function App() {
 							element={<SavedAuctions />}
 						/>
 						<Route
-							path="/buyer-dashboard/participating-auctions"
-							element={<ViewParticipatingAuctions />}
+							path="/buyer-dashboard/joinedAuctions"
+							element={<ViewJoinedAuctions_buyer />}
 						/>
 						{/* end Buyer Auctions */}
 
@@ -174,11 +187,28 @@ function App() {
 							path="/seller-dashboard/AddAuction"
 							element={<AddAuction />}
 						/>
+
+						<Route
+							path="/seller-dashboard/UpdateAuction"
+							element={<UpdateAuction />}
+						/>
 						<Route path="/seller-dashboard/chat" element={<SellerChat />} />
+
+						<Route
+							path="/seller-dashboard/UpdateAccount"
+							element={<UpdateAccountForSeller />}
+						/>
+							<Route
+							path="seller-dashboard/ExtendAuctionTime"
+							element={<SellerExtendAuctions />}
+						/>
 					</>
 				)}
 				{/* end seller routes  */}
-
+				{/* <Route */}
+				{/* path={`/${expectedResults}/UpdateAccount`}
+					element={<UpdateAccount />}
+				/> */}
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>

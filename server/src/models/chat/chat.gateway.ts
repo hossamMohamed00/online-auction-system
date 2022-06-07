@@ -145,6 +145,7 @@ export class ChatGateway
 			this.logger.log('Chat history loaded and emitted to user ✔✔');
 		}
 	}
+
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('get-MyChat')
 	async MyChat(
@@ -215,6 +216,7 @@ export class ChatGateway
 		//* Emit the message
 		this.server.to(messageTo).emit('new-message-to-client', message);
 	}
+
 	@UseGuards(SocketAuthGuard)
 	@SubscribeMessage('new-message-to-Support')
 	async ToSupport(

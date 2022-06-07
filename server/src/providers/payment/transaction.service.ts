@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/models/users/shared-user/schema/user.schema';
 import { CreateTransactionDto } from './dto';
 import { TransactionType } from './enums';
 
@@ -36,12 +35,15 @@ export default class TransactionService {
 	}
 
 	async listTransactionsForUser(user: any) {
-		return this.transactionModel
-			.find({
-				$or: [{ sender: user._id }, { recipient: user._id }],
-			})
-			.sort([['createdAt', -1]])
-			.exec();
+		return (
+			this.transactionModel
+				.find({
+					$or: [{ sender: user._id }, { recipient: user._id }],
+				})
+				//* Sort by created at
+				.sort({ createdAt: -1 })
+				.exec()
+		);
 	}
 
 	/**
@@ -61,7 +63,7 @@ export default class TransactionService {
 	 * @param paymentIntentId
 	 */
 	async markTransactionAsRefunded(paymentIntentId: string) {
-		const transaction = await this.transactionModel.updateMany(
+		await this.transactionModel.updateMany(
 			{
 				paymentIntentId,
 			},

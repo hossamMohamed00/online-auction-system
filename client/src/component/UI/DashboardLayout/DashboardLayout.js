@@ -18,8 +18,66 @@ import {
 
 const Wrapper = props => {
 	const role = useSelector(store => store.AuthData.role);
-
+	const sidebarBuyer = role === 'buyer' && {
+		buyer: {
+			name: props.buyer.name,
+			path: '/buyer-dashboard',
+		},
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+		},
+		viewAuctions: {
+			list: props.viewAuctions.list,
+			name: props.viewAuctions.name,
+		},
+		chat: { list: props.chat.list, name: props.chat.name, icon: faComment },
+		payment: {
+			list: props.payment.list,
+			name: props.payment.name,
+			icon: faCreditCardAlt,
+		},
+	};
 	// console.log("role2" , role , props)
+	const sidebarEmployee = role === 'employee' && {
+		admin: { name: props.admin.name, path: '/employeeDashboard' },
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+		},
+		users: {
+			list: props.users.list,
+			name: props.users.name,
+			icon: faUsers,
+			class: 'users',
+		},
+		auctions: {
+			list: props.auctions.list,
+			name: props.auctions.name,
+			icon: faGavel,
+			class: 'auctions',
+		},
+		requests: {
+			list: props.requestsForEmployee.list,
+			name: props.requestsForEmployee.name,
+			icon: faTh,
+			class: 'requests',
+		},
+		compliments: {
+			list: props.compliments.list,
+			name: props.compliments.name,
+			icon: faComment,
+			class: 'auctions',
+		},
+		Inquiries: {
+			list: props.inquiries.list,
+			name: props.inquiries.name,
+			icon: faComment,
+			class: 'requests',
+		},
+	};
 	const sidebarAdmin = role === 'admin' && {
 		admin: { name: props.admin.name, path: '/adminDashboard' },
 		employees: {
@@ -52,58 +110,9 @@ const Wrapper = props => {
 			icon: faListAlt,
 			class: 'categories',
 		},
-	};
-
-	const sidebarBuyer = role === 'buyer' && {
-		buyer: {
-			name: props.buyer.name ? props.buyer.name : 'buyer',
-			path: '/buyer-dashboard',
-		},
-		profile: {
-			list: props.profile.list,
-			name: props.profile.name,
-			icon: faIdBadge,
-		},
-		viewAuctions: {
-			list: props.viewAuctions.list,
-			name: props.viewAuctions.name,
-		},
-		chat: { list: props.chat.list, name: props.chat.name, icon: faComment },
-		payment: {
-			list: props.payment.list,
-			name: props.payment.name,
-			icon: faCreditCardAlt,
-		},
-	};
-	const sidebarEmployee = role ==='employee'&& {
-		admin: { name: props.admin.name, path: '/employeeDashboard' },
-		users: {
-			list: props.users.list,
-			name: props.users.name,
-			icon: faUsers,
-			class: 'users',
-		},
-		auctions: {
-			list: props.auctions.list,
-			name: props.auctions.name,
-			icon: faGavel,
-			class: 'auctions',
-		},
-		requests: {
-			list: props.requests.list,
-			name: props.requests.name,
-			icon: faTh,
-			class: 'requests',
-		},
 		compliments: {
-			list: props.compliments.list,
-			name: props.compliments.name,
-			icon: faComment,
-			class: 'auctions',
-		},
-		Inquiries: {
-			list: props.inquiries.list,
-			name: props.inquiries.name,
+			list: props.complaintsInSystem.list,
+			name: props.complaintsInSystem.name,
 			icon: faComment,
 			class: 'requests',
 		},

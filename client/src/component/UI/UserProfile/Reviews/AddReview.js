@@ -1,6 +1,5 @@
 import React from 'react';
 import { StartComponent } from './StartComponent';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './reviews.css';
 import { AddReviewForSeller } from '../sellerProfileData';
@@ -14,10 +13,9 @@ export const AddReview = props => {
 	const getRateValue = value => {
 		setRateValue(value);
 	};
-	console.log(rateValue);
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { data, status, sendRequest, error } = useHttp(AddReviewForSeller);
+	const {status, sendRequest, error } = useHttp(AddReviewForSeller);
 
 	const handleSubmit = e => {
 		e.preventDefault();

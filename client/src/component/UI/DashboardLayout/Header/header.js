@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthDataActions } from '../../../../store/slices/RegisterSlices/AuthData';
-
-import { Link } from 'react-router-dom';
+import { useSelector , useDispatch } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import classes from './header.module.css';
 
 // import icons and img
@@ -12,9 +12,18 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 // import adminImg from '../../../../assets/icons8-test-account-40.png';
 
 const Header = props => {
+	const role = useSelector(store => store.AuthData.role);
+	// start get pathname to put it in link of chat icon
+	const location = useLocation();
+	const pathname = location.pathname;
+	const pathnameParts = pathname.split('/').filter(Boolean);
+	const expectedResults = pathnameParts[0];
+	// end get pathname
 	const navClasses = !props.showSideBarValue ? 'w-100' : classes.headerNav;
+	const dispatch = useDispatch();
+
 	const logoutHandler = () => {
-		AuthDataActions.logout();
+		dispatch(AuthDataActions.logout());
 	};
 	return (
 		<nav
@@ -28,7 +37,14 @@ const Header = props => {
 					</button>
 				</div>
 				<div className=" text-light px-2">
-					<FontAwesomeIcon icon={faMessage} className={classes.MessgaeIcon} />
+					{role !== 'admin' && (
+						<Link to={`/${expectedResults}/chat`} className="text-light">
+							<FontAwesomeIcon
+								icon={faMessage}
+								className={classes.MessgaeIcon}
+							/>
+						</Link>
+					)}{' '}
 					<span className={classes.bar}></span>
 					{/* Notification Icon */}
 					<div className="d-inline-block">
@@ -48,7 +64,7 @@ const Header = props => {
 						className={` ${classes.adminImg} rounded-circle mt-2`}
 					/>
 					<Link
-						to="/login"
+						to="/home-page"
 						className={`${classes.logout} mx-2 `}
 						onClick={logoutHandler}
 					>

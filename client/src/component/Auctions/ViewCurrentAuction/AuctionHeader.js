@@ -1,50 +1,98 @@
-import React, { Fragment, useState } from 'react';
-// import { useSelector } from "react-redux";
-
+import React, { Fragment, useEffect, useState } from 'react';
 import AuctionDetails from './AuctionDetails';
+import Bidders from './Bidders';
 import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionHeader({ AuctionData }) {
+function AuctionHeader({ AuctionData , isShownBidsProp , socket , roomData }) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
+	const [isShownBidders, setIsShownBidders] = useState(false);
 
-	// const role = useSelector(store => store.AuthData.role);
+
+	console.log(roomData && roomData.numOfBids , roomData)
 
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
 		setIsShownBids(false);
+		setIsShownBidders(false)
+
 	};
 
 	const btnBidsHandler = () => {
 		setIsShownDetails(false);
 		setIsShownBids(true);
+		setIsShownBidders(false)
+
 	};
 
-	console.log(AuctionData);
+	const btnBiddersHandler = () => {
+		setIsShownBidders(true)
+		setIsShownDetails(false);
+		setIsShownBids(false);
+	}
+
+	// start show bid when bidder joined in auction and want to bid
+	useEffect(()=>{
+		if(isShownBidsProp){
+			btnBidsHandler()
+		}
+		else{
+			btnDetailsHandler()
+		}
+	},[isShownBidsProp])
+	// end show bid when bidder joined in auction and want to bid
+
+
 	return (
 		<Fragment>
-			<h1 className="pt-5 pb-2"> {AuctionData && AuctionData.item.name} </h1>
 			<div className={classes.AuctionHeader}>
+				{/* start with auction header */}
 				<button
-					className={`btn ${isShownDetails ? classes.ActiveLink : ''}`}
+					className={`btn ${isShownDetails && !isShownBids ? classes.ActiveLink : ''}`}
 					onClick={btnDetailsHandler}
 				>
-					{' '}
-					Details{' '}
+					Details
 				</button>
-				{AuctionData && AuctionData.status === 'ongoing' && (
-					<button
-						className={`btn ${isShownBids ? classes.ActiveLink : ''}`}
-						onClick={btnBidsHandler}
-					>
-						Bids
-					</button>
-				)}
+
+				<button
+					className={`btn  ${isShownBids ? classes.ActiveLink : ''} ${classes.showBidsBtn}`}
+					onClick={btnBidsHandler}
+					disabled= {(AuctionData && AuctionData['status']) === 'upcoming'}
+				>
+					<span className='position-relative'> Bids </span>
+					<span className={classes.numOfBids}> {(roomData && roomData.bids ) ? roomData.bids.length  : (AuctionData && AuctionData.numOfBids ? AuctionData.numOfBids : 0) } </span>
+				</button>
+
+				<button
+					className={`btn  ${isShownBidders ? classes.ActiveLink : ''} ${classes.showBiddersBtn}`}
+					onClick={btnBiddersHandler}
+					disabled= {(AuctionData && AuctionData['status']) === 'upcoming'}
+				>
+					<span className='position-relative'> Bidders </span>
+					<span className={classes.numOfBids}> {(roomData && roomData.bidders) ?  roomData.bidders.length  : (AuctionData && AuctionData.bidders ? AuctionData.bidders.length : 0)} </span>
+
+				</button>
+
 			</div>
-			{isShownDetails && <AuctionDetails data={AuctionData} />}
-			{isShownBids && <Bids />}
+			{/* end with auction header */}
+
+
+			{isShownDetails && <AuctionDetails
+				data={AuctionData && AuctionData}
+				/>
+			}
+			{isShownBids && <Bids
+					socket={socket}
+					roomData={(AuctionData && AuctionData['status'] !== 'ongoing') ? AuctionData : roomData   }
+				/>
+			}
+			{isShownBidders && <Bidders
+					roomData={(AuctionData && AuctionData['status'] !== 'ongoing') ? AuctionData : roomData   }
+				/>
+			}
+
 		</Fragment>
 	);
 }

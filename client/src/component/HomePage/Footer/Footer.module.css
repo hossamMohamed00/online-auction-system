@@ -78,6 +78,7 @@
 @media (max-width: 992px) {
 	.Support {
 		margin: 10px 0px 30px 30px !important ;
+		width: 80%;
 	}
 	.ContactStyle {
 		margin-left: 0;

@@ -1,32 +1,122 @@
-import React, { useEffect } from 'react';
-import { getAllAuctions } from '../../../../Api/AuctionsApi';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import useHttp from '../../../../CustomHooks/useHttp';
-
+import moment from 'moment';
+import { getAllAuctions } from '../../../../Api/AuctionsApi';
+import SellerDashboardContent from '../SellerModule';
+import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
+import DataTable from 'react-data-table-component';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
-import ViewAuctionDetails from '../../../UI/ViewAuctionDetails/ViewAuctionDetails';
-import SellerDashboardContent from '../SellerModule';
-
-import classes from './ViewAllAuctions.module.css';
 
 const ViewAllAuctions = () => {
-	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
+	const { sendRequest, status: statusForGet, data } = useHttp(
+		getAllAuctions,
+	);
 	useEffect(() => {
 		sendRequest();
 	}, [sendRequest]);
+	const [myAuctions, setMyAuctions] = useState([]);
+	useEffect(() => {
+		if (statusForGet === 'completed') {
+			//*Format dates
+		data.map(data => {
+			const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
+			const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+			if (data.endDate) {
+				data.endDate = newEndDate;
+			} else {
+				data.endDate = <span>NA</span>;
+			}
+
+			data.startDate = newStartDate;
+		});
+
+			setMyAuctions(data);
+		}
+	}, [statusForGet]);
+
+	const columns = [
+		{
+			name: 'Title',
+			selector: row => row.title,
+			sortable: true,
+			center: true,
+		},
+		{
+			name: 'Base Price',
+			selector: row => row.basePrice,
+			center: true,
+		},
+		{
+			name: 'Start Date',
+			selector: row => row.startDate,
+			center: true,
+		},
+		{
+			name: 'End Date',
+			selector: row => row.endDate,
+			center: true,
+		},
+		{
+			name: 'Seller',
+			selector: row => row.seller.name,
+			center: true,
+		},
+		{
+			name: 'Status',
+			selector: row => row.status,
+			center: true,
+		},
+		{
+			name: 'Winner',
+			selector: row => row.winningBuyer,
+			center: true,
+			cell: props => {
+				return props.winningBuyer ? (
+					<span>{props.winningBuyer}</span>
+				) : (
+					<span>No winner</span>
+				);
+			},
+		},
+		{
+			name: 'Actions',
+			center: true,
+			cell: props => {
+				return (
+					<span className="text-info">
+						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
+					</span>
+				);
+			},
+		},
+	];
+	//filter
+	const items = myAuctions ? myAuctions : [];
+	const { filterFun, filteredItems } = useFilter(items, 'title');
+	//end filter
 
 	return (
-		<SellerDashboardContent>
-			<PageContent className={`${classes.PageContentClasses}`}>
-				<PageHeader text="All auctions" showLink={false} />
-				<div className="p-5">
-					{data && status === 'completed' && (
-						<ViewAuctionDetails AuctionData={data} lg={6} />
+		<React.Fragment>
+			<SellerDashboardContent>
+				<PageContent>
+					<PageHeader text="My Auctions" showLink={false} />{' '}
+					{myAuctions && (
+						<DataTable
+							columns={columns}
+							data={filteredItems}
+							subHeader
+							subHeaderComponent={filterFun}
+							theme="dark"
+							pagination
+						/>
 					)}
-				</div>
-			</PageContent>
-		</SellerDashboardContent>
+				</PageContent>
+			</SellerDashboardContent>
+		</React.Fragment>
 	);
 };
 
