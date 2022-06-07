@@ -3,42 +3,37 @@ import { toast } from 'react-toastify';
 
 import useHttp from '../../../CustomHooks/useHttp';
 
-import ModalUi from '../Modal/modal'
-import LoadingSpinner from '../Loading/LoadingSpinner'
-import './WarnModal.css'
+import ModalUi from '../Modal/modal';
+import LoadingSpinner from '../Loading/LoadingSpinner';
+import './WarnModal.css';
 import { getJoinedAuctions } from '../../../Api/BuyerApi';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import useFilter from '../TableLayout/FilteringTable/filter';
 
-const JoinedAuctionModal = ({id , show , onHide }) => {
+const JoinedAuctionModal = ({ id, show, onHide }) => {
+	const { sendRequest, status, data, error } = useHttp(getJoinedAuctions);
+	const [loading, setLoading] = useState(false);
 
-	const { sendRequest, status, data , error } = useHttp(getJoinedAuctions);
-	const [loading , setLoading] = useState(false)
-
-	const ModalTitle = 'View Joined Auctions '
+	const ModalTitle = 'View Joined Auctions ';
 
 	// start get all Joined Actions
-	useEffect(()=>{
-		sendRequest(id)
-	},[sendRequest])
+	useEffect(() => {
+		sendRequest(id);
+	}, [sendRequest]);
 
-
-	useEffect(()=>{
-		if(status==='error' ){
-			setLoading(false)
-			toast.error(error)
+	useEffect(() => {
+		if (status === 'error') {
+			setLoading(false);
+			toast.error(error);
 		}
-	},[status])
+	}, [status]);
 
-	useEffect(()=>{
-		if(status==='completed' ){
-			console.log(data.joinedAuctions[0])
+	useEffect(() => {
+		if (status === 'completed') {
 		}
-	},[status])
+	}, [status]);
 	// end get all Joined Actions
-
-
 
 	const columns = [
 		{
@@ -64,14 +59,16 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/categories?id=${props.category._id}`}>{props.category.name}</Link>
+						<Link to={`/categories?id=${props.category._id}`}>
+							{props.category.name}
+						</Link>
 					</span>
 				);
 			},
 		},
 		{
 			name: 'Winning Buyer',
-			selector: row => row.winningBuyer ? row.winningBuyer :  'not selected',
+			selector: row => (row.winningBuyer ? row.winningBuyer : 'not selected'),
 			center: true,
 		},
 		{
@@ -80,17 +77,19 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/sellerProfile?id=${props.seller._id}`}>{props.seller.name} </Link>
+						<Link to={`/sellerProfile?id=${props.seller._id}`}>
+							{props.seller.name}{' '}
+						</Link>
 					</span>
 				);
-			}
+			},
 		},
 		{
 			name: 'View Details',
 			cell: props => {
 				return (
 					<span className="text-info ">
-						<Link to={`/auctions?id=${props._id}`} >Auction Details</Link>
+						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
 					</span>
 				);
 			},
@@ -101,35 +100,41 @@ const JoinedAuctionModal = ({id , show , onHide }) => {
 	const { filterFun, filteredItems } = useFilter(items, 'title');
 
 	// start View Joined Auctions
-	const ViewJoinedAuctions = data && status==='completed' ? (
-		<DataTable
-			selectableRows
-			columns={columns}
-			data={filteredItems}
-			subHeader
-			subHeaderComponent={filterFun}
-			theme="dark"
-			pagination
-		/>)
-		// <h6 className='fw-bold text-center text-danger'> No Joined Auctions Now </h6>
-	: <h6 className='fw-bold text-center text-danger'> No Joined Auctions Now </h6>
+	const ViewJoinedAuctions =
+		data && status === 'completed' ? (
+			<DataTable
+				selectableRows
+				columns={columns}
+				data={filteredItems}
+				subHeader
+				subHeaderComponent={filterFun}
+				theme="dark"
+				pagination
+			/>
+		) : (
+			// <h6 className='fw-bold text-center text-danger'> No Joined Auctions Now </h6>
+			<h6 className="fw-bold text-center text-danger">
+				{' '}
+				No Joined Auctions Now{' '}
+			</h6>
+		);
 
 	// end View Joined Auctions
 
 	return (
 		<>
-			{loading && <LoadingSpinner/>}
+			{loading && <LoadingSpinner />}
 
 			<ModalUi
 				show={show}
 				onHide={onHide}
-				title= {ModalTitle}
+				title={ModalTitle}
 				body={ViewJoinedAuctions}
-				btnName=''
-				className='JoinedAuctionModal'
+				btnName=""
+				className="JoinedAuctionModal"
 			/>
 		</>
 	);
-}
+};
 
 export default JoinedAuctionModal;

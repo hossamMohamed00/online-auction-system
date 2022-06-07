@@ -99,7 +99,6 @@ const UpdateAuction = () => {
 	}, [statusUpdateAuction, errorUpdateAuction]);
 	/*if (ValidateForm()) {
 			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
-			console.log(ProductImages);
 		}*/
 
 	return (

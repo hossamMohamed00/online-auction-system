@@ -1,4 +1,4 @@
-import React ,{useEffect , useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
 // import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
@@ -11,19 +11,17 @@ import useHttp from './../../../CustomHooks/useHttp';
 import { getProfileData } from '../../../Api/Admin';
 
 const SellerDashboardContent = props => {
-const { sendRequest, data, status } = useHttp(getProfileData);
-const idToken = useSelector(store => store.AuthData.idToken);
-const [sellerId , setSellerId] = useState('');
-useEffect(() => {
-	sendRequest(idToken);
-
-},[sendRequest])
-useEffect(() => {
-
-	if(status === 'completed'){
-		setSellerId(data &&data._id);
-	}
-})
+	const { sendRequest, data, status } = useHttp(getProfileData);
+	const idToken = useSelector(store => store.AuthData.idToken);
+	const [sellerId, setSellerId] = useState('');
+	useEffect(() => {
+		sendRequest(idToken);
+	}, [sendRequest]);
+	useEffect(() => {
+		if (status === 'completed') {
+			setSellerId(data && data._id);
+		}
+	});
 
 	const email = localStorage.getItem('email');
 
@@ -56,7 +54,6 @@ useEffect(() => {
 			icon: faGavel,
 			path: '/seller-dashboard/AddAuction',
 		},
-
 	];
 
 	const dropdownListPayment = [

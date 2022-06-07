@@ -7,7 +7,6 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import DashboardContent from '../dashboard_content/dashboard';
 
 const AdminDashboard = props => {
-
 	const dropdownListProfile = [
 		{
 			title: 'Edit Account',
@@ -22,13 +21,13 @@ const AdminDashboard = props => {
 			path: '/managersDashboard/allComplaints',
 		},
 	];
-		const dropdownListForComplaintsInSystem = [
-			{
-				title: 'All complaints',
-				icon: faComment,
-				path: '/adminDashboard/allComplaintsInSystem',
-			},
-		];
+	const dropdownListForComplaintsInSystem = [
+		{
+			title: 'All complaints',
+			icon: faComment,
+			path: '/adminDashboard/allComplaintsInSystem',
+		},
+	];
 	const dropdownListForInquiries = [
 		{
 			title: 'Inquiries ',
@@ -78,18 +77,18 @@ const AdminDashboard = props => {
 			path: '/managersDashboard/pendingAuctions',
 		},
 	];
-		const dropdownListRequests = [
-			{
-				title: 'Pending auctions',
-				icon: faTh,
-				path: '/managersDashboard/pendingAuctions',
-			},
-			{
-				title: 'Extensions requests',
-				icon: faTh,
-				path: '/employeeDashboard/extendRequests',
-			},
-		];
+	const dropdownListRequests = [
+		{
+			title: 'Pending auctions',
+			icon: faTh,
+			path: '/managersDashboard/pendingAuctions',
+		},
+		{
+			title: 'Extensions requests',
+			icon: faTh,
+			path: '/employeeDashboard/extendRequests',
+		},
+	];
 	const dropdownListManageCategories = [
 		{
 			title: 'Manage Categories',

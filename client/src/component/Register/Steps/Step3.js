@@ -50,18 +50,15 @@ const Step3 = () => {
 
 	// useEffect(()=>{
 	// 	if(status==='completed'){
-	// 		console.log(data)
 	// 		// dispatch(RegisterActions.showStep4())
 	// 	}
 	// },[status])
 
 	const SubmitHandeler = () => {
 		if (isAcceptant) {
-			console.log(idToken);
 			// sendRequest(idToken)
 			dispatch(RegisterActions.showStep4());
 		} else {
-			console.log('resend');
 		}
 	};
 

@@ -57,12 +57,8 @@ const WalletTransaction = () => {
 		}
 	}, [status]);
 
-	// get num of withdraw and deposit transaction
-	console.log(dataForWalletTrans && dataForWalletTrans);
-
 	useEffect(() => {
 		if (statusForWalletTrans === 'completed') {
-			console.log(dataForWalletTrans);
 			setDepositNum(
 				dataForWalletTrans.filter(trans => trans.transactionType === 'deposit')
 					.length,

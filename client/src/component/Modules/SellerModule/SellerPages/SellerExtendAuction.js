@@ -17,16 +17,12 @@ import ModalUi from '../../../UI/Modal/modal';
 import SellerDashboardContent from '../SellerModule';
 import { GetExtensionRequest } from '../../../../Api/SellerApi';
 
-
 function SellerExtendAuctions() {
-
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownRejectModal, setIsShownRejectModal] = useState(false);
 	const [RejectionMessage, setRejectionMessage] = useState('');
 
-
 	const { sendRequest, status, data } = useHttp(GetExtensionRequest);
-
 
 	// get request for all extend time requests
 	useEffect(() => {
@@ -34,10 +30,9 @@ function SellerExtendAuctions() {
 	}, [sendRequest]);
 
 	useEffect(() => {
-		if(status === 'completed'){
+		if (status === 'completed') {
 			data.map(data => {
 				// const newDate = moment().to(data.extensionTime);
-				// console.log(newDate)
 				// data.extensionTime = newDate;
 				const newExtensionTime =
 					data.extensionTime.days +
@@ -50,22 +45,18 @@ function SellerExtendAuctions() {
 					data.extensionTime.minutes +
 					'' +
 					' m ';
-				data.extensionTime = {newExtensionTime};
+				data.extensionTime = { newExtensionTime };
 			});
 		}
-
 	}, [status]);
-
 
 	//  end get request for all extend time requests
 
-	const modalTitle = (
-		<h3> Reason For Rejection</h3>
-	)
+	const modalTitle = <h3> Reason For Rejection</h3>;
 	const modalBody = (
 		<>
 			<h2 for="reason" className="text-light fw-bold">
-			{RejectionMessage}
+				{RejectionMessage}
 			</h2>
 		</>
 	);
@@ -82,7 +73,7 @@ function SellerExtendAuctions() {
 			name: 'Auction Status',
 			selector: row => row.status,
 			sortable: true,
-			center: true
+			center: true,
 		},
 		{
 			name: 'Auction Details',
@@ -125,17 +116,17 @@ function SellerExtendAuctions() {
 			cell: props => {
 				return (
 					<>
-					{ props.requestStatus === 'rejected' ?
-						<button
-							className="btn btn-success mx-2"
-							onClick={() => showRejectModal(props.rejectionMessage)}
-						>
-							<FontAwesomeIcon icon={faEnvelopeCircleCheck} />
-						</button>
-						: <span> ----- </span>
-					}
+						{props.requestStatus === 'rejected' ? (
+							<button
+								className="btn btn-success mx-2"
+								onClick={() => showRejectModal(props.rejectionMessage)}
+							>
+								<FontAwesomeIcon icon={faEnvelopeCircleCheck} />
+							</button>
+						) : (
+							<span> ----- </span>
+						)}
 					</>
-
 				);
 			},
 		},
@@ -146,31 +137,29 @@ function SellerExtendAuctions() {
 	//end filter
 
 	return (
-			<SellerDashboardContent>
-				<PageContent>
-					<ToastContainer theme="dark" />
-					<PageHeader text="Extension Requests" showLink={false} />
-					<DataTable
-						columns={columns}
-						data={filteredItems}
-						subHeader
-						subHeaderComponent={filterFun}
-						theme="dark"
-						pagination
+		<SellerDashboardContent>
+			<PageContent>
+				<ToastContainer theme="dark" />
+				<PageHeader text="Extension Requests" showLink={false} />
+				<DataTable
+					columns={columns}
+					data={filteredItems}
+					subHeader
+					subHeaderComponent={filterFun}
+					theme="dark"
+					pagination
+				/>
+				{isShownRejectModal && (
+					<ModalUi
+						show={isShownRejectModal}
+						onHide={() => setIsShownRejectModal(false)}
+						title={modalTitle}
+						body={modalBody}
 					/>
-					{isShownRejectModal && (
-						<ModalUi
-							show={isShownRejectModal}
-							onHide={() => setIsShownRejectModal(false)}
-							title = {modalTitle}
-							body={modalBody}
-
-
-						/>
-					)}
-				</PageContent>
-			</SellerDashboardContent>
+				)}
+			</PageContent>
+		</SellerDashboardContent>
 	);
-};
+}
 
 export default SellerExtendAuctions;

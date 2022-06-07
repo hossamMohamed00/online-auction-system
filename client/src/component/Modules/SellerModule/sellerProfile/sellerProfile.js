@@ -8,15 +8,11 @@ const SellerProfile = props => {
 	const { data, sendRequest } = useHttp(getProfileData);
 	const [reload, setReload] = useState('');
 
-	useEffect(
-		() => {
-			// sendRequest(props.sellerId);
-			//TODO: To be updated
-			sendRequest(props.sellerId);
-		},
-	[	sendRequest,
-		reload]
-	);
+	useEffect(() => {
+		// sendRequest(props.sellerId);
+		//TODO: To be updated
+		sendRequest(props.sellerId);
+	}, [sendRequest, reload]);
 
 	return (
 		<UserProfile

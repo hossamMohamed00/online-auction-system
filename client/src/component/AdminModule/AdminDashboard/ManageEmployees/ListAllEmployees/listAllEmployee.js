@@ -21,16 +21,15 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ModalUi from './../../../../UI/Modal/modal';
 
 const ListAllEmployees = props => {
-
 	// handle modal
 	const [employeeId, setEmployeeId] = useState('');
 
 	const [ModalShow, setModalShow] = useState(false);
 
-		const [ModalTitle, setModalTitle] = useState(
-			'Are you sure to Delete this employee?',
-		);
-		const [ModalBtn, setModalBtn] = useState('Confirm');
+	const [ModalTitle, setModalTitle] = useState(
+		'Are you sure to Delete this employee?',
+	);
+	const [ModalBtn, setModalBtn] = useState('Confirm');
 	// *******************************************************
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [reloadData, setReloadData] = useState('');
@@ -47,12 +46,10 @@ const ListAllEmployees = props => {
 	}, [sendRequest, reloadData]);
 
 	const removeHandler = employeeId => {
-
-			sendRequestForRemove({
-				path: `employee/${employeeId}`,
-				accessToken: idToken,
-
-		})
+		sendRequestForRemove({
+			path: `employee/${employeeId}`,
+			accessToken: idToken,
+		});
 		setReloadData(employeeId);
 	};
 

@@ -92,7 +92,6 @@ const AddAuction = () => {
 			validateText(BasePriceRef.current.value) &&
 			ValidateDate(StartDateRef.current.value)
 		) {
-			console.log('valid form');
 			return true;
 		} else {
 			toast.error(
@@ -118,7 +117,6 @@ const AddAuction = () => {
 	const submitHandler = e => {
 		e.preventDefault();
 		if (ValidateForm()) {
-			console.log({ pictures });
 			const AuctionDetails = {
 				title: TitleRef.current.value,
 				item: {

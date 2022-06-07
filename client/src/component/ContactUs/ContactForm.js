@@ -35,12 +35,15 @@ const ContactForm = props => {
 			email: EmailRef.current.value,
 			message: Messagevalue,
 		};
-		let isValid = true
-		if(validateEmail(EmailRef.current.value) && validateText(nameRef.current.value) && validateText(Messagevalue) ){
-			isValid = true
-		}
-		else{
-			isValid = false
+		let isValid = true;
+		if (
+			validateEmail(EmailRef.current.value) &&
+			validateText(nameRef.current.value) &&
+			validateText(Messagevalue)
+		) {
+			isValid = true;
+		} else {
+			isValid = false;
 		}
 		props.SendComplaint(isValid ? values : null);
 	};
@@ -63,7 +66,7 @@ const ContactForm = props => {
 							validateText={validateText}
 							ref={nameRef}
 							errorMassage={errorNameMessage}
-					/>
+						/>
 					</div>
 
 					<div className="d-flex flex-column w-100">

@@ -4,6 +4,6 @@ import AdminDashboard from '../home/adminDashboard';
 
 const ProfilePage = () => {
 	return;
-}
+};
 
 export default ProfilePage;

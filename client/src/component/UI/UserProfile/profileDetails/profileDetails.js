@@ -8,7 +8,6 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { CardsContainer } from '../../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
 
 const ProfileDetails = props => {
-
 	const cards = [
 		{
 			name: 'Auctions',
@@ -40,7 +39,6 @@ const ProfileDetails = props => {
 							{props.sellerData && props.sellerData.email}
 						</p>
 					</h4>
-
 				</div>
 				<div className="cards_seller col-lg text-light">
 					{

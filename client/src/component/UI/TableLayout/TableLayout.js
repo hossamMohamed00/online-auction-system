@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 // import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const TableLayout = props => {
-	console.log(props.records.name);
 	const userActions =
 		props.records.name && props.records.name.length !== 0
 			? Object.keys(props.records.name[0])[1] === 'name'

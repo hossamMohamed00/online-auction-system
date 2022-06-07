@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthDataActions } from '../../../../store/slices/RegisterSlices/AuthData';
-import { useSelector , useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import classes from './header.module.css';
 

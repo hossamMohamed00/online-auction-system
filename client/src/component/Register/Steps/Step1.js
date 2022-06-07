@@ -87,7 +87,6 @@ const Step1 = props => {
 
 	const submitHandler = e => {
 		e.preventDefault();
-		console.log(roleValue);
 		ValidateForm();
 	};
 

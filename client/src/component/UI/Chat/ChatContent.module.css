@@ -41,8 +41,7 @@
 .Messages {
 	width: 100%;
 	padding: 0px 10px 50px 10px;
-	margin-bottom:20px
-
+	margin-bottom: 20px;
 }
 
 .messageFromMe,
@@ -129,8 +128,7 @@
 	font-weight: bold;
 }
 
-
-.isShownEmailAddress{
+.isShownEmailAddress {
 	position: absolute;
 	/* top: -10px; */
 	margin-top: -65px;
@@ -140,17 +138,15 @@
 	color: rgb(87, 87, 87);
 	/* font-weight: bold */
 	display: none;
-
 }
 
-.isShownEmailAddress::after{
+.isShownEmailAddress::after {
 	position: absolute;
 	top: 0px;
 	right: -100px;
 	content: '';
 	border-width: 10px;
-	border-color: white transparent transparent transparent ;
+	border-color: white transparent transparent transparent;
 	border-style: solid;
 	/* transform: rotate(20deg); */
-
 }

@@ -46,11 +46,18 @@ const ModalUi = props => {
 			>
 				{/* btn show only when delete */}
 				{props.btnName && (
-					<button onClick={btnHandler} type="button" className="btn-success btn fw-bold">
+					<button
+						onClick={btnHandler}
+						type="button"
+						className="btn-success btn fw-bold"
+					>
 						{props.btnName}
 					</button>
 				)}
-				<button onClick={props.onHide} className="bg-danger text-light fw-bold btn ">
+				<button
+					onClick={props.onHide}
+					className="bg-danger text-light fw-bold btn "
+				>
 					Close
 				</button>
 			</Modal.Footer>

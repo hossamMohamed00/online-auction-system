@@ -31,19 +31,21 @@ const ViewAllAuctions = () => {
 
 	useEffect(() => {
 		if (!FilterAuction) {
-			console.log('query1')
 			sendRequest('');
-		} else{
-			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
-			console.log(queryParams)
-			sendRequest(queryParams);
+		} else {
+			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+				const queryParams = `${
+					FilterdDetails.AuctionCategory
+						? `?category=${FilterdDetails.AuctionCategory}&`
+						: '?'
+				}${FilterdDetails.AuctionType &&
+					`status=${FilterdDetails.AuctionType}&`}`;
+				sendRequest(queryParams);
 			}
 			// setFilterdDetails(null)
 			// setFilterAuction(false)
 		}
-
-	}, [sendRequest, FilterAuction , FilterdDetails]);
+	}, [sendRequest, FilterAuction, FilterdDetails]);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -82,7 +84,6 @@ const ViewAllAuctions = () => {
 						filterHandler={filterHandler}
 						filter={FilterAuction}
 						clearFilter={() => setFilterAuction(false)}
-
 					/>
 				</Col>
 
@@ -109,28 +110,18 @@ const ViewAllAuctions = () => {
 							</div>
 
 							{data && status === 'completed' && (
-								<ViewAuctionDetails
-									AuctionData={data}
-									animate={false}
-								/>
+								<ViewAuctionDetails AuctionData={data} animate={false} />
 							)}
-
 						</div>
-
-					):
-					<div className='pt-3'>
-						<NoData
-							text="No Auctions Now"
-							// data={data & data}
-							// error={error && error}
-						/>
-					</div>
-
-
-
-				}
-
-
+					) : (
+						<div className="pt-3">
+							<NoData
+								text="No Auctions Now"
+								// data={data & data}
+								// error={error && error}
+							/>
+						</div>
+					)}
 				</Col>
 			</Row>
 		</div>

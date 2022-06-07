@@ -12,7 +12,7 @@ const Dropdown = props => {
 					classes[props.className ? props.className : '']
 				}`}
 			>
-				{props.icon && <FontAwesomeIcon icon={props.icon} /> }
+				{props.icon && <FontAwesomeIcon icon={props.icon} />}
 			</div>
 
 			<a

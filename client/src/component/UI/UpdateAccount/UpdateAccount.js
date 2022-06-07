@@ -33,21 +33,21 @@ const UpdateAccountForUsers = () => {
 			phoneNumber: phoneNumber.current.value.trim(),
 			address: addressRef.current.value,
 		};
-		sendRequest({accountData, idToken, path:'seller/profile'});
+		sendRequest({ accountData, idToken, path: 'seller/profile' });
 	};
 
-React.useEffect(() => {
+	React.useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Account Updated Successfully');
-		}else{
+		} else {
 			toast.error(error);
 		}
-	},[status])
+	}, [status]);
 
 	return (
 		<>
 			<PageContent className={classes.PageContentStyle}>
-				<ToastContainer theme='dark'/>
+				<ToastContainer theme="dark" />
 				<PageHeader text="Edit Your Account" />
 				<form className="container-fluid" onSubmit={submitHandler}>
 					<section className="header_container position-relative">
@@ -111,7 +111,6 @@ React.useEffect(() => {
 
 						{/* National Number And Address */}
 						<div className="row">
-
 							<div className={`col-lg-6 `}>
 								<label for="Address" className={'text-light fw-bold fs-5 py-2'}>
 									Address

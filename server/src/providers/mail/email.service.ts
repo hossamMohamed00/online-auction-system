@@ -29,8 +29,6 @@ export default class EmailService {
 			this.logger.log('Email sent successfully 📨❤');
 			return true;
 		} catch (error) {
-			console.log({ error });
-
 			this.logger.error('Email failed to be sent!');
 			return false;
 		}

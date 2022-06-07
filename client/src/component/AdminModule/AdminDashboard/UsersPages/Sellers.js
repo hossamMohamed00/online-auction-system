@@ -55,7 +55,6 @@ const UsersPage = props => {
 	//end filter
 
 	const failed = status !== 'completed';
-	console.log(failed);
 
 	return (
 		<React.Fragment>

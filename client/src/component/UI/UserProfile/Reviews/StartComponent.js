@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './reviews.css';
 import { FaStar } from 'react-icons/fa';
 
-export const StartComponent = (props) => {
+export const StartComponent = props => {
 	const [rating, setRating] = useState(null);
 	const [hover, setHover] = useState(null);
 

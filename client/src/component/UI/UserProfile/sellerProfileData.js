@@ -60,7 +60,6 @@ export const DeleteReview = async ({ reviewId, idToken }) => {
 	const data = await response.json();
 
 	if (!response.ok) {
-		console.log('failed');
 		throw new Error(data.message);
 	}
 };
