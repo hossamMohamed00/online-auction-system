@@ -38,6 +38,7 @@
 	background-color: var(--alert-color);
 	color: white;
 	margin: 0 10% !important;
+	padding: 5px;
 	position: relative;
 	text-align: center;
 	border-radius: 5px;

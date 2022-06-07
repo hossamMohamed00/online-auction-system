@@ -117,6 +117,12 @@ html {
 .text-danger {
 	color: var(--alert-color) !important;
 }
+.text-alert{
+	color: #c2523e;
+}
+.bg-alert{ background-color: #c2523e!important; opacity: 0.9;}
+.text-main {color : #34588f!important}
+.bg-main {background-color: #34588f!important}
 .bg-none {
 	background: none;
 	border: 0 !important;

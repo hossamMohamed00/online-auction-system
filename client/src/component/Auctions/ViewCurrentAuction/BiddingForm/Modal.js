@@ -80,10 +80,14 @@ const ModalUi = props => {
 	useEffect(()=>{
 		if(statusForExtendAuction === 'completed'){
 		console.log(dataForExtendAuction && dataForExtendAuction)
-			toast.success("Send Extend Request For These Auction")
+			toast.success("Time extension request sent and now waiting for approval ✔✔")
+			props.onHide()
+
 		}
 		else if(statusForExtendAuction === 'error'){
 			toast.error(errorForExtendAuction)
+			props.onHide()
+
 		}
 
 	} , [statusForExtendAuction])
@@ -185,7 +189,7 @@ const ModalUi = props => {
 									/>
 								</div>
 								<div className={`${classes.Minutes} d-flex flex-column`}>
-									<p> Hours</p>
+									<p> Minutes</p>
 									<input
 										type="number"
 										className={`${classes.Extend} form-control`}

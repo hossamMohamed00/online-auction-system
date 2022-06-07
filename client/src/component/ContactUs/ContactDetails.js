@@ -35,7 +35,7 @@ const ContactDetails = () => {
 					<p> onlineAuction@email.com </p>
 				</div>
 
-				<div  className={(role !== 'buyer' || 'seller' ) ? 'd-none' : 'd-block mt-2'}>
+				<div  className={(role ===  'seller' || role ===  'buyer' ) ? 'd-block mt-2' : 'd-none' }>
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />
 					<p> you can chat with Administrator</p>
 					<Link className={`${classes.ChatNow} `} to={`${role==='buyer' ? '/buyer-dashboard/chat?email=Support@email.com' : '/seller-dashboard/chat?email=Support@email.com'} `}>

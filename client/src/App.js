@@ -61,6 +61,7 @@ import ChatWithAgent from './component/AdminModule/ChatWithAgent/ChatWithAgent';
 import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllComplaints/AllComplains';
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import ExtendTimeRequests from './component/Modules/EmployeesModule/ExtendTimeRequests/ExtendTimeRequests';
+import SellerExtendAuctions from './component/Modules/SellerModule/SellerPages/SellerExtendAuction';
 // end seller pages
 
 function App() {
@@ -196,6 +197,10 @@ function App() {
 						<Route
 							path="/seller-dashboard/UpdateAccount"
 							element={<UpdateAccountForSeller />}
+						/>
+							<Route
+							path="seller-dashboard/ExtendAuctionTime"
+							element={<SellerExtendAuctions />}
 						/>
 					</>
 				)}

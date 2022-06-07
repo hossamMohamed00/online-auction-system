@@ -47,7 +47,7 @@ useEffect(() => {
 			path: '/seller-dashboard/viewAllAuctions',
 		},
 		{
-			title: 'Extended Auction Time',
+			title: 'Extension Time Request',
 			icon: faGavel,
 			path: '/seller-dashboard/ExtendAuctionTime',
 		},
