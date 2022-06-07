@@ -1,15 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-	IsDate,
-	IsMongoId,
-	IsNotEmpty,
-	IsNumber,
-	IsNumberString,
-	IsString,
-	Max,
-	Min,
-	ValidateNested,
-} from 'class-validator';
+import { IsNumber, Max, Min } from 'class-validator';
 
 export class ExtendAuctionTimeDto {
 	@IsNumber()

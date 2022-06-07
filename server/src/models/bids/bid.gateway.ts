@@ -24,8 +24,8 @@ import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
-import { Bid } from './schema/bid.schema';
 import { Role } from '../users/shared-user/enums';
+import { ResponseResult } from 'src/common/types';
 
 /**
  * Its job is to handle the bidding process.
@@ -170,6 +170,19 @@ export class BidGateway
 			bidder._id,
 			bidValue,
 		);
+
+		//? Check if the bid in last minute to add 3 minutes delay
+		const result: ResponseResult =
+			await this.bidService.handleIfBidInLastMinute(
+				createdBid.createdAt,
+				auctionId,
+			);
+
+		if (result.success) {
+			this.server.to(auctionId).emit('message-to-client', {
+				message: `Auction time extended by 3 minutes 🕒, as ${bidder.name} place bid in last minute.`,
+			});
+		}
 
 		//* Emit the bid to the client-side
 		this.server.to(auctionId).emit('new-bid', createdBid);

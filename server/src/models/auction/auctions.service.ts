@@ -1061,6 +1061,60 @@ export class AuctionsService
 	}
 
 	/**
+	 * Check if the bid in the last minute in auction
+	 * @param auctionId
+	 * @param bidDate
+	 */
+	async handleIfBidInLastMinute(
+		auctionId: string,
+		bidDate: Date,
+	): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findById(auctionId.toString());
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'Auction not found❌',
+			};
+		}
+
+		const isInLastMinute = HandleDateService.isInLastMinute(
+			bidDate,
+			auction.endDate,
+		);
+
+		if (!isInLastMinute) {
+			return {
+				success: false,
+				message: 'Bid is not in last minute❌',
+			};
+		}
+
+		//* Append delay to auction endDate
+		const newEndDate = HandleDateService.appendDelayToDate(auction.endDate);
+
+		//* Update the auction
+		await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate,
+			},
+			{
+				new: true,
+			},
+		);
+
+		this.logger.debug(
+			`Incoming bid is in last minute, so delay added and new end date: ${newEndDate}`,
+		);
+
+		return {
+			success: true,
+			message: 'Auction delay appended successfully!!',
+		};
+	}
+
+	/**
 	 * Return some of auction details used to be displayed in bidding room
 	 * @param auctionId
 	 * @returns Auction details

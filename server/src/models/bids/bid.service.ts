@@ -123,6 +123,18 @@ export class BidService {
 	}
 
 	/**
+	 * Handle if the bid is in last minute or not
+	 * @param bidDate - bid created at
+	 * @param auctionId - auction id
+	 */
+	async handleIfBidInLastMinute(
+		bidDate: Date,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		return this.auctionService.handleIfBidInLastMinute(auctionId, bidDate);
+	}
+
+	/**
 	 * Retreat given bidder from given auction
 	 * @param bidder
 	 * @param auctionId
