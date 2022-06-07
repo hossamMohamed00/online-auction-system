@@ -12,6 +12,8 @@
 
 .ItemImage  img {
 	height: 40vh!important;
+	max-width: 80%!important;
+	margin-left: 10%;
 	margin-top: 20px;
 }
 

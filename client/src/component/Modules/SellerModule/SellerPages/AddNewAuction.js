@@ -59,11 +59,30 @@ const AddAuction = () => {
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
+
+	const ProductImagesHandler = e => {
+		const files = e.target.files;
+
+		setProductImages([...files])
+		console.log([...files])
+		// Storage.ref(`${}`)
+	// 	const ImagesFormat = []
+	// 	setProductImages(files)
+	// 	for(let i in files){
+	// 		if (Object.hasOwnProperty.call(files, i)) {
+	// 			ImagesFormat.push(
+	// 			{File : {'name' : files[i]['name'] , 'size' :files[i]['size'] , 'type' :files[i]['type']}}
+	// )
+	// 		}
+	// 	}
+	// 	console.log(ImagesFormat)
+	}
 	// const ProductImagesHandler = e => {
 	// 	const files = e.target.files;
 	// 	setProductImages([...files])
 
 	// }
+
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -116,6 +135,7 @@ const AddAuction = () => {
 	};
 	// end handle upload image
 	const submitHandler = e => {
+		console.log(ProductImages)
 		e.preventDefault();
 		if (ValidateForm()) {
 			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
@@ -323,7 +343,7 @@ const AddAuction = () => {
 									</label>
 									<input
 										type="file"
-										name="name"
+										name="image"
 										multiple
 										className={`form-control ${classes.productImage}`}
 										ref={ImageRef}

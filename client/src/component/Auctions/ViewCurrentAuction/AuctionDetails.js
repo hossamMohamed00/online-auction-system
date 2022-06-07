@@ -6,9 +6,11 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data}) => {
-	const AuctionDate = data && data.endDate;
+	const AuctionDate = (data && data.status === 'ongoing') ? data.endDate : data.startDate
+	// const AuctionStartDate = data && data.startDate;
+
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
-	// console.log(data && data)
+
 	return (
 		<Fragment>
 			{data && (
@@ -86,11 +88,15 @@ const AuctionDetails = ({ data}) => {
 							</div>
 							<div className={classes.hrRight}></div>
 
-							{/* show when auction not end  */}
+							{/* show when auction not end and ongoing */}
 							<div>
-								<h6 className="fw-bold  text-light"> Auction Will End In </h6>
+								{data && data.status ==='ongoing' ?
+									<h6 className="fw-bold  text-light"> Auction Will End In </h6>
+									:
+									<h6 className="fw-bold  text-light"> Auction Will Start In </h6>
+								}
 								<span className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}>
-									{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}{' '}
+									{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
 								</span>
 							</div>
 

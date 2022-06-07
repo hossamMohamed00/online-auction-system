@@ -23,7 +23,7 @@ const Bidders =({roomData}) => {
 							className="px-1 rounded-circle bg-dark text-light p-1 mx-2 "
 						/>
 
-						<strong className="me-auto text-light "> {(biddersDetails['user'] && biddersDetails['user']['name']) || biddersDetails.userEmail} </strong>
+						<strong className="me-auto text-light "> {(biddersDetails['user'] && biddersDetails['user']['name']) || biddersDetails.email} </strong>
 
 					</div>
 				</div>

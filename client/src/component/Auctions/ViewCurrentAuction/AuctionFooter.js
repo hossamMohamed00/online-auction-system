@@ -26,7 +26,14 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	// set true when bidder is joined in auction
 	const [isJoined , setIsJoined] = useState(localStorage.getItem('BidderIsJoined'))
+	// confirmation join auction
+	const [ConfirmJoin , setConfirmJoin] = useState('')
+	const [BidNow , setBidsNow] = useState(false)
+
 	const [isExistErrorWhenJoinAuction , setIsExistErrorWhenJoinAuction] = useState(false)
+
+	// extend Auction Time In Seller
+	const [ExtendAuctionId  , setExtendAuctionId ]   = useState('')
 
 	const UpComingStatus = AuctionStatus === 'upcoming';
 	const OnGoingStatus = AuctionStatus === 'ongoing';
@@ -37,34 +44,33 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const { data, sendRequest, status } = useHttp(getSingleAuction);
 	const { sendRequest : sendRequestForJoinAuction , status:statusForJoinAuction , data:dataForJoinAuction , error:errorForJoinAuction } = useHttp(joinAuctionApi);
 
-	// start check if upcoming auction saved or not
-	const { sendRequest : sendRequestForSavedAuction , status:statusForSavedAuction , error:errorForSavedAuction } = useHttp(CheckIfAuctionSaved);
+	// start save auction api
+	const { sendRequest : sendRequestForIfSavedAuction , status:statusForIfSavedAuction , data: dataForIfSavedAuction ,error:errorForIfSavedAuction } = useHttp(CheckIfAuctionSaved);
 
 	useEffect(()=>{
-		if(UpComingStatus && role==='buyer'){
+		if(UpComingStatus && role === 'buyer' && AuctionId){
 			const idToken = accessToken
 			const id = AuctionId
-			sendRequestForSavedAuction({idToken , id})
+			sendRequestForIfSavedAuction({idToken , id})
 		}
-
-	},[sendRequestForSavedAuction , UpComingStatus , role])
+	},[sendRequestForIfSavedAuction , UpComingStatus , role , AuctionId])
 
 	useEffect(()=>{
-		if(statusForSavedAuction === 'completed'){
+		if(statusForIfSavedAuction === 'completed'){
 			setBtnSavedValue('Saved')
 		}
-	},[statusForSavedAuction])
+	},[statusForIfSavedAuction])
 
 	useEffect(()=>{
-		if(statusForSavedAuction === 'error'){
+		if(statusForIfSavedAuction === 'error'){
 			setBtnSavedValue('Save Auction')
-			toast.error(errorForSavedAuction)
 		}
-	},[statusForSavedAuction])
+	},[statusForIfSavedAuction])
 
 	const btnSaved = btnSavedValue => {
 		setBtnSavedValue(btnSavedValue);
 	};
+
 	// end check if upcoming auction saved or not
 
 
@@ -78,14 +84,13 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	const role = useSelector(store => store.AuthData.role);
 	const url = 'http://localhost:8000';
 	const email = useSelector(store => store.AuthData.email);
-	console.log(email + ' ' + sellerEmail);
 
 	useEffect(() => {
 		if (status === 'completed') {
 			sendRequest({ AuctionId: AuctionId, idToken: accessToken });
+			window.reload()
 		}
 	}, [sendRequest]);
-
 
 
 	const approveHandler = () => {
@@ -125,17 +130,17 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	// start join auction handler
 	const joinAuctionHandler = (OnGoingStatus) =>{
 		setBidderIsBid(false)
-
-		// start send request to join auction
 		if(OnGoingStatus && !isJoined && accessToken){
-			console.log('join auction')
-			const idToken = accessToken
-			const id = AuctionId
-			sendRequestForJoinAuction({ idToken, id})
+			setModalShow(true)
+			setConfirmJoin(Math.random())
 		}
 		// start to place bid
-		else if(isJoined && OnGoingStatus){
+		if(isJoined && OnGoingStatus){
+			setRetreatModalTitle('')
+			setConfirmJoin('')
+
 			setBidderIsBid(true)
+			setBidsNow(true)
 			setModalShow(true)
 		}
 		else{
@@ -144,28 +149,43 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 	}
 
 	const LeaveAuctionHandler = () => {
+		setBidsNow(false)
 		setModalShow(true)
 		setRetreatModalTitle('Are You Sure You Want To RetreatFrom This Auction ? ')
 	}
 
 	const RetreatModelHandler = () => {
 		console.log('retreat')
-		socket.emit('retreat-auction' , {
+		socket.emit('leave-auction' , {
 			auctionId : AuctionId
 		})
-		socket.on('exception' , (data) => {
-			console.log(data)
-		})
-		// setRetreatModalTitle('')
+		localStorage.removeItem('BidderIsJoined')
+		setIsJoined(false)
 
+
+		socket.on('exception', data => {
+			localStorage.setItem('BidderIsJoined' , true)
+			setIsJoined(true)
+
+			setIsExistErrorWhenJoinAuction(data.message)
+			setModalShow(true)
+			const time = setTimeout(()=>{
+				setIsExistErrorWhenJoinAuction('')
+				if(modalShow){
+					setModalShow(false)
+				}
+			},[2000])
+			return () => time.clearTimeOut()
+		})
+		setModalShow(false)
+		setRetreatModalTitle('')
 	}
 
 	useEffect(()=>{
 		if(statusForJoinAuction === 'completed'){
+			setConfirmJoin('')
+			setModalShow(false)
 			toast.success(dataForJoinAuction.message)
-			toast.success(`We Will Block this Chair Cost ${chairCost} from Your Balance `)
-
-
 			localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
 
 			setIsJoined(localStorage.getItem('BidderIsJoined'))
@@ -175,6 +195,17 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 			toast.error(errorForJoinAuction)
 		}
 	},[statusForJoinAuction])
+
+	// if bidder accept block money from your wallet
+	const btnConfirmationHandler = () => {
+		// start send request to join auction
+					console.log('join auction')
+					console.log(isJoined)
+					const idToken = accessToken
+					const id = AuctionId
+					sendRequestForJoinAuction({ idToken, id})
+	}
+
 
 	useEffect(()=> {
 		if(isJoined){
@@ -215,9 +246,10 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		}
 	},[socket])
 	// end new Bid Listener
-
-
 	// end join auction handler
+
+	//  ************************  end Bidding Handler ****************************
+	// start seller Handler
 	// ! to be handled
 	const DeleteAuction = AuctionId => {
 		sendRequestForDelete({ AuctionId: AuctionId, accessToken });
@@ -232,34 +264,17 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 		}
 	};
 
+	const ExtendAuctionTimeModalHandler = (AuctionId) =>{
+		setExtendAuctionId(AuctionId)
+		setModalShow(true)
+	}
+
 	return (
 		<>
 			<ToastContainer theme="dark" />
 
-			{role === 'seller' && DeniedStatus && (
-				<div className=" bg-warning mt-3 p-3">
-					<h5 className=" text-black fw-bold">
-						Rejected because : {RejectionMessage}
-					</h5>
-					</div>
-					)}
-			{role === 'seller' && (
-				<div className="d-flex justify-content-evenly mt-3">
-					<button
-						className={`btn w-100 fw-bold btn-success`}
-						type="button"
-					>
-						Update
-					</button>
-					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
-						type="button"
-						onClick={() => setModalShow(true)}
-					>
-						delete
-					</button>
-				</div>
-			)}
+
+			{/* start buyer */}
 			{/* start when auction ongoing */}
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
 				<div className= {`${isJoined ? 'd-flex justify-content-around mt-3' : 'd-block' } `}>
@@ -335,7 +350,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 			{/* ******************** start seller Actions ******************** */}
 			{/*  start update Auction  */}
-			{role === 'seller' && sellerEmail === email && (
+			{role === 'seller' && sellerEmail === email && !OnGoingStatus && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
 						className={`btn w-100 fw-bold btn-success text-light`}
@@ -367,7 +382,19 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 					</h5>
 				</div>
 			)}
-			{/*  end denied Auction  */}
+			{/* start extend auction time */}
+					{/*  */}
+			{role === 'seller'  && !AuctionEndMessage && !UpComingStatus && OnGoingStatus &&(
+				<div className="d-flex justify-content-evenly mt-3">
+					<button
+						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+						type="button"
+						onClick={() => ExtendAuctionTimeModalHandler(AuctionId)}
+					>
+						Extend Auction Time
+					</button>
+				</div>
+			)}
 
 
 			<ModalUi
@@ -376,22 +403,32 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 				UpComingAuction={UpComingStatus}
 				btnReject={PendingStatus}
 				rejectHandler={rejectHandler}
-				btnRemove={() => DeleteAuction(AuctionId)}
 				btnSaved={btnSaved}
 				SavedAuctionId	= {AuctionId}
 
-				// start bidding
-				btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
+				btnRemove={() => DeleteAuction(AuctionId)}
+				btnExtendAuction = {ExtendAuctionId}
+
+				// *********** start bidding ************ //
+
+				// start join Auction
+					btnBiddingHandler = {(value)=> btnBiddingHandler(value)}
+					BidNow = {BidNow}
+					// if bidder accept block money from your wallet
+					btnConfirmationHandler = {btnConfirmationHandler}
+					ConfirmJoin = {ConfirmJoin && `We Will Block this Chair Cost ${chairCost} from Your Balance`}
+				// end join Auction
+
 				errorWhenJoinAuction = {isExistErrorWhenJoinAuction && isExistErrorWhenJoinAuction}
 				MinimumBidAllowed = {MinimumBidAllowed}
+				chairCost = {chairCost}
 
 				// start RetreatModal
 				RetreatModalTitle = {RetreatModalTitle}
 				RetreatModelHandler = {RetreatModelHandler}
 				// end RetreatModal
 
-
-				// end bidding
+			// *********** end bidding ************ //
 
 			/>
 		</>
