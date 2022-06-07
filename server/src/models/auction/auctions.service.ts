@@ -545,7 +545,6 @@ export class AuctionsService
 		if (isStartDateInPast) {
 			//* Set the start date to tomorrow
 			const tomorrow = HandleDateService.getTomorrowDate();
-			console.log(`tomorrow: ${tomorrow}`);
 
 			auctionStartDate = tomorrow;
 
@@ -913,7 +912,7 @@ export class AuctionsService
 		//? Check if the bidder is the winner
 		const auctionWinner = auction.winningBuyer;
 
-		if (bidder._id.toString() === auctionWinner._id.toString()) {
+		if (bidder._id.toString() === auctionWinner?._id.toString()) {
 			return {
 				success: false,
 				message:
@@ -921,16 +920,12 @@ export class AuctionsService
 			};
 		}
 
-		//? Filter auction bidders list
-		const bidders = auction.bidders.filter(bidderId => {
-			return bidderId.toString() !== bidder._id.toString();
+		//* Update the auction by pull the bidder from the bidders list
+		await this.auctionModel.findByIdAndUpdate(auction._id, {
+			$pull: {
+				bidders: bidder._id,
+			},
 		});
-
-		//* Update the auction
-		auction.bidders = bidders;
-
-		//* Save the auction
-		await auction.save();
 
 		//? Remove the auction from bidder joined auctions list
 		await this.buyerService.removeAuctionFromJoinedAuctions(

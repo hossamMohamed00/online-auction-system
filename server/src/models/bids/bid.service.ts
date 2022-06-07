@@ -144,7 +144,7 @@ export class BidService {
 			await this.auctionService.retreatBidderFromAuction(bidder, auctionId);
 
 		if (!result.success) {
-			this.logger.error('Bidder not retreated 🤷‍♂️');
+			this.logger.error('Cannot retreat you right now 🤷‍♂️');
 			throw new WsException(result.message);
 		}
 
