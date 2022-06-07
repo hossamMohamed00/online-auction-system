@@ -47,10 +47,16 @@ useEffect(() => {
 			path: '/seller-dashboard/viewAllAuctions',
 		},
 		{
+			title: 'Extension Time Request',
+			icon: faGavel,
+			path: '/seller-dashboard/ExtendAuctionTime',
+		},
+		{
 			title: 'Add New Auction',
 			icon: faGavel,
 			path: '/seller-dashboard/AddAuction',
 		},
+
 	];
 
 	const dropdownListPayment = [

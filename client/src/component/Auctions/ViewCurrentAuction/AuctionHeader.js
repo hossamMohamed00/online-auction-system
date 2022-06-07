@@ -11,7 +11,7 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , roomData }) {
 	const [isShownBidders, setIsShownBidders] = useState(false);
 
 
-	console.log(AuctionData && AuctionData.numOfBids)
+	console.log(roomData && roomData.numOfBids , roomData)
 
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
@@ -62,7 +62,7 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , roomData }) {
 					disabled= {(AuctionData && AuctionData['status']) === 'upcoming'}
 				>
 					<span className='position-relative'> Bids </span>
-					<span className={classes.numOfBids}> {AuctionData && AuctionData.numOfBids ? AuctionData.numOfBids : 0} </span>
+					<span className={classes.numOfBids}> {(roomData && roomData.bids ) ? roomData.bids.length  : (AuctionData && AuctionData.numOfBids ? AuctionData.numOfBids : 0) } </span>
 				</button>
 
 				<button
@@ -71,7 +71,7 @@ function AuctionHeader({ AuctionData , isShownBidsProp , socket , roomData }) {
 					disabled= {(AuctionData && AuctionData['status']) === 'upcoming'}
 				>
 					<span className='position-relative'> Bidders </span>
-					<span className={classes.numOfBids}> {AuctionData && AuctionData.bidders ? AuctionData.bidders.length : 0} </span>
+					<span className={classes.numOfBids}> {(roomData && roomData.bidders) ?  roomData.bidders.length  : (AuctionData && AuctionData.bidders ? AuctionData.bidders.length : 0)} </span>
 
 				</button>
 
