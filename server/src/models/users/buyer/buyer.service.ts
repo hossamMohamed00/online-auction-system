@@ -352,6 +352,23 @@ export class BuyerService {
 		return updatedBidder != null;
 	}
 
+	/**
+	 * Remove auction from bidders saved auctions list
+	 * @param auctionId
+	 */
+	public async removeAuctionFromSavedAuctions(auctionId: string) {
+		this.logger.debug(`Try to remove auction ${auctionId} from saved auctions for all bidders!`);
+		//* Remove auction from savedAuctions for all bidders
+		await this.buyerModel.updateMany(
+			{
+				savedAuctions: auctionId,
+			},
+			{
+				$pull: { savedAuctions: auctionId },
+			},
+		);
+	}
+
 	/*------------------------------*/
 	/* Review Functions Logic */
 
