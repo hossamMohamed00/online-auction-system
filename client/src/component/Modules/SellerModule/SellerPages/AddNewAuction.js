@@ -14,7 +14,6 @@ import useHttp from '../../../../CustomHooks/useHttp';
 
 import { toast, ToastContainer } from 'react-toastify';
 import { isBefore } from 'date-fns';
-import { useForm } from 'react-hook-form';
 
 const AddAuction = () => {
 	const [AddAuction, setAddAuction] = useState('');
@@ -59,30 +58,11 @@ const AddAuction = () => {
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
-
-	const ProductImagesHandler = e => {
-		const files = e.target.files;
-
-		setProductImages([...files])
-		console.log([...files])
-		// Storage.ref(`${}`)
-	// 	const ImagesFormat = []
-	// 	setProductImages(files)
-	// 	for(let i in files){
-	// 		if (Object.hasOwnProperty.call(files, i)) {
-	// 			ImagesFormat.push(
-	// 			{File : {'name' : files[i]['name'] , 'size' :files[i]['size'] , 'type' :files[i]['type']}}
-	// )
-	// 		}
-	// 	}
-	// 	console.log(ImagesFormat)
-	}
 	// const ProductImagesHandler = e => {
 	// 	const files = e.target.files;
 	// 	setProductImages([...files])
 
 	// }
-
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -133,12 +113,11 @@ const AddAuction = () => {
 
 		setPictures(tempArr);
 	};
+
 	// end handle upload image
 	const submitHandler = e => {
-		console.log(ProductImages)
 		e.preventDefault();
 		if (ValidateForm()) {
-			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
 			console.log({ pictures });
 			const AuctionDetails = {
 				title: TitleRef.current.value,
@@ -349,9 +328,9 @@ const AddAuction = () => {
 										ref={ImageRef}
 										onChange={handleImageUpload}
 									/>
-									{/* {ProductImageErrorMessage && (
+									{ProductImageErrorMessage && (
 										<p className="text-danger"> {ProductImageErrorMessage} </p>
-									)} */}
+									)}
 								</div>
 							</div>
 

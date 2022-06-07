@@ -3,19 +3,27 @@ const url = 'http://localhost:8000/seller/auction';
 export const AddNewAuctionAPI = async ({ AuctionDetails, idToken }) => {
 	const formData = new FormData();
 
+	//* Append auction details to form data
 	for (let dataKey in AuctionDetails) {
+		//* If dataKey is item so it is a nested object
 		if (dataKey === 'item') {
-			// append nested object
+			//* Loop over item object and append each key value pair to form data
 			for (let item in AuctionDetails[dataKey]) {
-				console.log('nested', item, AuctionDetails[dataKey][item]);
-				formData.append(`item[${item}]`, AuctionDetails[dataKey][item]);
+				//* If the key is image then append the images to form data as array
+				if (item === 'images') {
+					//* Loop over each image and append to form data
+					for (let i = 0; i < AuctionDetails[dataKey][item].length; i++) {
+						//* Append the images to form data as an array (NOTE: [] is required)
+						formData.append(`item[images][]`, AuctionDetails[dataKey][item][i]);
+					}
+				} else {
+					formData.append(`item[${item}]`, AuctionDetails[dataKey][item]);
+				}
 			}
 		} else {
 			formData.append(dataKey, AuctionDetails[dataKey]);
 		}
 	}
-
-	console.log({ formData: formData.entries() });
 
 	const response = await fetch(url, {
 		method: 'POST',
@@ -32,9 +40,7 @@ export const AddNewAuctionAPI = async ({ AuctionDetails, idToken }) => {
 	return data;
 };
 
-
-export const ExtendAuctionAi = async({AuctionId , idToken , ExtendData}) => {
-
+export const ExtendAuctionAi = async ({ AuctionId, idToken, ExtendData }) => {
 	const response = await fetch(
 		`http://localhost:8000/seller/auction/extend/${AuctionId}`,
 		{
@@ -53,18 +59,18 @@ export const ExtendAuctionAi = async({AuctionId , idToken , ExtendData}) => {
 	}
 };
 
-
-
-export const GetExtensionRequest = async (idToken) => {
-	const response = await fetch(`http://localhost:8000/seller/auction/extension-requests`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${idToken}`,
-			'Content-Type': 'application/json',
+export const GetExtensionRequest = async idToken => {
+	const response = await fetch(
+		`http://localhost:8000/seller/auction/extension-requests`,
+		{
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'Content-Type': 'application/json',
+			},
 		},
-	});
+	);
 	const data = await response.json();
-	console.log(data)
 	if (!response.ok) {
 		throw new Error(data.message);
 	}
