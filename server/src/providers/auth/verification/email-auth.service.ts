@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ResponseResult } from 'src/common/types';
-import { AuthConfigService } from 'src/config/auth/auth.config.service';
 import { UsersService } from 'src/models/users/shared-user/users.service';
 import EmailService from 'src/providers/mail/email.service';
-import { getEmailContent } from './content';
-import VerificationTokenPayload from './verificationTokenPayload.interface';
+import { getConfirmEmailContent } from './content';
+import { getResetPasswordEmailContent } from './content/forget-password-content';
 
 @Injectable()
-export class EmailConfirmationService {
+export class EmailAuthService {
 	private logger: Logger = new Logger('EmailConfirmationService 📨👌🏻');
 
 	//* Inject required services
@@ -24,13 +22,13 @@ export class EmailConfirmationService {
 	 */
 	async sendVerificationCode(name: string, email: string) {
 		//* Get 5 random numbers
-		const verificationCode = this.generateVerificationCode();
+		const verificationCode = this.generateRandomCode();
 
 		//* Save verification Code into user document
 		await this.usersService.handleNewVerificationCode(email, verificationCode);
 
 		//? Get the email content
-		const emailText = getEmailContent(name, verificationCode);
+		const emailText = getConfirmEmailContent(name, verificationCode);
 
 		//? Send the verification code
 		const emailStatus: boolean = await this.emailService.sendMail({
@@ -49,10 +47,46 @@ export class EmailConfirmationService {
 	}
 
 	/**
+	 * Send code to confirm user identity to reset password
+	 * @param name - user name
+	 * @param email - user email
+	 * @returns boolean
+	 */
+	async sendResetPasswordCode(name: string, email: string) {
+		//* Get 5 random numbers
+		const verificationCode = this.generateRandomCode();
+
+		//* Save verification Code into user document
+		await this.usersService.handleNewVerificationCode(email, verificationCode);
+
+		//? Get the email content
+		const emailText = getResetPasswordEmailContent(name, verificationCode);
+
+		//? Send the verification code
+		const emailStatus: boolean = await this.emailService.sendMail({
+			to: email,
+			subject: 'Online-Auction-System: Reset Password 🔑',
+			html: emailText,
+		});
+
+		if (emailStatus) {
+			this.logger.log('Reset password code sent 📨❤');
+			return true;
+		} else {
+			console.log({ emailStatus });
+
+			this.logger.log(
+				'Cannot sent verification code to reset password right now ❌😢',
+			);
+			return false;
+		}
+	}
+
+	/**
 	 * Mark the user email as confirmed
 	 * @param email - User email
 	 */
-	async confirmCode(
+	async confirmEmailVerificationCode(
 		email: string,
 		verificationCode: number,
 	): Promise<ResponseResult> {
@@ -113,14 +147,11 @@ export class EmailConfirmationService {
 	 * Generate 5 random numbers
 	 * @returns generated number
 	 */
-	private generateVerificationCode(): number {
+	private generateRandomCode(): number {
 		//* Generate 5 random number
 		const code: number = Math.floor(10000 + Math.random() * 90000);
 
-		this.logger.debug(
-			'Verification code generated to be used to confirm email address ✔, Code = ' +
-				code,
-		);
+		this.logger.debug('Verification code generated ✔, Code = ' + code);
 
 		return code;
 	}

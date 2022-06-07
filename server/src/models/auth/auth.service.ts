@@ -23,6 +23,7 @@ import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
 import { AvailableRolesForRegister } from '../users/shared-user/enums';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { ImageType } from 'src/common/types';
+import { EmailAuthService } from 'src/providers/auth';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
 		private readonly sellerModel: Model<SellerDocument>,
 		@InjectModel(Buyer.name)
 		private readonly buyerModel: Model<BuyerDocument>,
-
+		private readonly emailAuthService: EmailAuthService,
 		private readonly usersService: UsersService,
 		private readonly jwtService: JwtService,
 		private readonly authConfigService: AuthConfigService,
@@ -123,7 +124,7 @@ export class AuthService {
 	async login({ email, password }: LoginUserDto): Promise<TokensAndRole> {
 		//* Find the user
 		const user: UserDocument = await this.usersService.findByEmail(email);
-		if (!user) throw new NotFoundException('User not found ❌');
+		if (!user) throw new NotFoundException('Invalid username or password ❌');
 
 		//* Check if the user is blocked or not
 		if (user.isBlocked) {
@@ -134,12 +135,44 @@ export class AuthService {
 
 		//? Check if the password matches or not
 		const isMatch = await compare(password, user.password);
-		if (!isMatch) throw new NotFoundException('User not found ❌');
+		if (!isMatch)
+			throw new NotFoundException('Invalid username or password ❌');
 
 		//? Issue tokens, save refresh_token in db and save user
 		const tokens = await this.getTokensAndSaveUser(user);
 
 		return tokens;
+	}
+
+	/**
+	 * Find for the user by email and send the reset password link
+	 * @param email - user email
+	 */
+	async resetPassword(email: string) {
+		//* Find the user
+		const user: UserDocument = await this.usersService.findByEmail(email);
+		if (!user) {
+			return {
+				success: false,
+				message:
+					'If there is an account associated with that email, we will send you a link to reset your password.',
+			};
+		}
+
+		//* Send reset password link to the user
+		const result = await this.emailAuthService.sendResetPasswordCode(
+			user.name,
+			user.email,
+		);
+
+		if (!result)
+			throw new NotFoundException('Unable to reset password right now 😑');
+
+		return {
+			success: true,
+			message:
+				'If there is an account associated with that email, we will send you a link to reset your password.',
+		};
 	}
 
 	/**

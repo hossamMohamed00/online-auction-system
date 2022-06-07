@@ -1,1 +1,1 @@
-export * from './verification/email-confirmation.service';
+export * from './verification/email-auth.service';

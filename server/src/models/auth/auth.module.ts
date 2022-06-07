@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { AuthConfigModule } from 'src/config/auth/auth.config.module';
-import { EmailConfirmationModule } from 'src/providers/auth/verification/email-confirmation.module';
+import { EmailAuthModule } from 'src/providers/auth/verification/email-auth.module';
 import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
 import { WalletModule } from 'src/providers/payment/wallet.module';
 import { UsersModule } from '../users/shared-user/users.module';
@@ -16,7 +16,7 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 		AuthConfigModule,
 		UsersModule,
 		PassportModule,
-		EmailConfirmationModule,
+		EmailAuthModule,
 		WalletModule,
 		JwtModule.register({}),
 		CloudinaryModule,

@@ -6,7 +6,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { EmailSchedulingService } from './providers/schedule/mail/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
-import { EmailConfirmationModule } from './providers/auth/verification/email-confirmation.module';
+import { EmailAuthModule } from './providers/auth/verification/email-auth.module';
 import { ChatModule } from './models/chat/chat.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
@@ -63,7 +63,7 @@ import { BidModule } from './models/bids/bid.module';
 
 		//? Email module
 		EmailModule,
-		EmailConfirmationModule,
+		EmailAuthModule,
 		/*
 		? Enable task schedule
 		 * The ScheduleModule.forRoot method initializes the scheduler.

@@ -1,6 +1,6 @@
 /* cSpell:disable */
 
-export const getEmailContent = (
+export const getResetPasswordEmailContent = (
 	name: string,
 	verificationCode: number,
 ): string => {
