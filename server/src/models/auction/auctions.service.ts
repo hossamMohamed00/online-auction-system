@@ -1140,6 +1140,7 @@ export class AuctionsService
 			minimumBidAllowed,
 			numOfBids,
 			winningBuyer,
+			endDate,
 		} = auctionDetails;
 
 		return {
@@ -1149,6 +1150,7 @@ export class AuctionsService
 			bidIncrement,
 			minimumBidAllowed,
 			numOfBids,
+			endDate,
 			winningBuyer: {
 				_id: winningBuyer?._id,
 				name: winningBuyer?.name,
