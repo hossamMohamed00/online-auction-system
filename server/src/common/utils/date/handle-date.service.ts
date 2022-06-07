@@ -104,7 +104,9 @@ export class HandleDateService {
 	 * @returns new date (end date + delay)
 	 */
 	public static appendDelayToDate(endDate: Date) {
-		return moment(endDate).add(this.dateDelayInMinuets, 'minutes').toDate();
+		//* TODO: Get it back to valid period
+		// return moment(endDate).add(this.dateDelayInMinuets, 'minutes').toDate();
+		return moment(endDate).add('1', 'minute').toDate();
 	}
 
 	/**

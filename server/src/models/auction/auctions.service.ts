@@ -57,7 +57,7 @@ export class AuctionsService
 		private readonly itemService: ItemService,
 		@Inject(forwardRef(() => CategoryService))
 		private readonly categoryService: CategoryService,
-		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		private readonly auctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
 	) {}
 
@@ -572,7 +572,7 @@ export class AuctionsService
 		);
 
 		//? Schedule the auction to run in start date automatically
-		this.startAuctionSchedulingService.addCronJobForStartAuction(
+		this.auctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
 		);
@@ -1102,6 +1102,14 @@ export class AuctionsService
 			{
 				new: true,
 			},
+		);
+
+		//* Remove current cron job and create new one for the new end date
+		this.auctionSchedulingService.deleteCron(auctionId);
+
+		this.auctionSchedulingService.addCronJobForEndAuction(
+			auctionId,
+			newEndDate,
 		);
 
 		this.logger.debug(
