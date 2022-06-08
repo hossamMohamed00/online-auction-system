@@ -93,9 +93,18 @@ export class BuyerService {
 		}
 
 		//* Find the buyer and update his data
-		const buyer = await this.buyerModel.findByIdAndUpdate(buyerId, {
-			...updateBuyerDto,
-		});
+		const buyer = await this.buyerModel.findById(buyerId);
+
+		if (!buyer) {
+			throw new BadRequestException('No Bidder With That Id ❌');
+		}
+
+		//* Update buyer data
+		const updatesKeys = Object.keys(updateBuyerDto);
+		updatesKeys.forEach(update => (buyer[update] = updateBuyerDto[update]));
+
+		//* Save updated buyer
+		await buyer.save();
 
 		//? Remove old image if there was one
 		if (imageUpdated && buyer.image) {
@@ -357,7 +366,9 @@ export class BuyerService {
 	 * @param auctionId
 	 */
 	public async removeAuctionFromSavedAuctions(auctionId: string) {
-		this.logger.debug(`Try to remove auction ${auctionId} from saved auctions for all bidders!`);
+		this.logger.debug(
+			`Try to remove auction ${auctionId} from saved auctions for all bidders!`,
+		);
 		//* Remove auction from savedAuctions for all bidders
 		await this.buyerModel.updateMany(
 			{

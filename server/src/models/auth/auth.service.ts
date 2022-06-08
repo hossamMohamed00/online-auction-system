@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/shared-user/users.service';
 import { JwtPayload } from './types/jwt-payload.type';
 import { compare, hash } from 'bcryptjs';
-import { LoginUserDto, RegisterUserDto } from '../auth/dto';
+import { LoginUserDto, RegisterUserDto, ResetPasswordDto } from '../auth/dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TokensAndRole } from './types';
@@ -148,7 +148,7 @@ export class AuthService {
 	 * Find for the user by email and send the reset password link
 	 * @param email - user email
 	 */
-	async resetPassword(email: string) {
+	async resetPasswordRequest(email: string) {
 		//* Find the user
 		const user: UserDocument = await this.usersService.findByEmail(email);
 		if (!user) {
@@ -172,6 +172,34 @@ export class AuthService {
 			success: true,
 			message:
 				'If there is an account associated with that email, we will send you a link to reset your password.',
+		};
+	}
+
+	/**
+	 * Reset user's password
+	 * @param resetPasswordDto
+	 */
+	async resetPassword({
+		email,
+		verificationCode,
+		password: newPassword,
+	}: ResetPasswordDto) {
+		//* Find the user by email and verification code and update the password
+		const isReset: boolean = await this.usersService.resetUserPassword(
+			email,
+			verificationCode,
+			newPassword,
+		);
+
+		if (!isReset) {
+			throw new NotFoundException(
+				'Unable to reset password of your account 😑',
+			);
+		}
+
+		return {
+			success: true,
+			message: 'Your password has been reset successfully 💙',
 		};
 	}
 

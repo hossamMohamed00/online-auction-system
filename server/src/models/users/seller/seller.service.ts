@@ -99,9 +99,18 @@ export class SellerService {
 		}
 
 		//* Find the seller and update his data
-		const seller = await this.sellerModel.findByIdAndUpdate(sellerId, {
-			...updateSellerDto,
-		});
+		const seller = await this.sellerModel.findById(sellerId);
+
+		if (!seller) {
+			throw new BadRequestException('No Seller With That Id ❌');
+		}
+
+		//* Update seller data
+		const updatesKeys = Object.keys(updateSellerDto);
+		updatesKeys.forEach(update => (seller[update] = updateSellerDto[update]));
+
+		//* Save updated seller
+		await seller.save();
 
 		//? Remove old image if there was one
 		if (imageUpdated && seller.image) {

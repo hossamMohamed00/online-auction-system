@@ -1,20 +1,20 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { IsPublicRoute } from 'src/common/decorators';
-import { ConfirmEmailDto, ResendVerificationCodeDto } from './dto';
+import { ConfirmVerificationCodeDto, ResendVerificationCodeDto } from './dto';
 import { EmailAuthService } from './email-auth.service';
 
-@Controller('email-confirmation')
+@Controller()
 export class EmailAuthController {
-	constructor(
-		private readonly emailConfirmationService: EmailAuthService,
-	) {}
+	constructor(private readonly emailAuthService: EmailAuthService) {}
 
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.OK)
-	@Post('confirm')
-	async confirm(@Body() { verificationCode, email }: ConfirmEmailDto) {
+	@Post('email-confirmation/confirm')
+	async confirm(
+		@Body() { verificationCode, email }: ConfirmVerificationCodeDto,
+	) {
 		//* Confirm the email
-		return await this.emailConfirmationService.confirmEmailVerificationCode(
+		return await this.emailAuthService.confirmEmailVerificationCode(
 			email,
 			verificationCode,
 		);
@@ -22,8 +22,22 @@ export class EmailAuthController {
 
 	@IsPublicRoute()
 	@HttpCode(HttpStatus.OK)
-	@Post('resend-confirmation-link')
+	@Post('email-confirmation/resend-confirmation-link')
 	async resendConfirmationCode(@Body() { email }: ResendVerificationCodeDto) {
-		return await this.emailConfirmationService.resendConfirmationCode(email);
+		return await this.emailAuthService.resendConfirmationCode(email);
+	}
+
+	/*-------------------*/
+	@IsPublicRoute()
+	@HttpCode(HttpStatus.OK)
+	@Post('reset-password/confirm-code')
+	async confirmResetPasswordCode(
+		@Body() { verificationCode, email }: ConfirmVerificationCodeDto,
+	) {
+		//* Confirm reset password code
+		return await this.emailAuthService.confirmResetPasswordCode(
+			email,
+			verificationCode,
+		);
 	}
 }

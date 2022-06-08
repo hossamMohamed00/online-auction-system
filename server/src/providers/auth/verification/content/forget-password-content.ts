@@ -8,10 +8,9 @@ export const getResetPasswordEmailContent = (
 		<!DOCTYPE html>
 		<html>
 		<head>
-
 			<meta charset="utf-8">
 			<meta http-equiv="x-ua-compatible" content="ie=edge">
-			<title>Email Confirmation</title>
+			<title>Reset Password</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<style type="text/css">
 			/**
@@ -96,7 +95,9 @@ export const getResetPasswordEmailContent = (
 			}
 
 			a {
-				color: #1a82e2;
+				color: #001F3D;
+				font-weight: bold;
+				text-decoration: none
 			}
 
 			img {
@@ -131,8 +132,8 @@ export const getResetPasswordEmailContent = (
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 							<tr>
 								<td align="center" valign="top" style="padding: 36px 24px;">
-									<h1>Online Auction System</h1>
-									<h3>Email Confirmation 📨</h3>
+									<h1 style="color: #001F3D">Online Auction System</h1>
+									<h3 style="color: #001F3D">Reset password Confirmation 📨</h3>
 									</a>
 								</td>
 							</tr>
@@ -155,7 +156,7 @@ export const getResetPasswordEmailContent = (
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 							<tr>
 								<td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-									<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Confirm Your Email Address</h1>
+									<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px; color: #001F3D">Reset Password</h1>
 								</td>
 							</tr>
 						</table>
@@ -180,9 +181,9 @@ export const getResetPasswordEmailContent = (
 
 							<!-- start copy -->
 							<tr>
-								<td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+								<td align="left" bgcolor="#ffffff" style="padding: 24px 24px 0 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
 								<p style="margin: 0;">Hello ${name} 👋🏻</p>
-								<p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="http://localhost:3000/">Online Auction System</a>, you can safely delete this email.</p>
+								<p style="margin: 0;"> Did you forget your password? No problem!This code below to reset your password. If you didn't request to reset your password with <a href="http://localhost:3000/">Online Auction System</a>, you can safely delete this email.</p>
 								</td>
 							</tr>
 							<!-- end copy -->
@@ -192,14 +193,18 @@ export const getResetPasswordEmailContent = (
 								<td align="left" bgcolor="#ffffff">
 									<table border="0" cellpadding="0" cellspacing="0" width="100%">
 										<tr>
-											<td align="center" bgcolor="#ffffff" style="padding: 12px;">
+											<td align="center" bgcolor="#ffffff" >
 												<table border="0" cellpadding="0" cellspacing="0">
 													<tr>
-														<td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-															<h3 style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">${verificationCode}</h3>
+														<td align="center" bgcolor="#1a82e2" style="border-radius: 6px; background: none;">
+															<h3 style=" padding: 15px ; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 15px;background-color: #001F3D; width: fit-content;">${verificationCode}</h3>
 														</td>
-														<td>Verify your email now, by copy the code and paste in the website 📨🤘🏻</td>
 													</tr>
+													<tr>
+
+														<td style="padding-left: 15px;">Reset your password now, by copy the code and paste in the website 📨🤘🏻</td>
+													</tr>
+
 												</table>
 											</td>
 										</tr>
@@ -239,7 +244,7 @@ export const getResetPasswordEmailContent = (
 							<!-- start permission -->
 							<tr>
 								<td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-									<p style="margin: 0;">You received this email because we received a request for register in our website with that email. If you didn't request that you can safely delete this email.</p>
+									<p style="margin: 0;">You received this email because we received a request for reset your password with that email</p> If you didn't request that you can safely delete this email.</p>
 								</td>
 							</tr>
 							<!-- end permission -->

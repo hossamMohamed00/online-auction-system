@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsEmail } from 'class-validator';
 
-export class ConfirmEmailDto {
+export class ConfirmVerificationCodeDto {
 	@IsNumber()
 	@IsNotEmpty()
 	verificationCode: number;
@@ -10,4 +10,4 @@ export class ConfirmEmailDto {
 	email: string;
 }
 
-export default ConfirmEmailDto;
+export default ConfirmVerificationCodeDto;

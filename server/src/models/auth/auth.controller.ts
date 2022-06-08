@@ -4,12 +4,18 @@ import {
 	Get,
 	HttpCode,
 	HttpStatus,
+	Patch,
 	Post,
 	Request,
 	UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { LoginUserDto, RegisterUserDto, ResetPasswordDto } from './dto';
+import {
+	LoginUserDto,
+	RegisterUserDto,
+	ResetPasswordDto,
+	ResetPasswordRequestDto,
+} from './dto';
 import { AuthService } from './auth.service';
 import {
 	GetCurrentUserData,
@@ -50,10 +56,10 @@ export class AuthController {
 		const tokens = await this.authService.register(registerUserDto);
 
 		//? Send confirmation email
-		await this.emailAuthService.sendVerificationCode(
-			registerUserDto.name,
-			registerUserDto.email,
-		);
+		// await this.emailAuthService.sendVerificationCode(
+		// 	registerUserDto.name,
+		// 	registerUserDto.email,
+		// );
 
 		return tokens;
 	}
@@ -75,8 +81,15 @@ export class AuthController {
 	@ApiBody({})
 	@HttpCode(HttpStatus.OK)
 	@Post('reset-password')
-	async resetPassword(@Body() { email }: ResetPasswordDto) {
-		return this.authService.resetPassword(email);
+	async resetPasswordRequest(@Body() { email }: ResetPasswordRequestDto) {
+		return this.authService.resetPasswordRequest(email);
+	}
+
+	@IsPublicRoute()
+	@HttpCode(HttpStatus.OK)
+	@Patch('reset-password')
+	async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+		return this.authService.resetPassword(resetPasswordDto);
 	}
 
 	/**

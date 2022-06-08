@@ -142,6 +142,30 @@ export class EmailAuthService {
 		}
 	}
 
+	/*-----------*/
+	/**
+	 * Validate the verification code of reset password
+	 * @param email - user email
+	 * @param verificationCode - user verification code
+	 * @returns  boolean
+	 */
+	async confirmResetPasswordCode(email: string, verificationCode: number) {
+		//* Get the user by email
+		const user = await this.usersService.findByEmail(email);
+
+		//* Check if the verification code is correct
+		if (user.emailVerificationCode !== verificationCode) {
+			throw new BadRequestException('Invalid verification code 🙄');
+		}
+
+		this.logger.log('Reset password code is correct 😍');
+
+		return {
+			success: true,
+			message: 'Valid code, enter your new password to save it 🧡',
+		};
+	}
+
 	/*----*/
 	/**
 	 * Generate 5 random numbers
