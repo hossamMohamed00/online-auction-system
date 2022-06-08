@@ -86,6 +86,24 @@ export class UsersService {
 	}
 
 	/**
+	 * Set the isPhoneNumberConfirmed to true
+	 * @param email
+	 */
+	async markPhoneNumberAsConfirmed(userId: string) {
+		const user = await this.usersModel.findByIdAndUpdate(
+			userId,
+			{ isPhoneNumberConfirmed: true },
+			{ new: true },
+		);
+
+		if (!user) {
+			throw new BadRequestException('User not found ❌');
+		}
+
+		return true;
+	}
+
+	/**
 	 * Reset user password
 	 * @param email - user email
 	 * @param verificationCode - generated verification code

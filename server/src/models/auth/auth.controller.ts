@@ -26,8 +26,8 @@ import { RefreshTokenAuthGuard } from '../../common/guards';
 import { TokensAndRole } from './types';
 import { Serialize } from 'src/common/interceptors';
 import { UserDto } from '../users/shared-user/dto';
-import { EmailAuthService } from 'src/providers/mail/email-auth';
 import { FormDataRequest } from 'nestjs-form-data';
+import { EmailAuthService } from 'src/providers/mail';
 
 /**
  * These endpoints responsible for user authentication
