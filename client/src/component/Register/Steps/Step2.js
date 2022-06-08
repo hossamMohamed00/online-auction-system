@@ -2,19 +2,30 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
 import Buttons from '../UI/Prev&NxtButtons/Buttons';
+import RadioButton from '../UI/RadioButtons/RadioButton'
 import classes from './Steps.module.css';
 
 const Step2 = () => {
 	let phoneNum = useSelector(store => store.userDetails.step2Details.phoneNum);
 
+	let isAcceptant;
 	const phoneNumRef = useRef();
+
+	const getAcceptantValue = value => {
+		isAcceptant = value;
+	};
 
 	const dispatch = useDispatch();
 
 	const submitStep2Handler = () => {
-			dispatch(AuthActions.setStep2Details({ phoneNum: phoneNumRef.current.value }))
+		if (isAcceptant === 'Yes') {
+			dispatch(
+				AuthActions.setStep2Details({ phoneNum: phoneNumRef.current.value }),
+			);
+		} else {
+			dispatch(AuthActions.setStep2Details({ phoneNum: 'not acceptant' }));
+		}
 	};
-
 	return (
 		<div className={`container ${classes.Steps} `}>
 			<h3> Account Setup</h3>
@@ -37,6 +48,19 @@ const Step2 = () => {
 					ref={phoneNumRef}
 				/>
 			</div>
+
+			{/* start Phone Confirmation */}
+			<p className={` ${classes['notification']} `}>
+				Use this phone number for Bidding?
+			</p>
+
+			<RadioButton
+				name="UsePhoneNum"
+				values={['Yes', 'No']}
+				getValue={getAcceptantValue}
+				changeValue={phoneNum ? 'Yes' : 'No'}
+			/>
+
 
 			<Buttons prev="Step1" nxt="Step3" onClick={submitStep2Handler} />
 		</div>
