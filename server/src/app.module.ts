@@ -27,11 +27,13 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 import { StripeConfigModule } from './config/stripe/stripe.config.module';
 import { AuctionSchedulingService } from './providers/schedule/auction/auction-scheduling.service';
 import { BidModule } from './models/bids/bid.module';
+import { AuctionEmailsModule } from './providers/mail/email-auction/auction-emails.module';
 
 @Module({
 	imports: [
 		//? Import sms module
 		SmsModule,
+
 		SocketModule,
 		//? Import stripe module
 		WalletModule,
@@ -67,6 +69,7 @@ import { BidModule } from './models/bids/bid.module';
 		//? Email module
 		EmailModule,
 		EmailAuthModule,
+		AuctionEmailsModule,
 		/*
 		? Enable task schedule
 		 * The ScheduleModule.forRoot method initializes the scheduler.

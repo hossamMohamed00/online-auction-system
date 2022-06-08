@@ -89,7 +89,7 @@ export class Auction {
 		ref: Category.name,
 		autopopulate: true,
 	})
-	category: Types.ObjectId;
+	category: Category;
 
 	@Prop({
 		type: [{ type: Types.ObjectId, ref: User.name, autopopulate: true }],
@@ -101,7 +101,7 @@ export class Auction {
 
 	//* To keep track of all bidders that should be notified when the auction start
 	@Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })
-	waitingBidders: [Types.ObjectId];
+	waitingBidders: Buyer[];
 }
 
 export const AuctionSchema = SchemaFactory.createForClass(Auction);

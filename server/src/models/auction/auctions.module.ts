@@ -16,6 +16,7 @@ import { WalletModule } from 'src/providers/payment/wallet.module';
 import { BiddingIncrementRules } from 'src/providers/bids';
 import { BuyerModule } from '../users/buyer/buyer.module';
 import { BuyerService } from '../users/buyer/buyer.service';
+import { AuctionEmailsModule } from 'src/providers/mail/email-auction/auction-emails.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { BuyerService } from '../users/buyer/buyer.service';
 		forwardRef(() => CategoryModule),
 		forwardRef(() => BuyerModule),
 		WalletModule,
+		AuctionEmailsModule,
 		MongooseModule.forFeatureAsync([
 			{
 				name: Auction.name,
@@ -43,7 +45,9 @@ import { BuyerService } from '../users/buyer/buyer.service';
 						logger.log('Removing the item related to that auction...🧺');
 
 						//* Remove the auction from the user's saved auctions
-						await buyerService.removeAuctionFromSavedAuctions(this._id.toString());
+						await buyerService.removeAuctionFromSavedAuctions(
+							this._id.toString(),
+						);
 					});
 
 					return schema;
