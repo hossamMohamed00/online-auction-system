@@ -1,3 +1,4 @@
+import { SmsModule } from './providers/mobile-sms/sms.module';
 import { SocketModule } from './providers/socket/socket.module';
 import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -29,6 +30,8 @@ import { BidModule } from './models/bids/bid.module';
 
 @Module({
 	imports: [
+		//? Import sms module
+		SmsModule,
 		SocketModule,
 		//? Import stripe module
 		WalletModule,

@@ -23,6 +23,12 @@ export class User {
 
 	@Prop({ default: null })
 	emailVerificationCode: number;
+	@Prop()
+	phoneNumber: string;
+
+	@Prop({ default: false })
+	isPhoneNumberConfirmed: boolean;
+
 
 	@Prop({ required: true, min: 3 })
 	password: string;
@@ -33,10 +39,7 @@ export class User {
 	@Prop()
 	nationalID: Number;
 
-	@Prop()
-	phoneNumber: Number;
-
-	@Prop()
+	@Prop({ minlength: 3, maxlength: 20 })
 	address: string;
 
 	@Prop({ required: false })
