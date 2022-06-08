@@ -13,6 +13,7 @@ const ViewAuctionDetails = props => {
 	const homePage = location.pathname === '/home-page';
 	const getAuctionDetails = (Items, animate) => {
 		return (
+			props.AuctionData &&
 			Items &&
 			Items.map((item, idx) => (
 				<Col key={idx} lg={props.lg && props.lg}>
@@ -99,7 +100,7 @@ const ViewAuctionDetails = props => {
 
 										<div className='mt-3 text-alert fw-bold'>
 											Winner Name :
-											<span className="fs-6 fw-bold text-alert ps-2"> {item['winningBuyer'] ? item['winningBuyer'] : ' No Winner'} </span>
+											<span className="fs-6 fw-bold text-alert ps-2"> {item['winningBuyer'] ? item['winningBuyer'].name : ' No Winner'} </span>
 										</div>
 
 								</>
@@ -139,7 +140,7 @@ const ViewAuctionDetails = props => {
 	return (
 		<div className={classes.CurrentAuctionsContent}>
 			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
-				{getAuctionDetails(props.AuctionData, props.animate)}
+				{props.AuctionData && getAuctionDetails(props.AuctionData, props.animate)}
 			</Row>
 		</div>
 	);

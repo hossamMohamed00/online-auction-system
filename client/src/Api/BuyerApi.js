@@ -21,8 +21,24 @@ export const getWalletTransactions = async idToken =>
 	getAPI(`${url}/wallet/transactions`, idToken);
 
 
-export const getJoinedAuctions = async idToken =>
-	getAPI(`${url}/buyer/auctions?populateField=joinedAuctions`, idToken);
+// export const getJoinedAuctions = async idToken =>
+// 	getAPI(, idToken);
+
+	export const getJoinedAuctions = async (idToken) => {
+		const response = await fetch(`${url}/buyer/auctions?populateField=joinedAuctions`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		const data = await response.json();
+		console.log(data)
+		if (!response.ok) {
+			throw new Error(data.message);
+		}
+		return data;
+	};
 
 export const SaveAuctionApi = async ({idToken , id}) => {
 	const response = await fetch(`${url}/buyer/auction/save/${id}`, {

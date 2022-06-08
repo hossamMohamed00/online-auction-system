@@ -174,7 +174,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 				if(modalShow){
 					setModalShow(false)
 				}
-			},[2000])
+			},[5000])
 			return () => time.clearTimeOut()
 		})
 		setModalShow(false)
@@ -183,16 +183,25 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 	useEffect(()=>{
 		if(statusForJoinAuction === 'completed'){
-			setConfirmJoin('')
-			setModalShow(false)
-			toast.success(dataForJoinAuction.message)
-			localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
+			if(role==='buyer') {
+				setConfirmJoin('')
+				setModalShow(false)
+				toast.success(dataForJoinAuction.message)
+				localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
 
-			setIsJoined(localStorage.getItem('BidderIsJoined'))
-			showBids(Math.random())
+				setIsJoined(localStorage.getItem('BidderIsJoined'))
+				showBids(Math.random())
+			}
+			else{
+				localStorage.removeItem('BidderIsJoined')
+				setIsJoined(false)
+			}
+
 		}
 		if(statusForJoinAuction === 'error'){
 			toast.error(errorForJoinAuction)
+			localStorage.removeItem('BidderIsJoined')
+				setIsJoined(false)
 		}
 	},[statusForJoinAuction])
 
@@ -208,7 +217,7 @@ function AuctionFooter({ AuctionStatus , sellerEmail, RejectionMessage , showBid
 
 
 	useEffect(()=> {
-		if(isJoined){
+		if(isJoined && role==='buyer' ){
 			showBids(Math.random())
 			setBidderJoin(Math.random())
 		}

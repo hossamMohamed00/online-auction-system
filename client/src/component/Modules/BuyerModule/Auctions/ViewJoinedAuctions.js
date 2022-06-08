@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect , useState} from 'react';
 
 import useHttp from '../../../../CustomHooks/useHttp';
 
@@ -12,15 +12,31 @@ import { getJoinedAuctions } from '../../../../Api/BuyerApi';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { useSelector } from 'react-redux';
+import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
+
+import moment from 'moment';
 
 const ViewJoinedAuctions_buyer = () => {
-	const { sendRequest, status, data } = useHttp(getJoinedAuctions);
+	const { sendRequest, status, data , error} = useHttp(getJoinedAuctions);
 
 	const idToken = useSelector(store=>store.AuthData.idToken)
 
 	useEffect(() => {
 		sendRequest(idToken);
 	}, [sendRequest]);
+
+	const [myAuctions, setMyAuctions] = useState([]);
+	useEffect(() => {
+		if (status === 'completed') {
+			//*Format dates
+			console.log(data.joinedAuctions)
+			setMyAuctions(data);
+		}
+		if(status === 'error'){
+			console.log(error)
+		}
+	}, [status]);
+
 
 	const columns = [
 		{
@@ -30,8 +46,18 @@ const ViewJoinedAuctions_buyer = () => {
 			center: true,
 		},
 		{
-			name: 'Base Price',
-			selector: row => row.basePrice,
+			name: 'Current Price ',
+			selector: row => row.currentPrice ? row.currentPrice : 0 ,
+			center: true,
+		},
+		{
+			name: 'Num Of Bids ',
+			selector: row => row.numOfBids,
+			center: true,
+		},
+		{
+			name: 'End Date',
+			selector: row => row.status!=='closed' ? moment(row.endDate).format('LLL') : 'Auction-Ended',
 			center: true,
 		},
 		{
@@ -40,64 +66,48 @@ const ViewJoinedAuctions_buyer = () => {
 			center: true,
 		},
 		{
-			name: 'Category',
-			// selector: row => row.category.name,
+			name: 'Winner',
+			selector: row => row.winningBuyer && row.winningBuyer.name ? row.winningBuyer.name : 'not Selected',
+			center: true,
+		},
+		{
+			name: 'Actions',
 			center: true,
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/categories?id=${props.category._id}`}>{props.category.name}</Link>
-					</span>
-				);
-			},
-		},
-		{
-			name: 'Winning Buyer',
-			selector: row => row.winningBuyer ? row.winningBuyer :  'not selected',
-			center: true,
-		},
-		{
-			name: 'Seller',
-			center: true,
-			cell: props => {
-				return (
-					<span className="text-info">
-						<Link to={`/sellerProfile?id=${props.seller._id}`}>{props.seller.name} </Link>
-					</span>
-				);
-			}
-		},
-		{
-			name: 'View Details',
-			cell: props => {
-				return (
-					<span className="text-info ">
-						<Link to={`/auctions?id=${props._id}`} >Auction Details</Link>
+						<Link to={`/auctions?id=${props._id}`}> {props.status!=='closed' ? 'Go To Auction Room'  : 'Auction Details' }</Link>
 					</span>
 				);
 			},
 		},
 	];
 
+//filter
+const items = myAuctions ? myAuctions.joinedAuctions : [];
+// const { filterFun, filteredItems } = useFilter(items, 'title');
+//end filter
 
-	return (
+return (
+	<React.Fragment>
 		<BuyerDashboardContent>
-			<PageContent className={classes.ParticipatingAuction}>
-				<PageHeader text="View Joined Auctions" />
-				<div className="p-0">
-					{data && status === 'completed'  && (
-							<DataTable
-								// selectableRows
-								columns={columns}
-								data={data.joinedAuctions}
-								theme="dark"
-								pagination
-							/>
-					)}
-				</div>
+			<PageContent>
+				<PageHeader text="My Auctions" showLink={false} />{' '}
+				{myAuctions && (
+					<DataTable
+						columns={columns}
+						data={items}
+						// subHeader
+						// subHeaderComponent={filterFun}
+						theme="dark"
+						pagination
+					/>
+				)}
 			</PageContent>
 		</BuyerDashboardContent>
-	);
+	</React.Fragment>
+);
+
 };
 
 export default ViewJoinedAuctions_buyer;

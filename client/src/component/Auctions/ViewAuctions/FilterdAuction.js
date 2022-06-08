@@ -21,7 +21,6 @@ function FilterdAuctions(props) {
 	}, [sendRequest]);
 
 	const CategoryList = data && data.map(Category => Category.name);
-	console.log('CategoryList', data && CategoryList);
 
 	let AuctionType, AuctionCategory;
 

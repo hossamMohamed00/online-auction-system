@@ -32,7 +32,7 @@ const ViewAllAuctions = () => {
 	useEffect(() => {
 		if (!FilterAuction) {
 			console.log('query1')
-			sendRequest('');
+			sendRequest();
 		} else{
 			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
 			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
