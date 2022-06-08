@@ -6,7 +6,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { EmailSchedulingService } from './providers/schedule/mail/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
-import { EmailAuthModule } from './providers/auth/verification/email-auth.module';
+import { EmailAuthModule } from './providers/mail/email-auth/verification/email-auth.module';
 import { ChatModule } from './models/chat/chat.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';

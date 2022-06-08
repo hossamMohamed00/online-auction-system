@@ -23,7 +23,7 @@ import { Buyer, BuyerDocument } from '../users/buyer/schema/buyer.schema';
 import { AvailableRolesForRegister } from '../users/shared-user/enums';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { ImageType } from 'src/common/types';
-import { EmailAuthService } from 'src/providers/auth';
+import { EmailAuthService } from 'src/providers/mail/email-auth';
 
 @Injectable()
 export class AuthService {
