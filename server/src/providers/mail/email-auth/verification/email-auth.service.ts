@@ -120,6 +120,13 @@ export class EmailAuthService {
 	public async resendConfirmationCode(email: string): Promise<ResponseResult> {
 		//? Ensure that the user email not already confirmed
 		const user = await this.usersService.findByEmail(email);
+
+		if (!user) {
+			throw new BadRequestException(
+				'If you are not registered, please register first 😃',
+			);
+		}
+
 		if (user?.isEmailConfirmed) {
 			throw new BadRequestException('Email already confirmed 🙄');
 		}
