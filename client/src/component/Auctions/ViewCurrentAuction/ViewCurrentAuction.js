@@ -107,7 +107,7 @@ const ViewCurrentAuction = React.memo(() => {
 	const AuctionData = data && status === 'completed' && data;
 	const ClosedAuction = AuctionData && AuctionData.status === 'closed';
 	return (
-		<>
+		<React.Fragment>
 			{AuctionData && (
 				// show when Auction Data is Found and loaded
 				<div className="container-fluid">
@@ -186,7 +186,7 @@ const ViewCurrentAuction = React.memo(() => {
 			)}
 			{/* // show when Auction Data is not Found */}
 			<NoData text="Auction Not Found " data={AuctionData} error={error} />
-		</>
+		</React.Fragment>
 	);
 });
 

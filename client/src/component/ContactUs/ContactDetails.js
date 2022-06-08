@@ -5,15 +5,31 @@ import {
 	faPhone,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // import style of Contact us
 import classes from './ContactDetails.module.css';
+import ModalUi from '../UI/Modal/modal';
 
 const ContactDetails = () => {
 	const role = useSelector(store => store.AuthData.role);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
+
+	const [ShowModal, setShowModal] = useState(false);
+	const redirectUserToHomePage = useNavigate()
+
+	const ChatPath = () => {
+		if (role === 'seller') {
+			return '/seller-dashboard/chat?email=Support@email.com';
+		}
+		if (role === 'buyer') {
+			return '/buyer-dashboard/chat?email=Support@email.com';
+		}
+		return '/';
+	};
+
 	return (
 		<React.Fragment>
 			<div className={` ${classes.ContactDetails} p-0`}>
@@ -37,24 +53,39 @@ const ContactDetails = () => {
 
 				<div
 					className={
-						role === 'seller' || role === 'buyer' ? 'd-block mt-2' : 'd-none'
+						role !== 'admin' || role !== 'employee' ? 'd-block mt-2' : 'd-none'
 					}
 				>
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />
 					<p> you can chat with Administrator</p>
-					<Link
-						className={`${classes.ChatNow} `}
-						to={`${
-							role === 'buyer'
-								? '/buyer-dashboard/chat?email=Support@email.com'
-								: '/seller-dashboard/chat?email=Support@email.com'
-						} `}
-					>
-						{' '}
-						Chat Now{' '}
-					</Link>
+					{!isLoggedIn ? (
+						<button
+							className={`${classes.btnChatNow} `}
+							onClick={() => setShowModal(true)}
+						>
+							Chat Now
+						</button>
+					) : (
+						<Link
+							className={`${classes.ChatNow} `}
+							to= {ChatPath()}
+						>
+							Chat Now
+						</Link>
+					)}
 				</div>
 			</div>
+			{/* start Modal when unauthorized user want to chat with agent */}
+			{ShowModal && (
+				<ModalUi
+					show={ShowModal}
+					onHide={() => setShowModal(false)}
+					title="Please Logged in First, before Chatting  "
+					btnName={'Log in'}
+					btnHandler={() => redirectUserToHomePage('/login')}
+				/>
+			)}
+			{/* end Modal when unauthorized user want to chat with agent */}
 		</React.Fragment>
 	);
 };

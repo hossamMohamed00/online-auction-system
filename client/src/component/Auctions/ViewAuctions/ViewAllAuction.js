@@ -104,7 +104,7 @@ const ViewAllAuctions = () => {
 						</div>
 
 					):
-					<div className='pt-3'>
+					<div className='pt-5'>
 						<NoData
 							text="No Auctions Now"
 						/>

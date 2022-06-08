@@ -46,8 +46,8 @@ const ViewJoinedAuctions_buyer = () => {
 			center: true,
 		},
 		{
-			name: 'Current Price ',
-			selector: row => row.currentPrice ? row.currentPrice : 0 ,
+			name: 'Last Bid ',
+			selector: row => row.currentBid ? row.currentBid : 0 ,
 			center: true,
 		},
 		{
