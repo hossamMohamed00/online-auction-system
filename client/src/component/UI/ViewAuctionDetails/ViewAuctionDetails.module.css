@@ -31,11 +31,10 @@
 	text-align: center;
 }
 
-
 .CardItemCategory > span {
 	font-size: 12px !important;
 	color: var(--paragraph-color);
-	padding-top: 10px!important;
+	padding-top: 10px !important;
 	/* text-indent: 10px; */
 }
 

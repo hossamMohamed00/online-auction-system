@@ -52,10 +52,7 @@ const AllComplaintsInSystem = () => {
 	}, [statusForGet]);
 	// handle ComplaintModal
 	const ComplaintHandler = (id, reason, status) => {
-		console.log({ id, reason, status });
-
 		setComplaintReason(reason && reason);
-		console.log({ complaintReason });
 
 		//* Display the modal
 		setIsShownComplaintModal(true);
@@ -79,7 +76,6 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				console.log(response);
 				return;
 			}
 		});
@@ -94,7 +90,6 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				console.log(response);
 				return;
 			}
 			toast.success('Deleted Successfully 💖🐱‍👤');
@@ -140,7 +135,6 @@ const AllComplaintsInSystem = () => {
 			center: true,
 			sortable: true,
 			cell: props => {
-				console.log(props);
 				return (
 					<span className="text-info">
 						{props.markedAsRead ? (

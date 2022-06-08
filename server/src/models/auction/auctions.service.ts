@@ -57,7 +57,7 @@ export class AuctionsService
 		private readonly itemService: ItemService,
 		@Inject(forwardRef(() => CategoryService))
 		private readonly categoryService: CategoryService,
-		private readonly startAuctionSchedulingService: AuctionSchedulingService,
+		private readonly auctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
 	) {}
 
@@ -545,7 +545,6 @@ export class AuctionsService
 		if (isStartDateInPast) {
 			//* Set the start date to tomorrow
 			const tomorrow = HandleDateService.getTomorrowDate();
-			console.log(`tomorrow: ${tomorrow}`);
 
 			auctionStartDate = tomorrow;
 
@@ -572,7 +571,7 @@ export class AuctionsService
 		);
 
 		//? Schedule the auction to run in start date automatically
-		this.startAuctionSchedulingService.addCronJobForStartAuction(
+		this.auctionSchedulingService.addCronJobForStartAuction(
 			approvedAuction._id,
 			approvedAuction.startDate,
 		);
@@ -913,7 +912,7 @@ export class AuctionsService
 		//? Check if the bidder is the winner
 		const auctionWinner = auction.winningBuyer;
 
-		if (bidder._id.toString() === auctionWinner._id.toString()) {
+		if (bidder._id.toString() === auctionWinner?._id.toString()) {
 			return {
 				success: false,
 				message:
@@ -921,16 +920,12 @@ export class AuctionsService
 			};
 		}
 
-		//? Filter auction bidders list
-		const bidders = auction.bidders.filter(bidderId => {
-			return bidderId.toString() !== bidder._id.toString();
+		//* Update the auction by pull the bidder from the bidders list
+		await this.auctionModel.findByIdAndUpdate(auction._id, {
+			$pull: {
+				bidders: bidder._id,
+			},
 		});
-
-		//* Update the auction
-		auction.bidders = bidders;
-
-		//* Save the auction
-		await auction.save();
 
 		//? Remove the auction from bidder joined auctions list
 		await this.buyerService.removeAuctionFromJoinedAuctions(
@@ -1061,6 +1056,68 @@ export class AuctionsService
 	}
 
 	/**
+	 * Check if the bid in the last minute in auction
+	 * @param auctionId
+	 * @param bidDate
+	 */
+	async handleIfBidInLastMinute(
+		auctionId: string,
+		bidDate: Date,
+	): Promise<ResponseResult> {
+		const auction = await this.auctionModel.findById(auctionId.toString());
+
+		if (!auction) {
+			return {
+				success: false,
+				message: 'Auction not found❌',
+			};
+		}
+
+		const isInLastMinute = HandleDateService.isInLastMinute(
+			bidDate,
+			auction.endDate,
+		);
+
+		if (!isInLastMinute) {
+			return {
+				success: false,
+				message: 'Bid is not in last minute❌',
+			};
+		}
+
+		//* Append delay to auction endDate
+		const newEndDate = HandleDateService.appendDelayToDate(auction.endDate);
+
+		//* Update the auction
+		await this.auctionModel.findByIdAndUpdate(
+			auctionId,
+			{
+				endDate: newEndDate,
+			},
+			{
+				new: true,
+			},
+		);
+
+		//* Remove current cron job and create new one for the new end date
+		this.auctionSchedulingService.deleteCron(auctionId);
+
+		this.auctionSchedulingService.addCronJobForEndAuction(
+			auctionId,
+			newEndDate,
+		);
+
+		this.logger.debug(
+			`Incoming bid is in last minute, so delay added and new end date: ${newEndDate}`,
+		);
+
+		return {
+			success: true,
+			message: 'Auction delay appended successfully!!',
+		};
+	}
+
+	/**
 	 * Return some of auction details used to be displayed in bidding room
 	 * @param auctionId
 	 * @returns Auction details
@@ -1083,6 +1140,7 @@ export class AuctionsService
 			minimumBidAllowed,
 			numOfBids,
 			winningBuyer,
+			endDate,
 		} = auctionDetails;
 
 		return {
@@ -1092,6 +1150,7 @@ export class AuctionsService
 			bidIncrement,
 			minimumBidAllowed,
 			numOfBids,
+			endDate,
 			winningBuyer: {
 				_id: winningBuyer?._id,
 				name: winningBuyer?.name,
@@ -1143,7 +1202,7 @@ export class AuctionsService
 
 		const winnerBuyer = auction.winningBuyer;
 
-		bidders.forEach(async bidder => {
+		for (const bidder of bidders) {
 			//* Skip the winner
 			if (bidder._id.toString() == winnerBuyer?._id.toString()) {
 				this.logger.debug('Winner bidder, skipping...');
@@ -1151,7 +1210,7 @@ export class AuctionsService
 			}
 
 			await this.walletService.recoverAssuranceToBidder(bidder, assuranceValue);
-		});
+		}
 
 		return true;
 	}

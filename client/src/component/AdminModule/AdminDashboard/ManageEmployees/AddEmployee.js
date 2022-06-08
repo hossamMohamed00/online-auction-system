@@ -41,7 +41,6 @@ export default function AddEmployee() {
 		}).then(response => {
 			if (!response.ok) {
 				toast.error('Employee with that name already exists ❌');
-				console.log(response);
 
 				return;
 			}

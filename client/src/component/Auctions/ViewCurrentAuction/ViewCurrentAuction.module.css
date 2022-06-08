@@ -1,6 +1,5 @@
 .ViewCurrentAuction {
 	min-height: 100vh !important;
-
 }
 
 .ItemImage {
@@ -10,9 +9,9 @@
 	border-radius: 15px !important;
 }
 
-.ItemImage  img {
-	height: 40vh!important;
-	max-width: 80%!important;
+.ItemImage img {
+	height: 40vh !important;
+	max-width: 80% !important;
 	margin-left: 10%;
 	margin-top: 20px;
 }
@@ -22,7 +21,7 @@
 	border-left: 0.5px solid #3d3b3b96;
 	padding-top: 4vh;
 	padding-left: 3%;
-	position: relative!important;
+	position: relative !important;
 }
 
 /* start  AuctionHeader */
@@ -35,13 +34,13 @@
 }
 .AuctionHeader > button {
 	font-size: 15px;
-	margin: 2px 3px 0px 3px  ;
+	margin: 2px 3px 0px 3px;
 	color: var(--paragraph-color);
 	cursor: pointer;
 	transition: all 0.5;
 	padding: 5px 15px !important;
 }
-.AuctionHeader > button:nth-child(2){
+.AuctionHeader > button:nth-child(2) {
 	margin-right: 15px;
 }
 
@@ -60,7 +59,7 @@
 .AuctionHeader > button:focus {
 	box-shadow: none;
 }
-.numOfBids{
+.numOfBids {
 	font-size: 9px;
 	background-color: var(--alert-color);
 	padding: 1px 5px 1px 4px;
@@ -75,9 +74,9 @@
 /* end  AuctionHeader */
 /* ************************************************************ */
 
-
 /* start btns in footer */
-.btnPlaceBid , .btnPlaceBid_ {
+.btnPlaceBid,
+.btnPlaceBid_ {
 	background-color: #244273;
 	color: white;
 	position: absolute;
@@ -90,15 +89,14 @@
 	box-shadow: none !important;
 }
 
-.btnPlaceBid_{
+.btnPlaceBid_ {
 	width: 45% !important;
-
 }
-.btnJoinActive{
-	width: 90%!important;
+.btnJoinActive {
+	width: 90% !important;
 	background-color: var(--alert-color);
 }
-.btnLeaveBid{
+.btnLeaveBid {
 	position: absolute;
 	right: 15px;
 	font-size: 20px;
@@ -107,7 +105,6 @@
 	box-shadow: none !important;
 	background-color: #244273;
 	width: 45% !important;
-
 }
 
 .btnPlaceBid:hover {
@@ -132,29 +129,28 @@
 }
 /* end btns in footer */
 
-
 /* start all bids */
-.showBidsBtn:disabled , .showBiddersBtn:disabled{
-	background: none!important;
+.showBidsBtn:disabled,
+.showBiddersBtn:disabled {
+	background: none !important;
 }
-.BiddingDetails{
+.BiddingDetails {
 	background-color: #244273;
 	padding: 20px;
-	margin: 30px 5px 15px 5px ;
+	margin: 30px 5px 15px 5px;
 	text-align: center;
 	font-weight: bold;
 	border-radius: 10px;
 	width: 50%;
 }
-.BiddingDetails:first-of-type{
+.BiddingDetails:first-of-type {
 	background-color: var(--nav-color);
 }
 
-.BiddingDetails > h6{
+.BiddingDetails > h6 {
 	font-weight: bold;
-
 }
-.BiddingDetails > p{
+.BiddingDetails > p {
 	margin-bottom: 0;
 	padding-bottom: 0;
 }

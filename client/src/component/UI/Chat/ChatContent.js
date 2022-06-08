@@ -1,9 +1,8 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ChatContentUi from './ChatContentUi';
 
-function ChatContent({ socket,getChatWithEmail ,className }) {
-
+function ChatContent({ socket, getChatWithEmail, className }) {
 	const role = useSelector(store => store.AuthData.role);
 	const email = useSelector(store => store.AuthData.email);
 
@@ -18,9 +17,6 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 				socket.emit('new-message-to-Support', {
 					message: message,
 				});
-				// socket.on('new-message-to-Employee', data => {
-				// 	setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, message] : [data]);
-				// });
 			}
 			else {socket.emit('new-message-to-server', {
 				message: message,
@@ -52,44 +48,26 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 		}
 		// get chat history with this email
 		if (role === 'employee') {
-			console.log('Load chat history... ' , getChatWithEmail);
 			socket.emit('get-chat-history', {
-				with: getChatWithEmail	,
+				with: getChatWithEmail,
 			});
-
 		}
 	}, [getChatWithEmail]);
 	// end get chat history when reload
 
-
 	useEffect(() => {
 		// start get all chats to [seller or buyer]
-		// if(role!== 'employee'){
 
-			socket.on('new-message-to-client', data => {
-				setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
-			});
-				// get all chat history
-				socket.on('chat-history-to-client', data => {
-					setMessage(data && [...data]);
-				});
-				// socket.on('new-message-From-Employee', data => {
-				// 	setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
-				// });
+		socket.on('new-message-to-client', data => {
+			setMessage(prevState =>
+			prevState && prevState.length > 0 ? [...prevState, data] : [data],
+		);
 
-
-
-		// }
-		// end get all chats to [seller or buyer]
-
-		// ///////////////////////////////////////////////////
-
-		// start get all chats to employee
-		// if(role) {
-
-
-		// }
-		// end get all chats to employee
+		});
+		// get all chat history
+		socket.on('chat-history-to-client', data => {
+			setMessage(data && [...data]);
+		});
 
 	}, [socket]);
 
@@ -118,14 +96,18 @@ function ChatContent({ socket,getChatWithEmail ,className }) {
 						(data.message !== prevState[prevState.length -1].message  ? [...prevState, data] : [...prevState]) : [data]);
 			});
 
-
 		}
 	},[socket , role])
 
 
 
 	return (
-		<ChatContentUi Message={Message && Message} sendMessage={sendMessage} className={className} getChatWithEmail={getChatWithEmail}/>
+		<ChatContentUi
+			Message={Message && Message}
+			sendMessage={sendMessage}
+			className={className}
+			getChatWithEmail={getChatWithEmail}
+		/>
 	);
 }
 

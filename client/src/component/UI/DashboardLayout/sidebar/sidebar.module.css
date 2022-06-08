@@ -7,7 +7,7 @@
 	/* overflow-y: auto; */
 	z-index: 1000;
 	top: 0;
-	position: fixed!important;
+	position: fixed !important;
 }
 .logo {
 	background-color: #191c24;
@@ -71,13 +71,12 @@
 	color: white;
 }
 
-.username a{
-	text-decoration: none
+.username a {
+	text-decoration: none;
 }
 
 @media screen and (max-width: 991px) {
-
-.sidebar{
-	top: 52px;
-}
+	.sidebar {
+		top: 52px;
+	}
 }

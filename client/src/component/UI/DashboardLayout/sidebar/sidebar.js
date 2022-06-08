@@ -10,8 +10,6 @@ const Sidebar = props => {
 	let user = props.sidebarContent;
 	const userName = Object.keys(user)[0];
 
-
-
 	return (
 		<React.Fragment>
 			<div

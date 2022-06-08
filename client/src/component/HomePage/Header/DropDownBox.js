@@ -26,9 +26,9 @@ const DropDownBox = props => {
 			return '/adminDashboard';
 		} else if (role === 'buyer') {
 			return '/buyer-dashboard';
-		} else if(role === 'seller') {
+		} else if (role === 'seller') {
 			return '/seller-dashboard';
-		}else{
+		} else {
 			return '/employeeDashboard';
 		}
 	};
@@ -40,9 +40,8 @@ const DropDownBox = props => {
 		dispatch(AuthDataActions.logout());
 	};
 	const handleShownWallet = () => {
-		props.showWalletHandler(true)
-		console.log(props.showWalletHandler)
-	}
+		props.showWalletHandler(true);
+	};
 
 	const showAllLinks = (
 		<ul className={`list-group  d-md-block text-start`}>
@@ -55,19 +54,19 @@ const DropDownBox = props => {
 					Profile
 				</Link>
 			</li>
-			{(role === 'seller' || 'buyer') &&
-			<li>
-				<Link
-					to ={role==='buyer' ? '/buyer-dashboard/chargeWallet' : '/'}
-					className="px-1 text-light bg-none fw-bold text-decoration-none"
-					type='button'
-					// onClick={handleShownWallet}
-				>
-					<FontAwesomeIcon icon={faCartPlus} className="pe-2 text-primary" />
-					Wallet
-				</Link>
-			</li>
-			}
+			{(role === 'seller' || 'buyer') && (
+				<li>
+					<Link
+						to={role === 'buyer' ? '/buyer-dashboard/chargeWallet' : '/'}
+						className="px-1 text-light bg-none fw-bold text-decoration-none"
+						type="button"
+						// onClick={handleShownWallet}
+					>
+						<FontAwesomeIcon icon={faCartPlus} className="pe-2 text-primary" />
+						Wallet
+					</Link>
+				</li>
+			)}
 			<li>
 				<button
 					className="px-1 text-danger bg-none fw-bold "

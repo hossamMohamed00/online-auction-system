@@ -8,7 +8,7 @@ import HowBidCard from './HowBidCard';
 
 const CardDetails = ({ Title, Text, btnText, linkTo, CardStyle }) => {
 	return (
-		<HowBidCard className={CardStyle ? CardStyle : '' }>
+		<HowBidCard className={CardStyle ? CardStyle : ''}>
 			<div className={`${classes['card-content']} `}>
 				<h3 className={`${classes.Step} text-center `}> {Title}</h3>
 				<p

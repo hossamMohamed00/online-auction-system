@@ -15,7 +15,7 @@ export const AddReview = props => {
 	};
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const {status, sendRequest, error } = useHttp(AddReviewForSeller);
+	const { status, sendRequest, error } = useHttp(AddReviewForSeller);
 
 	const handleSubmit = e => {
 		e.preventDefault();

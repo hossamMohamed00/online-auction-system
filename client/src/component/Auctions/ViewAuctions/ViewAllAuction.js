@@ -26,7 +26,6 @@ const ViewAllAuctions = () => {
 
 	useEffect(() => {
 		if (!FilterAuction) {
-			console.log('query1')
 			sendRequest();
 		} else{
 			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
@@ -35,8 +34,7 @@ const ViewAllAuctions = () => {
 			sendRequest(queryParams);
 			}
 		}
-
-	}, [sendRequest, FilterAuction , FilterdDetails]);
+	}, [sendRequest, FilterAuction, FilterdDetails]);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -75,7 +73,6 @@ const ViewAllAuctions = () => {
 						filterHandler={filterHandler}
 						filter={FilterAuction}
 						clearFilter={() => setFilterAuction(false)}
-
 					/>
 				</Col>
 
@@ -102,12 +99,8 @@ const ViewAllAuctions = () => {
 							</div>
 
 							{data && status === 'completed' && (
-								<ViewAuctionDetails
-									AuctionData={data}
-									animate={false}
-								/>
+								<ViewAuctionDetails AuctionData={data} animate={false} />
 							)}
-
 						</div>
 
 					):

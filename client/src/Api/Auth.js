@@ -27,8 +27,6 @@ export const Register = async userDetails => {
 };
 
 export const Login = async userDetails => {
-	console.log(userDetails);
-
 	const response = await fetch(LoginUrl, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -42,7 +40,6 @@ export const Login = async userDetails => {
 	});
 	const data = await response.json();
 	if (!response.ok) {
-		console.log(data);
 		throw new Error(data.message);
 	}
 
@@ -50,8 +47,6 @@ export const Login = async userDetails => {
 };
 
 export const sendConfiramtion = async idToken => {
-	console.log(idToken);
-
 	const response = await fetch(ConfirmEmailUrl, {
 		method: 'POST',
 		body: JSON.stringify({

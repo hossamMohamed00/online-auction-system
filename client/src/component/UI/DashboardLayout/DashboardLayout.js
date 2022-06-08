@@ -39,7 +39,6 @@ const Wrapper = props => {
 			icon: faCreditCardAlt,
 		},
 	};
-	// console.log("role2" , role , props)
 	const sidebarEmployee = role === 'employee' && {
 		admin: { name: props.admin.name, path: '/employeeDashboard' },
 		profile: {

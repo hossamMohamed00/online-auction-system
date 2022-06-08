@@ -7,7 +7,12 @@ import DataTable from 'react-data-table-component';
 import AdminDashboard from '../home/adminDashboard';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
-import { faBan, faCircleExclamation, faCircleXmark, faGavel } from '@fortawesome/free-solid-svg-icons';
+import {
+	faBan,
+	faCircleExclamation,
+	faCircleXmark,
+	faGavel,
+} from '@fortawesome/free-solid-svg-icons';
 
 import BlockModal from '../../../UI/Modals/BlockModal';
 import WarnModal from '../../../UI/Modals/WarnModal';
@@ -16,24 +21,21 @@ import './users.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import JoinedAuctionModal from '../../../UI/Modals/ViewJoinedAuctions_buyer';
 
-
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const [isShownWarnModal , setIsShownWarnModal ] = useState(false)
-	const [isWarned , setIsWarned] = useState(false)
+	const [isShownWarnModal, setIsShownWarnModal] = useState(false);
+	const [isWarned, setIsWarned] = useState(false);
 
-	const [isShownBlockModal , setIsShownBlockModal ] = useState(false)
-	const [isBlocked , setIsBlocked] = useState(false)
+	const [isShownBlockModal, setIsShownBlockModal] = useState(false);
+	const [isBlocked, setIsBlocked] = useState(false);
 
-	const [isShownJoinAuctions , setIsShownJoinAuctions ] = useState(false)
-
-
+	const [isShownJoinAuctions, setIsShownJoinAuctions] = useState(false);
 
 	// reload users table when warn or block user
-	const [reload , setReload] = useState('')
+	const [reload, setReload] = useState('');
 
-	const [userId , setUserId ] = useState('')
+	const [userId, setUserId] = useState('');
 
 	const columns = [
 		{
@@ -55,40 +57,54 @@ const UsersPage = () => {
 			cell: props => {
 				return (
 					<div className="text-info btn-actions">
-						<button type='button' className='btn btn-warn my-2 px-1 text-light ' onClick={() => warnHandler(props._id , props.isWarned)}>
-							{props.isWarned ?
+						<button
+							type="button"
+							className="btn btn-warn my-2 px-1 text-light "
+							onClick={() => warnHandler(props._id, props.isWarned)}
+						>
+							{props.isWarned ? (
 								<>
-									<FontAwesomeIcon icon={faCircleXmark} className ="px-1" />
-									<span className='RemoveBadge'>Remove Warn </span>
+									<FontAwesomeIcon icon={faCircleXmark} className="px-1" />
+									<span className="RemoveBadge">Remove Warn </span>
 								</>
+							) : (
 								// btn show when user is not warned
-								:
 								<>
-									<FontAwesomeIcon icon={faCircleExclamation} className ="pe-1" />
+									<FontAwesomeIcon
+										icon={faCircleExclamation}
+										className="pe-1"
+									/>
 									Warn
 								</>
-							}
+							)}
 						</button>
-						<button type='button' className='btn bg-danger my-2 text-light btn-block ' onClick={() => blockHandler(props._id , props.isBlocked)}>
-							{props.isBlocked ?
+						<button
+							type="button"
+							className="btn bg-danger my-2 text-light btn-block "
+							onClick={() => blockHandler(props._id, props.isBlocked)}
+						>
+							{props.isBlocked ? (
 								<>
 									<FontAwesomeIcon icon={faCircleXmark} />
-									<span className='RemoveBadge'> UnBlock </span>
+									<span className="RemoveBadge"> UnBlock </span>
 								</>
+							) : (
 								// btn show when user is not Blocked
-								:
 								<>
-									<FontAwesomeIcon icon={faBan} className ="pe-1" />
+									<FontAwesomeIcon icon={faBan} className="pe-1" />
 									Block
 								</>
-							}
+							)}
 						</button>
 						<br></br>
-						<button type='button' className='btn btn-primary btn-joinAuction mb-2 mt-0 px-3' onClick={() => joinAuctionsHandler(props._id)}>
+						<button
+							type="button"
+							className="btn btn-primary btn-joinAuction mb-2 mt-0 px-3"
+							onClick={() => joinAuctionsHandler(props._id)}
+						>
 							<FontAwesomeIcon icon={faGavel} className="px-2 f-4" />
-							 	View Joined Auctions
+							View Joined Auctions
 						</button>
-
 					</div>
 				);
 			},
@@ -102,33 +118,30 @@ const UsersPage = () => {
 			idToken: idToken,
 			path: 'admin/users?role=buyer',
 		});
-	}, [sendRequest ,reload]);
-
+	}, [sendRequest, reload]);
 
 	// start warn handler
-	const warnHandler = (id,isWarned) => {
-		setUserId(id)
-		setIsShownWarnModal(true)
-		setIsWarned(isWarned)
-	}
+	const warnHandler = (id, isWarned) => {
+		setUserId(id);
+		setIsShownWarnModal(true);
+		setIsWarned(isWarned);
+	};
 	// end warn handler
 
-
 	// start block handler
-	const blockHandler = (id,isBlocked) => {
-		setUserId(id)
-		setIsShownBlockModal(true)
-		setIsBlocked(isBlocked)
-	}
+	const blockHandler = (id, isBlocked) => {
+		setUserId(id);
+		setIsShownBlockModal(true);
+		setIsBlocked(isBlocked);
+	};
 	// end block handler
 
-		// start block handler
-		const joinAuctionsHandler = (id) => {
-			setUserId(id)
-			setIsShownJoinAuctions(true)
-		}
-		// end block handler
-
+	// start block handler
+	const joinAuctionsHandler = id => {
+		setUserId(id);
+		setIsShownJoinAuctions(true);
+	};
+	// end block handler
 
 	//filter
 	const items = data ? data : [];
@@ -157,17 +170,38 @@ const UsersPage = () => {
 				</PageContent>
 
 				{/* start warn modal */}
-				{isShownWarnModal && <WarnModal id={userId} show={isShownWarnModal} onHide={()=>setIsShownWarnModal(false)} isWarned={isWarned} onReload= {(value)=>setReload(value)} /> }
+				{isShownWarnModal && (
+					<WarnModal
+						id={userId}
+						show={isShownWarnModal}
+						onHide={() => setIsShownWarnModal(false)}
+						isWarned={isWarned}
+						onReload={value => setReload(value)}
+					/>
+				)}
 				{/* end warn modal */}
 
 				{/* start Block modal */}
-				{isShownBlockModal && <BlockModal id={userId} show={isShownBlockModal} onHide={()=>setIsShownBlockModal(false)} isBlocked={isBlocked} onReload= {(value)=>setReload(value)} /> }
+				{isShownBlockModal && (
+					<BlockModal
+						id={userId}
+						show={isShownBlockModal}
+						onHide={() => setIsShownBlockModal(false)}
+						isBlocked={isBlocked}
+						onReload={value => setReload(value)}
+					/>
+				)}
 				{/* end Block modal */}
 
 				{/* start Block modal */}
-				{isShownJoinAuctions && <JoinedAuctionModal id={userId} show={isShownJoinAuctions} onHide={()=>setIsShownJoinAuctions(false)} /> }
+				{isShownJoinAuctions && (
+					<JoinedAuctionModal
+						id={userId}
+						show={isShownJoinAuctions}
+						onHide={() => setIsShownJoinAuctions(false)}
+					/>
+				)}
 				{/* end Block modal */}
-
 			</AdminDashboard>
 		</React.Fragment>
 	);

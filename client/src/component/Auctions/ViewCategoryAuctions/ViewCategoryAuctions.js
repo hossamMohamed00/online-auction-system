@@ -23,7 +23,6 @@ const ViewCategoryAuctions = () => {
 	const filteredData =
 		data &&
 		data.filter(item => item.status !== 'denied' && item.status !== 'pending');
-	console.log(filteredData && filteredData);
 	const FirstThreeItems = filteredData && filteredData.slice(0, 3);
 	const RestItems = filteredData && filteredData.slice(3);
 
@@ -39,11 +38,9 @@ const ViewCategoryAuctions = () => {
 	useEffect(() => {
 		sendRequest(CategoryId && CategoryId);
 	}, [sendRequest, changeCategory]);
-	console.log(data && data);
 
 	useEffect(() => {
 		if (status === 'completed') {
-			console.log(data, CategoryId);
 		}
 	}, [sendRequest, changeCategory]);
 	return (

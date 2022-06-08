@@ -1,3 +1,4 @@
+import { ResponseResult } from 'src/common/types';
 import { Bid } from 'src/models/bids/schema/bid.schema';
 import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 
@@ -28,6 +29,12 @@ export interface BiddingBehaviors {
 
 	//* Accept new bid in given auction and update all related auctions details
 	handleNewBid(auctionId: string, bid: Bid): Promise<boolean>;
+
+	//* Check if the bid in the last minute in as auction
+	handleIfBidInLastMinute(
+		auctionId: string,
+		bidDate: Date,
+	): Promise<ResponseResult>;
 
 	//* Return specific details about auctions to be emitted to client
 	getCurrentAuctionDetailsForBidding(auctionId: string): Promise<any>;

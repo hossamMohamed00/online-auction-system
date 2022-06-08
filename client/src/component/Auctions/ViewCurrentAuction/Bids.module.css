@@ -22,7 +22,7 @@
 	color: white;
 }
 
-.messageToClient{
+.messageToClient {
 	color: var(--alert-color);
 	font-weight: bold;
 	text-align: center;

@@ -47,7 +47,6 @@ const ExtendTimeRequests = () => {
 
 	// get request for all extend time requests
 	useEffect(() => {
-		console.log(idToken);
 		sendRequest(idToken);
 	}, [sendRequest, reload]);
 	const [requests, setRequests] = useState([]);
@@ -74,14 +73,12 @@ const ExtendTimeRequests = () => {
 	);
 
 	const showRejectModal = id => {
-		console.log('hiiiiiiiiiiiii');
 		setIsShownRejectModal(true);
 		setAuctionId(id);
 	};
 
 	// end modal
 	const approveHandler = id => {
-		console.log('Token is ', idToken);
 		sendRequestFoApprove({ idToken, id });
 		setReload(id);
 	};
@@ -130,7 +127,6 @@ const ExtendTimeRequests = () => {
 	}, [statusForApprove]);
 
 	useEffect(() => {
-		console.log(statusForReject);
 		if (!error && statusForReject === 'completed') {
 			toast.success('Extend time request rejected successfully');
 		} else {
@@ -201,7 +197,6 @@ const ExtendTimeRequests = () => {
 						<button
 							className="btn btn-danger  "
 							onClick={() => {
-								console.log('Clicked');
 								return showRejectModal(props._id);
 							}}
 						>

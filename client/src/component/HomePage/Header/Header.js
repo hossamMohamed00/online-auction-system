@@ -5,11 +5,10 @@ import classes from './Header.module.css';
 import Services from './Services';
 
 const Header = () => {
-
 	return (
 		<Fragment>
 			<div className="position-relative">
-				<Navbar start='im here' />
+				<Navbar start="im here" />
 				{/* start Header  */}
 				<div className={classes.Header}></div>
 

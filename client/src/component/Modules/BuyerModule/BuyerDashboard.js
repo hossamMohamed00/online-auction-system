@@ -8,7 +8,6 @@ import {
 	faGavel,
 } from '@fortawesome/free-solid-svg-icons';
 
-
 const BuyerDashboardContent = props => {
 	const email = localStorage.getItem('email');
 

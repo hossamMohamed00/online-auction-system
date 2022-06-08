@@ -28,7 +28,6 @@ const AddCategory = props => {
 		}).then(response => {
 			if (!response.ok) {
 				toast.error('Category with that name already exists ❌');
-				console.log(response);
 				setShowAddCategory(false);
 				return;
 			}

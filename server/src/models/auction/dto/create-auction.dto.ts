@@ -3,10 +3,8 @@ import {
 	IsDate,
 	IsMongoId,
 	IsNotEmpty,
-	IsNumber,
 	IsNumberString,
 	IsString,
-	Min,
 	ValidateNested,
 } from 'class-validator';
 import { ObjectId } from 'mongoose';
@@ -30,7 +28,6 @@ export class CreateAuctionDto {
 	@IsDate()
 	@Type(() => Date)
 	startDate: Date;
-
 	@IsMongoId()
 	category: ObjectId;
 }

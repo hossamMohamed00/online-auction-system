@@ -6,9 +6,7 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data}) => {
-	console.log(data)
 	const AuctionDate = (data && data.status === 'ongoing') ? data.endDate : data.startDate
-	// const AuctionStartDate = data && data.startDate;
 
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 	return (
@@ -16,7 +14,10 @@ const AuctionDetails = ({ data}) => {
 			{data && (
 				<div className={classes.AuctionDetails}>
 					<div className={classes.AuctionDetailsContent}>
-						<h3 className="pt-2 pb-2 text-light fw-bold text-center"> {data && data['title']} </h3>
+						<h3 className="pt-2 pb-2 text-light fw-bold text-center">
+							{' '}
+							{data && data['title']}{' '}
+						</h3>
 
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
@@ -28,11 +29,12 @@ const AuctionDetails = ({ data}) => {
 						<div className="w-75 mx-3 ">
 							<div className="pb-0">
 								<h6 className="fw-bold text-light d-inline-block">
-
 									Auction Status :
 								</h6>
 								<p
-									className={`d-inline-block px-2 fw-light ${classes.CreatorName} ${data.status==='closed' ? 'text-danger fw-bold' : ''} `}
+									className={`d-inline-block px-2 fw-light ${
+										classes.CreatorName
+									} ${data.status === 'closed' ? 'text-danger fw-bold' : ''} `}
 								>
 									{data.status}
 								</p>
@@ -78,8 +80,13 @@ const AuctionDetails = ({ data}) => {
 						</div>
 						<hr className="text-light mb-4 mt-2 "></hr>
 
-						<div className={ data && data.status!=='closed' ? 'd-flex justify-content-evenly w-100 text-center' : 'd-none'}>
-
+						<div
+							className={
+								data && data.status !== 'closed'
+									? 'd-flex justify-content-evenly w-100 text-center'
+									: 'd-none'
+							}
+						>
 							<div>
 								<h6 className="fw-bold text-light px-3"> Base Price </h6>
 								<span className={`ps-2 fs-6 fw-bold ${classes.MinimumBidValue}`}>
@@ -112,12 +119,16 @@ const AuctionDetails = ({ data}) => {
 						</div>
 
 						{/* start when auction ended */}
-						<div className={` ${classes.AuctionEndedStyle} ${data && data.status==='closed' ? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2 pt-3 rounded-3' : 'd-none'}`}>
+						<div
+							className={` ${classes.AuctionEndedStyle} ${
+								data && data.status === 'closed'
+									? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2 pt-3 rounded-3'
+									: 'd-none'
+							}`}
+						>
 							<h5 className="fw-bold  text-light"> Auction Ended </h5>
 						</div>
-
 					</div>
-
 				</div>
 			)}
 		</Fragment>

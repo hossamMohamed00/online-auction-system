@@ -88,7 +88,6 @@ const PendingAuctions = () => {
 	const items = pendingData ? pendingData : [];
 	const { filterFun, filteredItems } = useFilter(items, 'title');
 
-	console.log({ filteredItems });
 	//end filter
 	return (
 		<React.Fragment>

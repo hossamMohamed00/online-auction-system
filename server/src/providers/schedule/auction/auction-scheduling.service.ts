@@ -72,7 +72,7 @@ export class AuctionSchedulingService {
 		this.schedulerRegistry.addCronJob(auctionId, job);
 		job.start();
 
-		this.logger.warn(
+		this.logger.debug(
 			'New Cron Job added for end auction at ' + moment(endDate).format(),
 		);
 
@@ -163,7 +163,7 @@ export class AuctionSchedulingService {
 	 */
 	deleteCron(name: string) {
 		this.schedulerRegistry.deleteCronJob(name);
-		this.logger.warn(`Cron job of auction ${name} deleted!`);
+		this.logger.debug(`Cron job of auction ${name} deleted!`);
 	}
 }
 

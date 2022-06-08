@@ -12,7 +12,6 @@ const RegisterHeader = () => {
 
 	const stepActive = useSelector(store => store.RegisterSteps);
 	//let index = 0
-	//console.log(stepActive[`step${index+1}`] )
 
 	const HeaderContent = steps.map((item, index) => {
 		return (

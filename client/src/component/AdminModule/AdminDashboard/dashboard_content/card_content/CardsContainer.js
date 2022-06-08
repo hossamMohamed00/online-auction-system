@@ -33,7 +33,10 @@ export const CardsContainer = props => {
 								</Link>
 							)}
 							{card.handler && (
-								<button onClick={card.handler} className={`btn ${props.profile_btn}`}>
+								<button
+									onClick={card.handler}
+									className={`btn ${props.profile_btn}`}
+								>
 									<span className="text-right text-primary icon">
 										<FontAwesomeIcon icon={faArrowRight} />
 									</span>

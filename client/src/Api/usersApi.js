@@ -15,7 +15,7 @@ export const getUsers = async requestData => {
 	return data;
 };
 
-export const SubmitComplaintInSystem = async ( CompliantDetails ) => {
+export const SubmitComplaintInSystem = async CompliantDetails => {
 	const response = await fetch(`${url}/complaint/submit-on-system`, {
 		method: 'POST',
 		body: JSON.stringify(CompliantDetails),
@@ -27,4 +27,4 @@ export const SubmitComplaintInSystem = async ( CompliantDetails ) => {
 	if (!response.ok) {
 		throw new Error(data.message);
 	}
-}
+};

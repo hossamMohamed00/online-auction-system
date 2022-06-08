@@ -19,7 +19,7 @@ import moment from 'moment';
 const ViewJoinedAuctions_buyer = () => {
 	const { sendRequest, status, data , error} = useHttp(getJoinedAuctions);
 
-	const idToken = useSelector(store=>store.AuthData.idToken)
+	const idToken = useSelector(store => store.AuthData.idToken);
 
 	useEffect(() => {
 		sendRequest(idToken);
@@ -92,7 +92,7 @@ return (
 	<React.Fragment>
 		<BuyerDashboardContent>
 			<PageContent>
-				<PageHeader text="My Auctions" showLink={false} />{' '}
+				<PageHeader text="View Joined Auctions" showLink={false} />{' '}
 				{myAuctions && (
 					<DataTable
 						columns={columns}

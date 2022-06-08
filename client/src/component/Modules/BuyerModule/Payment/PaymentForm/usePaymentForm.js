@@ -22,11 +22,9 @@ const usePaymentForm = onReload => {
 		// We don't want to let default form submission happen here,
 		// which would refresh the page.
 		e.preventDefault();
-		console.log(amount);
 		if (!stripe || !elements) {
 			// Stripe.js has not yet loaded.
 			// Make sure to disable form submission until Stripe.js has loaded.
-			console.log('Stripe.js has not yet loaded.');
 			return;
 		}
 
@@ -46,7 +44,6 @@ const usePaymentForm = onReload => {
 		});
 
 		if (stripeError || !paymentMethod) {
-			console.log({ stripeError });
 			toast.error(stripeError.message);
 			return;
 		}
@@ -69,7 +66,6 @@ const usePaymentForm = onReload => {
 		).then(res => res.json());
 
 		if (success === false) {
-			console.log({ message });
 			toast.error({ message });
 			return;
 		}
@@ -79,8 +75,6 @@ const usePaymentForm = onReload => {
 			onReload(Math.random());
 			setLoading(false);
 		}
-
-		console.log('Charge wallet done successfully ✔✔✔, status is ' + message);
 
 		toast.success('You wallet balance updated ✔✔');
 	};

@@ -34,23 +34,19 @@ function Footer() {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [ShowModal, setShowModal] = useState(false);
-	const redirectUserToHomePage = useNavigate()
-
+	const redirectUserToHomePage = useNavigate();
 
 	const ChatPath = () => {
-		if(role==='seller'){
-			return '/seller-dashboard/chat?email=Support@email.com'
+		if (role === 'seller') {
+			return '/seller-dashboard/chat?email=Support@email.com';
 		}
-		if(role==='buyer') {
-			return '/buyer-dashboard/chat?email=Support@email.com'
+		if (role === 'buyer') {
+			return '/buyer-dashboard/chat?email=Support@email.com';
 		}
-		return '/'
-	}
+		return '/';
+	};
 
-	const HideContactChat = role === ('admin' || 'employee')
-
-
-
+	const HideContactChat = role === ('admin' || 'employee');
 
 	// start footerMoreDetails
 	const FooterMoreDetailsData = [
@@ -80,41 +76,57 @@ function Footer() {
 		},
 		{
 			text: 'Contact Us',
-			links: [{ name: 'Chat now', path: ChatPath() , className: 'SupportLink' }],
+			links: [{ name: 'Chat now', path: ChatPath(), className: 'SupportLink' }],
 		},
 	];
 
 	const FooterMoreDetails = FooterMoreDetailsData.map((data, index) => (
 		<Col lg={!HideContactChat ? 3 : 4} sm={4} xs={12} key={index}>
-			<h5 className={ `${(HideContactChat && (data.text === 'Contact Us') ) ? 'd-none': 'd-block'} ${data.text === 'Contact Us' && classes.ContactStyle } `}>
+			<h5
+				className={`${
+					HideContactChat && data.text === 'Contact Us' ? 'd-none' : 'd-block'
+				} ${data.text === 'Contact Us' && classes.ContactStyle} `}
+			>
 				{data.text}
 			</h5>
 			{data.text === 'Contact Us' && (
-				<p className={ `${HideContactChat ? 'd-none': 'd-block'} ${classes.Support}`} > Question? We've got answers. </p>
+				<p
+					className={`${HideContactChat ? 'd-none' : 'd-block'} ${
+						classes.Support
+					}`}
+				>
+					{' '}
+					Question? We've got answers.{' '}
+				</p>
 			)}
 			<ul>
 				{data.links.map((_link, index) => (
-					<li key={index} className={_link.name ==='Chat now' && HideContactChat ? 'd-none' : 'd-block' }>
-						{!isLoggedIn && _link.name === 'Chat now' ?
+					<li
+						key={index}
+						className={
+							_link.name === 'Chat now' && HideContactChat
+								? 'd-none'
+								: 'd-block'
+						}
+					>
+						{!isLoggedIn && _link.name === 'Chat now' ? (
 							<button
-								className={` ${
-									classes.footerLinks
-								} ${_link.className && classes[_link.className]}`}
-								onClick = {()=> setShowModal(true)}
+								className={` ${classes.footerLinks} ${_link.className &&
+									classes[_link.className]}`}
+								onClick={() => setShowModal(true)}
 							>
 								{_link.name}
 							</button>
-							:
-								<Link
-									to={_link.path}
-									className={`text-decoration-none ${
-										classes.footerLinks
-									} ${_link.className && classes[_link.className]}`}
-								>
-									{_link.name}
-								</Link>
-
-						}
+						) : (
+							<Link
+								to={_link.path}
+								className={`text-decoration-none ${
+									classes.footerLinks
+								} ${_link.className && classes[_link.className]}`}
+							>
+								{_link.name}
+							</Link>
+						)}
 					</li>
 				))}
 			</ul>
@@ -144,17 +156,17 @@ function Footer() {
 			</div>
 
 			{/* start Modal when unauthorized user want to chat with agent */}
-			{ShowModal && <ModalUi
-				show={ShowModal}
-				onHide={()=> setShowModal(false)}
-				title= "Please Logged in First, before Chatting  "
-				btnName={'Log in' }
-				btnHandler={() => redirectUserToHomePage('/login')}
-			/>}
+			{ShowModal && (
+				<ModalUi
+					show={ShowModal}
+					onHide={() => setShowModal(false)}
+					title="Please Logged in First, before Chatting  "
+					btnName={'Log in'}
+					btnHandler={() => redirectUserToHomePage('/login')}
+				/>
+			)}
 			{/* end Modal when unauthorized user want to chat with agent */}
-
 		</>
-
 	);
 }
 

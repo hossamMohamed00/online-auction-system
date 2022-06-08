@@ -21,9 +21,6 @@ export const getWalletTransactions = async idToken =>
 	getAPI(`${url}/wallet/transactions`, idToken);
 
 
-// export const getJoinedAuctions = async idToken =>
-// 	getAPI(, idToken);
-
 	export const getJoinedAuctions = async (idToken) => {
 		const response = await fetch(`${url}/buyer/auctions?populateField=joinedAuctions`, {
 			method: 'GET',
@@ -40,7 +37,7 @@ export const getWalletTransactions = async idToken =>
 		return data;
 	};
 
-export const SaveAuctionApi = async ({idToken , id}) => {
+export const SaveAuctionApi = async ({ idToken, id }) => {
 	const response = await fetch(`${url}/buyer/auction/save/${id}`, {
 		method: 'POST',
 		headers: {
@@ -55,14 +52,17 @@ export const SaveAuctionApi = async ({idToken , id}) => {
 	return data;
 };
 
-export const viewSaveAuctionApi = async (idToken) => {
-	const response = await fetch(`${url}/buyer/auctions?populateField=savedAuctions`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${idToken}`,
-			'Content-Type': 'application/json',
+export const viewSaveAuctionApi = async idToken => {
+	const response = await fetch(
+		`${url}/buyer/auctions?populateField=savedAuctions`,
+		{
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${idToken}`,
+				'Content-Type': 'application/json',
+			},
 		},
-	});
+	);
 	const data = await response.json();
 	if (!response.ok) {
 		throw new Error(data.message);
@@ -71,7 +71,7 @@ export const viewSaveAuctionApi = async (idToken) => {
 };
 
 // start join auction request
-export const joinAuctionApi = async ({idToken , id}) => {
+export const joinAuctionApi = async ({ idToken, id }) => {
 	const response = await fetch(`${url}/buyer/auction/join/${id}`, {
 		method: 'POST',
 		headers: {
@@ -88,7 +88,7 @@ export const joinAuctionApi = async ({idToken , id}) => {
 
 // start check if this auction is saved before or not
 
-export const CheckIfAuctionSaved = async ({idToken,id}) => {
+export const CheckIfAuctionSaved = async ({ idToken, id }) => {
 	const response = await fetch(`${url}/buyer/auction/is-saved/${id}`, {
 		method: 'GET',
 		headers: {
@@ -102,8 +102,3 @@ export const CheckIfAuctionSaved = async ({idToken,id}) => {
 	}
 	return data;
 };
-
-
-
-
-

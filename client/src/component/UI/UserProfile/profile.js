@@ -44,7 +44,7 @@ const UserProfile = props => {
 
 	// start state to show component of chat
 	// const [ViewChatWithSeller , setViewChatWithSeller ] = useState(false)
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	// end to show component of chat
 
 	const btnDetailsHandler = () => {
@@ -81,7 +81,6 @@ const UserProfile = props => {
 	// end block handler
 	// start complaint handler
 	const ComplaintHandler = id => {
-		console.log(id && id)
 		setUserId(id);
 		setIsShownComplaintModal(true);
 	};
@@ -89,9 +88,8 @@ const UserProfile = props => {
 	// start chat With seller
 	const chatWithSellerHandler = () => {
 		// setViewChatWithSeller(true)
-		console.log(props.seller.email)
-		navigate(`/buyer-dashboard/chat?email=${props.seller.email}`)
-	}
+		navigate(`/buyer-dashboard/chat?email=${props.seller.email}`);
+	};
 
 	// end chat With seller
 
@@ -170,7 +168,10 @@ const UserProfile = props => {
 
 						{role === 'buyer' && (
 							<>
-								<button className="btn btn-success btn_chat d-block mb-2 position-absolute" onClick={chatWithSellerHandler} >
+								<button
+									className="btn btn-success btn_chat d-block mb-2 position-absolute"
+									onClick={chatWithSellerHandler}
+								>
 									Chat with seller
 								</button>
 								<button

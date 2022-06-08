@@ -37,7 +37,6 @@ function FilterdAuctions(props) {
 			AuctionCategory: AuctionCategory,
 		};
 		props.filterHandler(FilterValues);
-
 	};
 
 	return (
@@ -78,13 +77,13 @@ function FilterdAuctions(props) {
 					/>
 				</div>
 
-
 				<button
-					className={` ${classes.btnFilter} btn w-100 ${props.filter ? 'bg-danger' : ''}`}
+					className={` ${classes.btnFilter} btn w-100 ${
+						props.filter ? 'bg-danger' : ''
+					}`}
 					onClick={!props.filter ? filterAuctionHandler : props.clearFilter}
 				>
 					{props.filter ? 'Clear Filter' : 'Filter'}
-
 				</button>
 
 				{/* end filter content */}

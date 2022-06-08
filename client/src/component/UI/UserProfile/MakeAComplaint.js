@@ -28,7 +28,7 @@ export const MakeAComplaintModal = props => {
 		</>
 	);
 	const addUserComplaintHandler = () => {
-		setLoading(true)
+		setLoading(true);
 		const compliantData = {
 			reason: reason.current.value,
 			in: props.id && props.id,
@@ -44,12 +44,11 @@ export const MakeAComplaintModal = props => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				console.log(response);
-				setLoading(false)
+				setLoading(false);
 
 				return;
 			}
-			setLoading(false)
+			setLoading(false);
 			toast.success('Done, your complaint added successfully 💖🐱‍👤');
 
 			// props.onHide();

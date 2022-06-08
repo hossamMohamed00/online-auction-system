@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { SubmitComplaintInSystem } from '../../Api/usersApi';
@@ -7,47 +7,44 @@ import useHttp from '../../CustomHooks/useHttp';
 import Navbar from '../HomePage/Header/Navbar';
 import ContactDetails from './ContactDetails';
 import ContactForm from './ContactForm';
-import {toast , ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify';
 // import style of Contact us
 import classes from './ContactUs.module.css';
 
 const ContactUs = () => {
 	// start formIsValid
-	const idToken = useSelector(store => store.AuthData.idToken)
+	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const {sendRequest , status , error } = useHttp(SubmitComplaintInSystem)
+	const { sendRequest, status, error } = useHttp(SubmitComplaintInSystem);
 
 	const SendComplaintHandler = values => {
-
-	 if(values){
+		if (values) {
 			const CompliantDetails = {
-				"reason" : values.message ,
-				"from" : values.email
-			}
-			sendRequest(CompliantDetails )
-		}
-		else{
-			toast.error(" Please Fill All Required Data to submit a compliant ❓")
+				reason: values.message,
+				from: values.email,
+			};
+			sendRequest(CompliantDetails);
+		} else {
+			toast.error(' Please Fill All Required Data to submit a compliant ❓');
 		}
 	};
 
-	useEffect(()=>{
-		if(status==='completed'){
-			toast.success("Complaint Added Successfully ❤️‍🔥 ")
+	useEffect(() => {
+		if (status === 'completed') {
+			toast.success('Complaint Added Successfully ❤️‍🔥 ');
 		}
-	},[status])
+	}, [status]);
 
-	useEffect(()=>{
-		if(status==='error'){
-			toast.error(error)
+	useEffect(() => {
+		if (status === 'error') {
+			toast.error(error);
 		}
-	},[status])
-
+	}, [status]);
 
 	return (
 		<React.Fragment>
 			<Navbar />
-			<ToastContainer theme='dark'></ToastContainer>
+			<ToastContainer theme="dark"></ToastContainer>
 			<div className={` ${classes.ContactUs} container-fluid p-0`}>
 				<Row className="h-100 m-0 p-0">
 					{/* start Contact us deatils */}

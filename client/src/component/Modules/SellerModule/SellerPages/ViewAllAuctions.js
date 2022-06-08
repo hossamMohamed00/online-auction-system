@@ -11,10 +11,7 @@ import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 
 const ViewAllAuctions = () => {
-
-	const { sendRequest, status: statusForGet, data } = useHttp(
-		getAllAuctions,
-	);
+	const { sendRequest, status: statusForGet, data } = useHttp(getAllAuctions);
 	useEffect(() => {
 		sendRequest();
 	}, [sendRequest]);
@@ -22,17 +19,17 @@ const ViewAllAuctions = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
-		data.map(data => {
-			const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
-			const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
-			if (data.endDate) {
-				data.endDate = newEndDate;
-			} else {
-				data.endDate = <span>NA</span>;
-			}
+			data.map(data => {
+				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
+				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
+				if (data.endDate) {
+					data.endDate = newEndDate;
+				} else {
+					data.endDate = <span>NA</span>;
+				}
 
-			data.startDate = newStartDate;
-		});
+				data.startDate = newStartDate;
+			});
 
 			setMyAuctions(data);
 		}

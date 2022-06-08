@@ -86,6 +86,35 @@ export class UsersService {
 	}
 
 	/**
+	 * Reset user password
+	 * @param email - user email
+	 * @param verificationCode - generated verification code
+	 * @param newPassword - new password
+	 * @returns boolean
+	 */
+	async resetUserPassword(
+		email: string,
+		verificationCode: number,
+		newPassword: string,
+	): Promise<boolean> {
+		//* Find the user by email and update password
+		const user = await this.usersModel.findOne({
+			email,
+			emailVerificationCode: verificationCode,
+		});
+
+		if (!user) {
+			return false;
+		}
+
+		user.password = newPassword;
+
+		await user.save();
+
+		return true;
+	}
+
+	/**
 	 * Get users count to be displayed in admin dashboard
 	 */
 	async getUsersCount(): Promise<{

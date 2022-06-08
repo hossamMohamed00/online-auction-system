@@ -86,7 +86,6 @@ const AllCategories = props => {
 	};
 
 	useEffect(() => {
-		console.log(statusForRemove);
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);

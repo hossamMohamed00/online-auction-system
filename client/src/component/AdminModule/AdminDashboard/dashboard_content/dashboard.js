@@ -33,7 +33,6 @@ const DashboardContent = props => {
 	} = useHttp(getProfileData);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
-	console.log(props.reload);
 	useEffect(() => {
 		sendRequest(idToken);
 		sendRequestForWinners(idToken);
@@ -106,7 +105,6 @@ const DashboardContent = props => {
 			center: true,
 			hyperlink: true,
 			cell: props => {
-				console.log(props);
 				return (
 					<span className="text-decoration-none fw-bold">
 						<Link to={`/auctions?id=${props.auction._id}`}>
@@ -122,7 +120,6 @@ const DashboardContent = props => {
 			center: true,
 			hyperlink: true,
 			cell: props => {
-				console.log(props);
 				return (
 					<span className="text-decoration-none fw-bold">
 						<Link to={`/buyers?id=${props.auction._id}`}>
@@ -139,7 +136,6 @@ const DashboardContent = props => {
 			center: true,
 		},
 	];
-	console.log(dataForAuctions && dataForAuctions);
 	const items = dataForWinners ? dataForWinners : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	return (

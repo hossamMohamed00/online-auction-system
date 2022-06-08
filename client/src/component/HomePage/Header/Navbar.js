@@ -101,9 +101,7 @@ const Navbar = props => {
 			onClick={showProfileContentHandler}
 		>
 			<FontAwesomeIcon icon={faUser} className="px-1" /> {emailName}
-			{isShownProfileContent && (
-				<DropDownBox />
-			)}
+			{isShownProfileContent && <DropDownBox />}
 		</div>
 	);
 

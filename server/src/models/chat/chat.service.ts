@@ -184,30 +184,6 @@ export class ChatService {
 		user1Email: string,
 		user2Email: string,
 	): Promise<ChatDocument | null> {
-		// Find the chat from DB
-		// frist check if user is employee
-		// if (
-		// 	user1Email == 'Support@email.com' ||
-		// 	user2Email == 'Support@email.com'
-		// ) {
-		// 	const chat = await this.chatModel.findOne({
-		// 		$and: [
-		// 			{
-		// 				$or: [{ user1: user1Email }, { user1: user2Email }],
-		// 			},
-		// 			{
-		// 				$or: [{ user2: user1Email }, { user2: user2Email }],
-		// 			},
-		// 		],
-		// 	});
-		// 	if (!chat) {
-		// 		console.log('llllllllll');
-		// 		return null;
-		// 	}
-		// 	console.log('hhhhhhh');
-
-		// 	return chat;
-		// } else {
 		const chat = await this.chatModel.findOne({
 			$and: [
 				{

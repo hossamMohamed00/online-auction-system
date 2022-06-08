@@ -19,7 +19,6 @@
 	color: var(--main-color);
 	font-weight: bold;
 	padding: 15px;
-
 }
 
 .AllAuction {
@@ -27,18 +26,16 @@
 	margin-bottom: 25px;
 	position: relative;
 }
-.AuctionCategory{
+.AuctionCategory {
 	max-height: 35vh;
-	overflow-y:scroll;
+	overflow-y: scroll;
 	padding: 15px;
-
 }
 .AuctionType label,
 .AuctionCategory label {
 	color: var(--paragraph-color) !important;
 	font-weight: lighter !important;
 	cursor: pointer;
-
 }
 .AuctionType label:hover,
 .AuctionCategory label:hover {
@@ -47,7 +44,6 @@
 .AuctionType {
 	border-bottom: 1px solid #4a4949;
 	padding: 10px;
-
 }
 .AuctionPrice > div > input {
 	background-color: var(--overlay-dark) !important ;
@@ -64,7 +60,6 @@
 	color: white;
 	position: absolute;
 	bottom: 55px;
-
 }
 
 @media (max-width: 767.98px) {

@@ -14,7 +14,7 @@ import classes from './loginForm.module.css';
 import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
-import { toast , ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
@@ -39,8 +39,8 @@ const LoginForm = () => {
 					email: email,
 				}),
 			);
-			toast.success('Login Successfully ❤️‍🔥 ')
-			const timer = setTimeout(()=>{
+			toast.success('Login Successfully ❤️‍🔥 ');
+			const timer = setTimeout(() => {
 				if (data.role === 'buyer') {
 					navigate('/home-page');
 				} else if (data.role === 'admin') {
@@ -51,9 +51,9 @@ const LoginForm = () => {
 				if (data && data.role === 'employee') {
 					navigate('/employeeDashboard');
 				}
-			},1000)
+			}, 1000);
 
-			return ()=> clearTimeout(timer)
+			return () => clearTimeout(timer);
 		}
 	}, [status]);
 
@@ -67,17 +67,15 @@ const LoginForm = () => {
 		sendRequest(userDetails);
 	};
 
-
-	useEffect(()=>{
-		if(status==='error'){
-			toast.error(error)
+	useEffect(() => {
+		if (status === 'error') {
+			toast.error(error);
 		}
-	},[status])
-
+	}, [status]);
 
 	return (
 		<div className={classes['form-container']}>
-			<ToastContainer theme='dark'/>
+			<ToastContainer theme="dark" />
 			<Card className={'loginCard'}>
 				<form onSubmit={submitHandler}>
 					<Input

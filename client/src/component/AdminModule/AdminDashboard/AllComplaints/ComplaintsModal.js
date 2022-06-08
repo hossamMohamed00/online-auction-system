@@ -6,8 +6,6 @@ import ModalUi from '../../../UI/Modal/modal';
 import './complaint.css';
 
 export const ComplaintModal = props => {
-	console.log(props.complaintReason);
-
 	const ComplaintTitle = 'Complaint Reason';
 	const compliantBody = (
 		<>

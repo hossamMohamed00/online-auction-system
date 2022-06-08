@@ -25,7 +25,7 @@ export default class EmailService {
 	 */
 	async sendMail(options: Mail.Options): Promise<boolean> {
 		try {
-			const result = await this.nodemailerTransport.sendMail(options);
+			await this.nodemailerTransport.sendMail(options);
 			this.logger.log('Email sent successfully 📨❤');
 			return true;
 		} catch (error) {

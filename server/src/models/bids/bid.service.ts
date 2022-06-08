@@ -123,6 +123,18 @@ export class BidService {
 	}
 
 	/**
+	 * Handle if the bid is in last minute or not
+	 * @param bidDate - bid created at
+	 * @param auctionId - auction id
+	 */
+	async handleIfBidInLastMinute(
+		bidDate: Date,
+		auctionId: string,
+	): Promise<ResponseResult> {
+		return this.auctionService.handleIfBidInLastMinute(auctionId, bidDate);
+	}
+
+	/**
 	 * Retreat given bidder from given auction
 	 * @param bidder
 	 * @param auctionId
@@ -132,7 +144,7 @@ export class BidService {
 			await this.auctionService.retreatBidderFromAuction(bidder, auctionId);
 
 		if (!result.success) {
-			this.logger.error('Bidder not retreated 🤷‍♂️');
+			this.logger.error('Cannot retreat you right now 🤷‍♂️');
 			throw new WsException(result.message);
 		}
 

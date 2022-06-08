@@ -77,7 +77,6 @@ const PendingAuctions = () => {
 	const items = upcomingData ? upcomingData : [];
 	const { filterFun, filteredItems } = useFilter(items, 'title');
 
-	console.log({ filteredItems });
 	//end filter
 	return (
 		<React.Fragment>

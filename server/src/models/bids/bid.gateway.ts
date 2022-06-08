@@ -15,7 +15,7 @@ import {
 import { BidService } from './bid.service';
 import { SocketAuthGuard } from 'src/common/guards';
 import { Buyer } from '../users/buyer/schema/buyer.schema';
-import { GetCurrentUserFromSocket } from 'src/common/decorators';
+import { GetCurrentUserFromSocket, Roles } from 'src/common/decorators';
 import { JoinOrLeaveAuctionDto, PlaceBidDto } from './dto';
 import { AuctionRoomService } from './auction-room.service';
 import { AuctionsService } from '../auction/auctions.service';
@@ -24,8 +24,8 @@ import { Auction } from '../auction/schema/auction.schema';
 import { AuctionStatus } from '../auction/enums';
 import { NewBid } from './types/new-bid.type';
 import { SocketService } from 'src/providers/socket/socket.service';
-import { Bid } from './schema/bid.schema';
-import { Role } from 'src/models/users/shared-user/enums';
+import { Role } from '../users/shared-user/enums';
+import { ResponseResult } from 'src/common/types';
 
 /**
  * Its job is to handle the bidding process.
@@ -79,8 +79,9 @@ export class BidGateway
 		//* Get the user
 		const bidder = await this.bidService.getConnectedClientUserObject(client);
 
+		//* Ensure that the connected client is bidder
 		if (bidder.role !== Role.Buyer) {
-			return;
+			return this.logger.error('The client is not a bidder 🤔');
 		}
 
 		//* Get the auctions that the bidder involved in
@@ -169,6 +170,19 @@ export class BidGateway
 			bidder._id,
 			bidValue,
 		);
+
+		//? Check if the bid in last minute to add 3 minutes delay
+		const result: ResponseResult =
+			await this.bidService.handleIfBidInLastMinute(
+				createdBid.createdAt,
+				auctionId,
+			);
+
+		if (result.success) {
+			this.server.to(auctionId).emit('message-to-client', {
+				message: `Auction time extended by 3 minutes 🕒, as ${bidder.name} place bid in last minute.`,
+			});
+		}
 
 		//* Emit the bid to the client-side
 		this.server.to(auctionId).emit('new-bid', createdBid);
