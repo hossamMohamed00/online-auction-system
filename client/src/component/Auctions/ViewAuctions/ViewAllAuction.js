@@ -23,11 +23,6 @@ const ViewAllAuctions = () => {
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
-	// const {
-	// 	sendRequest: sendFilterdRequest,
-	// 	status: FilterdRequestStatus,
-	// 	data: data,
-	// } = useHttp(getFilterAuction);
 
 	useEffect(() => {
 		if (!FilterAuction) {
@@ -39,8 +34,6 @@ const ViewAllAuctions = () => {
 			console.log(queryParams)
 			sendRequest(queryParams);
 			}
-			// setFilterdDetails(null)
-			// setFilterAuction(false)
 		}
 
 	}, [sendRequest, FilterAuction , FilterdDetails]);
@@ -121,8 +114,6 @@ const ViewAllAuctions = () => {
 					<div className='pt-3'>
 						<NoData
 							text="No Auctions Now"
-							// data={data & data}
-							// error={error && error}
 						/>
 					</div>
 
