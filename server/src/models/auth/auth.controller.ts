@@ -56,10 +56,10 @@ export class AuthController {
 		const tokens = await this.authService.register(registerUserDto);
 
 		//? Send confirmation email
-		// await this.emailAuthService.sendVerificationCode(
-		// 	registerUserDto.name,
-		// 	registerUserDto.email,
-		// );
+		await this.emailAuthService.sendVerificationCode(
+			registerUserDto.name,
+			registerUserDto.email,
+		);
 
 		return tokens;
 	}

@@ -8,10 +8,9 @@ export const getConfirmEmailContent = (
 		<!DOCTYPE html>
 		<html>
 		<head>
-
 			<meta charset="utf-8">
 			<meta http-equiv="x-ua-compatible" content="ie=edge">
-			<title>Email Confirmation</title>
+			<title>Email Confirmation 📧</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<style type="text/css">
 			/**
@@ -96,7 +95,9 @@ export const getConfirmEmailContent = (
 			}
 
 			a {
-				color: #1a82e2;
+				color: #4297A0;
+				font-weight: bold;
+				text-decoration: none
 			}
 
 			img {
@@ -180,9 +181,9 @@ export const getConfirmEmailContent = (
 
 							<!-- start copy -->
 							<tr>
-								<td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+								<td align="left" bgcolor="#ffffff" style="padding: 24px 24px 0 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
 								<p style="margin: 0;">Hello ${name} 👋🏻</p>
-								<p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="http://localhost:3000/">Online Auction System</a>, you can safely delete this email.</p>
+								<p style="margin: 0;">The code below to confirm your email address. If you didn't create an account with <a href="http://localhost:3000/">Online Auction System</a>, you can safely delete this email.</p>
 								</td>
 							</tr>
 							<!-- end copy -->
@@ -195,11 +196,15 @@ export const getConfirmEmailContent = (
 											<td align="center" bgcolor="#ffffff" style="padding: 12px;">
 												<table border="0" cellpadding="0" cellspacing="0">
 													<tr>
-														<td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-															<h3 style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">${verificationCode}</h3>
+														<td align="center" bgcolor="#1a82e2" style="border-radius: 6px; background: none;">
+															<h3 style=" padding: 15px ; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 15px;background-color: #4297A0; width: fit-content;">${verificationCode}</h3>
 														</td>
-														<td>Verify your email now, by copy the code and paste in the website 📨🤘🏻</td>
 													</tr>
+													<tr>
+
+														<td>Verify your email now, by copy the code and paste in the out website 📨🤘🏻</td>
+													</tr>
+
 												</table>
 											</td>
 										</tr>
@@ -261,6 +266,5 @@ export const getConfirmEmailContent = (
 
 		</body>
 		</html>
-
 	`;
 };

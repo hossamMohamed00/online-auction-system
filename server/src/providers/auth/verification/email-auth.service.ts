@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ResponseResult } from 'src/common/types';
 import { UsersService } from 'src/models/users/shared-user/users.service';
 import EmailService from 'src/providers/mail/email.service';
-import { getConfirmEmailContent } from './content';
+import { getConfirmEmailContent } from './content/confirm-email-content';
 import { getResetPasswordEmailContent } from './content/forget-password-content';
 
 @Injectable()
