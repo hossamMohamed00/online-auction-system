@@ -34,9 +34,24 @@ export const getUserProfile = async ({role , id}) => {
 	const response = await fetch(`http://localhost:8000${((role==='seller' && `/seller/profile/${id}` )||(role==='buyer' && `/buyer/profile/${id}`))}`)
 	const data = await response.json();
 
-	if (!response.ok) {
+	if (!response.ok || data.success === false) {
 		throw new Error(data.message);
 	}
 	return data
 };
 
+export const getUserId = async (idToken) => {
+	const response = await fetch(`${url}/auth/profile`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		}
+	})
+	const data = await response.json();
+
+	if (!response.ok || data.success === false) {
+		throw new Error(data.message);
+	}
+	return data
+};

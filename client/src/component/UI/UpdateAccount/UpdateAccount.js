@@ -10,7 +10,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import useHttp from '../../../CustomHooks/useHttp';
 import { toast, ToastContainer } from 'react-toastify';
-import { getUserProfile } from '../../../Api/usersApi';
+// import { getUserProfile } from '../../../Api/usersApi';
+import { getUserId } from '../../../Api/usersApi';
+
 
 const UpdateAccountForUsers = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -32,18 +34,18 @@ const UpdateAccountForUsers = () => {
 	const [ImageSrc , setImageSrc] = useState('')
 	const [userData , setUserData] = useState({})
 	const { sendRequest, error, status } = useHttp(UpdateAccount);
-	const { sendRequest:sendRequestForGetInfo,  status:statusForGetInfo , data:dataForGetInfo , error : errorForGetInfo } = useHttp(getUserProfile);
+	const { sendRequest:sendRequestForGetInfo,  status:statusForGetInfo , data:dataForGetInfo , error : errorForGetInfo } = useHttp(getUserId);
 
 
 	// start get all data about user from db
 	useEffect(() => {
-		const id = userId
-		sendRequestForGetInfo({role,id});
+		// const id = userId
+		sendRequestForGetInfo(idToken);
 	},[sendRequestForGetInfo]);
 
 	useEffect(() => {
 		if (statusForGetInfo === 'completed') {
-			setUserData(dataForGetInfo.seller)
+			setUserData(dataForGetInfo)
 		}
 		else if(statusForGetInfo ==='error') {
 			toast.error(errorForGetInfo);
@@ -53,6 +55,7 @@ const UpdateAccountForUsers = () => {
 	// start update Account
 	const submitHandler = e => {
 		e.preventDefault();
+
 		const accountData = {
 			name: nameRef.current.value,
 			phoneNumber: phoneNumber.current.value.trim(),
@@ -60,7 +63,7 @@ const UpdateAccountForUsers = () => {
 			nationalID :nationalIDRef.current.value,
 			image: ImageSrc
 		};
-		sendRequest({ accountData, idToken, path: 'seller/profile' });
+		sendRequest({ accountData, idToken, path:`${role==='seller' ? 'seller/profile': 'buyer/profile'}`} );
 	};
 
 	React.useEffect(() => {

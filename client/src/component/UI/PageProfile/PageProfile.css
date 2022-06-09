@@ -2,6 +2,7 @@
 	/* min-height: 50vh ; */
 	width: 100%;
 	display: flex;
+	/* margin-left: 100px; */
 	justify-content: center;
 	align-items: center;
 
@@ -16,12 +17,18 @@
 
 .WarningModal , .BlockModal{
 	position: absolute;
-	top: 25%;
+	top: 15%;
 	right: 0;
 	display: flex;
+	width: fit-content;
 	flex-direction: column;
 	min-height: 10vh;
 	background-color: var(--dark-color);
+	/* border-top-left-radius: 10px;
+	border-top-right-radius: 10px; */
+	border-radius: 20px;
+	box-shadow: 2px 3px 10px var(--nav-color);
+
 	justify-content: center;
 	align-items: center;
 }
