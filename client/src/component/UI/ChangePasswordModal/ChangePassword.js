@@ -1,35 +1,78 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { sendConfirmation } from "../../../Api/Auth";
+import { confirmChangePasswordCode, ResetPassword, sendConfirmation } from "../../../Api/Auth";
 import useHttp from "../../../CustomHooks/useHttp";
 import useInput from '../../../CustomHooks/useInput';
 import Input from "../Input/input";
+import LoadingSpinner from '../Loading/LoadingSpinner'
 
 import ModalUi from "../Modal/modal";
 
 function ChangePassword({forget , show , onHide}) {
 		// sendEmailConfirmation
-		const { sendRequest :sendRequestForEmailConf, status : statusForEmailConf, data:dataForEmailConf, error :errorForEmailConf } = useHttp(sendConfirmation);
 
-		const idToken = useSelector(store => store.AuthData.idToken);
+		const { sendRequest :sendRequestForEmailConf, status : statusForEmailConf, data:dataForEmailConf, error :errorForEmailConf } = useHttp(ResetPassword);
+		const { sendRequest :sendRequestForConfCode, status : statusForForConfCode, data:dataForConfCode, error :errorForConfCode } = useHttp(confirmChangePasswordCode);
 
+		// const idToken = useSelector(store => store.AuthData.idToken);
 
 		const validatePassword = value => value.trim().length > 4;
 
-		// const [ShowModal, setShowModal] = useState(show ? show : false);
 		const [ModalTitle, setModalTitle] = useState('Are You Sure You Want To Change Password ? ');
 		const [ModalBtn, setModalBtn] = useState('Confirm');
 		const [ModalBody, setModalBody] = useState('');
 
+		const [loading, setLoading] = useState(false);
+
 
 		// start sendConfirmation Api
+		useEffect(()=>{
+			if(statusForEmailConf === 'completed' ){
+				setLoading(false)
+				toast.success('Rest Your Password is Done Successfully ❤️‍🔥 ');
+				setModalBody(
+					<div>
+						<h6 className='text-light fw-bold text-center'> Please Enter Code that send to your email Here </h6>
+						<div className='codeContainer'>
+							{VerificationNum}
+						</div>
+					</div>
 
+				)
+				setModalBtn('Submit')
+			}
+			if(statusForEmailConf==='error'){
+				setLoading(false)
+				console.log(errorForEmailConf)
+				toast.error(errorForEmailConf)
+
+			}
+		} , [statusForEmailConf])
+
+
+		// start sendConfirmation Api
+		useEffect(()=>{
+			if(statusForForConfCode === 'completed' ){
+				setLoading(false)
+				toast.success('Successfully ❤️‍🔥 ');
+				toast.success(dataForConfCode.message);
+
+				setModalBody(PasswordsInput)
+				setModalBtn('Change Password')
+			}
+			if(statusForForConfCode ==='error'){
+				setLoading(false)
+				toast.error(errorForConfCode)
+			}
+		} , [statusForForConfCode])
 
 		const codeNum1ref = useRef();
 		const codeNum2ref = useRef();
 		const codeNum3ref = useRef();
 		const codeNum4ref = useRef();
+		const codeNum5ref = useRef();
+
 		const EmailRef_inFtPass = useRef()
 		// change Password Refs
 		const newPasswordRef = useRef()
@@ -64,7 +107,7 @@ function ChangePassword({forget , show , onHide}) {
 				<h6 className='text-light fw-bold text-center pb-2'> Please Enter Old And New Password </h6>
 				<Input
 					type="password"
-					placeholder="Old Password"
+					placeholder="Password"
 					validateText={validatePassword}
 					ref={oldPasswordRef}
 					errorMassage="please enter valid password"
@@ -72,7 +115,7 @@ function ChangePassword({forget , show , onHide}) {
 				/>
 				<Input
 					type="password"
-					placeholder="New Password"
+					placeholder="Confirm Password"
 					validateText={validatePassword}
 					ref={newPasswordRef}
 					errorMassage="please enter valid password"
@@ -83,6 +126,7 @@ function ChangePassword({forget , show , onHide}) {
 		)
 
 		const ChangePasswordHandler = () => {
+			// confirm that you want to change password
 			if(ModalBtn === 'Confirm'){
 				setModalTitle('')
 				setModalBody(
@@ -92,49 +136,28 @@ function ChangePassword({forget , show , onHide}) {
 							<Input
 								type="email"
 								placeholder="Email"
-								ref={EmailRef_inFtPass}
 								id = "userEmail"
+								ref = {EmailRef_inFtPass}
 							/>
 						</div>
-
 					</div>
-
 				)
-				// if (EmailRef_inFtPass){
-				// 	setModalBtn('Confirm Email')
-				// }
-				// else{
-				// 	toast.error('Please Enter Valid To Change Your Password ')
-
-				// }
-
+				setModalBtn('Confirm Email')
 			}
 
 			else if(ModalBtn === 'Confirm Email'){
-				setModalBody(
-					<div>
-						<h6 className='text-light fw-bold text-center'> Please Enter Code that send to your email Here </h6>
-						<div className='codeContainer'>
-							{VerificationNum}
-						</div>
-					</div>
-
-				)
-				setModalBtn('Submit')
-
+				console.log(EmailRef_inFtPass.current.value)
+				if(EmailRef_inFtPass.current.value){
+					const email = EmailRef_inFtPass.current.value
+					sendRequestForEmailConf({email})
+					setLoading(true)
+				}
 			}
 			else if(ModalBtn === 'Submit'){
-				if(codeNum1ref.current.value && codeNum2ref.current.value && codeNum3ref.current.value && codeNum4ref.current.value){
-
-					// start if code number is valid
-					toast.success('Success ')
-					setModalBody(PasswordsInput)
-					setModalBtn('Change Password')
-				}
-				else{
-					toast.error('Please Enter Code Number To Change Your Password ')
-					setModalBtn('Confirm')
-					onHide()
+				if(codeNum1ref.current.value && codeNum2ref.current.value && codeNum3ref.current.value && codeNum4ref.current.value + codeNum5ref.current.value){
+					const email = EmailRef_inFtPass.current.value
+					const verificationCode = codeNum1ref.current.value + codeNum2ref.current.value + codeNum3ref.current.value + codeNum4ref.current.value + codeNum5ref.current.value
+					sendRequestForConfCode({verificationCode , email})
 				}
 			}
 			if(ModalBtn === 'Change Password'){
@@ -146,6 +169,7 @@ function ChangePassword({forget , show , onHide}) {
 
 	return (
 		<React.Fragment>
+			{loading && <LoadingSpinner /> }
 			{show && (
 				<ModalUi
 					show={show}

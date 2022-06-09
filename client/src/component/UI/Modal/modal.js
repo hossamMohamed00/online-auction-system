@@ -25,8 +25,6 @@ const ModalUi = props => {
 				<Modal.Title
 					id="contained-modal-title-vcenter"
 					className={`${(props.body && !props.hideBorder) ? 'hasBorder' : ''} ${props.hideBorder ? 'hideBorder' : '' }`}
-
-
 				>
 					{props.title && props.title}
 				</Modal.Title>

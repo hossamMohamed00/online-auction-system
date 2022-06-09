@@ -65,6 +65,52 @@ export const sendConfirmation = async idToken => {
 	return data;
 };
 
+// start reset-password
+export const ResetPassword = async ({email}) => {
+	const response = await fetch(`${url}/auth/reset-password`, {
+		method: 'POST',
+		body: JSON.stringify({
+			email: email,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok && !data.success) {
+		throw new Error(data.message);
+	}
+
+
+	return data;
+};
+// end reset-password
+// /reset-password/confirm-code
+
+// start Check Confirmation Code
+export const confirmChangePasswordCode = async ({verificationCode , email}) => {
+	const response = await fetch(`${url}/reset-password/confirm-code`, {
+		method: 'POST',
+		body: JSON.stringify({
+			verificationCode: verificationCode,
+			email : email
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok && !data.success) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+// end Check Confirmation Code
+
+
+
+
+
 export const Logout = async idToken => {
 	const response = await fetch(LogoutUrl, {
 		method: 'POST',
