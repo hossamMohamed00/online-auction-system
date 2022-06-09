@@ -7,6 +7,7 @@ import { EmployeeModule } from '../employee/employee.module';
 import { AuctionsModule } from 'src/models/auction/auctions.module';
 import { UsersModule } from '../shared-user/users.module';
 import { ComplaintModule } from 'src/models/complaint/complaint.module';
+import { AuctionEmailsModule } from 'src/providers/mail/email-auction/auction-emails.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { ComplaintModule } from 'src/models/complaint/complaint.module';
 		EmployeeModule,
 		CategoryModule,
 		ComplaintModule,
+		AuctionEmailsModule,
 	],
 	controllers: [AdminController],
 	providers: [AdminService],
