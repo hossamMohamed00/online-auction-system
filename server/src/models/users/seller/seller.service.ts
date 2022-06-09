@@ -105,18 +105,18 @@ export class SellerService {
 			throw new BadRequestException('No Seller With That Id ❌');
 		}
 
+		//? Remove old image if there was one
+		if (imageUpdated && seller.image?.publicId) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(seller.image.publicId);
+		}
+
 		//* Update seller data
 		const updatesKeys = Object.keys(updateSellerDto);
 		updatesKeys.forEach(update => (seller[update] = updateSellerDto[update]));
 
 		//* Save updated seller
 		await seller.save();
-
-		//? Remove old image if there was one
-		if (imageUpdated && seller.image) {
-			//* Remove the image by public id
-			await this.cloudinary.destroyImage(seller.image.publicId);
-		}
 
 		return {
 			success: true,
