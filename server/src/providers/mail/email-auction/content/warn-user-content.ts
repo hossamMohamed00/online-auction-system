@@ -135,7 +135,7 @@ export const getWarnUserEmailContent = ({
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 							<tr>
 								<td align="center" valign="top" style="padding: 36px 24px;">
-									<h1 style="color: #821D30">Online Auction System</h1>
+									<h1 style="color: #B58B00">Online Auction System</h1>
 									<h3 style="color: #B58B00
 "><strong>Warning Alert Action 🔔</strong></h3>
 									</a>
