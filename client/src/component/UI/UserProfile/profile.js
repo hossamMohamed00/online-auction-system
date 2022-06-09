@@ -18,11 +18,9 @@ import { useSelector } from 'react-redux';
 import BlockModal from './../Modals/BlockModal';
 import WarnModal from './../Modals/WarnModal';
 import { MakeAComplaintModal } from './MakeAComplaint';
-import BuyerChat from '../../Modules/BuyerModule/BuyerChat';
 import { useNavigate } from 'react-router-dom';
 const UserProfile = props => {
 	const role = useSelector(store => store.AuthData.role);
-
 	// Handle Tabs
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownAuctions, setIsShownAuctions] = useState(false);

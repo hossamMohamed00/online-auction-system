@@ -107,7 +107,7 @@ const AuctionDetails = ({ data}) => {
 								}
 
 
-							{data && data.status === 'upcoming' &&
+							{data && ( data.status === 'upcoming' || data.status === 'pending') &&
 								<div>
 									<h6 className="fw-bold  text-light"> Auction Will Start In </h6>
 									<span className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}>

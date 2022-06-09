@@ -20,8 +20,6 @@ const ProfileDetails = props => {
 			handler: props.reviewsHandler,
 		},
 	];
-	const role = useSelector(store => store.AuthData.role);
-
 	return (
 		<>
 			<h2 className="text-light mt-4 text-center fw-bold">

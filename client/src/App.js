@@ -62,6 +62,7 @@ import AllComplaintsInSystem from './component/AdminModule/AdminDashboard/AllCom
 import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee';
 import ExtendTimeRequests from './component/Modules/EmployeesModule/ExtendTimeRequests/ExtendTimeRequests';
 import SellerExtendAuctions from './component/Modules/SellerModule/SellerPages/SellerExtendAuction';
+import UpdateAccountForBuyer from './component/Modules/BuyerModule/UpdateAccount';
 // end seller pages
 
 function App() {
@@ -173,6 +174,13 @@ function App() {
 							element={<WalletTransaction />}
 						/>
 						{/* end Payment */}
+
+						{/* start Update Account */}
+						<Route
+							path="/buyer-dashboard/UpdateAccount"
+							element={<UpdateAccountForBuyer/>}
+						/>
+
 					</>
 				)}
 

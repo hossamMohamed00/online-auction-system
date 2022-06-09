@@ -13,7 +13,7 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 const PendingAuctions = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
+	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
 	// columns
 	const columns = [
@@ -44,7 +44,6 @@ const PendingAuctions = () => {
 		},
 		{
 			name: 'Actions',
-			// selector: row => row.action,
 			cell: props => {
 				return (
 					<span className="text-info">

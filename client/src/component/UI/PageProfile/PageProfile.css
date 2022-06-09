@@ -2,6 +2,7 @@
 	/* min-height: 50vh ; */
 	width: 100%;
 	display: flex;
+	/* margin-left: 100px; */
 	justify-content: center;
 	align-items: center;
 
@@ -9,19 +10,26 @@
 }
 
 .profilePageContent > img{
-	max-width: 100px!important;
-	max-height: 100px!important;
+	width: 150px!important;
+	height: 150px!important;
+	border-radius: 50%;
 }
 
 
 .WarningModal , .BlockModal{
 	position: absolute;
-	top: 25%;
+	top: 15%;
 	right: 0;
 	display: flex;
+	width: fit-content;
 	flex-direction: column;
 	min-height: 10vh;
 	background-color: var(--dark-color);
+	/* border-top-left-radius: 10px;
+	border-top-right-radius: 10px; */
+	border-radius: 20px;
+	box-shadow: 2px 3px 10px var(--nav-color);
+
 	justify-content: center;
 	align-items: center;
 }
@@ -34,9 +42,6 @@
 	padding: 15px;
 }
 
-.text-danger{
-	color: rgb(212, 29, 29)!important;
-}
 
 .WarningModal p , .BlockModal p {
 	background-color: var(--nav-color);

@@ -7,6 +7,8 @@ import {
 	faCreditCardAlt,
 	faGavel,
 } from '@fortawesome/free-solid-svg-icons';
+import PageProfile from '../../UI/PageProfile/PageProfile';
+import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 const BuyerDashboardContent = props => {
 	const email = localStorage.getItem('email');
@@ -14,6 +16,11 @@ const BuyerDashboardContent = props => {
 	const dropdownListProfile = [
 		{
 			title: 'Edit Account',
+			icon: faGavel,
+			path: '/buyer-dashboard/UpdateAccount',
+		},
+		{
+			title: 'Change Password',
 			icon: faGavel,
 			path: '/buyer-dashboard/UpdateAccount',
 		},
@@ -62,9 +69,13 @@ const BuyerDashboardContent = props => {
 				chat={{ name: 'Chat', list: dropdownListChat }}
 				payment={{ name: 'Payment', list: dropdownListPayment }}
 			>
-				{contentExist ? props.children : <h1> hello buyer</h1>}
-				{/* <PageContent className={props.className ? props.className : ''}>
-				</PageContent> */}
+			{contentExist ? (
+				props.children
+			) : (
+				<PageContent>
+					<PageProfile />
+				</PageContent>
+			)}
 			</DashboardLayout>
 		</>
 	);
