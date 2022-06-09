@@ -12,7 +12,6 @@ import scrollbar from '../../UI/ScrollBar.module.css';
 import { useSelector } from 'react-redux';
 
 function FilterdAuctions(props) {
-	console.log(props);
 	const { sendRequest, data } = useHttp(getAllCategories);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	// const [filterData ,setFilerData]  = useState()
@@ -26,17 +25,16 @@ function FilterdAuctions(props) {
 	let AuctionType, AuctionCategory;
 
 	const getAuctionType = value => {
-		AuctionType = !props.filter ? value : '' ;
+		AuctionType = !props.filter ? value : '';
 	};
 	const getAuctionCategory = value => {
-		AuctionCategory = !props.filter ? value : '' ;
-
+		AuctionCategory = !props.filter ? value : '';
 	};
 
 	const filterAuctionHandler = () => {
 		const FilterValues = {
 			AuctionType: AuctionType ? AuctionType : '',
-			AuctionCategory: AuctionCategory ? AuctionCategory :'',
+			AuctionCategory: AuctionCategory ? AuctionCategory : '',
 		};
 		props.filterHandler(FilterValues);
 	};
@@ -65,7 +63,7 @@ function FilterdAuctions(props) {
 						name="AuctionType"
 						values={['ongoing', 'upcoming', 'closed']}
 						getValue={getAuctionType}
-						notChecked = {!props.filter}
+						notChecked={!props.filter}
 					/>
 				</div>
 
@@ -84,7 +82,7 @@ function FilterdAuctions(props) {
 					className={` ${classes.btnFilter} btn w-100 ${
 						props.filter ? 'bg-danger' : ''
 					}`}
-					onClick={props.filter ? filterAuctionHandler : props.clearFilter}
+					onClick={!props.filter ? filterAuctionHandler : props.clearFilter}
 				>
 					{props.filter ? 'Clear Filter' : 'Filter'}
 				</button>

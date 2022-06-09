@@ -67,11 +67,11 @@ const UpdateAuction = () => {
 	// start refs
 	const TitleRef = useRef();
 	const ProductNameRef = useRef();
-	// const BrandRef = useRef();
+	const BrandRef = useRef();
 	const StatusRef = useRef();
 	const BasePriceRef = useRef();
-	// const ProductShortDescRef = useRef();
-	// const ProductDetaildDescRef = useRef();
+	const ProductShortDescRef = useRef();
+	const ProductDetailsDescRef = useRef();
 
 	// // end refs
 	// handle upload image
@@ -91,11 +91,17 @@ const UpdateAuction = () => {
 		const auctionData = {
 			title: TitleRef.current.value,
 			item: {
-				_id: AuctionId,
 				name: ProductNameRef.current.value,
+				shortDescription: ProductShortDescRef.current.value,
+				brand: BrandRef.current.value,
+				detailedDescription: ProductDetailsDescRef.current.value
+					? ProductDetailsDescRef.current.value
+					: ProductShortDescRef.current.value,
+				status: StatusRef.current.value,
+				images: pictures,
 			},
-			basePrice: BasePriceRef.current.value,
 			category: CategoryId,
+			basePrice: BasePriceRef.current.value,
 		};
 		sendRequestUpdateAuction({
 			AuctionId: AuctionId,
@@ -110,9 +116,7 @@ const UpdateAuction = () => {
 			toast.error(errorUpdateAuction);
 		}
 	}, [statusUpdateAuction, errorUpdateAuction]);
-	/*if (ValidateForm()) {
-			// const ProductImages = new FormData().append("image" , ImageRef.current.files[0] , ImageRef.current.files[0].name)
-		}*/
+	
 
 	return (
 		<SellerDashboardContent>
@@ -164,7 +168,7 @@ const UpdateAuction = () => {
 
 							<div className={` row ${classes.SelectStyl}`}>
 								{/* start Brand Name */}
-								{/* <div className={`${classes.TextArea} col-lg-6`}>
+								<div className={`${classes.TextArea} col-lg-6`}>
 									<label
 										htmlFor="Brand"
 										className={'text-light fw-bold fs-6 py-2 '}
@@ -180,7 +184,7 @@ const UpdateAuction = () => {
 										inputValue=" prudect Describtion"
 										id="Brand"
 									/>
-								</div> */}
+								</div>
 
 								{/* start select Category Name */}
 								<div className={`col-lg-6 `}>
@@ -226,7 +230,7 @@ const UpdateAuction = () => {
 								</div>
 							</div>
 
-							{/* <div className="row">
+							<div className="row">
 								<div className={`col-lg-6`}>
 									<label
 										htmlFor="prudectDesc"
@@ -243,10 +247,10 @@ const UpdateAuction = () => {
 										inputValue=" prudect Describtion"
 										id="prudectDesc"
 									/>
-								</div> */}
+								</div>
 
-							{/* start detaild desc */}
-							{/* <div className={`col-lg-6`}>
+								{/* start detaild desc */}
+								<div className={`col-lg-6`}>
 									<label
 										htmlFor="prudectDelitelDesc"
 										className={'text-light fw-bold fs-6 py-2 '}
@@ -257,27 +261,25 @@ const UpdateAuction = () => {
 										placeholder="type heree..."
 										className={`form-control ${classes.ProdulctDetailed}`}
 										id="prudectDelitelDesc"
-										ref={ProductDetaildDescRef}
+										ref={ProductDetailsDescRef}
 									></textarea>
 								</div>
-							</div> */}
+							</div>
 
 							<div className="row">
-								{/* product status */}
-
 								{/* product image */}
-								{/* <div className="col-6">
+								<div className="col-6">
 									<label className={'text-light fw-bold fs-6 py-2 '}>
 										product Images
 									</label>
 									<input
 										type="file"
-										name="name"
+										name="image"
 										multiple
 										className={`form-control ${classes.productImage}`}
-										// ref={ImageRef}
+										onChange={handleImageUpload}
 									/>
-								</div> */}
+								</div>
 							</div>
 
 							<button className={`btn btn-danger ${classes.bntstyl}`}>

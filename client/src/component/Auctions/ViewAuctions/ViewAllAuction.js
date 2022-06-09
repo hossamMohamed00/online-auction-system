@@ -22,30 +22,34 @@ const ViewAllAuctions = () => {
 	const [FilterAuction, setFilterAuction] = useState(false);
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
-	const { sendRequest, status, data} = useHttp(getAllAuctions);
+	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
 	useEffect(() => {
 		if (!FilterAuction) {
 			sendRequest();
-		} else{
-			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&` }`
-			console.log(queryParams)
-			sendRequest(queryParams);
+		} else {
+			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+				const queryParams = `${
+					FilterdDetails.AuctionCategory
+						? `?category=${FilterdDetails.AuctionCategory}&`
+						: '?'
+				}${FilterdDetails.AuctionType &&
+					`status=${FilterdDetails.AuctionType}&`}`;
+				console.log(queryParams);
+				sendRequest(queryParams);
 			}
 		}
 	}, [sendRequest, FilterAuction, FilterdDetails]);
 
 	useEffect(() => {
 		if (status === 'completed') {
-			console.log(data);
 			setData(
 				data.filter(
 					data => data.status !== 'pending' && data.status !== 'denied',
 				),
 			);
 		}
-	}, [status, FilterAuction]);
+	}, [status]);
 	const showFilterHandler = () => {
 		setShowFilter(true);
 	};
@@ -78,9 +82,9 @@ const ViewAllAuctions = () => {
 				</Col>
 
 				<Col md={8} lg={10}>
-					{Data && Data.length > 0 && status === 'completed' ? (
+					{data && data.length > 0 ? (
 						<div className={classes.AllAuction}>
-							<PageHeader text="View All Auctions" showLink={false} />
+							<PageHeader text="All Auctions" showLink={false} />
 
 							{/* Auction Filter in Small Media Query */}
 							<div
@@ -99,13 +103,8 @@ const ViewAllAuctions = () => {
 								)}
 							</div>
 
-							{Data && status === 'completed' ? (
-								<ViewAuctionDetails
-									AuctionData={Data && Data}
-									animate={false}
-								/>
-							) : (
-								<p> No data </p>
+							{data && status === 'completed' && (
+								<ViewAuctionDetails AuctionData={data} animate={false} />
 							)}
 						</div>
 					) : (
