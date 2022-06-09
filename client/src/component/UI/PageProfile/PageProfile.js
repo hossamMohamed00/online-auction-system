@@ -7,13 +7,15 @@ import PageHeader from '../Page Header/pageHeader'
 import './PageProfile.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const PageProfile = props => {
+
+	localStorage.setItem('id' , props.sellerId)
+
 	const { data, sendRequest , status } = useHttp(getProfileData);
 	const [isWarned , setIsWarned] = useState(false)
 	const [isWarnedMessage , setIsWarnedMessage] = useState('')
-
 
 	useEffect(() => {
 		// sendRequest(props.sellerId);
@@ -56,24 +58,9 @@ const PageProfile = props => {
 					<p className='text-warning d-inline-block fw-bold mb-0 p-3'>   {isWarnedMessage} </p>
 				</div>
 				}
-
-				{true &&
-				<div className='BlockModal'>
-					<span className='text-danger fw-bold  d-inline-block'>
-						<FontAwesomeIcon icon={faBan} className="BlockIcon"/>
-					</span>
-					<p className='text-danger d-inline-block fw-bold mb-0 p-3'> {isWarnedMessage} </p>
-				</div>
-				}
-				{/* {data && data.seller.isBlocked &&  data.seller.blockReason &&
-				<div className='mb-4'>
-					<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'>  Block Reason : </h4>
-					<h4 className='text-danger d-inline-block fw-bold'>  ⛔ {data.seller.blockReason} </h4>
-				</div>
-				} */}
-
 			</div>
 
+			<Link className={`btn bg-danger text-light fw-bold`} to={`/seller-dashboard/UpdateAccount/${props.sellerId}`} > Update Profile </Link>
 		</div>
 
 	);

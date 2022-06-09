@@ -17,6 +17,11 @@ const BuyerDashboardContent = props => {
 			icon: faGavel,
 			path: '/buyer-dashboard/UpdateAccount',
 		},
+		{
+			title: 'Change Password',
+			icon: faGavel,
+			path: '/buyer-dashboard/UpdateAccount',
+		},
 	];
 
 	const dropdownListViewAuctions = [

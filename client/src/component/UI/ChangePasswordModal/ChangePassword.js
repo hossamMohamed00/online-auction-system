@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { confirmChangePasswordCode, ResetPassword, sendConfirmation } from "../../../Api/Auth";
+import { ChangeTONewPassword, confirmChangePasswordCode, ResetPassword } from "../../../Api/Auth";
 import useHttp from "../../../CustomHooks/useHttp";
 import useInput from '../../../CustomHooks/useInput';
 import Input from "../Input/input";
 import LoadingSpinner from '../Loading/LoadingSpinner'
 
 import ModalUi from "../Modal/modal";
+import './ChangePassword.css'
+
 
 function ChangePassword({forget , show , onHide}) {
 		// sendEmailConfirmation
 
 		const { sendRequest :sendRequestForEmailConf, status : statusForEmailConf, data:dataForEmailConf, error :errorForEmailConf } = useHttp(ResetPassword);
-		const { sendRequest :sendRequestForConfCode, status : statusForForConfCode, data:dataForConfCode, error :errorForConfCode } = useHttp(confirmChangePasswordCode);
+		const { sendRequest :sendRequestForConfCode, status : statusForConfCode, data:dataForConfCode, error :errorForConfCode } = useHttp(confirmChangePasswordCode);
+		const { sendRequest :sendRequestForChangeToNewPassword, status : statusForChangeToNewPassword, data:dataForChangeToNewPassword, error :errorForChangeToNewPassword } = useHttp(ChangeTONewPassword);
 
-		// const idToken = useSelector(store => store.AuthData.idToken);
 
 		const validatePassword = value => value.trim().length > 4;
 
@@ -53,7 +54,7 @@ function ChangePassword({forget , show , onHide}) {
 
 		// start sendConfirmation Api
 		useEffect(()=>{
-			if(statusForForConfCode === 'completed' ){
+			if(statusForConfCode === 'completed' ){
 				setLoading(false)
 				toast.success('Successfully ❤️‍🔥 ');
 				toast.success(dataForConfCode.message);
@@ -61,11 +62,30 @@ function ChangePassword({forget , show , onHide}) {
 				setModalBody(PasswordsInput)
 				setModalBtn('Change Password')
 			}
-			if(statusForForConfCode ==='error'){
+			if(statusForConfCode ==='error'){
 				setLoading(false)
 				toast.error(errorForConfCode)
+				onHide()
 			}
-		} , [statusForForConfCode])
+		} , [statusForConfCode])
+
+
+		// start change password Api
+		useEffect(()=>{
+			if(statusForChangeToNewPassword === 'completed' ){
+				setLoading(false)
+				toast.success(dataForChangeToNewPassword.message);
+
+				setModalBody('')
+				setModalTitle('Change Password is Done Successfully ❤️‍🔥')
+				setModalBtn('')
+			}
+			if(statusForChangeToNewPassword ==='error'){
+				setLoading(false)
+				toast.error(errorForChangeToNewPassword)
+				onHide()
+			}
+		} , [statusForChangeToNewPassword])
 
 		const codeNum1ref = useRef();
 		const codeNum2ref = useRef();
@@ -76,7 +96,6 @@ function ChangePassword({forget , show , onHide}) {
 		const EmailRef_inFtPass = useRef()
 		// change Password Refs
 		const newPasswordRef = useRef()
-		const oldPasswordRef = useRef()
 
 
 		const { hasError, onChangeValueHandler, onBlurHandler } = useInput(
@@ -104,24 +123,15 @@ function ChangePassword({forget , show , onHide}) {
 
 		const PasswordsInput = (
 			<div>
-				<h6 className='text-light fw-bold text-center pb-2'> Please Enter Old And New Password </h6>
+				<h6 className='text-light fw-bold text-center pb-2'> Please Enter New Password </h6>
 				<Input
 					type="password"
 					placeholder="Password"
 					validateText={validatePassword}
-					ref={oldPasswordRef}
+					ref={newPasswordRef}
 					errorMassage="please enter valid password"
 					id = "oldPassword"
 				/>
-				<Input
-					type="password"
-					placeholder="Confirm Password"
-					validateText={validatePassword}
-					ref={newPasswordRef}
-					errorMassage="please enter valid password"
-					id = "newPassword"
-				/>
-
 			</div>
 		)
 
@@ -161,10 +171,14 @@ function ChangePassword({forget , show , onHide}) {
 				}
 			}
 			if(ModalBtn === 'Change Password'){
-
+				if(newPasswordRef.current.value){
+					const email = EmailRef_inFtPass.current.value
+					const password = newPasswordRef.current.value
+					const verificationCode = codeNum1ref.current.value + codeNum2ref.current.value + codeNum3ref.current.value + codeNum4ref.current.value + codeNum5ref.current.value
+					sendRequestForChangeToNewPassword({email , verificationCode, password})
+				}
 			}
-
-		}
+	}
 
 
 	return (

@@ -42,11 +42,7 @@ const ViewAuctionDetails = props => {
 							{item.status !== 'closed' ? (
 								CountDownTimer(new Date(item.endDate))
 							) : (
-								<div>
-									<span> 0 </span>
-									<span> 0 </span>
-									<span> 0 </span>
-									<span> 0 </span>
+								<div className='mt-4'>
 								</div>
 							)}
 						</div>

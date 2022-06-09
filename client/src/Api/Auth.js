@@ -77,7 +77,7 @@ export const ResetPassword = async ({email}) => {
 		},
 	});
 	const data = await response.json();
-	if (!response.ok && !data.success) {
+	if (!response.ok || data.success===false) {
 		throw new Error(data.message);
 	}
 
@@ -100,7 +100,7 @@ export const confirmChangePasswordCode = async ({verificationCode , email}) => {
 		},
 	});
 	const data = await response.json();
-	if (!response.ok && !data.success) {
+	if (!response.ok || data.success===false) {
 		throw new Error(data.message);
 	}
 	return data;
@@ -109,7 +109,26 @@ export const confirmChangePasswordCode = async ({verificationCode , email}) => {
 
 
 
-
+// start Check Confirmation Code
+export const ChangeTONewPassword = async ({verificationCode , email , password}) => {
+	const response = await fetch(`${url}/auth/reset-password`, {
+		method: 'PATCH',
+		body: JSON.stringify({
+			email : email,
+			verificationCode: verificationCode,
+			password : password,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok || data.success === false) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+// end Check Confirmation Code
 
 export const Logout = async idToken => {
 	const response = await fetch(LogoutUrl, {

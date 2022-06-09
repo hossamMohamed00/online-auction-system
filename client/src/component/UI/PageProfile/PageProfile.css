@@ -34,9 +34,6 @@
 	padding: 15px;
 }
 
-.text-danger{
-	color: rgb(212, 29, 29)!important;
-}
 
 .WarningModal p , .BlockModal p {
 	background-color: var(--nav-color);

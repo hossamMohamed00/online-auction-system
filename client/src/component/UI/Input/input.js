@@ -8,7 +8,7 @@ const Input = React.forwardRef((props, ref) => {
 		hasError,
 		onChangeValueHandler,
 		onBlurHandler,
-	} = useInput(props.validateText);
+	} = useInput(props.validateText , props.value);
 
 	props.getValue && props.getValue(InputValue);
 

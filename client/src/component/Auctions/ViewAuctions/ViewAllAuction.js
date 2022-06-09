@@ -22,14 +22,14 @@ const ViewAllAuctions = () => {
 	const [FilterAuction, setFilterAuction] = useState(false);
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
-	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
+	const { sendRequest, status, data} = useHttp(getAllAuctions);
 
 	useEffect(() => {
 		if (!FilterAuction) {
 			sendRequest();
 		} else{
 			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
+			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&` }`
 			console.log(queryParams)
 			sendRequest(queryParams);
 			}

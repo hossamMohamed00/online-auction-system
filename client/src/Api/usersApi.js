@@ -28,3 +28,15 @@ export const SubmitComplaintInSystem = async CompliantDetails => {
 		throw new Error(data.message);
 	}
 };
+
+
+export const getUserProfile = async ({role , id}) => {
+	const response = await fetch(`http://localhost:8000${((role==='seller' && `/seller/profile/${id}` )||(role==='buyer' && `/buyer/profile/${id}`))}`)
+	const data = await response.json();
+
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data
+};
+

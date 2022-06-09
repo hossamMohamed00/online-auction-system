@@ -1,10 +1,15 @@
 export const UpdateAccount = async ({ accountData, idToken, path }) => {
+
+	const formData = new FormData();
+	for (let dataKey in accountData) {
+		formData.append(dataKey, accountData[dataKey]);
+	}
+
 	const response = await fetch(`http://localhost:8000/${path}`, {
 		method: 'PATCH',
-		body: JSON.stringify(accountData),
+		body : formData,
 		headers: {
 			Authorization: `Bearer ${idToken}`,
-			'content-type': 'application/json',
 		},
 	});
 	const data = await response.json();
