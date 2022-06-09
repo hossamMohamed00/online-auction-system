@@ -59,9 +59,7 @@ const JoinedAuctionModal = ({ id, show, onHide }) => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/categories?id=${props.category._id}`}>
-							{props.category.name}
-						</Link>
+						<Link to={`/categories?id=${props.category._id && props.category._id}`}>{props.category.name}</Link>
 					</span>
 				);
 			},
@@ -77,9 +75,7 @@ const JoinedAuctionModal = ({ id, show, onHide }) => {
 			cell: props => {
 				return (
 					<span className="text-info">
-						<Link to={`/sellerProfile?id=${props.seller._id}`}>
-							{props.seller.name}{' '}
-						</Link>
+						<Link to={`/sellerProfile?id=${props.seller._id && props.seller._id}`}>{props.seller.name} </Link>
 					</span>
 				);
 			},
@@ -89,14 +85,14 @@ const JoinedAuctionModal = ({ id, show, onHide }) => {
 			cell: props => {
 				return (
 					<span className="text-info ">
-						<Link to={`/auctions?id=${props._id}`}>Auction Details</Link>
+						<Link to={`/auctions?id=${props._id && props._id}`} >Auction Details</Link>
 					</span>
 				);
 			},
 		},
 	];
 
-	const items = data ? data.joinedAuctions : [];
+	const items = data && data.joinedAuctions ? data.joinedAuctions : [];
 	const { filterFun, filteredItems } = useFilter(items, 'title');
 
 	// start View Joined Auctions

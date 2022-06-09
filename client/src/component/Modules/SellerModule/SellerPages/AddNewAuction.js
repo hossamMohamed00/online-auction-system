@@ -89,7 +89,7 @@ const AddAuction = () => {
 			validateText(TitleRef.current.value) &&
 			validateText(ProductNameRef.current.value) &&
 			validateText(ProductShortDescRef.current.value) &&
-			validateText(BasePriceRef.current.value) &&
+			validateText(BasePriceRef.current.value)&&
 			ValidateDate(StartDateRef.current.value)
 		) {
 			return true;
@@ -247,7 +247,7 @@ const AddAuction = () => {
 										Select Start Date
 									</label>
 									<Input
-										type="date"
+										type="datetime-local"
 										placeholder=""
 										validateText={ValidateDate}
 										ref={StartDateRef}

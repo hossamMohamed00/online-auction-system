@@ -9,6 +9,7 @@ import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 // import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 import useHttp from './../../../CustomHooks/useHttp';
 import { getProfileData } from '../../../Api/Admin';
+import PageProfile from '../../UI/PageProfile/PageProfile'
 
 const SellerDashboardContent = props => {
 	const { sendRequest, data, status } = useHttp(getProfileData);
@@ -96,7 +97,7 @@ const SellerDashboardContent = props => {
 				props.children
 			) : (
 				<PageContent>
-					<h1> hello Seller </h1>
+					<PageProfile sellerId={sellerId && sellerId}/>
 				</PageContent>
 			)}
 		</DashboardLayout>

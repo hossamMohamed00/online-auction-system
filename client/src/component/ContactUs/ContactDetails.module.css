@@ -32,7 +32,7 @@
 	font-size: 12px;
 }
 
-.ChatNow {
+.ChatNow , .btnChatNow {
 	display: block;
 	text-decoration: none;
 	background-color: var(--alert-color);
@@ -43,6 +43,10 @@
 	text-align: center;
 	border-radius: 5px;
 	transition: all 0.5s;
+}
+.btnChatNow{
+	border: 0;
+	width: 75%;
 }
 .ChatNow:hover {
 	color: white;

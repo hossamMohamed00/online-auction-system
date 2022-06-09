@@ -10,8 +10,11 @@ const ViewAuctionDetails = props => {
 	const location = useLocation();
 	const viewAllAuctionPage = location.pathname === '/auctions';
 	const homePage = location.pathname === '/home-page';
+
+	const AuctionItems = props.AuctionData && props.AuctionData.filter(data => data.status !== 'pending' && data.status !== 'denied')
 	const getAuctionDetails = (Items, animate) => {
 		return (
+			props.AuctionData &&
 			Items &&
 			Items.map((item, idx) => (
 				<Col key={idx} lg={props.lg && props.lg}>
@@ -39,12 +42,12 @@ const ViewAuctionDetails = props => {
 							{item.status !== 'closed' ? (
 								CountDownTimer(new Date(item.endDate))
 							) : (
-								<>
+								<div>
 									<span> 0 </span>
 									<span> 0 </span>
 									<span> 0 </span>
 									<span> 0 </span>
-								</>
+								</div>
 							)}
 						</div>
 
@@ -84,8 +87,7 @@ const ViewAuctionDetails = props => {
 									</div>
 								)}
 								{(item.status === 'closed' || item.status === 'ongoing') && (
-									<>
-										<hr></hr>
+									<div>
 										<div className="mt-3 text-light fw-bold">
 											Num Of Bids :
 											<span className="fs-6 fw-light text-light ps-2">
@@ -104,17 +106,12 @@ const ViewAuctionDetails = props => {
 
 										<div className="mt-3 text-alert fw-bold">
 											Winner Name :
-											<span className="fs-6 fw-bold text-alert ps-2">
-												{' '}
-												{item['winningBuyer']
-													? item['winningBuyer']
-													: ' No Winner'}{' '}
-											</span>
+											<span className="fs-6 fw-bold text-alert ps-2"> {item['winningBuyer'] ? item['winningBuyer'].name : ' No Winner'} </span>
 										</div>
-									</>
+									</div>
 								)}
 								{item.status === 'upcoming' && (
-									<>
+									<div>
 										<div className="mt-3 text-light fw-bold">
 											Chair Cost :
 											<span className="fs-6 fw-light text-light ps-2">
@@ -129,7 +126,7 @@ const ViewAuctionDetails = props => {
 												{item['basePrice'] ? item['basePrice'] : 0}{' '}
 											</span>
 										</div>
-									</>
+									</div>
 								)}
 							</Card.Text>
 
@@ -150,7 +147,7 @@ const ViewAuctionDetails = props => {
 	return (
 		<div className={classes.CurrentAuctionsContent}>
 			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
-				{getAuctionDetails(props.AuctionData, props.animate)}
+				{props.AuctionData && AuctionItems && getAuctionDetails(AuctionItems, props.animate)}
 			</Row>
 		</div>
 	);

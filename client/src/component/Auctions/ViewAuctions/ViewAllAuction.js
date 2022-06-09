@@ -23,27 +23,16 @@ const ViewAllAuctions = () => {
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
 	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
-	// const {
-	// 	sendRequest: sendFilterdRequest,
-	// 	status: FilterdRequestStatus,
-	// 	data: data,
-	// } = useHttp(getFilterAuction);
 
 	useEffect(() => {
 		if (!FilterAuction) {
-			sendRequest('');
-		} else {
-			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-				const queryParams = `${
-					FilterdDetails.AuctionCategory
-						? `?category=${FilterdDetails.AuctionCategory}&`
-						: '?'
-				}${FilterdDetails.AuctionType &&
-					`status=${FilterdDetails.AuctionType}&`}`;
-				sendRequest(queryParams);
+			sendRequest();
+		} else{
+			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
+			console.log(queryParams)
+			sendRequest(queryParams);
 			}
-			// setFilterdDetails(null)
-			// setFilterAuction(false)
 		}
 	}, [sendRequest, FilterAuction, FilterdDetails]);
 
@@ -113,15 +102,19 @@ const ViewAllAuctions = () => {
 								<ViewAuctionDetails AuctionData={data} animate={false} />
 							)}
 						</div>
-					) : (
-						<div className="pt-3">
-							<NoData
-								text="No Auctions Now"
-								// data={data & data}
-								// error={error && error}
-							/>
-						</div>
-					)}
+
+					):
+					<div className='pt-5'>
+						<NoData
+							text="No Auctions Now"
+						/>
+					</div>
+
+
+
+				}
+
+
 				</Col>
 			</Row>
 		</div>

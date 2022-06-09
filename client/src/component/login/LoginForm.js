@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -15,6 +15,8 @@ import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
 import { toast, ToastContainer } from 'react-toastify';
+import ModalUi from '../UI/Modal/modal';
+import useInput from '../../CustomHooks/useInput';
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
@@ -28,6 +30,14 @@ const LoginForm = () => {
 
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
+
+	const [ShowModal, setShowModal] = useState(false);
+	const [ModalTitle, setModalTitle] = useState('Are You Sure You Want To Change Password ? ');
+	const [ModalBtn, setModalBtn] = useState('Confirm');
+	const [ModalBody, setModalBody] = useState('');
+
+
+
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -73,6 +83,99 @@ const LoginForm = () => {
 		}
 	}, [status]);
 
+
+	const codeNum1ref = useRef();
+	const codeNum2ref = useRef();
+	const codeNum3ref = useRef();
+	const codeNum4ref = useRef();
+
+	// change Password Refs
+	const newPasswordRef = useRef()
+	const oldPasswordRef = useRef()
+
+
+	const { hasError, onChangeValueHandeler, onBlurHandeler } = useInput(
+		value => value.trim().length === 1,
+	);
+
+	const VerificationNum = [
+		codeNum1ref,
+		codeNum2ref,
+		codeNum3ref,
+		codeNum4ref,
+	].map((item, index) => (
+		<input
+			key={index}
+			type="number"
+			className={`${classes.code} ${hasError ? 'bg-danger' : ''}`}
+			min="0"
+			max="9"
+			required
+			ref={item}
+			onChange={onChangeValueHandeler}
+			onBlur={onBlurHandeler}
+		/>
+	));
+
+	const PasswordsInput = (
+		<div>
+			<h6 className='text-light fw-bold text-center pb-2'> Please Enter Old And New Password </h6>
+			<Input
+				type="password"
+				placeholder="Old Password"
+				validateText={validatePassword}
+				ref={oldPasswordRef}
+				errorMassage="please enter valid password"
+				id = "oldPassword"
+			/>
+			<Input
+				type="password"
+				placeholder="New Password"
+				validateText={validatePassword}
+				ref={newPasswordRef}
+				errorMassage="please enter valid password"
+				id = "newPassword"
+			/>
+
+		</div>
+	)
+
+	const ChangePasswordHandler = () => {
+		if(ModalBtn === 'Confirm'){
+			setModalTitle('Change Password')
+			setModalBody(
+				<div>
+					<h6 className='text-light fw-bold text-center'> Please Enter Code that send to your email Here </h6>
+					<div className={classes.codeContainer}>
+						{VerificationNum}
+					</div>
+				</div>
+
+			)
+			setModalBtn('Submit')
+
+		}
+		if(ModalBtn === 'Submit'){
+			if(codeNum1ref.current.value && codeNum2ref.current.value && codeNum3ref.current.value && codeNum4ref.current.value){
+
+
+				// start if code number is valid
+				toast.success('Success ')
+				setModalBody(PasswordsInput)
+				setModalBtn('Change Password')
+			}
+			else{
+				toast.error('Please Enter Code Number To Change Your Password ')
+				setModalBtn('Confirm')
+				setShowModal(false)
+			}
+		}
+		if(ModalBtn === 'Change Password'){
+
+		}
+
+	}
+
 	return (
 		<div className={classes['form-container']}>
 			<ToastContainer theme="dark" />
@@ -84,6 +187,8 @@ const LoginForm = () => {
 						validateText={validateEmail}
 						ref={nameRef}
 						errorMassage="please enter your email"
+						id = "email"
+
 					/>
 					<Input
 						type="password"
@@ -91,30 +196,11 @@ const LoginForm = () => {
 						validateText={validatePassword}
 						ref={passwordRef}
 						errorMassage="please enter valid password"
+						id = "password"
 					/>
 					<div className={classes.text}>
-						<div className={`${classes.checkbox} form-check`}>
-							<input
-								className="form-check-input"
-								type="checkbox"
-								value=""
-								id="flexCheckIndeterminate"
-							/>
-							<label
-								className="form-check-label text-light"
-								htmlFor="flexCheckIndeterminate"
-							>
-								Keep me logged in
-							</label>
-						</div>
-						<p className="text-primary"> Forget password ?</p>
+						<p className="text-primary text-end float-right w-100" onClick={()=>setShowModal(true)}> Forget password ?</p>
 					</div>
-					{/* {error && (
-						<p className={`${classes.alert} p-2 text-center fs-6 `}>
-							{' '}
-							{error}{' '}
-						</p>
-					)} */}
 
 					<button className="btn btn-primary" onSubmit={submitHandler}>
 						Login
@@ -126,7 +212,21 @@ const LoginForm = () => {
 					<img src={googleImg} alt="googleImg" />
 				</div>
 			</Card>
+
+
+			{ShowModal && (
+				<ModalUi
+					show={ShowModal}
+					onHide={() => setShowModal(false)}
+					title= {ModalTitle}
+					body = {ModalBody}
+					btnName={ModalBtn}
+					btnHandler={ChangePasswordHandler}
+
+				/>
+			)}
 		</div>
+
 	);
 };
 
