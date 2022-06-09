@@ -70,7 +70,9 @@ export class ReviewService {
 
 			return createdReview;
 		} else {
-			throw new BadRequestException('You can not review this seller 😁');
+			throw new BadRequestException(
+				`You can not review this seller as you don't join any auction with him 😁`,
+			);
 		}
 	}
 
