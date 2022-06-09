@@ -11,6 +11,7 @@ import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
+import { AuctionEmailsService } from 'src/providers/mail';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
@@ -36,6 +37,7 @@ export class AdminService {
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
 		private readonly complaintService: ComplaintService,
+		private readonly auctionEmailsService: AuctionEmailsService,
 	) {}
 
 	/* Handle Dashboard Functions */
@@ -144,7 +146,27 @@ export class AdminService {
 		userId: string,
 		warningMessage: string,
 	): Promise<ResponseResult> {
-		return this.usersService.toggleWarnUser(userId, warningMessage);
+		const result = await this.usersService.toggleWarnUser(
+			userId,
+			warningMessage,
+		);
+
+		if (result.success && result?.data) {
+			this.logger.debug('Sending warning email to user ...');
+			// @ts-ignore
+			const { user } = result?.data;
+
+			//* Inform the user with email
+			await this.auctionEmailsService.notifyUserAboutAction({
+				user,
+				warn: true,
+				warningMessage,
+			});
+
+			delete result.data;
+		}
+
+		return result;
 	}
 
 	/**
@@ -165,7 +187,21 @@ export class AdminService {
 		userId: string,
 		blockReason: string,
 	): Promise<ResponseResult> {
-		return this.usersService.toggleBlockUser(userId, blockReason);
+		const result = await this.usersService.toggleBlockUser(userId, blockReason);
+
+		if (result.success && result?.data) {
+			// @ts-ignore
+			const { user } = result?.data;
+
+			//* Inform the user with email
+			await this.auctionEmailsService.notifyUserAboutAction({
+				user,
+				block: true,
+				blockReason,
+			});
+		}
+
+		return result;
 	}
 
 	/**
