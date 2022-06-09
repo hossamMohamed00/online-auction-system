@@ -72,7 +72,20 @@ const UpdateAuction = () => {
 	const BasePriceRef = useRef();
 	// const ProductShortDescRef = useRef();
 	// const ProductDetaildDescRef = useRef();
+
 	// // end refs
+	// handle upload image
+	const [pictures, setPictures] = useState([]);
+	let tempArr = [];
+
+	const handleImageUpload = e => {
+		[...e.target.files].map(file => {
+			tempArr.push(file);
+		});
+
+		setPictures(tempArr);
+	};
+
 	const submitHandeler = e => {
 		e.preventDefault();
 		const auctionData = {

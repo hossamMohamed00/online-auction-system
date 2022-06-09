@@ -1,4 +1,5 @@
 export const UpdateAccount = async ({ accountData, idToken, path }) => {
+	
 	const response = await fetch(`http://localhost:8000/${path}`, {
 		method: 'PATCH',
 		body: JSON.stringify(accountData),
