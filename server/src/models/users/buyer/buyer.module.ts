@@ -15,7 +15,7 @@ import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
 		WalletModule,
 		forwardRef(() => AuctionsModule),
 		forwardRef(() => CategoryModule),
-		ReviewModule,
+		forwardRef(() => ReviewModule),
 		ComplaintModule,
 		NestjsFormDataModule,
 		CloudinaryModule,

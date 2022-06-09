@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 import { ResponseResult } from 'src/common/types';
+import { BuyerService } from '../users/buyer/buyer.service';
 import { Seller } from '../users/seller/schema/seller.schema';
 import { SellerService } from '../users/seller/seller.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -21,6 +22,8 @@ export class ReviewService {
 		private readonly reviewModel: Model<ReviewDocument>,
 		@Inject(forwardRef(() => SellerService)) //? To avoid circular dependency
 		private readonly sellerService: SellerService,
+		@Inject(forwardRef(() => BuyerService))
+		private readonly buyerService: BuyerService, // To avoid Circular dependency between the two services
 	) {}
 
 	/**
@@ -30,29 +33,45 @@ export class ReviewService {
 	 * @returns
 	 */
 	async create(createReviewDto: CreateReviewDto, buyer: string) {
-		//? Ensure that the bidder not already reviewed the seller
-		const isAlreadyReviewed = await this.reviewModel.findOne({
-			seller: createReviewDto.seller,
-			buyer,
+		//*  get all auctions that the buyer has joined
+		const auction = await this.buyerService.listMyAuctions(buyer);
+		let canReview = false;
+		//* loop through all auctions and check if the seller of this auction is the same seller that come from the Dto
+		auction.forEach(async auction => {
+			if (auction.seller._id.toString() === createReviewDto.seller.toString()) {
+				//* if true then the buyer can review the seller
+				canReview = true;
+			}
 		});
+		if (canReview) {
+			//? Ensure that the bidder not already reviewed the seller
+			const isAlreadyReviewed = await this.reviewModel.findOne({
+				seller: createReviewDto.seller,
+				buyer,
+			});
 
-		if (isAlreadyReviewed) {
-			throw new BadRequestException('You Have reviewed this Seller before 😁.');
+			if (isAlreadyReviewed) {
+				throw new BadRequestException(
+					'You Have reviewed this Seller before 😁.',
+				);
+			}
+
+			//? Create New Review
+			const createdReview: ReviewDocument = new this.reviewModel({
+				...createReviewDto,
+				buyer,
+			});
+
+			//* Save Review
+			await createdReview.save();
+
+			//* Update seller rating
+			await this.updateSellerRating(createReviewDto.seller.toString());
+
+			return createdReview;
+		} else {
+			throw new BadRequestException('You can not review this seller 😁');
 		}
-
-		//? Create New Review
-		const createdReview: ReviewDocument = new this.reviewModel({
-			...createReviewDto,
-			buyer,
-		});
-
-		//* Save Review
-		await createdReview.save();
-
-		//* Update seller rating
-		await this.updateSellerRating(createReviewDto.seller.toString());
-
-		return createdReview;
 	}
 
 	/**
