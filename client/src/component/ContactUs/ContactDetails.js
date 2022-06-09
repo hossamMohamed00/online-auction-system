@@ -18,7 +18,7 @@ const ContactDetails = () => {
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 
 	const [ShowModal, setShowModal] = useState(false);
-	const redirectUserToHomePage = useNavigate()
+	const redirectUserToHomePage = useNavigate();
 
 	const ChatPath = () => {
 		if (role === 'seller') {
@@ -33,7 +33,7 @@ const ContactDetails = () => {
 	return (
 		<React.Fragment>
 			<div className={` ${classes.ContactDetails} p-0`}>
-				<h4 className="text-center"> Contact Details</h4>
+				<h4 className="text-center">Contact Details</h4>
 
 				<div className="mt-2">
 					<FontAwesomeIcon
@@ -57,7 +57,7 @@ const ContactDetails = () => {
 					}
 				>
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />
-					<p> you can chat with Administrator</p>
+					<p> You can chat with out support team</p>
 					{!isLoggedIn ? (
 						<button
 							className={`${classes.btnChatNow} `}
@@ -66,10 +66,7 @@ const ContactDetails = () => {
 							Chat Now
 						</button>
 					) : (
-						<Link
-							className={`${classes.ChatNow} `}
-							to= {ChatPath()}
-						>
+						<Link className={`${classes.ChatNow} `} to={ChatPath()}>
 							Chat Now
 						</Link>
 					)}
@@ -80,7 +77,7 @@ const ContactDetails = () => {
 				<ModalUi
 					show={ShowModal}
 					onHide={() => setShowModal(false)}
-					title="Please Logged in First, before Chatting  "
+					title="You need to login to chat with our support team 🔐"
 					btnName={'Log in'}
 					btnHandler={() => redirectUserToHomePage('/login')}
 				/>
