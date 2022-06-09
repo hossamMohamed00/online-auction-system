@@ -12,6 +12,7 @@ import scrollbar from '../../UI/ScrollBar.module.css';
 import { useSelector } from 'react-redux';
 
 function FilterdAuctions(props) {
+	console.log(props);
 	const { sendRequest, data } = useHttp(getAllCategories);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	// const [filterData ,setFilerData]  = useState()
@@ -81,7 +82,7 @@ function FilterdAuctions(props) {
 					className={` ${classes.btnFilter} btn w-100 ${
 						props.filter ? 'bg-danger' : ''
 					}`}
-					onClick={!props.filter ? filterAuctionHandler : props.clearFilter}
+					onClick={props.filter ? filterAuctionHandler : props.clearFilter}
 				>
 					{props.filter ? 'Clear Filter' : 'Filter'}
 				</button>

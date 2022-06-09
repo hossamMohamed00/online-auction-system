@@ -134,7 +134,7 @@ const ModalUi = props => {
 							We will Notify you when Auction be ongoing
 						</h5>
 					)}
-					{props.btnReject && role === 'admin' && (
+					{props.btnReject && (role === 'admin' || role === 'employee') && (
 						<h5> write a reason for reject</h5>
 					)}
 
@@ -278,7 +278,7 @@ const ModalUi = props => {
 							</>
 						)}
 					{/*for  Admin  */}
-					{props.btnReject && role === 'admin' && (
+					{props.btnReject && (role === 'admin' || role === 'employee') && (
 						<input
 							type="text"
 							placeholder="Type reason here ..."
@@ -364,7 +364,7 @@ const ModalUi = props => {
 					{/* end buyer modal */}
 
 					{/* start Admin modal */}
-					{props.btnReject && role === 'admin' && (
+					{props.btnReject && (role === 'admin' || role === 'employee') && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"

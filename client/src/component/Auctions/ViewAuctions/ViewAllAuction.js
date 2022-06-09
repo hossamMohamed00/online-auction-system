@@ -27,24 +27,30 @@ const ViewAllAuctions = () => {
 	useEffect(() => {
 		if (!FilterAuction) {
 			sendRequest();
-		} else{
-			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&`}`
-			console.log(queryParams)
-			sendRequest(queryParams);
+		} else {
+			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+				const queryParams = `${
+					FilterdDetails.AuctionCategory
+						? `?category=${FilterdDetails.AuctionCategory}&`
+						: '?'
+				}${FilterdDetails.AuctionType &&
+					`status=${FilterdDetails.AuctionType}&`}`;
+				console.log(queryParams);
+				sendRequest(queryParams);
 			}
 		}
 	}, [sendRequest, FilterAuction, FilterdDetails]);
 
 	useEffect(() => {
 		if (status === 'completed') {
+			console.log(data);
 			setData(
 				data.filter(
 					data => data.status !== 'pending' && data.status !== 'denied',
 				),
 			);
 		}
-	}, [status]);
+	}, [status, FilterAuction]);
 	const showFilterHandler = () => {
 		setShowFilter(true);
 	};
@@ -77,7 +83,7 @@ const ViewAllAuctions = () => {
 				</Col>
 
 				<Col md={8} lg={10}>
-					{data && data.length > 0 ? (
+					{Data && Data.length > 0 && status === 'completed' ? (
 						<div className={classes.AllAuction}>
 							<PageHeader text="View All Auctions" showLink={false} />
 
@@ -98,23 +104,20 @@ const ViewAllAuctions = () => {
 								)}
 							</div>
 
-							{data && status === 'completed' && (
-								<ViewAuctionDetails AuctionData={data} animate={false} />
+							{Data && status === 'completed' ? (
+								<ViewAuctionDetails
+									AuctionData={Data && Data}
+									animate={false}
+								/>
+							) : (
+								<p> No data </p>
 							)}
 						</div>
-
-					):
-					<div className='pt-5'>
-						<NoData
-							text="No Auctions Now"
-						/>
-					</div>
-
-
-
-				}
-
-
+					) : (
+						<div className="pt-5">
+							<NoData text="No Auctions Now" />
+						</div>
+					)}
 				</Col>
 			</Row>
 		</div>

@@ -13,8 +13,10 @@ const getAuctions = async url => {
 // ongoing
 // closed
 
-export const getAllAuctions = async queryParams =>
-	getAuctions(`${url}${queryParams ? queryParams : '?'}populate=true`);
+export const getAllAuctions = async queryParams => {
+	console.log(`${url}${queryParams ? queryParams : '?'}populate=true`);
+	return getAuctions(`${url}${queryParams ? queryParams : '?'}populate=true`);
+};
 // export const getFilterAuction = async (queryParams) => getAuctions(`${url}${queryParams}populate=true`);
 
 export const getUpComingAuctions = async () =>
