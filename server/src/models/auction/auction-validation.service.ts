@@ -117,7 +117,7 @@ export class AuctionValidationService {
 		if (!isAvailable) {
 			validationResult.success = false;
 			validationResult.message =
-				'This auction currently is not available to join ❌❌';
+				'This auction currently is not available to save ❌❌';
 
 			return validationResult;
 		}

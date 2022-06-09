@@ -15,6 +15,8 @@ import { AuctionSchedulingService } from 'src/providers/schedule/auction/auction
 import { WalletModule } from 'src/providers/payment/wallet.module';
 import { BiddingIncrementRules } from 'src/providers/bids';
 import { BuyerModule } from '../users/buyer/buyer.module';
+import { BuyerService } from '../users/buyer/buyer.service';
+import { AuctionEmailsModule } from 'src/providers/mail/email-auction/auction-emails.module';
 
 @Module({
 	imports: [
@@ -22,11 +24,12 @@ import { BuyerModule } from '../users/buyer/buyer.module';
 		forwardRef(() => CategoryModule),
 		forwardRef(() => BuyerModule),
 		WalletModule,
+		AuctionEmailsModule,
 		MongooseModule.forFeatureAsync([
 			{
 				name: Auction.name,
-				imports: [ItemModule],
-				useFactory: (itemService: ItemService) => {
+				imports: [ItemModule, BuyerModule],
+				useFactory: (itemService: ItemService, buyerService: BuyerService) => {
 					const logger: Logger = new Logger('Auction Module');
 					const schema = AuctionSchema;
 					//? Add the auto-populate plugin
@@ -40,11 +43,16 @@ import { BuyerModule } from '../users/buyer/buyer.module';
 						//@ts-ignore
 						await itemService.remove(this.item._id);
 						logger.log('Removing the item related to that auction...🧺');
+
+						//* Remove the auction from the user's saved auctions
+						await buyerService.removeAuctionFromSavedAuctions(
+							this._id.toString(),
+						);
 					});
 
 					return schema;
 				},
-				inject: [ItemService],
+				inject: [ItemService, BuyerService],
 			},
 		]),
 	],

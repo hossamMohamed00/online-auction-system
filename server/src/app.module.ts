@@ -1,3 +1,4 @@
+import { SmsModule } from './providers/mobile-sms/sms.module';
 import { SocketModule } from './providers/socket/socket.module';
 import { WalletModule } from './providers/payment/wallet.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -6,7 +7,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { EmailSchedulingService } from './providers/schedule/mail/email-scheduling.service';
 import { AuthModule } from './models/auth/auth.module';
 import { EmailModule } from './providers/mail/email.module';
-import { EmailConfirmationModule } from './providers/auth/verification/email-confirmation.module';
+import { EmailAuthModule } from './providers/mail/email-auth/verification/email-auth.module';
 import { ChatModule } from './models/chat/chat.module';
 import { CategoryModule } from './models/category/category.module';
 import { ItemModule } from './models/items/item.module';
@@ -26,9 +27,13 @@ import { EmployeeModule } from './models/users/employee/employee.module';
 import { StripeConfigModule } from './config/stripe/stripe.config.module';
 import { AuctionSchedulingService } from './providers/schedule/auction/auction-scheduling.service';
 import { BidModule } from './models/bids/bid.module';
+import { AuctionEmailsModule } from './providers/mail/email-auction/auction-emails.module';
 
 @Module({
 	imports: [
+		//? Import sms module
+		SmsModule,
+
 		SocketModule,
 		//? Import stripe module
 		WalletModule,
@@ -63,7 +68,8 @@ import { BidModule } from './models/bids/bid.module';
 
 		//? Email module
 		EmailModule,
-		EmailConfirmationModule,
+		EmailAuthModule,
+		AuctionEmailsModule,
 		/*
 		? Enable task schedule
 		 * The ScheduleModule.forRoot method initializes the scheduler.

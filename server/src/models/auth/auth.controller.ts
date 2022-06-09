@@ -4,12 +4,18 @@ import {
 	Get,
 	HttpCode,
 	HttpStatus,
+	Patch,
 	Post,
 	Request,
 	UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { LoginUserDto, RegisterUserDto } from './dto';
+import {
+	LoginUserDto,
+	RegisterUserDto,
+	ResetPasswordDto,
+	ResetPasswordRequestDto,
+} from './dto';
 import { AuthService } from './auth.service';
 import {
 	GetCurrentUserData,
@@ -20,8 +26,8 @@ import { RefreshTokenAuthGuard } from '../../common/guards';
 import { TokensAndRole } from './types';
 import { Serialize } from 'src/common/interceptors';
 import { UserDto } from '../users/shared-user/dto';
-import { EmailConfirmationService } from 'src/providers/auth';
 import { FormDataRequest } from 'nestjs-form-data';
+import { EmailAuthService } from 'src/providers/mail';
 
 /**
  * These endpoints responsible for user authentication
@@ -31,7 +37,7 @@ import { FormDataRequest } from 'nestjs-form-data';
 export class AuthController {
 	constructor(
 		private authService: AuthService,
-		private readonly emailConfirmationService: EmailConfirmationService,
+		private readonly emailAuthService: EmailAuthService,
 	) {}
 
 	/**
@@ -50,7 +56,7 @@ export class AuthController {
 		const tokens = await this.authService.register(registerUserDto);
 
 		//? Send confirmation email
-		await this.emailConfirmationService.sendVerificationCode(
+		await this.emailAuthService.sendVerificationCode(
 			registerUserDto.name,
 			registerUserDto.email,
 		);
@@ -69,6 +75,21 @@ export class AuthController {
 	@Post('login')
 	async login(@Body() loginDto: LoginUserDto): Promise<TokensAndRole> {
 		return this.authService.login(loginDto);
+	}
+
+	@IsPublicRoute()
+	@ApiBody({})
+	@HttpCode(HttpStatus.OK)
+	@Post('reset-password')
+	async resetPasswordRequest(@Body() { email }: ResetPasswordRequestDto) {
+		return this.authService.resetPasswordRequest(email);
+	}
+
+	@IsPublicRoute()
+	@HttpCode(HttpStatus.OK)
+	@Patch('reset-password')
+	async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+		return this.authService.resetPassword(resetPasswordDto);
 	}
 
 	/**

@@ -73,7 +73,7 @@ const ViewAllAuctions = () => {
 			center: true,
 			cell: props => {
 				return props.winningBuyer ? (
-					<span>{props.winningBuyer}</span>
+					<span>{props.winningBuyer.name}</span>
 				) : (
 					<span>No winner</span>
 				);

@@ -37,6 +37,7 @@ import { HandleDateService } from './../../common/utils/date/handle-date.service
 import { Buyer } from '../users/buyer/schema/buyer.schema';
 import { BuyerService } from '../users/buyer/buyer.service';
 import { CategoryService } from '../category/category.service';
+import { AuctionEmailsService } from 'src/providers/mail';
 
 @Injectable()
 export class AuctionsService
@@ -59,6 +60,7 @@ export class AuctionsService
 		private readonly categoryService: CategoryService,
 		private readonly auctionSchedulingService: AuctionSchedulingService,
 		private readonly walletService: WalletService,
+		private readonly auctionEmailsService: AuctionEmailsService,
 	) {}
 
 	/* Handle Main Auctions Methods */
@@ -727,6 +729,28 @@ export class AuctionsService
 		if (!result) {
 			throw new BadRequestException(
 				'Unable to start auction, auction not found ❌',
+			);
+		}
+
+		//* Notify all waiting bidders in that auction
+		const auction = await this.auctionModel
+			.findById(auctionId)
+			.populate(['category', 'waitingBidders']);
+
+		const waitingBidders = auction.waitingBidders;
+
+		if (waitingBidders.length > 0) {
+			this.logger.debug("Notify all bidders in auction's waiting list...");
+
+			//* Loop through all waiting bidders and get their email
+			const biddersEmails = waitingBidders.map(bidder => {
+				return bidder.email;
+			});
+
+			//* Send email to all bidders
+			await this.auctionEmailsService.notifyBiddersAuctionStart(
+				auction,
+				biddersEmails,
 			);
 		}
 

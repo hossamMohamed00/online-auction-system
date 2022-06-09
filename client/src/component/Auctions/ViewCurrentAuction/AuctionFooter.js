@@ -194,35 +194,53 @@ function AuctionFooter({
 				if (modalShow) {
 					setModalShow(false);
 				}
-			}, [2000]);
-			return () => time.clearTimeOut();
-		});
-		setModalShow(false);
-		setRetreatModalTitle('');
-	};
+			},[5000])
+			return () => time.clearTimeOut()
+		})
+		setModalShow(false)
+		setRetreatModalTitle('')
+	}
 
-	useEffect(() => {
-		if (statusForJoinAuction === 'completed') {
-			setConfirmJoin('');
-			setModalShow(false);
-			toast.success(dataForJoinAuction.message);
-			localStorage.setItem('BidderIsJoined', dataForJoinAuction.success);
+	useEffect(()=>{
+		if(statusForJoinAuction === 'completed'){
+			if(role==='buyer') {
+				setConfirmJoin('')
+				setModalShow(false)
+				toast.success(dataForJoinAuction.message)
+				localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
 
-			setIsJoined(localStorage.getItem('BidderIsJoined'));
-			showBids(Math.random());
+				setIsJoined(localStorage.getItem('BidderIsJoined'))
+				showBids(Math.random())
+			}
+			else{
+				localStorage.removeItem('BidderIsJoined')
+				setIsJoined(false)
+			}
+
 		}
-		if (statusForJoinAuction === 'error') {
-			toast.error(errorForJoinAuction);
+		if(statusForJoinAuction === 'error'){
+			toast.error(errorForJoinAuction)
+			localStorage.removeItem('BidderIsJoined')
+				setIsJoined(false)
 		}
 	}, [statusForJoinAuction]);
 
 	// if bidder accept block money from your wallet
 	const btnConfirmationHandler = () => {
 		// start send request to join auction
-		const idToken = accessToken;
-		const id = AuctionId;
-		sendRequestForJoinAuction({ idToken, id });
-	};
+		const idToken = accessToken
+		const id = AuctionId
+		sendRequestForJoinAuction({ idToken, id})
+	}
+
+
+	useEffect(()=> {
+		if(isJoined && role==='buyer' ){
+			showBids(Math.random())
+			setBidderJoin(Math.random())
+		}
+
+	},[isJoined])
 
 	useEffect(() => {
 		if (isJoined) {

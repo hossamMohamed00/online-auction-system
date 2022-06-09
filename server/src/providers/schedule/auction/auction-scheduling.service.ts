@@ -28,8 +28,6 @@ export class AuctionSchedulingService {
 			//* Mark the auctions as started
 			await this.auctionService.markAuctionAsStarted(auctionId);
 
-			// TODO: Notify all bidder in auction waiting list
-
 			//? Get auction end date to create bew cron job
 			const result = await this.auctionService.getAuctionEndDate(auctionId);
 
