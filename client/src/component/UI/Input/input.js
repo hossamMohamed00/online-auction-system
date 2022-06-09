@@ -6,9 +6,9 @@ const Input = React.forwardRef((props, ref) => {
 	const {
 		value: InputValue,
 		hasError,
-		onChangeValueHandeler,
-		onBlurHandeler,
-	} = useInput(props.validateText);
+		onChangeValueHandler,
+		onBlurHandler,
+	} = useInput(props.validateText , props.value);
 
 	props.getValue && props.getValue(InputValue);
 
@@ -18,8 +18,8 @@ const Input = React.forwardRef((props, ref) => {
 				type={props.type}
 				value={InputValue}
 				placeholder={props.placeholder}
-				onChange={onChangeValueHandeler}
-				onBlur={onBlurHandeler}
+				onChange={onChangeValueHandler}
+				onBlur={onBlurHandler}
 				className={` form-control ${classes['form-control']} ${
 					props.className ? props.className : ''
 				} ${classes.input} ${hasError ? classes['alarm-input'] : ''} `}

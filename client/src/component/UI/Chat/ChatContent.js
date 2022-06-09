@@ -4,8 +4,6 @@ import ChatContentUi from './ChatContentUi';
 
 function ChatContent({ socket, getChatWithEmail, className }) {
 	const role = useSelector(store => store.AuthData.role);
-	const email = useSelector(store => store.AuthData.email);
-
 
 	const [Message, setMessage] = useState([]);
 

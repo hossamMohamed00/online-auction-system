@@ -21,7 +21,7 @@ const Step4 = () => {
 	const codeNum6ref = useRef();
 
 	// const userDetails = useSelector(store => store.userDetails.step1Details)
-	const { hasError, onChangeValueHandeler, onBlurHandeler } = useInput(
+	const { hasError, onChangeValueHandler, onBlurHandler } = useInput(
 		value => value.trim().length === 1,
 	);
 
@@ -41,8 +41,8 @@ const Step4 = () => {
 			max="9"
 			required
 			ref={item}
-			onChange={onChangeValueHandeler}
-			onBlur={onBlurHandeler}
+			onChange={onChangeValueHandler}
+			onBlur={onBlurHandler}
 		/>
 	));
 

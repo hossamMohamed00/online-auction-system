@@ -1,9 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ResponseResult } from 'src/common/types';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { UserDocument } from 'src/models/users/shared-user/schema/user.schema';
 import { UsersService } from 'src/models/users/shared-user/users.service';
 import EmailService from 'src/providers/mail/email.service';
+import { getBlockUserEmailContent } from './content/block-user-content';
 import { getNotifyAuctionStartContent } from './content/notify-auction-start-content';
+import { getWarnUserEmailContent } from './content/warn-user-content';
 
 @Injectable()
 export class AuctionEmailsService {
@@ -38,6 +41,47 @@ export class AuctionEmailsService {
 			this.logger.log(
 				'Cannot sent notification email right now right now ❌😢',
 			);
+			return false;
+		}
+	}
+
+	/**
+	 * Send email to inform user about warning or blocking
+	 * @param options - Data about the user and auction
+	 */
+	async notifyUserAboutAction(options: {
+		user: UserDocument;
+		block?: boolean;
+		blockReason?: string;
+		warn?: boolean;
+		warningMessage?: string;
+	}) {
+		let emailText;
+		if (options.block && options.blockReason) {
+			//? Get the email content
+			emailText = getBlockUserEmailContent({
+				username: options.user.name,
+				blockReason: options.blockReason,
+			});
+		} else if (options.warn && options.warningMessage) {
+			emailText = getWarnUserEmailContent({
+				username: options.user.name,
+				warningMessage: options.warningMessage,
+			});
+		}
+
+		//? Send the email
+		const emailStatus: boolean = await this.emailService.sendMail({
+			to: options.user.email,
+			subject: 'Online Auction - Action against you ⚠',
+			html: emailText,
+		});
+
+		if (emailStatus) {
+			this.logger.log(`Email has been sent to ${options.user.name} 📧`);
+			return true;
+		} else {
+			this.logger.log('Cannot sent email right now ❌😢');
 			return false;
 		}
 	}

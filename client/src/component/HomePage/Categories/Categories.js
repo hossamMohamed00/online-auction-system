@@ -12,8 +12,8 @@ const Categories = () => {
 	const role = useSelector(store => store.AuthData.role);
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const getCategories =
-		role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
+	// const getCategories =
+		// role === 'buyer' ? getAllCategories : getAllCategoriesForAdmin;
 
 	const { sendRequest, status, data, error } = useHttp(getAllCategories);
 

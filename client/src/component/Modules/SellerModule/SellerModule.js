@@ -97,7 +97,7 @@ const SellerDashboardContent = props => {
 				props.children
 			) : (
 				<PageContent>
-					<PageProfile sellerId={sellerId && sellerId}/>
+					<PageProfile />
 				</PageContent>
 			)}
 		</DashboardLayout>

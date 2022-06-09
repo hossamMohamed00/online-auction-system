@@ -26,16 +26,17 @@ function FilterdAuctions(props) {
 	let AuctionType, AuctionCategory;
 
 	const getAuctionType = value => {
-		AuctionType = value;
+		AuctionType = !props.filter ? value : '' ;
 	};
 	const getAuctionCategory = value => {
-		AuctionCategory = value;
+		AuctionCategory = !props.filter ? value : '' ;
+
 	};
 
 	const filterAuctionHandler = () => {
 		const FilterValues = {
-			AuctionType: AuctionType,
-			AuctionCategory: AuctionCategory,
+			AuctionType: AuctionType ? AuctionType : '',
+			AuctionCategory: AuctionCategory ? AuctionCategory :'',
 		};
 		props.filterHandler(FilterValues);
 	};
@@ -64,6 +65,7 @@ function FilterdAuctions(props) {
 						name="AuctionType"
 						values={['ongoing', 'upcoming', 'closed']}
 						getValue={getAuctionType}
+						notChecked = {!props.filter}
 					/>
 				</div>
 

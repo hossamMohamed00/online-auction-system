@@ -208,6 +208,9 @@ export class UsersService {
 		return {
 			success: true,
 			message,
+			data: {
+				user,
+			},
 		};
 	}
 
@@ -248,6 +251,9 @@ export class UsersService {
 		return {
 			success: true,
 			message,
+			data: {
+				user,
+			},
 		};
 	}
 }

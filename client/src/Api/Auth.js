@@ -46,7 +46,7 @@ export const Login = async userDetails => {
 	return data;
 };
 
-export const sendConfiramtion = async idToken => {
+export const sendConfirmation = async idToken => {
 	const response = await fetch(ConfirmEmailUrl, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -65,6 +65,71 @@ export const sendConfiramtion = async idToken => {
 	return data;
 };
 
+// start reset-password
+export const ResetPassword = async ({email}) => {
+	const response = await fetch(`${url}/auth/reset-password`, {
+		method: 'POST',
+		body: JSON.stringify({
+			email: email,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok || data.success===false) {
+		throw new Error(data.message);
+	}
+
+
+	return data;
+};
+// end reset-password
+// /reset-password/confirm-code
+
+// start Check Confirmation Code
+export const confirmChangePasswordCode = async ({verificationCode , email}) => {
+	const response = await fetch(`${url}/reset-password/confirm-code`, {
+		method: 'POST',
+		body: JSON.stringify({
+			verificationCode: verificationCode,
+			email : email
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok || data.success===false) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+// end Check Confirmation Code
+
+
+
+// start Check Confirmation Code
+export const ChangeTONewPassword = async ({verificationCode , email , password}) => {
+	const response = await fetch(`${url}/auth/reset-password`, {
+		method: 'PATCH',
+		body: JSON.stringify({
+			email : email,
+			verificationCode: verificationCode,
+			password : password,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok || data.success === false) {
+		throw new Error(data.message);
+	}
+	return data;
+};
+// end Check Confirmation Code
+
 export const Logout = async idToken => {
 	const response = await fetch(LogoutUrl, {
 		method: 'POST',
@@ -77,3 +142,5 @@ export const Logout = async idToken => {
 		throw new Error(response.json().message);
 	}
 };
+
+
