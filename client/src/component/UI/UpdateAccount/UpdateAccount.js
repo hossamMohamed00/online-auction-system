@@ -10,16 +10,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import useHttp from '../../../CustomHooks/useHttp';
 import { toast, ToastContainer } from 'react-toastify';
-// import { getUserProfile } from '../../../Api/usersApi';
 import { getUserId } from '../../../Api/usersApi';
+import { useNavigate } from 'react-router-dom';
 
 
 const UpdateAccountForUsers = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
-	const userId = localStorage.getItem('id')
-
 	const role = useSelector(store => store.AuthData.role);
 	const email = useSelector(store => store.AuthData.email);
+
+	const Navigate = useNavigate()
 	const phoneNumber = useRef();
 	const nameRef = useRef();
 	const addressRef = useRef();
@@ -55,20 +55,36 @@ const UpdateAccountForUsers = () => {
 	// start update Account
 	const submitHandler = e => {
 		e.preventDefault();
+		console.log(ImageSrc ? ImageSrc : userData.image.url)
+		let accountData
+		if(ImageSrc){
+			accountData = {
+				name: nameRef.current.value,
+				phoneNumber: phoneNumber.current.value.trim(),
+				address: addressRef.current.value,
+				nationalID :nationalIDRef.current.value,
+				image: ImageSrc
+			};
+		}
+		else{
+			accountData = {
+				name: nameRef.current.value,
+				phoneNumber: phoneNumber.current.value.trim(),
+				address: addressRef.current.value,
+				nationalID :nationalIDRef.current.value
+			};
+		}
 
-		const accountData = {
-			name: nameRef.current.value,
-			phoneNumber: phoneNumber.current.value.trim(),
-			address: addressRef.current.value,
-			nationalID :nationalIDRef.current.value,
-			image: ImageSrc
-		};
 		sendRequest({ accountData, idToken, path:`${role==='seller' ? 'seller/profile': 'buyer/profile'}`} );
 	};
 
 	React.useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Account Updated Successfully');
+			window.location.reload()
+			const path = role==='seller' ? '/seller-dashboard/': '/buyer-dashboard/'
+			Navigate(path)
+
 		} else {
 			toast.error(error);
 		}
@@ -85,7 +101,7 @@ const UpdateAccountForUsers = () => {
 				<form className="container-fluid" onSubmit={submitHandler}>
 					<section className="header_container position-relative">
 						<div className={`${classes.UpdateAccount} `}>
-							<img src={(userData.image && userData.image.url )? `${userData['image']['url']}` : userImg} className={classes.imageProfile} />
+							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} />
 							<button
 								type='button'
 								className={`btn ${classes.btnChangeImage}`}

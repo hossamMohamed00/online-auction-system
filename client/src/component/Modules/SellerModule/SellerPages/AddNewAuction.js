@@ -14,6 +14,7 @@ import useHttp from '../../../../CustomHooks/useHttp';
 
 import { toast, ToastContainer } from 'react-toastify';
 import { isBefore } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const AddAuction = () => {
 	const [AddAuction, setAddAuction] = useState('');
@@ -51,18 +52,12 @@ const AddAuction = () => {
 		dataCategoryList &&
 		dataCategoryList.length !== 0;
 
-	const [ProductImages, setProductImages] = useState([]);
 	const [ProductImageErrorMessage, setProductImageErrorMessage] = useState('');
 
 	// start validation
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
-
-	// const ProductImagesHandler = e => {
-	// 	const files = e.target.files;
-	// 	setProductImages([...files])
-
-	// }
+	const Navigate = useNavigate()
 
 	// end validation
 	const getAllCategoriesName = checkCategory ? (
@@ -141,6 +136,7 @@ const AddAuction = () => {
 	useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Done, new Auction added successfully 💖🐱‍👤');
+			Navigate('/seller-dashboard/viewAllAuctions')
 		}
 	}, [status, AddAuction]);
 
