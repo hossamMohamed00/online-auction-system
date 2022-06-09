@@ -46,7 +46,7 @@ export const Login = async userDetails => {
 	return data;
 };
 
-export const sendConfiramtion = async idToken => {
+export const sendConfirmation = async idToken => {
 	const response = await fetch(ConfirmEmailUrl, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -77,3 +77,5 @@ export const Logout = async idToken => {
 		throw new Error(response.json().message);
 	}
 };
+
+
