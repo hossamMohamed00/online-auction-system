@@ -39,7 +39,6 @@ function ChangePassword({forget , show , onHide}) {
 							{VerificationNum}
 						</div>
 					</div>
-
 				)
 				setModalBtn('Submit')
 			}
@@ -47,6 +46,15 @@ function ChangePassword({forget , show , onHide}) {
 				setLoading(false)
 				console.log(errorForEmailConf)
 				toast.error(errorForEmailConf)
+				setModalBody(
+					<div>
+						<h6 className='text-light fw-bold text-center'> Please Enter Code that send to your email Here </h6>
+						<div className='codeContainer'>
+							{VerificationNum}
+						</div>
+					</div>
+				)
+				setModalBtn('Submit')
 
 			}
 		} , [statusForEmailConf])
@@ -76,8 +84,8 @@ function ChangePassword({forget , show , onHide}) {
 				setLoading(false)
 				toast.success(dataForChangeToNewPassword.message);
 
-				setModalBody('')
 				setModalTitle('Change Password is Done Successfully ❤️‍🔥')
+				setModalBody('')
 				setModalBtn('')
 			}
 			if(statusForChangeToNewPassword ==='error'){
@@ -107,6 +115,8 @@ function ChangePassword({forget , show , onHide}) {
 			codeNum2ref,
 			codeNum3ref,
 			codeNum4ref,
+			codeNum5ref
+
 		].map((item, index) => (
 			<input
 				key={index}

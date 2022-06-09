@@ -9,6 +9,7 @@ import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import './PageProfile.css'
 import { useSelector } from 'react-redux';
 import { getUserId, getUserProfile } from '../../../Api/usersApi';
+import { ToastContainer } from 'react-toastify';
 
 const PageProfile = props => {
 
@@ -70,6 +71,7 @@ const PageProfile = props => {
 
 	return (
 		<div className='position-relative'>
+			<ToastContainer theme="dark"/>
 			<PageHeader  text={role==='seller' ? 'Seller Profile' : 'Buyer Profile'} showLink ={false} />
 			<div className='profilePageContent position-relative'>
 				<img src={(UserData.image && UserData.image.url )? `${UserData['image']['url']}` : buyerImg} />

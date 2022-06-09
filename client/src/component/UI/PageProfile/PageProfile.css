@@ -10,8 +10,9 @@
 }
 
 .profilePageContent > img{
-	max-width: 100px!important;
-	max-height: 100px!important;
+	width: 150px!important;
+	height: 150px!important;
+	border-radius: 50%;
 }
 
 
