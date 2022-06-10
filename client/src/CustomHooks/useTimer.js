@@ -6,15 +6,18 @@ const useTimer = futureDate => {
 	const isTimeUp = isBefore(futureDate, now);
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			if (!isTimeUp) {
-				setNow(new Date());
-			}
-		}, 1000);
+		if(futureDate){
+			const interval = setInterval(() => {
+				if (!isTimeUp) {
+					setNow(new Date());
+				}
+			}, 1000);
 
-		return () => {
-			clearInterval(interval);
-		};
+			return () => {
+				clearInterval(interval);
+			};
+		}
+
 	}, [futureDate]);
 
 	if (isTimeUp) {

@@ -77,7 +77,7 @@ const ViewAllAuctions = () => {
 				</Col>
 
 				<Col md={8} lg={10}>
-					{data && data.length > 0 ? (
+					{(data && data.length > 0 && status==='completed') ? (
 						<div className={classes.AllAuction}>
 							<PageHeader text="View All Auctions" showLink={false} />
 
@@ -98,8 +98,8 @@ const ViewAllAuctions = () => {
 								)}
 							</div>
 
-							{data && status === 'completed' && (
-								<ViewAuctionDetails AuctionData={data} animate={false} />
+							{(data && status === 'completed') && (
+								<ViewAuctionDetails AuctionData={data && data} animate={false} />
 							)}
 						</div>
 
