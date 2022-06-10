@@ -5,7 +5,6 @@ import classes from './CountDownTimer.module.css';
 
 const CountDownTimer = ({AuctionDate}) => {
 	const getDate = useCallback((AuctionDate) => {
-		console.log(AuctionDate)
 		const timer = useTimer(new Date(AuctionDate));
 		return (
 			<>
