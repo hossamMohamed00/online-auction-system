@@ -3,29 +3,30 @@ import { useEffect, useState } from 'react';
 
 const useTimer = futureDate => {
 	const [now, setNow] = useState(new Date());
-	const isTimeUp = isBefore(futureDate, now);
+	const isTimeUp = isBefore(futureDate , now)
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			if (!isTimeUp) {
+			if(futureDate && !isTimeUp){
 				setNow(new Date());
 			}
-		}, 1000);
+			}, 1000);
 
-		return () => {
-			clearInterval(interval);
-		};
+			return () => {
+				clearInterval(interval);
+			}
+
 	}, [futureDate]);
 
 	if (isTimeUp) {
-		return { days: 0, hours: 0, minutes: 0, seconds: 0, isTimeUp };
+		return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 	}
 
 	let { days, hours, minutes, seconds } = intervalToDuration({
 		start: now,
 		end: futureDate,
 	});
-	return { days, hours, minutes, seconds, isTimeUp };
+	return { days, hours, minutes, seconds };
 };
 
 export default useTimer;
