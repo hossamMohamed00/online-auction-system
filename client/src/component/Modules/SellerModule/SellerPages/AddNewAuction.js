@@ -136,7 +136,10 @@ const AddAuction = () => {
 	useEffect(() => {
 		if (status === 'completed') {
 			toast.success('Done, new Auction added successfully 💖🐱‍👤');
-			Navigate('/seller-dashboard/viewAllAuctions')
+			const timer = setTimeout(()=>{
+				Navigate('/seller-dashboard/viewAllAuctions')
+			},10000)
+			return ()=>clearTimeout(timer)
 		}
 	}, [status, AddAuction]);
 
