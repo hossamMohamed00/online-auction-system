@@ -54,7 +54,7 @@ const ContactForm = props => {
 			<div className={` ${classes.ContactForm} p-0`}>
 				<h2 className="text-center fw-bold">
 					{' '}
-					<span className={classes.AnotherWay}> Or Send </span> A Complaint
+					<span className={classes.AnotherWay}> Or Submit </span> A Complaint
 				</h2>
 				{/* start contact form */}
 				<form className={classes.ContactFormDetails}>

@@ -22,16 +22,21 @@ const ViewAllAuctions = () => {
 	const [FilterAuction, setFilterAuction] = useState(false);
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
-	const { sendRequest, status, data} = useHttp(getAllAuctions);
+	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
 	useEffect(() => {
 		if (!FilterAuction) {
 			sendRequest();
-		} else{
-			if( FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
-			const queryParams = `${FilterdDetails.AuctionCategory ? `?category=${FilterdDetails.AuctionCategory}&` : '?'}${FilterdDetails.AuctionType && `status=${FilterdDetails.AuctionType}&` }`
-			console.log(queryParams)
-			sendRequest(queryParams);
+		} else {
+			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+				const queryParams = `${
+					FilterdDetails.AuctionCategory
+						? `?category=${FilterdDetails.AuctionCategory}&`
+						: '?'
+				}${FilterdDetails.AuctionType &&
+					`status=${FilterdDetails.AuctionType}&`}`;
+				console.log(queryParams);
+				sendRequest(queryParams);
 			}
 		}
 	}, [sendRequest, FilterAuction, FilterdDetails]);
@@ -79,7 +84,7 @@ const ViewAllAuctions = () => {
 				<Col md={8} lg={10}>
 					{(data && data.length > 0 && status==='completed') ? (
 						<div className={classes.AllAuction}>
-							<PageHeader text="View All Auctions" showLink={false} />
+							<PageHeader text="All Auctions" showLink={false} />
 
 							{/* Auction Filter in Small Media Query */}
 							<div
@@ -102,19 +107,11 @@ const ViewAllAuctions = () => {
 								<ViewAuctionDetails AuctionData={data && data} animate={false} />
 							)}
 						</div>
-
-					):
-					<div className='pt-5'>
-						<NoData
-							text="No Auctions Now"
-						/>
-					</div>
-
-
-
-				}
-
-
+					) : (
+						<div className="pt-5">
+							<NoData text="No Auctions Now" />
+						</div>
+					)}
 				</Col>
 			</Row>
 		</div>

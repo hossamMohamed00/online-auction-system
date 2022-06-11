@@ -160,7 +160,7 @@ function Footer() {
 				<ModalUi
 					show={ShowModal}
 					onHide={() => setShowModal(false)}
-					title="Please Logged in First, before Chatting  "
+					title="You need to login to chat with our support team 🔐"
 					btnName={'Log in'}
 					btnHandler={() => redirectUserToHomePage('/login')}
 				/>

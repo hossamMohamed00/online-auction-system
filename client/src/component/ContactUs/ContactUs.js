@@ -25,13 +25,15 @@ const ContactUs = () => {
 			};
 			sendRequest(CompliantDetails);
 		} else {
-			toast.error(' Please Fill All Required Data to submit a compliant ❓');
+			toast.error(
+				'You must fill all fields before submitting you complaint ❌',
+			);
 		}
 	};
 
 	useEffect(() => {
 		if (status === 'completed') {
-			toast.success('Complaint Added Successfully ❤️‍🔥 ');
+			toast.success('You complaint submitted successfully to our team 🎉');
 		}
 	}, [status]);
 
