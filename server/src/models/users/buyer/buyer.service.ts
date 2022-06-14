@@ -19,6 +19,8 @@ import { BidderAuctionsEnumQuery } from './enums';
 import { ImageType, ResponseResult } from 'src/common/types';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
+import { ChangePasswordDto } from '../shared-user/dto';
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class BuyerService {
@@ -118,6 +120,42 @@ export class BuyerService {
 		};
 	}
 
+	/**
+	 * Change bidder password
+	 * @param changePasswordDto
+	 * @param bidderId
+	 */
+	async changePassword(
+		{ oldPassword, newPassword }: ChangePasswordDto,
+		bidderId: string,
+	): Promise<ResponseResult> {
+		//* Find the bidder and update his data
+		const bidder = await this.buyerModel.findById(bidderId);
+
+		if (!bidder) {
+			throw new BadRequestException('No Bidder With That Id ❌');
+		}
+
+		//? Check if the password matches or not
+		const isMatch = await compare(oldPassword, bidder.password);
+		if (!isMatch) {
+			return {
+				success: false,
+				message: 'Old password is incorrect ❌',
+			};
+		}
+
+		//* Update bidder password
+		bidder.password = newPassword;
+
+		//* Save updated bidder
+		await bidder.save();
+
+		return {
+			success: true,
+			message: 'Password changed successfully ✔✔',
+		};
+	}
 	/* Auctions Functions Logic */
 
 	/**

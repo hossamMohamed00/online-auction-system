@@ -37,6 +37,7 @@ import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ResponseResult } from 'src/common/types';
 import { FormDataRequest } from 'nestjs-form-data';
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ChangePasswordDto } from '../shared-user/dto';
 
 @ApiTags('Buyer')
 @Controller('buyer')
@@ -66,6 +67,15 @@ export class BuyerController
 		@GetCurrentUserData('_id') buyerId: string,
 	): Promise<ResponseResult> {
 		return this.buyerService.editProfile(buyerId, userUpdateDto);
+	}
+
+	@Roles(Role.Buyer)
+	@Patch('profile/change-password')
+	changePassword(
+		@Body() changePasswordDto: ChangePasswordDto,
+		@GetCurrentUserData('_id') bidderId: string,
+	): Promise<ResponseResult> {
+		return this.buyerService.changePassword(changePasswordDto, bidderId);
 	}
 
 	/* Handle Auctions Functions */
