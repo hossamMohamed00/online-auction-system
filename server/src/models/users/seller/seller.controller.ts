@@ -26,7 +26,7 @@ import {
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { ReviewDto } from 'src/models/review/dto/review.dto';
 import { Review } from 'src/models/review/schema/review.schema';
-import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
+import { ChangePasswordDto, UserUpdateDto } from '../shared-user/dto';
 import { Role } from '../shared-user/enums';
 import { SellerProfileDto } from './dto';
 import {
@@ -66,6 +66,15 @@ export class SellerController
 		@GetCurrentUserData('_id') userId: string,
 	): Promise<ResponseResult> {
 		return this.sellerService.editProfile(userId, userUpdateDto);
+	}
+
+	@Roles(Role.Seller)
+	@Patch('profile/change-password')
+	changePassword(
+		@Body() changePasswordDto: ChangePasswordDto,
+		@GetCurrentUserData('_id') sellerId: string,
+	): Promise<ResponseResult> {
+		return this.sellerService.changePassword(changePasswordDto, sellerId);
 	}
 	/* Handle Auctions Functions */
 

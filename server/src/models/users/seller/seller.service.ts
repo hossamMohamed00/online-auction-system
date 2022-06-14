@@ -4,6 +4,7 @@ import {
 	BadRequestException,
 	Inject,
 	forwardRef,
+	NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, StringSchemaDefinition } from 'mongoose';
@@ -25,6 +26,8 @@ import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service
 import { UserUpdateDto } from '../shared-user/dto/update-user.dto';
 import { ImageType, ResponseResult } from 'src/common/types';
 import { AuctionStatus } from 'src/models/auction/enums';
+import { ChangePasswordDto } from '../shared-user/dto';
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class SellerService {
@@ -121,6 +124,43 @@ export class SellerService {
 		return {
 			success: true,
 			message: 'Seller data updated successfully ✔✔',
+		};
+	}
+
+	/**
+	 * Change seller password
+	 * @param changePasswordDto
+	 * @param sellerId
+	 */
+	async changePassword(
+		{ oldPassword, newPassword }: ChangePasswordDto,
+		sellerId: string,
+	): Promise<ResponseResult> {
+		//* Find the seller and update his data
+		const seller = await this.sellerModel.findById(sellerId);
+
+		if (!seller) {
+			throw new BadRequestException('No Seller With That Id ❌');
+		}
+
+		//? Check if the password matches or not
+		const isMatch = await compare(oldPassword, seller.password);
+		if (!isMatch) {
+			return {
+				success: false,
+				message: 'Old password is incorrect ❌',
+			};
+		}
+
+		//* Update seller password
+		seller.password = newPassword;
+
+		//* Save updated seller
+		await seller.save();
+
+		return {
+			success: true,
+			message: 'Password changed successfully ✔✔',
 		};
 	}
 
