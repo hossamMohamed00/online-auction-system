@@ -106,16 +106,18 @@ const UserProfile = props => {
 								<img src={profileImg} alt="imageProfile" />
 								<h5 className="text-light">{props.name}</h5>
 								<p>{props.role}</p>
+
+							</div>
+
+							<div>
 								<h4 className="text-light fw-bold d-inline-block position-absolute bar">
 									Rating : {props.seller && props.seller.rating} / 5
 								</h4>
+								<OverallReviewBar
+									value={props.seller && props.seller.rating}
+									class="profile_bar"
+								/>
 							</div>
-
-
-							<OverallReviewBar
-								value={props.seller && props.seller.rating}
-								class="profile_bar"
-							/>
 						</div>
 						{(role === 'admin' || role === 'employee') && (
 							<>
