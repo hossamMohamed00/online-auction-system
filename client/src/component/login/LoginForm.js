@@ -15,7 +15,7 @@ import facebookImg from '../../assets/facebook.png';
 import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
 import { toast, ToastContainer } from 'react-toastify';
-import ChangePassword from '../UI/ChangePasswordModal/ChangePassword';
+import ForgetPassword from '../UI/ForgetPasswordModal/ForgetPassword';
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
@@ -117,7 +117,7 @@ const LoginForm = () => {
 
 
 			{ShowModal && (
-				<ChangePassword forget = {true} show={ShowModal}  onHide={()=> setShowModal(false)}/>
+				<ForgetPassword forget = {true} show={ShowModal}  onHide={()=> setShowModal(false)}/>
 			)}
 		</div>
 

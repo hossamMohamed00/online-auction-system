@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import buyerImg from '../../../assets/user.png';
 import useHttp from '../../../CustomHooks/useHttp';
 import PageHeader from '../Page Header/pageHeader'
-import ChangePassword from '../ChangePasswordModal/ChangePassword'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -10,10 +9,9 @@ import './PageProfile.css'
 import { useSelector } from 'react-redux';
 import { getUserId, getUserProfile } from '../../../Api/usersApi';
 import { ToastContainer } from 'react-toastify';
+import ChangePassword from '../ChangePasswordModal/ChangePasswordModal';
 
 const PageProfile = props => {
-
-	localStorage.setItem('id' , props.id)
 	const [ShowModal, setShowModal] = useState(false);
 	const [UserData, setUserData] = useState({});
 
@@ -52,7 +50,6 @@ const PageProfile = props => {
 
 	useEffect(()=>{
 		if(status === 'completed'){
-			console.log(data)
 			if(role === 'seller'){
 				setIsWarned(data.seller.isWarned)
 				if(data.seller.isWarned){
@@ -98,13 +95,13 @@ const PageProfile = props => {
 			</div>
 
 			<div className='d-flex  pt-5 justify-content-center'>
-				<Link className={`btn bg-success text-light fw-bold col-4 mx-2 `} to={`${role==='seller' ? '/seller-dashboard/' : '/buyer-dashboard/'}UpdateAccount`} > Update Profile </Link>
-				<button className={`btn bg-danger text-light col-4 mx-2 fw-bold `} onClick={()=> setShowModal(true)} > Change Password </button>
+				<Link className={`btn bg-success text-light fw-bold col-md-4 col-xs-12 mx-2 `} to={`${role==='seller' ? '/seller-dashboard/' : '/buyer-dashboard/'}UpdateAccount`} > Update Profile </Link>
+				<button className={`btn bg-danger text-light col-md-4 col-xs-12 mx-2 fw-bold `} onClick={()=> setShowModal(true)} > Change Password </button>
 			</div>
 
 			{/* show modal of change Password */}
 			{ShowModal && (
-				<ChangePassword forget = {false} show={ShowModal}  onHide={()=> setShowModal(false)}/>
+				<ChangePassword show={ShowModal}  onHide={()=> setShowModal(false)}/>
 			)}
 
 		</div>

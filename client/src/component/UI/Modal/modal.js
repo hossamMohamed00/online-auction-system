@@ -49,7 +49,7 @@ const ModalUi = props => {
 					<button
 						onClick={btnHandler}
 						type="button"
-						className="btn-success btn fw-bold"
+						className="btn-success btn fw-bold col-sm-12 fs-6"
 					>
 						{props.btnName}
 					</button>

@@ -56,7 +56,7 @@ export class AuctionEmailsService {
 		warn?: boolean;
 		warningMessage?: string;
 	}) {
-		let emailText;
+		let emailText: string;
 		if (options.block && options.blockReason) {
 			//? Get the email content
 			emailText = getBlockUserEmailContent({

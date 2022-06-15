@@ -178,9 +178,8 @@ function App() {
 						{/* start Update Account */}
 						<Route
 							path="/buyer-dashboard/UpdateAccount"
-							element={<UpdateAccountForBuyer/>}
+							element={<UpdateAccountForBuyer />}
 						/>
-
 					</>
 				)}
 

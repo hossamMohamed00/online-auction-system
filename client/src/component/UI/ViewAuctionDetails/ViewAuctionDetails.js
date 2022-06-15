@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 
 import { Link, useLocation } from 'react-router-dom';
@@ -10,13 +10,22 @@ const ViewAuctionDetails = props => {
 	const location = useLocation();
 	const viewAllAuctionPage = location.pathname === '/auctions';
 	const homePage = location.pathname === '/home-page';
+	const [Data , setData] = useState([])
+	// const AuctionItems = props.AuctionData && props.AuctionData.
+	useEffect(()=>{
+		if(props.AuctionData){
+			console.log('render')
+			setData(
+				props.AuctionData.filter(data => data.status !== 'pending' && data.status !== 'denied')
+			)
+		}
 
-	const AuctionItems = props.AuctionData && props.AuctionData.filter(data => data.status !== 'pending' && data.status !== 'denied')
-	const getAuctionDetails = (Items, animate) => {
-		return (
-			props.AuctionData &&
-			Items &&
-			Items.map((item, idx) => (
+	} , [props.AuctionData])
+
+	console.log(Data)
+	const getAuctionDetails = (animate) => (
+			Data &&
+			Data.map((item, idx) => (
 				<Col key={idx} lg={props.lg && props.lg}>
 					<Card
 						className={` mb-5 ${classes.CurrentAuctionsCard} ${
@@ -39,9 +48,9 @@ const ViewAuctionDetails = props => {
 							{viewAllAuctionPage ? item.status : item.status}
 						</div>
 						<div className={classes.Timer}>
-							{item.status !== 'closed' ? (
-								CountDownTimer(new Date(item.endDate))
-							) : (
+							{(item.status && item.status !== 'closed') ?
+								( item.status==='upcoming' ? <CountDownTimer AuctionDate = {new Date(item.startDate)} /> : <CountDownTimer AuctionDate = {new Date(item.endDate)} /> )
+							 : (
 								<div className='mt-4'>
 								</div>
 							)}
@@ -137,15 +146,21 @@ const ViewAuctionDetails = props => {
 					</Card>
 				</Col>
 			))
-		);
-	};
+	);
+
 
 	return (
-		<div className={classes.CurrentAuctionsContent}>
-			<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
-				{props.AuctionData && AuctionItems && getAuctionDetails(AuctionItems, props.animate)}
-			</Row>
-		</div>
+		<React.Fragment>
+			{Data &&
+			(	console.log(Data) ,
+				<div className={classes.CurrentAuctionsContent}>
+					<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
+						{getAuctionDetails(props.animate)}
+					</Row>
+				</div>
+			)}
+		</React.Fragment>
+
 	);
 };
 

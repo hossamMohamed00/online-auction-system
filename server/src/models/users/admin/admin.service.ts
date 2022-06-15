@@ -174,7 +174,12 @@ export class AdminService {
 	 * @param userId : user id
 	 */
 	async removeWarnUser(userId: string): Promise<ResponseResult> {
-		return this.usersService.toggleWarnUser(userId);
+		const result = await this.usersService.toggleWarnUser(userId);
+		if (result.success && result?.data) {
+			delete result.data;
+		}
+
+		return result;
 	}
 
 	/**
@@ -199,6 +204,8 @@ export class AdminService {
 				block: true,
 				blockReason,
 			});
+
+			delete result.data;
 		}
 
 		return result;
@@ -209,7 +216,12 @@ export class AdminService {
 	 * @param userId - user id
 	 */
 	async unBlockUser(userId: string): Promise<ResponseResult> {
-		return this.usersService.toggleBlockUser(userId);
+		const result = await this.usersService.toggleBlockUser(userId);
+		if (result.success && result?.data) {
+			delete result.data;
+		}
+
+		return result;
 	}
 
 	/* Handle Auctions Functions */

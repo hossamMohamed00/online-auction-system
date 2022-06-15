@@ -235,7 +235,7 @@ function AuctionFooter({
 
 
 	useEffect(()=> {
-		if(isJoined && role==='buyer' ){
+		if(isJoined && role==='buyer' && !UpComingStatus){
 			showBids(Math.random())
 			setBidderJoin(Math.random())
 		}

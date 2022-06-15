@@ -2,7 +2,7 @@ import { MongoObjectIdDto } from 'src/common/dto/object-id.dto';
 import { ResponseResult } from 'src/common/types';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { Review } from 'src/models/review/schema/review.schema';
-import { UserUpdateDto } from '../../shared-user/dto/update-user.dto';
+import { ChangePasswordDto, UserUpdateDto } from '../../shared-user/dto';
 import { Seller } from '../schema/seller.schema';
 
 export interface SellerProfileBehaviors {
@@ -17,5 +17,11 @@ export interface SellerProfileBehaviors {
 	editProfile(
 		userUpdateDto: UserUpdateDto,
 		userId: string,
+	): Promise<ResponseResult>;
+
+	//* Change password
+	changePassword(
+		changePasswordDto: ChangePasswordDto,
+		sellerId: string,
 	): Promise<ResponseResult>;
 }

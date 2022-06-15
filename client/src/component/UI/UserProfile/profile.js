@@ -100,9 +100,9 @@ const UserProfile = props => {
 			<div className="container-fluid container_profile">
 				<section className="header_container position-relative">
 					<header className="header">
-						<img src={coverImg} />
+						<img src={coverImg} alt="coverImg"/>
 						<div className="profile">
-							<img src={profileImg} />
+							<img src={profileImg} alt="imageProfile" />
 							<h5 className="text-light">{props.name}</h5>
 							<p>{props.role}</p>
 							<h4 className="text-light fw-bold d-inline-block position-absolute bar">
