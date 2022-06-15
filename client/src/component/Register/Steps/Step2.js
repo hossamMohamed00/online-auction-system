@@ -5,10 +5,10 @@ import { Register, RequestOtp } from '../../../Api/Auth';
 import useHttp from '../../../CustomHooks/useHttp';
 import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 import { RegisterActions } from '../../../store/slices/RegisterSlices/Register';
-import userDetails, { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
+import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
 import Buttons from '../UI/Prev&NxtButtons/Buttons';
 import RadioButton from '../UI/RadioButtons/RadioButton'
-import Step4 from './Step4';
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 import classes from './Steps.module.css';
 import VerificationCode from './VerificationCode';
 
@@ -17,11 +17,12 @@ const Step2 = (props) => {
 	const phoneNum = useSelector(store => store.userDetails.step2Details.phoneNum);
 	const userDetail = useSelector(store => store.userDetails.step1Details)
 	const [ShowVerificationCode , setIsShownVerificationCode] =  useState(false)
+
 	// start confirm otp
-	const {sendRequest:sendRequestForConfirmPhone  , status:statusForConfirmPhone , data:dataForConfirmPhone , error : errorForConfirmPhone} = useHttp(RequestOtp)
+	const {sendRequest:sendRequestForConfirmPhone  , status:statusForConfirmPhone  , error : errorForConfirmPhone} = useHttp(RequestOtp)
 	const {sendRequest:sendRequestForRegister  , status:statusForRegister , data:dataForRegister , error : errorForRegister} = useHttp(Register)
 
-	const [ShowStep4 , setShowStep4] = useState(false)
+	const [loading , setLoading] = useState(false)
 	let isAcceptant;
 	const phoneNumRef = useRef();
 
@@ -32,6 +33,7 @@ const Step2 = (props) => {
 	const dispatch = useDispatch();
 
 	const submitStep2Handler = () =>{
+		setLoading(true)
 		dispatch(AuthActions.setStep2Details({ phoneNum: `+2${phoneNumRef.current.value}` }))
 
 		const userDetails = {
@@ -43,14 +45,12 @@ const Step2 = (props) => {
 			phoneNumber: `+2${phoneNumRef.current.value}`,
 		};
 		sendRequestForRegister(userDetails);
-		// dispatch(RegisterActions.showStep4())
-		setShowStep4(true)
-
 	};
 
 	// start request otp status
 	useEffect(()=>{
 		if(statusForRegister === 'completed'){
+			setLoading(false)
 			toast.success('Register Successfully ❤️‍🔥')
 
 			dispatch(
@@ -60,16 +60,16 @@ const Step2 = (props) => {
 					role: userDetail.role,
 				}),
 			);
-			// dispatch(RegisterActions.showStep4())
 
 			if (isAcceptant === 'Yes') {
 				sendRequestForConfirmPhone(dataForRegister.accessToken)
 			}
 			else{
-				dispatch(RegisterActions.showStep4())
+				dispatch(RegisterActions.showStep3())
 			}
 		}
 		else if(statusForRegister ==='error'){
+			setLoading(false)
 			toast.error(errorForRegister)
 			const timer = setTimeout(()=>{
 				props.hasError(errorForRegister)
@@ -82,9 +82,11 @@ const Step2 = (props) => {
 
 	useEffect(()=>{
 		if(statusForConfirmPhone === 'completed'){
+			setLoading(false)
 			setIsShownVerificationCode(true)
 		}
 		else if(statusForConfirmPhone === 'error'){
+			setLoading(false)
 			toast.error(errorForConfirmPhone)
 			setIsShownVerificationCode(false)
 		}
@@ -93,6 +95,7 @@ const Step2 = (props) => {
 	return (
 		<React.Fragment>
 			<ToastContainer theme="dark" />
+			{loading && <LoadingSpinner /> }
 		{!ShowVerificationCode ?
 			(
 			<div className={`container ${classes.Steps} `}>
@@ -135,7 +138,6 @@ const Step2 = (props) => {
 				<VerificationCode/>
 			)
 		}
-		{/* {ShowStep4 && <Step4/>} */}
 	</React.Fragment>
 
 	);

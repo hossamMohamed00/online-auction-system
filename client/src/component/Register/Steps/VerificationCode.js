@@ -4,7 +4,6 @@ import VerificationStyle from './step4.module.css';
 
 import styles from '../UI/Prev&NxtButtons/Buttons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
 
 import useInput from '../../../CustomHooks/useInput';
 import { ConfirmOtp } from '../../../Api/Auth';
@@ -82,17 +81,23 @@ const VerificationCode = () => {
 	useEffect(()=>{
 		if(status === 'completed'){
 			toast.success(data.message)
-			dispatch(RegisterActions.showStep4())
+			dispatch(RegisterActions.showStep3())
 		}
 		else if(status ==='error'){
 			toast.error(error)
+			codeNum1ref.current.value = ''
+			codeNum2ref.current.value = ''
+			codeNum3ref.current.value = ''
+			codeNum4ref.current.value = ''
+			codeNum5ref.current.value = ''
+			codeNum6ref.current.value = ''
 		}
 	}, [status])
 
 
 	return (
 		<div className={`container ${classes.Steps} text-center `}>
-			<h3>Verification</h3>
+			<h3>Verification For PhoneNumber </h3>
 
 			<p className={classes['stepParagraph']}>
 				We’ve just sent a text message with a fresh verification code to the
