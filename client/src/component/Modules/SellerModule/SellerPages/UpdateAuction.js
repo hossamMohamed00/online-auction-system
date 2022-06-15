@@ -12,6 +12,7 @@ import { isBefore } from 'date-fns';
 import useHttp from './../../../../CustomHooks/useHttp';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { getSingleAuction } from './../../../../Api/AuctionsApi';
 
 const UpdateAuction = () => {
 	const location = useLocation();
@@ -21,7 +22,16 @@ const UpdateAuction = () => {
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const {
+		sendRequest: sendRequestTOGetAuctions,
+		status: statusTOGetAuctions,
+		data: dataTOGetAuctions,
+		error: errorToGetAuctions,
+	} = useHttp(getSingleAuction);
 
+useEffect(() => {
+	sendRequestTOGetAuctions(AuctionId);
+},[sendRequestTOGetAuctions])
 	const {
 		sendRequest: sendRequestUpdateAuction,
 		status: statusUpdateAuction,
@@ -55,8 +65,8 @@ const UpdateAuction = () => {
 			</option>
 			{dataCategoryList.map(category => (
 				<option key={category._id} value={category._id}>
-					{' '}
-					{category.name}{' '}
+
+					{category.name}
 				</option>
 			))}
 		</select>
@@ -91,6 +101,7 @@ const UpdateAuction = () => {
 		const auctionData = {
 			title: TitleRef.current.value,
 			item: {
+				_id:dataTOGetAuctions && dataTOGetAuctions.item._id,
 				name: ProductNameRef.current.value,
 				shortDescription: ProductShortDescRef.current.value,
 				brand: BrandRef.current.value,
@@ -116,7 +127,7 @@ const UpdateAuction = () => {
 			toast.error(errorUpdateAuction);
 		}
 	}, [statusUpdateAuction, errorUpdateAuction]);
-	
+
 
 	return (
 		<SellerDashboardContent>
@@ -141,8 +152,9 @@ const UpdateAuction = () => {
 										validateText={validateText}
 										ref={TitleRef}
 										errorMassage="please enter Prudect Title "
-										inputValue=" Title"
+										// value={dataTOGetAuctions && dataTOGetAuctions.title}
 										id="Title"
+										inputValue="title"
 									/>
 								</div>
 

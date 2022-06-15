@@ -1,4 +1,4 @@
-.profilePageContent{
+.profilePageContent {
 	/* min-height: 50vh ; */
 	width: 100%;
 	display: flex;
@@ -9,14 +9,14 @@
 	/* background-color: ; */
 }
 
-.profilePageContent > img{
-	width: 150px!important;
-	height: 150px!important;
+.profilePageContent > img {
+	width: 200px !important;
+	height: 200px !important;
 	border-radius: 50%;
 }
 
-
-.WarningModal , .BlockModal{
+.WarningModal,
+.BlockModal {
 	position: absolute;
 	top: 15%;
 	right: 0;
@@ -33,17 +33,17 @@
 	justify-content: center;
 	align-items: center;
 }
-.BlockModal  {
+.BlockModal {
 	top: 38vh;
 }
 
-.warningIcon , .BlockIcon{
+.warningIcon,
+.BlockIcon {
 	font-size: 35px;
 	padding: 15px;
 }
 
-
-.WarningModal p , .BlockModal p {
+.WarningModal p,
+.BlockModal p {
 	background-color: var(--nav-color);
 }
-
