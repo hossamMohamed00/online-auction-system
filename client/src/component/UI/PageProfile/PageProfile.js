@@ -9,10 +9,9 @@ import './PageProfile.css'
 import { useSelector } from 'react-redux';
 import { getUserId, getUserProfile } from '../../../Api/usersApi';
 import { ToastContainer } from 'react-toastify';
+import ChangePassword from '../ChangePasswordModal/ChangePasswordModal';
 
 const PageProfile = props => {
-
-	localStorage.setItem('id' , props.id)
 	const [ShowModal, setShowModal] = useState(false);
 	const [UserData, setUserData] = useState({});
 
@@ -51,7 +50,6 @@ const PageProfile = props => {
 
 	useEffect(()=>{
 		if(status === 'completed'){
-			console.log(data)
 			if(role === 'seller'){
 				setIsWarned(data.seller.isWarned)
 				if(data.seller.isWarned){
@@ -102,9 +100,9 @@ const PageProfile = props => {
 			</div>
 
 			{/* show modal of change Password */}
-			{/* {ShowModal && (
-				<ChangePassword forget = {false} show={ShowModal}  onHide={()=> setShowModal(false)}/>
-			)} */}
+			{ShowModal && (
+				<ChangePassword show={ShowModal}  onHide={()=> setShowModal(false)}/>
+			)}
 
 		</div>
 

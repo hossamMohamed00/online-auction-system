@@ -40,6 +40,7 @@ export const getUserProfile = async ({role , id}) => {
 	return data
 };
 
+
 export const getUserId = async (idToken) => {
 	const response = await fetch(`${url}/auth/profile`, {
 		method: 'GET',
@@ -48,6 +49,29 @@ export const getUserId = async (idToken) => {
 			'Content-Type': 'application/json',
 		}
 	})
+	const data = await response.json();
+
+	if (!response.ok || data.success === false) {
+		throw new Error(data.message);
+	}
+	return data
+};
+
+
+// start change Password
+export const ChangePasswordForUsers = async ({idToken , role , oldPassword , newPassword}) => {
+	const response = await fetch(`http://localhost:8000${((role==='seller' && `/seller/profile/change-password` )||(role==='buyer' && `/buyer/profile/change-password`))}` , {
+		method : 'PATCH',
+		body: JSON.stringify({
+			oldPassword : oldPassword ,
+			newPassword : newPassword
+		}),
+		headers :{
+			Authorization: `Bearer ${idToken}`,
+			'content-type': 'application/json',
+		}
+	})
+
 	const data = await response.json();
 
 	if (!response.ok || data.success === false) {
