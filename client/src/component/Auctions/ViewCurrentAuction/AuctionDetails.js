@@ -122,7 +122,7 @@ const AuctionDetails = ({ data}) => {
 						<div
 							className={` ${classes.AuctionEndedStyle} ${
 								data && data.status === 'closed'
-									? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2 pt-3 rounded-3'
+									? 'd-flex justify-content-evenly w-100 text-center bg-danger p-1 rounded-3'
 									: 'd-none'
 							}`}
 						>
