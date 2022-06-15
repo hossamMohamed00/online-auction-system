@@ -13,13 +13,15 @@ export const Register = async userDetails => {
 			email: userDetails.email,
 			password: userDetails.password,
 			role: userDetails.role,
+			nationalID: userDetails.nationalID,
+			phoneNumber: userDetails.phoneNumber,
 		}),
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 	const data = await response.json();
-	if (!response.ok) {
+	if (!response.ok || data.success===false) {
 		throw new Error(data.message);
 	}
 
@@ -46,11 +48,29 @@ export const Login = async userDetails => {
 	return data;
 };
 
-export const sendConfirmation = async idToken => {
-	const response = await fetch(ConfirmEmailUrl, {
+
+// start send email confirmation
+export const RequestOtp = async idToken => {
+	const response = await fetch(`${url}/sms/verify-phone-number`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+
+	return data;
+};
+
+export const ConfirmOtp = async ({idToken , verificationCode}) => {
+	const response = await fetch(`${url}/sms/verify-phone-number`, {
 		method: 'POST',
 		body: JSON.stringify({
-			token: idToken,
+			verificationCode : verificationCode,
 		}),
 		headers: {
 			Authorization: `Bearer ${idToken}`,
@@ -64,6 +84,51 @@ export const sendConfirmation = async idToken => {
 
 	return data;
 };
+// end send email confirmation
+
+
+// start send email confirmation
+export const sendConfirmation = async ({idToken, verificationCode , email}) => {
+	console.log(verificationCode)
+	const response = await fetch(ConfirmEmailUrl, {
+		method: 'POST',
+		body: JSON.stringify({
+			email: email,
+			verificationCode : parseInt(verificationCode),
+		}),
+		headers: {
+			Authorization: `Bearer ${idToken}`,
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+
+	return data;
+};
+
+export const resendConfirmation = async email => {
+	const response = await fetch(`${url}/email-confirmation/resend-confirmation-link`, {
+		method: 'POST',
+		body: JSON.stringify({
+			email: email,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+
+	return data;
+};
+// end send email confirmation
+
+
 
 // start reset-password
 export const ResetPassword = async ({email}) => {

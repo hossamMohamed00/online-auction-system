@@ -1,89 +1,133 @@
-import React, { useEffect } from 'react';
-
-// import useHttp from "../../../CustomHooks/useHttp";
-// import { sendConfiramtion } from "../../../Api/Auth";
-import { useDispatch, useSelector } from 'react-redux';
-
-import Buttons from '../UI/Prev&NxtButtons/Buttons';
-import RadioButton from '../UI/RadioButtons/RadioButton';
-
+import React, { useEffect, useRef } from 'react';
 import classes from './Steps.module.css';
-import { RegisterActions } from '../../../store/slices/RegisterSlices/Register';
+import verifyClasses from './step4.module.css';
+
+import styles from '../UI/Prev&NxtButtons/Buttons.module.css';
+import {useSelector } from 'react-redux';
+
+import useInput from '../../../CustomHooks/useInput';
+import useHttp from '../../../CustomHooks/useHttp';
+import { resendConfirmation, sendConfirmation } from '../../../Api/Auth';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Step3 = () => {
-	// const {sendRequest , status , data , error } = useHttp(sendConfiramtion);
-	// const {sendRequest:reSendConfiramtionRequest , status:reSendConfiramtionStatus  , error:reSendConfiramtionError } = useHttp(reSendConfiramtion);
+	const role = useSelector(store=>store.AuthData.role)
+	const codeNum1ref = useRef();
+	const codeNum2ref = useRef();
+	const codeNum3ref = useRef();
+	const codeNum4ref = useRef();
+	const codeNum5ref = useRef();
 
-	const dispatch = useDispatch();
-
-	let isAcceptant;
-
-	const email = useSelector(store => store.userDetails.step1Details.email);
-	const phoneNumber = useSelector(
-		store => store.userDetails.step2Details.phoneNum,
+	const { hasError, onChangeValueHandler, onBlurHandler } = useInput(
+		value => value.trim().length === 1,
 	);
-	const idToken = useSelector(store => store.AuthData.idToken);
+	const idToken = useSelector(store=> store.AuthData.idToken)
+	const email = useSelector(store=> store.userDetails.step1Details.email)
+	const {sendRequest , status , data , error} = useHttp(sendConfirmation)
+	const {sendRequest:sendRequestForResend , status:statusForResend , data:dataForResend , error:errorForResend} = useHttp(resendConfirmation)
+	const navigate = useNavigate()
 
-	const Details = { Email: email, PhoneNumber: phoneNumber };
-
-	const ContactDetails = Object.keys(Details).map(item => (
-		<div className="row bg-light my-3 rounded-2 " key={item}>
-			<div
-				className="col-lg-4 p-1 rounded-start "
-				style={{ backgroundColor: '#2666CF' }}
-			>
-				<p className={`${classes.contactDetails} text-center text-light`}>
-					{' '}
-					{item}{' '}
-				</p>
-			</div>
-
-			<div className="col-lg">
-				<p className={`${classes.contactDetails}  `}> {Details[item]} </p>
-			</div>
-		</div>
+	const ContactDetails = [
+		codeNum1ref,
+		codeNum2ref,
+		codeNum3ref,
+		codeNum4ref,
+		codeNum5ref,
+	].map((item, index) => (
+		<input
+			key={index}
+			type="number"
+			className={`${verifyClasses.code} ${hasError ? classes['alarm-input'] : ''}`}
+			min="0"
+			max="9"
+			required
+			ref={item}
+			onChange={onChangeValueHandler}
+			onBlur={onBlurHandler}
+		/>
 	));
 
-	const getAcceptantValue = value => {
-		isAcceptant = value;
+	// start confirm otp status
+	useEffect(()=>{
+		if(status === 'completed'){
+			toast.success(data.message)
+			const timer = setTimeout(()=>{
+				if (role === 'buyer') {
+					navigate('/buyer-dashboard');
+				} else if (role === 'seller') {
+					navigate('/seller-dashboard');
+				}
+			},4000)
+			return () => clearTimeout(timer)
+		}
+		else if(status ==='error'){
+			toast.error(error)
+		}
+	}, [status])
+
+
+	const ResendHandler = () => {
+		codeNum1ref.current.value = ''
+		codeNum2ref.current.value = ''
+		codeNum3ref.current.value = ''
+		codeNum4ref.current.value = ''
+		codeNum5ref.current.value = ''
+		sendRequestForResend(email)
 	};
 
-	// useEffect(()=>{
-	// 	if(status==='completed'){
-	// 		// dispatch(RegisterActions.showStep4())
-	// 	}
-	// },[status])
 
-	const SubmitHandeler = () => {
-		if (isAcceptant) {
-			// sendRequest(idToken)
-			dispatch(RegisterActions.showStep4());
-		} else {
+	// start confirm otp status
+	useEffect(()=>{
+		if(statusForResend === 'completed'){
+			toast.success(dataForResend.message)
+		}
+		else if(statusForResend ==='error'){
+			toast.error(errorForResend)
+		}
+	}, [statusForResend])
+
+
+	const SubmitHandler = e => {
+		e.preventDefault()
+		const verificationCode =
+			codeNum1ref.current.value +
+			codeNum2ref.current.value +
+			codeNum3ref.current.value +
+			codeNum4ref.current.value +
+			codeNum5ref.current.value;
+		if (verificationCode) {
+			// confirm request
+			sendRequest({idToken , verificationCode , email})
 		}
 	};
 
 	return (
-		<div className={`container ${classes.Steps} text-center`}>
-			<h3>Contact Details</h3>
+		<div className={`container ${classes.Steps} text-center `}>
+			<ToastContainer theme='dark' />
+			<h3>Verification</h3>
 			<p className={classes['stepParagraph']}>
-				We’ll send auction update and notifications to your email
+				We’ve just sent a text message with a fresh verification code to your email {email}
 			</p>
 
-			{ContactDetails}
+			<div className={verifyClasses['code-container']}>{ContactDetails}</div>
 
-			<p className={` ${classes['notification']} fw-bolder pt-3`}>
-				Would you like to verify this account?
-			</p>
-
-			<RadioButton
-				name="UsePhoneNum"
-				values={['Yes', 'No']}
-				getValue={getAcceptantValue}
-			/>
-
-			{/* {error && <p className={`${classes['alert']} p-2 text-center fs-6 `} > {error} </p> } */}
-
-			<Buttons prev="Step2" nxt="Step4" onClick={SubmitHandeler} />
+			<div className={styles['btn-steps']}>
+				<button
+					type="button"
+					onClick={ResendHandler}
+					className={`btn btn-secondary ${styles.btnStep}`}
+				>
+					Re-Send
+				</button>
+				<button
+					type="button"
+					onClick={SubmitHandler}
+					className={`btn mx-2 text-light ${styles.btnStep}`}
+				>
+					Submit
+				</button>
+			</div>
 		</div>
 	);
 };

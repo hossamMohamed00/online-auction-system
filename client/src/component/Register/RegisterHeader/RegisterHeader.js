@@ -6,7 +6,6 @@ const RegisterHeader = () => {
 	const steps = [
 		'Personal Information',
 		'Account Setup',
-		'Contact Details',
 		'Verification',
 	];
 

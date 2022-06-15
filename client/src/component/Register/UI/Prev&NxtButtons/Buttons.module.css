@@ -5,10 +5,16 @@
 	color: white;
 }
 .btn-steps > button {
-	width: 47%;
+	width: 75%;
 	font-weight: 600;
 }
+.btnStep {
+	width: 45%!important;
+}
+.btnSubmit{
+	background-color: #2666cf!important;
 
+}
 .btn-steps > button:first-child {
 	background-color: var(--semiDark-color);
 	border-color: var(--semiDark-color);
