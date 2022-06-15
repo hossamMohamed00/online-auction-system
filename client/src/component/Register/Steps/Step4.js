@@ -1,29 +1,32 @@
-import React, { useRef } from 'react';
-import RadioButton from '../UI/RadioButtons/RadioButton';
-
+import React, { useEffect, useRef } from 'react';
 import classes from './Steps.module.css';
+import verifyClasses from './step4.module.css';
+
 import styles from '../UI/Prev&NxtButtons/Buttons.module.css';
-import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../../../CustomHooks/useInput';
+import useHttp from '../../../CustomHooks/useHttp';
+import { resendConfirmation, sendConfirmation } from '../../../Api/Auth';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Step4 = () => {
-	const navigate = useNavigate();
-	let ResendValue;
 
 	const codeNum1ref = useRef();
 	const codeNum2ref = useRef();
 	const codeNum3ref = useRef();
 	const codeNum4ref = useRef();
 	const codeNum5ref = useRef();
-	const codeNum6ref = useRef();
 
-	// const userDetails = useSelector(store => store.userDetails.step1Details)
 	const { hasError, onChangeValueHandler, onBlurHandler } = useInput(
 		value => value.trim().length === 1,
 	);
+	const idToken = useSelector(store=> store.AuthData.idToken)
+	const email = useSelector(store=> store.userDetails.step1Details.email)
+	const {sendRequest , status , data , error} = useHttp(sendConfirmation)
+	const {sendRequest:sendRequestForResend , status:statusForResend , data:dataForResend , error:errorForResend} = useHttp(resendConfirmation)
+	const navigate = useNavigate()
 
 	const ContactDetails = [
 		codeNum1ref,
@@ -31,12 +34,11 @@ const Step4 = () => {
 		codeNum3ref,
 		codeNum4ref,
 		codeNum5ref,
-		codeNum6ref,
 	].map((item, index) => (
 		<input
 			key={index}
 			type="number"
-			className={`${classes.code} ${hasError ? classes['alarm-input'] : ''}`}
+			className={`${verifyClasses.code} ${hasError ? classes['alarm-input'] : ''}`}
 			min="0"
 			max="9"
 			required
@@ -46,64 +48,77 @@ const Step4 = () => {
 		/>
 	));
 
-	const dispatch = useDispatch();
+	// start confirm otp status
+	useEffect(()=>{
+		if(status === 'completed'){
+			toast.success(data.message)
+			navigate('/home-page')
+		}
+		else if(status ==='error'){
+			toast.error(error)
+		}
+	}, [status])
 
-	const getReSendValue = value => {
-		ResendValue = value;
+
+	const ResendHandler = () => {
+		codeNum1ref.current.value = ''
+		codeNum2ref.current.value = ''
+		codeNum3ref.current.value = ''
+		codeNum4ref.current.value = ''
+		codeNum5ref.current.value = ''
+		sendRequestForResend(email)
 	};
 
-	const ResendHandeler = () => {
-		dispatch(AuthActions.ResendVerficationCode({ ResendBy: ResendValue }));
-	};
 
-	const SubmitHandeler = e => {
-		e.preventDefault();
-		const verifactionCode =
+	// start confirm otp status
+	useEffect(()=>{
+		if(statusForResend === 'completed'){
+			toast.success(dataForResend.message)
+		}
+		else if(statusForResend ==='error'){
+			toast.error(errorForResend)
+		}
+	}, [statusForResend])
+
+
+	const SubmitHandler = e => {
+		e.preventDefault()
+		const verificationCode =
 			codeNum1ref.current.value +
 			codeNum2ref.current.value +
 			codeNum3ref.current.value +
 			codeNum4ref.current.value +
-			codeNum5ref.current.value +
-			codeNum6ref.current.value;
-		if (verifactionCode && ResendValue === 'No') {
-			navigate('/home-page');
+			codeNum5ref.current.value;
+
+		console.log(verificationCode)
+		if (verificationCode) {
+			// confirm request
+			sendRequest({idToken , verificationCode , email})
 		}
 	};
 
 	return (
 		<div className={`container ${classes.Steps} text-center `}>
+			<ToastContainer theme='dark' />
 			<h3>Verification</h3>
 			<p className={classes['stepParagraph']}>
-				We’ve just sent a text message with a fresh verification code to the
-				phone number ***1023.
+				We’ve just sent a text message with a fresh verification code to your email {email}
 			</p>
 
-			<div className={classes['code-container']}>{ContactDetails}</div>
-
-			{/* {hasError && <div className={`d-block ${classes.alert}`}> Please Enter verification code </div>} */}
-
-			<p className={` ${classes['notification']}  fw-bolder pt-3`}>
-				Would you like to Resend Again ?
-			</p>
-
-			<RadioButton
-				name="VerifyAccountBy"
-				values={['Yes', 'No']}
-				getValue={getReSendValue}
-			/>
+			<div className={verifyClasses['code-container']}>{ContactDetails}</div>
 
 			<div className={styles['btn-steps']}>
 				<button
 					type="button"
-					onClick={ResendHandeler}
-					className="btn btn-primary "
+					onClick={ResendHandler}
+					className={`btn btn-secondary ${styles.btnStep}`}
 				>
 					Re-Send
 				</button>
 				<button
 					type="button"
-					onClick={SubmitHandeler}
-					className="btn btn-secondary mx-2"
+					onClick={SubmitHandler}
+					className={`btn mx-2 text-light ${styles.btnStep}`}
 				>
 					Submit
 				</button>

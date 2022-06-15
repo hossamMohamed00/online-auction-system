@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RegisterActions } from '../../../store/slices/RegisterSlices/Register';
 import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
-
-import useHttp from '../../../CustomHooks/useHttp';
 import { Register } from '../../../Api/Auth';
 
 import RadioButton from '../UI/RadioButtons/RadioButton';
@@ -13,7 +11,6 @@ import classes from './Steps.module.css';
 import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 
 const Step1 = props => {
-	const { sendRequest, status, data, error } = useHttp(Register);
 	const [isValidForm, setIsValidForm] = useState(true);
 
 	const userDetails = useSelector(store => store.userDetails.step1Details);
@@ -31,6 +28,7 @@ const Step1 = props => {
 	const passwordRef = useRef();
 	const emailRef = useRef();
 	const confirmPasswordRef = useRef();
+	const nationalIdRef = useRef()
 
 	const validateText = value => value.trim() !== '';
 	const validateEmail = value => value.trim().includes('@');
@@ -45,41 +43,62 @@ const Step1 = props => {
 	};
 	/************  end Validation  ************** */
 
-	useEffect(() => {
-		if (status === 'completed') {
-			dispatch(
-				AuthActions.setStep1Details({
-					name: nameRef.current.value,
-					email: emailRef.current.value,
-					password: passwordRef.current.value,
-					role: roleValue,
-				}),
-			);
-			dispatch(
-				AuthDataActions.login({
-					idToken: data.accessToken,
-					email: emailRef.current.value,
-					role: data.role,
-				}),
-			);
-			dispatch(RegisterActions.showStep2());
-		}
-	}, [status]);
+	// useEffect(() => {
+	// 	if (status === 'completed') {
+	// 		dispatch(
+	// 			AuthActions.setStep1Details({
+	// 				name: nameRef.current.value,
+	// 				email: emailRef.current.value,
+	// 				password: passwordRef.current.value,
+	// 				role: roleValue,
+	// 			}),
+	// 		);
+	// 		dispatch(
+	// 			AuthDataActions.login({
+	// 				idToken: data.accessToken,
+	// 				email: emailRef.current.value,
+	// 				role: data.role,
+	// 			}),
+	// 		);
+	// 		dispatch(RegisterActions.showStep2());
+	// 	}
+	// }, [status]);
 
 	const ValidateForm = () => {
+		console.log(nationalIdRef.current.value)
 		if (
 			validateText(nameRef.current.value) &&
 			validateEmail(emailRef.current.value) &&
 			validatePassword(passwordRef.current.value) &&
 			validateConfirm(confirmPasswordRef.current.value)
 		) {
-			const userDetails = {
-				name: nameRef.current.value,
-				email: emailRef.current.value,
-				password: passwordRef.current.value,
-				role: roleValue,
-			};
-			sendRequest(userDetails);
+			// const userDetails = {
+			// 	name: nameRef.current.value,
+			// 	email: emailRef.current.value,
+			// 	password: passwordRef.current.value,
+			// 	role: roleValue,
+			// 	nationalID: nationalIdRef.current.value,
+			// };
+			// sendRequest(userDetails);
+
+			dispatch(
+				AuthActions.setStep1Details({
+					name: nameRef.current.value,
+					email: emailRef.current.value,
+					password: passwordRef.current.value,
+					nationalID: nationalIdRef.current.value,
+					role: roleValue,
+				}),
+			);
+			// dispatch(
+			// 	AuthDataActions.login({
+			// 		idToken: data.accessToken,
+			// 		email: emailRef.current.value,
+			// 		role: data.role,
+			// 	}),
+			// );
+			dispatch(RegisterActions.showStep2());
+
 		} else {
 			setIsValidForm(false);
 		}
@@ -93,18 +112,24 @@ const Step1 = props => {
 	return (
 		<div className={`container ${classes.Steps} `}>
 			<h3> Personal Information</h3>
+			{props.hasError && <p className='text-danger pt-2 fw-bold text-center'> {props.hasError} </p> }
 
 			<Input
 				type="text"
-				placeholder={userDetails.name ? userDetails.name : 'Name'}
+				placeholder='Name'
+				id="name"
 				name="text"
 				validateText={validateText}
+				value = {userDetails.name ? userDetails.name : ''}
 				ref={nameRef}
 				errorMassage={errorNameMessage}
 			/>
 			<Input
 				type="email"
-				placeholder={userDetails.email ? userDetails.email : 'Email'}
+				id="email"
+				placeholder='Email'
+				value={userDetails.email ? userDetails.email : ''}
+
 				name="email"
 				validateText={validateEmail}
 				ref={emailRef}
@@ -113,6 +138,7 @@ const Step1 = props => {
 			<Input
 				type="password"
 				placeholder="Password"
+				id="Password"
 				name="password"
 				validateText={validatePassword}
 				ref={passwordRef}
@@ -121,6 +147,7 @@ const Step1 = props => {
 			/>
 			<Input
 				type="password"
+				id="ConfirmPassword"
 				placeholder="Confirm Password"
 				name="confirmPassword"
 				validateText={validateConfirm}
@@ -128,8 +155,17 @@ const Step1 = props => {
 				errorMassage="Your confirm password must match with password "
 			/>
 
+			{/* start National id */}
+			<Input
+				type="number"
+				placeholder='National Id'
+				value = {userDetails.nationalID ? userDetails.nationalID : 'National Id'}
+				ref={nationalIdRef}
+				errorMassage="Your confirm password must match with password "
+			/>
+
 			<div>
-				<p className="text-light m-1 fs-6 fw-bolder"> Choose Your Role </p>
+				<p className="text-light m-1 mb-0 fs-6 fw-bolder"> Choose Your Role </p>
 				<RadioButton
 					name="role"
 					values={['seller', 'buyer']}
@@ -143,9 +179,6 @@ const Step1 = props => {
 					{' '}
 					Please Enter the Required Information{' '}
 				</p>
-			)}
-			{error && (
-				<p className={`${classes['alert']} p-2 text-center fs-6 `}> {error} </p>
 			)}
 
 			<button

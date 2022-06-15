@@ -9,10 +9,13 @@ import RadioButton from '../UI/RadioButtons/RadioButton';
 
 import classes from './Steps.module.css';
 import { RegisterActions } from '../../../store/slices/RegisterSlices/Register';
+import { resendConfirmation, sendConfirmation } from '../../../Api/Auth';
+import useHttp from '../../../CustomHooks/useHttp';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Step3 = () => {
-	// const {sendRequest , status , data , error } = useHttp(sendConfiramtion);
-	// const {sendRequest:reSendConfiramtionRequest , status:reSendConfiramtionStatus  , error:reSendConfiramtionError } = useHttp(reSendConfiramtion);
+	const {sendRequest , status , data , error } = useHttp(sendConfirmation);
+	const {sendRequest:reSendConfirmationRequest , status:reSendConfirmationStatus  , error:reSendConfirmationError } = useHttp(resendConfirmation);
 
 	const dispatch = useDispatch();
 
@@ -48,22 +51,26 @@ const Step3 = () => {
 		isAcceptant = value;
 	};
 
-	// useEffect(()=>{
-	// 	if(status==='completed'){
-	// 		// dispatch(RegisterActions.showStep4())
-	// 	}
-	// },[status])
-
-	const SubmitHandeler = () => {
+	const SubmitHandler = () => {
 		if (isAcceptant) {
-			// sendRequest(idToken)
-			dispatch(RegisterActions.showStep4());
-		} else {
+			sendRequest(idToken)
+		}else{
+			dispatch(RegisterActions.showStep4())
 		}
 	};
+	useEffect(()=>{
+		if(status==='completed'){
+			dispatch(RegisterActions.showStep4())
+		}
+		else if(status === 'error'){
+			toast.error(error)
+		}
+	},[status])
+
 
 	return (
 		<div className={`container ${classes.Steps} text-center`}>
+			<ToastContainer theme='dark' />
 			<h3>Contact Details</h3>
 			<p className={classes['stepParagraph']}>
 				We’ll send auction update and notifications to your email
@@ -83,7 +90,7 @@ const Step3 = () => {
 
 			{/* {error && <p className={`${classes['alert']} p-2 text-center fs-6 `} > {error} </p> } */}
 
-			<Buttons prev="Step2" nxt="Step4" onClick={SubmitHandeler} />
+			<Buttons nxt="Step4" onClick={SubmitHandler} />
 		</div>
 	);
 };

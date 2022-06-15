@@ -22,7 +22,6 @@ function ChangePassword({ forget, show, onHide }) {
 	const {
 		sendRequest: sendRequestForEmailConf,
 		status: statusForEmailConf,
-		data: dataForEmailConf,
 		error: errorForEmailConf,
 	} = useHttp(ResetPassword);
 	const {
