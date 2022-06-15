@@ -55,6 +55,13 @@
 	left: 65.5% !important;
 	margin-top: 1.5%;
 }
+.numOfReviewers{
+	font-size: 14px !important;
+
+	top: 105%;
+	left: 65.5%;
+	font-weight: bold !important;
+}
 .profile .profile_bar {
 	position: absolute;
 	left: 73%;

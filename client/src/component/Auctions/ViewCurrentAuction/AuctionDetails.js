@@ -5,8 +5,9 @@ import useTimer from '../../../CustomHooks/useTimer';
 
 import classes from './AuctionDetails.module.css';
 
-const AuctionDetails = ({ data}) => {
-	const AuctionDate = (data && data.status === 'ongoing') ? data.endDate : data.startDate
+const AuctionDetails = ({ data }) => {
+	const AuctionDate =
+		data && data.status === 'ongoing' ? data.endDate : data.startDate;
 
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 	return (
@@ -21,7 +22,9 @@ const AuctionDetails = ({ data}) => {
 
 						<div className={classes.ItemsDetails}>
 							<p className="lead p-2">
-								{data && data['item'] ? data['item']['detailedDescription'] : '' }
+								{data && data['item']
+									? data['item']['detailedDescription']
+									: ''}
 							</p>
 						</div>
 						<hr className="text-light  my-2 "></hr>
@@ -89,7 +92,9 @@ const AuctionDetails = ({ data}) => {
 						>
 							<div>
 								<h6 className="fw-bold text-light px-3"> Base Price </h6>
-								<span className={`ps-2 fs-6 fw-bold ${classes.MinimumBidValue}`}>
+								<span
+									className={`ps-2 fs-6 fw-bold ${classes.MinimumBidValue}`}
+								>
 									{data.basePrice}
 								</span>
 							</div>
@@ -97,32 +102,36 @@ const AuctionDetails = ({ data}) => {
 							<div className={classes.hrRight}></div>
 
 							{/* show when auction not end and ongoing */}
-								{data && data.status ==='ongoing' &&
+							{data && data.status === 'ongoing' && (
 								<div>
-										<h6 className="fw-bold  text-light"> Auction Will End In </h6>
-										<span className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}>
-											{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
-										</span>
-								</div>
-								}
-
-
-							{data && ( data.status === 'upcoming' || data.status === 'pending') &&
-								<div>
-									<h6 className="fw-bold  text-light"> Auction Will Start In </h6>
+									<h6 className="fw-bold  text-light"> Auction Will End In </h6>
 									<span className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}>
 										{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
 									</span>
 								</div>
-							}
+							)}
 
+							{data &&
+								(data.status === 'upcoming' || data.status === 'pending') && (
+									<div>
+										<h6 className="fw-bold  text-light">
+											{' '}
+											Auction Will Start In{' '}
+										</h6>
+										<span
+											className={`ps-1 fs-6 fw-bold ${classes.AuctionDate}`}
+										>
+											{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
+										</span>
+									</div>
+								)}
 						</div>
 
 						{/* start when auction ended */}
 						<div
 							className={` ${classes.AuctionEndedStyle} ${
 								data && data.status === 'closed'
-									? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2 pt-3 rounded-3'
+									? 'd-flex justify-content-evenly w-100 text-center bg-danger p-2  rounded-3'
 									: 'd-none'
 							}`}
 						>

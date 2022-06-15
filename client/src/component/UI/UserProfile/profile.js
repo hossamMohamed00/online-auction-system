@@ -100,7 +100,7 @@ const UserProfile = props => {
 			<div className="container-fluid container_profile">
 				<section className="header_container position-relative">
 					<header className="header">
-						<img src={coverImg} alt="coverImg"/>
+						<img src={coverImg} alt="coverImg" />
 						<div className="profile">
 							<img src={profileImg} alt="imageProfile" />
 							<h5 className="text-light">{props.name}</h5>
@@ -113,6 +113,9 @@ const UserProfile = props => {
 								value={props.seller && props.seller.rating}
 								class="profile_bar"
 							/>
+							<h4 className="text-light fw-bold d-inline-block position-absolute numOfReviewers">
+								From : {props.reviews && props.reviews.length} bidder
+							</h4>
 						</div>
 						{(role === 'admin' || role === 'employee') && (
 							<>

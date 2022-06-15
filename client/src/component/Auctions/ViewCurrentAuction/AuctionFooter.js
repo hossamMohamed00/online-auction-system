@@ -374,7 +374,7 @@ function AuctionFooter({
 
 			{/* ******************** start seller Actions ******************** */}
 			{/*  start update Auction  */}
-			{role === 'seller' && (
+			{(role === 'seller' && email === sellerEmail && !OnGoingStatus)&& (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
 						className={`btn w-100 fw-bold btn-success text-light`}

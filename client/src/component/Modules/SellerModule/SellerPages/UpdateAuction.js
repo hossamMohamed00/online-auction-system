@@ -149,12 +149,11 @@ useEffect(() => {
 									<Input
 										type="text"
 										placeholder=""
-										validateText={validateText}
 										ref={TitleRef}
 										errorMassage="please enter Prudect Title "
-										// value={dataTOGetAuctions && dataTOGetAuctions.title}
+										value={dataTOGetAuctions && dataTOGetAuctions.title}
 										id="Title"
-										inputValue="title"
+										// value="title"
 									/>
 								</div>
 
