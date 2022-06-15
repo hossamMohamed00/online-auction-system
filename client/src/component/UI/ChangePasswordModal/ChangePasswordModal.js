@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {ChangeTONewPassword} from '../../../Api/Auth';
+import { ChangePasswordForUsers } from '../../../Api/usersApi';
 import useHttp from '../../../CustomHooks/useHttp';
+import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 import Input from '../Input/input';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 
 import ModalUi from '../Modal/modal';
-// import './ForgetPassword.css';
 
 function ChangePassword({show, onHide }) {
 
@@ -16,6 +17,8 @@ function ChangePassword({show, onHide }) {
 
 	const idToken = useSelector(store=>store.AuthData.idToken)
 	const role = useSelector(store=>store.AuthData.role)
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 
 	const {
@@ -23,11 +26,11 @@ function ChangePassword({show, onHide }) {
 		status: statusForChangeToNewPassword,
 		data: dataForChangeToNewPassword,
 		error: errorForChangeToNewPassword,
-	} = useHttp(ChangeTONewPassword);
+	} = useHttp(ChangePasswordForUsers);
 
 	const validatePassword = value => value.trim().length > 4;
 
-	const [ModalTitle, setModalTitle] = useState('Do you have access to you email to receive code ?');
+	const [ModalTitle, setModalTitle] = useState('Do you Want Change Your Password?');
 	const [ModalBtn, setModalBtn] = useState('Yes');
 	const [ModalBody, setModalBody] = useState('');
 
@@ -43,6 +46,15 @@ function ChangePassword({show, onHide }) {
 			);
 			setModalBody('');
 			setModalBtn('');
+
+			// logout and redirect to login page
+			const timer = setTimeout(()=>{
+				onHide()
+				dispatch(AuthDataActions.logout())
+				navigate('/login')
+			},5000)
+			return () => clearTimeout(timer)
+
 		}
 
 		if (statusForChangeToNewPassword === 'error') {
@@ -60,9 +72,9 @@ function ChangePassword({show, onHide }) {
 	// start Modal Body
 	const PasswordsInput = (
 		<div>
-			<h6 className="text-light fw-bold text-center pb-2">
+			<h3 className="text-light fw-bold text-center pb-4">
 				Please Enter New and Old Password
-			</h6>
+			</h3>
 			<Input
 				type="password"
 				placeholder="OldPassword"
@@ -106,6 +118,7 @@ function ChangePassword({show, onHide }) {
 					oldPassword ,
 					newPassword
 				});
+				setLoading(true);
 				setReload(Math.random())
 			}
 		}
