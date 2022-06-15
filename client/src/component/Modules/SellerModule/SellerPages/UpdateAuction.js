@@ -29,9 +29,18 @@ const UpdateAuction = () => {
 		error: errorToGetAuctions,
 	} = useHttp(getSingleAuction);
 
-useEffect(() => {
-	sendRequestTOGetAuctions(AuctionId);
-},[sendRequestTOGetAuctions])
+	useEffect(() => {
+		sendRequestTOGetAuctions(AuctionId);
+	}, [sendRequestTOGetAuctions]);
+
+	const [auctionData, setAuctionData] = useState();
+
+	useEffect(() => {
+		if (dataTOGetAuctions && statusTOGetAuctions === 'completed') {
+			setAuctionData(dataTOGetAuctions);
+		}
+	}, [sendRequestTOGetAuctions, statusTOGetAuctions]);
+console.log(auctionData&&auctionData.title);
 	const {
 		sendRequest: sendRequestUpdateAuction,
 		status: statusUpdateAuction,
@@ -65,7 +74,6 @@ useEffect(() => {
 			</option>
 			{dataCategoryList.map(category => (
 				<option key={category._id} value={category._id}>
-
 					{category.name}
 				</option>
 			))}
@@ -101,7 +109,7 @@ useEffect(() => {
 		const auctionData = {
 			title: TitleRef.current.value,
 			item: {
-				_id:dataTOGetAuctions && dataTOGetAuctions.item._id,
+				_id: dataTOGetAuctions && dataTOGetAuctions.item._id,
 				name: ProductNameRef.current.value,
 				shortDescription: ProductShortDescRef.current.value,
 				brand: BrandRef.current.value,
@@ -128,176 +136,177 @@ useEffect(() => {
 		}
 	}, [statusUpdateAuction, errorUpdateAuction]);
 
-
 	return (
 		<SellerDashboardContent>
 			<PageContent>
 				<ToastContainer theme="dark" />
 				<PageHeader text="Edit Auction" />
 				<div>
-					<form onSubmit={submitHandeler}>
-						<div className="container">
-							<div className="row">
-								{/* start Product Title */}
-								<div className={`col-lg-6 `}>
-									<label
-										htmlFor="Title"
-										className={'text-light fw-bold fs-6 py-2'}
-									>
-										Titel
-									</label>
-									<Input
-										type="text"
-										placeholder=""
-										ref={TitleRef}
-										errorMassage="please enter Prudect Title "
-										value={dataTOGetAuctions && dataTOGetAuctions.title}
-										id="Title"
-										// value="title"
-									/>
+					{auctionData && (
+						<form onSubmit={submitHandeler}>
+							<div className="container">
+								<div className="row">
+									{/* start Product Title */}
+									<div className={`col-lg-6 `}>
+										<label
+											htmlFor="Title"
+											className={'text-light fw-bold fs-6 py-2'}
+										>
+											Titel
+										</label>
+										<Input
+											type="text"
+											placeholder=""
+											ref={TitleRef}
+											errorMassage="please enter Prudect Title "
+											value={auctionData && auctionData.title}
+											id="Title"
+											// value="title"
+										/>
+									</div>
+
+									{/* start Product Name */}
+									<div className={`col-lg`}>
+										<label
+											htmlFor="PrudectName"
+											className={'text-light fw-bold fs-6 py-2'}
+										>
+											product Name
+										</label>
+										<Input
+											type="text"
+											placeholder=""
+											validateText={validateText}
+											ref={ProductNameRef}
+											errorMassage="please enter Prudect Name "
+											value={auctionData && auctionData.item.name}
+											id="PrudectName"
+										/>
+									</div>
 								</div>
 
-								{/* start Product Name */}
-								<div className={`col-lg`}>
-									<label
-										htmlFor="PrudectName"
-										className={'text-light fw-bold fs-6 py-2'}
-									>
-										product Name
-									</label>
-									<Input
-										type="text"
-										placeholder=""
-										validateText={validateText}
-										ref={ProductNameRef}
-										errorMassage="please enter Prudect Name "
-										inputValue=" prudect Name"
-										id="PrudectName"
-									/>
+								<div className={` row ${classes.SelectStyl}`}>
+									{/* start Brand Name */}
+									<div className={`${classes.TextArea} col-lg-6`}>
+										<label
+											htmlFor="Brand"
+											className={'text-light fw-bold fs-6 py-2 '}
+										>
+											Brand Name
+										</label>
+										<Input
+											type="text"
+											placeholder=""
+											validateText={validateText}
+											ref={BrandRef}
+											errorMassage="please enter Prudect Describtion "
+											inputValue=" prudect Describtion"
+											id="Brand"
+										/>
+									</div>
+
+									{/* start select Category Name */}
+									<div className={`col-lg-6 `}>
+										<label className={'text-light fw-bold fs-6 py-2  '}>
+											select Category
+										</label>
+										{getAllCategoriesName}
+									</div>
 								</div>
+
+								<div className={`row ${classes.SelectStyl}`}>
+									{/* start base price */}
+									<div className="col-lg-6">
+										<label className={'text-light fw-bold fs-6 py-2 '}>
+											Base Price
+										</label>
+										<Input
+											type="number"
+											placeholder=""
+											validateText={validateText}
+											ref={BasePriceRef}
+											errorMassage="please enter Base Price "
+											inputValue=" prudect Describtion"
+											id="prudectPrice"
+										/>
+									</div>
+									<div className={`${classes.TextArea} col-lg-6`}>
+										<label
+											htmlFor="Status"
+											className={'text-light fw-bold fs-6 py-2 '}
+										>
+											Item Status
+										</label>
+										<Input
+											type="text"
+											placeholder=""
+											validateText={validateText}
+											ref={StatusRef}
+											errorMassage="please enter status of item "
+											inputValue=""
+											id="Status"
+										/>
+									</div>
+								</div>
+
+								<div className="row">
+									<div className={`col-lg-6`}>
+										<label
+											htmlFor="prudectDesc"
+											className={'text-light fw-bold fs-6 py-2 '}
+										>
+											product short Describtion
+										</label>
+										<Input
+											type="text"
+											placeholder=""
+											validateText={validateText}
+											ref={ProductShortDescRef}
+											errorMassage="please enter Prudect Describtion "
+											inputValue=" prudect Describtion"
+											id="prudectDesc"
+										/>
+									</div>
+
+									{/* start detaild desc */}
+									<div className={`col-lg-6`}>
+										<label
+											htmlFor="prudectDelitelDesc"
+											className={'text-light fw-bold fs-6 py-2 '}
+										>
+											product Detiles Describtion
+										</label>
+										<textarea
+											placeholder="type heree..."
+											className={`form-control ${classes.ProdulctDetailed}`}
+											id="prudectDelitelDesc"
+											ref={ProductDetailsDescRef}
+										></textarea>
+									</div>
+								</div>
+
+								<div className="row">
+									{/* product image */}
+									<div className="col-6">
+										<label className={'text-light fw-bold fs-6 py-2 '}>
+											product Images
+										</label>
+										<input
+											type="file"
+											name="image"
+											multiple
+											className={`form-control ${classes.productImage}`}
+											onChange={handleImageUpload}
+										/>
+									</div>
+								</div>
+
+								<button className={`btn btn-danger ${classes.bntstyl}`}>
+									Save Changes
+								</button>
 							</div>
-
-							<div className={` row ${classes.SelectStyl}`}>
-								{/* start Brand Name */}
-								<div className={`${classes.TextArea} col-lg-6`}>
-									<label
-										htmlFor="Brand"
-										className={'text-light fw-bold fs-6 py-2 '}
-									>
-										Brand Name
-									</label>
-									<Input
-										type="text"
-										placeholder=""
-										validateText={validateText}
-										ref={BrandRef}
-										errorMassage="please enter Prudect Describtion "
-										inputValue=" prudect Describtion"
-										id="Brand"
-									/>
-								</div>
-
-								{/* start select Category Name */}
-								<div className={`col-lg-6 `}>
-									<label className={'text-light fw-bold fs-6 py-2  '}>
-										select Category
-									</label>
-									{getAllCategoriesName}
-								</div>
-							</div>
-
-							<div className={`row ${classes.SelectStyl}`}>
-								{/* start base price */}
-								<div className="col-lg-6">
-									<label className={'text-light fw-bold fs-6 py-2 '}>
-										Base Price
-									</label>
-									<Input
-										type="number"
-										placeholder=""
-										validateText={validateText}
-										ref={BasePriceRef}
-										errorMassage="please enter Base Price "
-										inputValue=" prudect Describtion"
-										id="prudectPrice"
-									/>
-								</div>
-								<div className={`${classes.TextArea} col-lg-6`}>
-									<label
-										htmlFor="Status"
-										className={'text-light fw-bold fs-6 py-2 '}
-									>
-										Item Status
-									</label>
-									<Input
-										type="text"
-										placeholder=""
-										validateText={validateText}
-										ref={StatusRef}
-										errorMassage="please enter status of item "
-										inputValue=""
-										id="Status"
-									/>
-								</div>
-							</div>
-
-							<div className="row">
-								<div className={`col-lg-6`}>
-									<label
-										htmlFor="prudectDesc"
-										className={'text-light fw-bold fs-6 py-2 '}
-									>
-										product short Describtion
-									</label>
-									<Input
-										type="text"
-										placeholder=""
-										validateText={validateText}
-										ref={ProductShortDescRef}
-										errorMassage="please enter Prudect Describtion "
-										inputValue=" prudect Describtion"
-										id="prudectDesc"
-									/>
-								</div>
-
-								{/* start detaild desc */}
-								<div className={`col-lg-6`}>
-									<label
-										htmlFor="prudectDelitelDesc"
-										className={'text-light fw-bold fs-6 py-2 '}
-									>
-										product Detiles Describtion
-									</label>
-									<textarea
-										placeholder="type heree..."
-										className={`form-control ${classes.ProdulctDetailed}`}
-										id="prudectDelitelDesc"
-										ref={ProductDetailsDescRef}
-									></textarea>
-								</div>
-							</div>
-
-							<div className="row">
-								{/* product image */}
-								<div className="col-6">
-									<label className={'text-light fw-bold fs-6 py-2 '}>
-										product Images
-									</label>
-									<input
-										type="file"
-										name="image"
-										multiple
-										className={`form-control ${classes.productImage}`}
-										onChange={handleImageUpload}
-									/>
-								</div>
-							</div>
-
-							<button className={`btn btn-danger ${classes.bntstyl}`}>
-								Save Changes
-							</button>
-						</div>
-					</form>
+						</form>
+					)}
 				</div>
 			</PageContent>
 		</SellerDashboardContent>
