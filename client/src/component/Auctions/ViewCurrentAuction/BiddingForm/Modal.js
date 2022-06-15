@@ -165,7 +165,7 @@ const ModalUi = props => {
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
 					{/* *********** start for seller ********************  */}
-					{isLoggedIn && role === 'seller' && props.UpComingAuction && (
+					{isLoggedIn && role === 'seller' && (
 						<h1 className="text-light text-center">
 							Are you sure to delete this auction
 						</h1>
@@ -376,7 +376,7 @@ const ModalUi = props => {
 					{/* start Admin modal */}
 
 					{/* start seller modal */}
-					{isLoggedIn && role === 'seller' && props.UpComingAuction && (
+					{isLoggedIn && role === 'seller' && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"

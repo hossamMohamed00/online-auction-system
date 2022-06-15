@@ -15,8 +15,23 @@ import {
 	faComment,
 	faCreditCardAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { getProfileData } from '../../../Api/Admin';
+import useHttp from './../../../CustomHooks/useHttp';
+import { useEffect } from 'react';
 
 const Wrapper = props => {
+	const {data , status , sendRequest}= useHttp(getProfileData)
+	const idToken = useSelector(store => store.AuthData.idToken);
+	const [userData , setUserData] = useState()
+
+	useEffect(()=>{
+		sendRequest(idToken)
+	},[sendRequest])
+	useEffect(() => {
+		if(status === 'completed'){
+			setUserData(data && data)
+		}
+	},[sendRequest , status])
 	const role = useSelector(store => store.AuthData.role);
 	const sidebarBuyer = role === 'buyer' && {
 		buyer: {
@@ -161,7 +176,11 @@ const Wrapper = props => {
 							showSideBar ? classes.showSideBarSmallMedia : ''
 						} col-lg-3 col-md-3 p-0 m-0  `}
 					>
-						<Sidebar sidebarContent={sidebarContent[role]} role={role} />
+						<Sidebar
+							sidebarContent={sidebarContent[role]}
+							role={role}
+							userData={userData && userData}
+						/>
 					</div>
 				)}
 
@@ -169,6 +188,7 @@ const Wrapper = props => {
 					<Header
 						toggleSidebar={toggleSidebar}
 						showSideBarValue={showSideBar}
+						userData={userData && userData}
 					/>
 					{props.children}
 				</div>

@@ -4,6 +4,7 @@ import RegisterHeader from '../RegisterHeader/RegisterHeader';
 
 import classes from './Layout.module.css';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
+import { Link } from 'react-router-dom';
 
 const Layout = props => {
 	return (
@@ -19,6 +20,16 @@ const Layout = props => {
 							<div
 								className={` ${classes['register-bg-overlay']}  w-100 h-100 position-absolute `}
 							></div>
+							<div className={`${classes.logo} position-absolute `}>
+								<Link
+									to="/"
+									className="text-light  mt-3 fw-bolder text-decoration-none "
+								>
+									<h2>
+										On<span>Line Auction</span>
+									</h2>
+								</Link>
+							</div>
 							<div className={classes.background}> </div>
 						</div>
 

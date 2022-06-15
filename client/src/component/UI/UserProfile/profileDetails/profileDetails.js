@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux';
 import '../Reviews/reviews.css';
 import './details.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+	faPhone,
+	faMapMarker,
+	faEnvelope,
+} from '@fortawesome/free-solid-svg-icons';
 import { CardsContainer } from '../../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
 
 const ProfileDetails = props => {
+	console.log(props)
 	const cards = [
 		{
 			name: 'Auctions',
@@ -35,6 +39,12 @@ const ProfileDetails = props => {
 						<FontAwesomeIcon icon={faEnvelope} />
 						<p className="ms-2  d-inline-block">
 							{props.sellerData && props.sellerData.email}
+						</p>
+					</h4>
+					<h4>
+						<FontAwesomeIcon icon={faMapMarker} />
+						<p className="ms-2  d-inline-block">
+							{props.sellerData && props.sellerData.address}
 						</p>
 					</h4>
 				</div>

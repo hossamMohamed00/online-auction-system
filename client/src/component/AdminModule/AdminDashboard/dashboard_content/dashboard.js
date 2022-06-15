@@ -90,7 +90,7 @@ const DashboardContent = props => {
 		{
 			name: 'Compliments',
 			number: data && data.complaints.total,
-			path: '/managersDashboard/allCompliments',
+			path: '/managersDashboard/allComplaints',
 		},
 		{
 			name: 'Not read',

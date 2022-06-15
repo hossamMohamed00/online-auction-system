@@ -63,6 +63,7 @@ import { EmployeeDashBoard } from './component/Modules/EmployeesModule/Employee'
 import ExtendTimeRequests from './component/Modules/EmployeesModule/ExtendTimeRequests/ExtendTimeRequests';
 import SellerExtendAuctions from './component/Modules/SellerModule/SellerPages/SellerExtendAuction';
 import UpdateAccountForBuyer from './component/Modules/BuyerModule/UpdateAccount';
+import UpdateAccountForEmployee from './component/Modules/EmployeesModule/updateAccount';
 // end seller pages
 
 function App() {
@@ -134,7 +135,7 @@ function App() {
 				/>
 				{/* end Admin Routes */}
 				{/* start route Employees */}
-				<Route path="/employeeDashBoard" element={<EmployeeDashBoard />} />
+				<Route path="/employeeDashBoard" exact element={<EmployeeDashBoard />} />
 				<Route
 					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
@@ -148,6 +149,7 @@ function App() {
 					path="/employeeDashBoard/extendRequests"
 					element={<ExtendTimeRequests />}
 				/>
+				<Route path="/employeeDashboard/UpdateAccount" element={<UpdateAccountForEmployee/>}/>
 
 				{/* start buyer routes  */}
 

@@ -194,53 +194,49 @@ function AuctionFooter({
 				if (modalShow) {
 					setModalShow(false);
 				}
-			},[5000])
-			return () => time.clearTimeOut()
-		})
-		setModalShow(false)
-		setRetreatModalTitle('')
-	}
+			}, [5000]);
+			return () => time.clearTimeOut();
+		});
+		setModalShow(false);
+		setRetreatModalTitle('');
+	};
 
-	useEffect(()=>{
-		if(statusForJoinAuction === 'completed'){
-			if(role==='buyer') {
-				setConfirmJoin('')
-				setModalShow(false)
-				toast.success(dataForJoinAuction.message)
-				localStorage.setItem('BidderIsJoined' , dataForJoinAuction.success)
+	useEffect(() => {
+		if (statusForJoinAuction === 'completed') {
+			if (role === 'buyer') {
+				setConfirmJoin('');
+				setModalShow(false);
+				toast.success(dataForJoinAuction.message);
+				localStorage.setItem('BidderIsJoined', dataForJoinAuction.success);
 
-				setIsJoined(localStorage.getItem('BidderIsJoined'))
-				showBids(Math.random())
+				setIsJoined(localStorage.getItem('BidderIsJoined'));
+				showBids(Math.random());
+			} else {
+				localStorage.removeItem('BidderIsJoined');
+				setIsJoined(false);
 			}
-			else{
-				localStorage.removeItem('BidderIsJoined')
-				setIsJoined(false)
-			}
-
 		}
-		if(statusForJoinAuction === 'error'){
-			toast.error(errorForJoinAuction)
-			localStorage.removeItem('BidderIsJoined')
-				setIsJoined(false)
+		if (statusForJoinAuction === 'error') {
+			toast.error(errorForJoinAuction);
+			localStorage.removeItem('BidderIsJoined');
+			setIsJoined(false);
 		}
 	}, [statusForJoinAuction]);
 
 	// if bidder accept block money from your wallet
 	const btnConfirmationHandler = () => {
 		// start send request to join auction
-		const idToken = accessToken
-		const id = AuctionId
-		sendRequestForJoinAuction({ idToken, id})
-	}
+		const idToken = accessToken;
+		const id = AuctionId;
+		sendRequestForJoinAuction({ idToken, id });
+	};
 
-
-	useEffect(()=> {
-		if(isJoined && role==='buyer' && !UpComingStatus){
-			showBids(Math.random())
-			setBidderJoin(Math.random())
+	useEffect(() => {
+		if (isJoined && role === 'buyer' && !UpComingStatus) {
+			showBids(Math.random());
+			setBidderJoin(Math.random());
 		}
-
-	},[isJoined])
+	}, [isJoined]);
 
 	useEffect(() => {
 		if (isJoined) {
@@ -291,6 +287,9 @@ function AuctionFooter({
 			setModalShow(false);
 
 			toast.success('Auction Deleted Successfully');
+			setTimeout(() => {
+				navigate('/');
+			}, 1000);
 		} else if (statusForDelete === 'error') {
 			setModalShow(false);
 			toast.error(errorForDelete);
@@ -373,20 +372,9 @@ function AuctionFooter({
 					</div>
 				)}
 
-			{(role === 'admin' || role === 'employee') &&
-				AuctionStatus === 'ongoing' && (
-					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnExtend}`}
-						type="button"
-						onClick={() => setModalShow(true)}
-					>
-						Extend Auction Time
-					</button>
-				)}
-
 			{/* ******************** start seller Actions ******************** */}
 			{/*  start update Auction  */}
-			{role === 'seller' && sellerEmail === email && !OnGoingStatus && (
+			{(role === 'seller' && email === sellerEmail && !OnGoingStatus)&& (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
 						className={`btn w-100 fw-bold btn-success text-light`}

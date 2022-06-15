@@ -22,7 +22,7 @@ export const CardsContainer = props => {
 							h-100 mb-3`}
 						>
 							{card.name}
-							<h1 className="text-center text-danger mt-2 fw-border">
+							<h1 className="text-center text-alert mt-2 fw-border">
 								{card.number}
 							</h1>
 							{card.path && (
