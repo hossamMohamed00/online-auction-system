@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import buyerImg from '../../../assets/user.png';
 import useHttp from '../../../CustomHooks/useHttp';
 import PageHeader from '../Page Header/pageHeader'
-import ChangePassword from '../ChangePasswordModal/ChangePassword'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -103,9 +102,9 @@ const PageProfile = props => {
 			</div>
 
 			{/* show modal of change Password */}
-			{ShowModal && (
+			{/* {ShowModal && (
 				<ChangePassword forget = {false} show={ShowModal}  onHide={()=> setShowModal(false)}/>
-			)}
+			)} */}
 
 		</div>
 

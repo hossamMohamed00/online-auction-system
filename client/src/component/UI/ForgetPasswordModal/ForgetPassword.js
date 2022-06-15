@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
 	ChangeTONewPassword,
@@ -12,11 +11,10 @@ import Input from '../Input/input';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 
 import ModalUi from '../Modal/modal';
-import './ChangePassword.css';
+import './ForgetPassword.css';
 
-function ChangePassword({ forget, show, onHide }) {
+function ForgetPassword({ forget, show, onHide }) {
 
-	const EmailForChangePass = useSelector(store=>store.AuthData.email)
 	const [reload , setReload] = useState('')
 	// sendEmailConfirmation
 	const {
@@ -39,8 +37,7 @@ function ChangePassword({ forget, show, onHide }) {
 
 	const validatePassword = value => value.trim().length > 4;
 
-	const [ModalTitle, setModalTitle] = useState(forget && 'Do you have access to you email to receive code ?'
-	);
+	const [ModalTitle, setModalTitle] = useState('Do you have access to you email to receive code ?');
 	const [ModalBtn, setModalBtn] = useState('Yes');
 	const [ModalBody, setModalBody] = useState('');
 
@@ -54,13 +51,7 @@ function ChangePassword({ forget, show, onHide }) {
 		if (statusForEmailConf === 'completed' && forget) {
 			setLoading(false);
 			toast.success('Rest Your Password is Done Successfully ❤️‍🔥 ');
-		}
-		if (statusForEmailConf === 'error' && forget) {
-			setLoading(false);
-			console.log(errorForEmailConf);
-			toast.error(errorForEmailConf);
-		}
-		setModalTitle('')
+			setModalTitle('')
 			setModalBody(
 				<div>
 					<h6 className="text-light fw-bold text-center">
@@ -71,7 +62,25 @@ function ChangePassword({ forget, show, onHide }) {
 				</div>,
 			);
 			setModalBtn('Submit');
-	}, [statusForEmailConf ,forget]);
+		}
+		if (statusForEmailConf === 'error' && forget) {
+			setLoading(false);
+			console.log(errorForEmailConf);
+			toast.error(errorForEmailConf);
+			setModalTitle('')
+			setModalBody(
+				<div>
+					<h6 className="text-light fw-bold text-center">
+						{' '}
+						Please Enter Code that sent to your email Here{' '}
+					</h6>
+					<div className="codeContainer">{VerificationNum}</div>
+				</div>,
+			);
+			setModalBtn('Submit');
+		}
+
+	}, [statusForEmailConf]);
 
 	// start sendConfirmation Api
 	useEffect(() => {
@@ -109,7 +118,6 @@ function ChangePassword({ forget, show, onHide }) {
 
 		if (statusForChangeToNewPassword === 'error') {
 			setLoading(false);
-			console.log(errorForChangeToNewPassword)
 			toast.error(errorForChangeToNewPassword);
 		}
 	}, [statusForChangeToNewPassword , reload]);
@@ -128,6 +136,7 @@ function ChangePassword({ forget, show, onHide }) {
 		value => value.trim().length === 1,
 	);
 
+	// start Modal Body
 	const VerificationNum = [
 		codeNum1ref,
 		codeNum2ref,
@@ -164,16 +173,10 @@ function ChangePassword({ forget, show, onHide }) {
 			/>
 		</div>
 	);
+	// end Modal Body
 
-	// start send request when user want to change password
-	useEffect(()=>{
-		if(!forget && ModalBtn !== 'Change Password'){
-			console.log('rest')
-			const email = EmailForChangePass
-			sendRequestForEmailConf({ email });
-			setEmail(email)
-		}
-	}, [sendRequestForEmailConf , forget])
+
+
 
 	const ChangePasswordHandler = () => {
 		// confirm that you want to change password
@@ -256,4 +259,4 @@ function ChangePassword({ forget, show, onHide }) {
 	);
 }
 
-export default ChangePassword;
+export default ForgetPassword;
