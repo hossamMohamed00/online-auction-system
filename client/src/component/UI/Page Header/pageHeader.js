@@ -12,7 +12,7 @@ function PageHeader({ text, showLink }) {
 			<h2
 				className={` ${
 					showLink ? 'd-inline-block' : 'd-block w-100 text-center'
-				} text-light fw-bold pt-3 pb-0 px-5  `}
+				} text-light fw-bold pt-4 pb-0 px-5  `}
 			>
 				{' '}
 				{text}{' '}

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 const Sidebar = props => {
+	const userData = props.userData && props.userData;
 	let user = props.sidebarContent;
 	const userName = Object.keys(user)[0];
 
@@ -27,12 +28,24 @@ const Sidebar = props => {
 				</div>
 
 				<div className={classes.adminName}>
-					<div className={classes.img}>
-						<FontAwesomeIcon
-							icon={faUser}
-							className={` ${classes.adminImg} rounded-circle mt-2`}
+					{userData && userData.image ? (
+						<img
+							className={`rounded-circle ${classes.adminImg}`}
+							src={
+								userData.image &&
+								userData.image.url &&
+								`${userData['image']['url']}`
+							}
 						/>
-					</div>
+					) : (
+						<div className={classes.img}>
+							<FontAwesomeIcon
+								icon={faUser}
+								className={` ${classes.adminIcon} rounded-circle mt-2 `}
+							/>
+						</div>
+					)}
+
 					<div className={classes.username}>
 						{user[userName].list ? (
 							<Dropdown
@@ -43,7 +56,7 @@ const Sidebar = props => {
 						) : (
 							<Link to={user[userName].path}>
 								<h5 className="text-light fw-bold text-decoration-none">
-									{user[userName].name}
+									{userData && userData.name}
 								</h5>
 							</Link>
 						)}

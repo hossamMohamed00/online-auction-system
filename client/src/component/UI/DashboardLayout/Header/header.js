@@ -12,6 +12,7 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 // import adminImg from '../../../../assets/icons8-test-account-40.png';
 
 const Header = props => {
+	const userData =props.userData && props.userData;
 	const role = useSelector(store => store.AuthData.role);
 	// start get pathname to put it in link of chat icon
 	const location = useLocation();
@@ -58,11 +59,21 @@ const Header = props => {
 							<span className={classes.NotificationNum}> 3 </span>
 						</span>
 					</div>
-					{/* <img src={adminImg} className={classes.adminImg} /> */}
-					<FontAwesomeIcon
-						icon={faUser}
-						className={` ${classes.adminImg} rounded-circle mt-2`}
-					/>
+					{userData && userData.image ? (
+						<img
+							className={`rounded-circle ${classes.adminImg}`}
+							src={
+								userData.image &&
+								userData.image.url &&
+								`${userData['image']['url']}`
+							}
+						/>
+					) : (
+						<FontAwesomeIcon
+							icon={faUser}
+							className={` ${classes.adminIcon} rounded-circle mt-3 `}
+						/>
+					)}
 					<Link
 						to="/home-page"
 						className={`${classes.logout} mx-2 `}

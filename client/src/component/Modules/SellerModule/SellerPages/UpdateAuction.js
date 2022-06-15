@@ -40,7 +40,7 @@ const UpdateAuction = () => {
 			setAuctionData(dataTOGetAuctions);
 		}
 	}, [sendRequestTOGetAuctions, statusTOGetAuctions]);
-console.log(auctionData&&auctionData.title);
+	console.log(auctionData && auctionData);
 	const {
 		sendRequest: sendRequestUpdateAuction,
 		status: statusUpdateAuction,
@@ -70,7 +70,9 @@ console.log(auctionData&&auctionData.title);
 			onChange={e => setCategoryId(e.target.value)}
 		>
 			<option value="none" selected disabled>
-				Select an category
+				{auctionData && auctionData.category.name
+					? auctionData.category.name
+					: 'Select an category'}
 			</option>
 			{dataCategoryList.map(category => (
 				<option key={category._id} value={category._id}>
@@ -200,7 +202,7 @@ console.log(auctionData&&auctionData.title);
 											validateText={validateText}
 											ref={BrandRef}
 											errorMassage="please enter Prudect Describtion "
-											inputValue=" prudect Describtion"
+											value={auctionData && auctionData.item.brand}
 											id="Brand"
 										/>
 									</div>
@@ -223,10 +225,9 @@ console.log(auctionData&&auctionData.title);
 										<Input
 											type="number"
 											placeholder=""
-											validateText={validateText}
 											ref={BasePriceRef}
 											errorMassage="please enter Base Price "
-											inputValue=" prudect Describtion"
+											value={auctionData && auctionData.basePrice}
 											id="prudectPrice"
 										/>
 									</div>
@@ -240,10 +241,9 @@ console.log(auctionData&&auctionData.title);
 										<Input
 											type="text"
 											placeholder=""
-											validateText={validateText}
 											ref={StatusRef}
 											errorMassage="please enter status of item "
-											inputValue=""
+											value={auctionData && auctionData.item.status}
 											id="Status"
 										/>
 									</div>
@@ -260,11 +260,11 @@ console.log(auctionData&&auctionData.title);
 										<Input
 											type="text"
 											placeholder=""
-											validateText={validateText}
 											ref={ProductShortDescRef}
 											errorMassage="please enter Prudect Describtion "
 											inputValue=" prudect Describtion"
 											id="prudectDesc"
+											value={auctionData && auctionData.item.shortDescription ? auctionData.item.shortDescription : ''}
 										/>
 									</div>
 
@@ -281,6 +281,7 @@ console.log(auctionData&&auctionData.title);
 											className={`form-control ${classes.ProdulctDetailed}`}
 											id="prudectDelitelDesc"
 											ref={ProductDetailsDescRef}
+											value={auctionData && auctionData.item.detailedDescription ? auctionData.item.detailedDescription : ''}
 										></textarea>
 									</div>
 								</div>
