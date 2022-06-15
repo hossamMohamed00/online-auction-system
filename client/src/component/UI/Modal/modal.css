@@ -76,4 +76,7 @@
 	.BalanceCard {
 		width: 80%;
 	}
+	.modal-footer > button {
+		font-size: 10px!important;
+	}
 }

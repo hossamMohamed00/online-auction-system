@@ -98,8 +98,8 @@ const PageProfile = props => {
 			</div>
 
 			<div className='d-flex  pt-5 justify-content-center'>
-				<Link className={`btn bg-success text-light fw-bold col-4 mx-2 `} to={`${role==='seller' ? '/seller-dashboard/' : '/buyer-dashboard/'}UpdateAccount`} > Update Profile </Link>
-				<button className={`btn bg-danger text-light col-4 mx-2 fw-bold `} onClick={()=> setShowModal(true)} > Change Password </button>
+				<Link className={`btn bg-success text-light fw-bold col-md-4 col-xs-12 mx-2 `} to={`${role==='seller' ? '/seller-dashboard/' : '/buyer-dashboard/'}UpdateAccount`} > Update Profile </Link>
+				<button className={`btn bg-danger text-light col-md-4 col-xs-12 mx-2 fw-bold `} onClick={()=> setShowModal(true)} > Change Password </button>
 			</div>
 
 			{/* show modal of change Password */}

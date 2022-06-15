@@ -55,7 +55,7 @@ const Wallet = props => {
 		if (status === 'completed' || status === 'error') {
 			setLoading(false);
 		}
-	}, [status]);
+	}, [status , reloadBalance]);
 
 	const PaymentContent = (
 		<>

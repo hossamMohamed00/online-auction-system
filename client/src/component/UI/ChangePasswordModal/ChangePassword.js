@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
 	ChangeTONewPassword,
@@ -14,8 +15,10 @@ import ModalUi from '../Modal/modal';
 import './ChangePassword.css';
 
 function ChangePassword({ forget, show, onHide }) {
-	// sendEmailConfirmation
 
+	const EmailForChangePass = useSelector(store=>store.AuthData.email)
+	const [reload , setReload] = useState('')
+	// sendEmailConfirmation
 	const {
 		sendRequest: sendRequestForEmailConf,
 		status: statusForEmailConf,
@@ -37,8 +40,7 @@ function ChangePassword({ forget, show, onHide }) {
 
 	const validatePassword = value => value.trim().length > 4;
 
-	const [ModalTitle, setModalTitle] = useState(
-		'Do you have access to you email to receive code ?',
+	const [ModalTitle, setModalTitle] = useState(forget && 'Do you have access to you email to receive code ?'
 	);
 	const [ModalBtn, setModalBtn] = useState('Yes');
 	const [ModalBody, setModalBody] = useState('');
@@ -50,24 +52,16 @@ function ChangePassword({ forget, show, onHide }) {
 
 	// start sendConfirmation Api
 	useEffect(() => {
-		if (statusForEmailConf === 'completed') {
+		if (statusForEmailConf === 'completed' && forget) {
 			setLoading(false);
 			toast.success('Rest Your Password is Done Successfully ❤️‍🔥 ');
-			setModalBody(
-				<div>
-					<h6 className="text-light fw-bold text-center">
-						{' '}
-						Please Enter Code that sent to your email Here{' '}
-					</h6>
-					<div className="codeContainer">{VerificationNum}</div>
-				</div>,
-			);
-			setModalBtn('Submit');
 		}
-		if (statusForEmailConf === 'error') {
+		if (statusForEmailConf === 'error' && forget) {
 			setLoading(false);
 			console.log(errorForEmailConf);
 			toast.error(errorForEmailConf);
+		}
+		setModalTitle('')
 			setModalBody(
 				<div>
 					<h6 className="text-light fw-bold text-center">
@@ -78,14 +72,12 @@ function ChangePassword({ forget, show, onHide }) {
 				</div>,
 			);
 			setModalBtn('Submit');
-		}
-	}, [statusForEmailConf]);
+	}, [statusForEmailConf ,forget]);
 
 	// start sendConfirmation Api
 	useEffect(() => {
 		if (statusForConfCode === 'completed') {
 			setLoading(false);
-			toast.success('Successfully ❤️‍🔥 ');
 			toast.success(dataForConfCode.message);
 
 			setModalBody(PasswordsInput);
@@ -94,7 +86,12 @@ function ChangePassword({ forget, show, onHide }) {
 		if (statusForConfCode === 'error') {
 			setLoading(false);
 			toast.error(errorForConfCode);
-			onHide();
+
+			codeNum1ref.current.value = ''
+			codeNum2ref.current.value = ''
+			codeNum3ref.current.value = ''
+			codeNum4ref.current.value = ''
+			codeNum5ref.current.value = ''
 		}
 	}, [statusForConfCode]);
 
@@ -113,10 +110,10 @@ function ChangePassword({ forget, show, onHide }) {
 
 		if (statusForChangeToNewPassword === 'error') {
 			setLoading(false);
+			console.log(errorForChangeToNewPassword)
 			toast.error(errorForChangeToNewPassword);
-			onHide();
 		}
-	}, [statusForChangeToNewPassword]);
+	}, [statusForChangeToNewPassword , reload]);
 
 	const codeNum1ref = useRef();
 	const codeNum2ref = useRef();
@@ -169,6 +166,16 @@ function ChangePassword({ forget, show, onHide }) {
 		</div>
 	);
 
+	// start send request when user want to change password
+	useEffect(()=>{
+		if(!forget && ModalBtn !== 'Change Password'){
+			console.log('rest')
+			const email = EmailForChangePass
+			sendRequestForEmailConf({ email });
+			setEmail(email)
+		}
+	}, [sendRequestForEmailConf , forget])
+
 	const ChangePasswordHandler = () => {
 		// confirm that you want to change password
 		if (ModalBtn === 'Yes') {
@@ -192,7 +199,7 @@ function ChangePassword({ forget, show, onHide }) {
 			setModalBtn('Send Code');
 		} else if (ModalBtn === 'Send Code') {
 			console.log(EmailRef_inFtPass.current.value);
-			if (EmailRef_inFtPass.current.value) {
+			if (EmailRef_inFtPass.current.value && forget) {
 				const email = EmailRef_inFtPass.current.value;
 				setEmail(email);
 				sendRequestForEmailConf({ email });
@@ -221,12 +228,13 @@ function ChangePassword({ forget, show, onHide }) {
 				const email = userEmail;
 				const verificationCode = userVerificationCode;
 				const password = newPasswordRef.current.value;
-
+				console.log(email , verificationCode , password)
 				sendRequestForChangeToNewPassword({
 					email,
 					verificationCode,
 					password,
 				});
+				setReload(Math.random())
 			}
 		}
 	};
