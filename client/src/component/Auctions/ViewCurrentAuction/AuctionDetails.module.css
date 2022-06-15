@@ -38,11 +38,11 @@
 
 .AuctionEndedStyle {
 	color: white;
-	position: absolute;
-	bottom: 50px;
-	width: 90% !important;
-	margin-left: 3%;
-	left: 15px;
+	/* position: absolute; */
+	/* bottom: 50px; */
+	width: 100% !important;
+	/* margin-left: 3%; */
+	/* left: 15px; */
 	transition: all 0.5s;
 	box-shadow: none !important;
 }

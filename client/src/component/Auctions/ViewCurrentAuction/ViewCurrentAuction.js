@@ -153,7 +153,7 @@ const ViewCurrentAuction = React.memo(() => {
 									BidderWinner={BidderWinner}
 								/>
 							}
-							{(!ClosedAuction || role ==='seller' )&& (
+							{(!ClosedAuction || role==='seller') && (
 								<AuctionFooter
 									AuctionStatus={AuctionData && AuctionData.status}
 									sellerEmail={AuctionData && AuctionData.seller.email}
