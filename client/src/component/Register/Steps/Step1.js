@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RegisterActions } from '../../../store/slices/RegisterSlices/Register';
 import { AuthActions } from '../../../store/slices/RegisterSlices/userDetails';
-import { Register } from '../../../Api/Auth';
 
 import RadioButton from '../UI/RadioButtons/RadioButton';
 import Input from '../../UI/Input/input';
 import classes from './Steps.module.css';
-import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 
 const Step1 = props => {
 	const [isValidForm, setIsValidForm] = useState(true);
@@ -65,22 +63,12 @@ const Step1 = props => {
 	// }, [status]);
 
 	const ValidateForm = () => {
-		console.log(nationalIdRef.current.value)
 		if (
 			validateText(nameRef.current.value) &&
 			validateEmail(emailRef.current.value) &&
 			validatePassword(passwordRef.current.value) &&
 			validateConfirm(confirmPasswordRef.current.value)
 		) {
-			// const userDetails = {
-			// 	name: nameRef.current.value,
-			// 	email: emailRef.current.value,
-			// 	password: passwordRef.current.value,
-			// 	role: roleValue,
-			// 	nationalID: nationalIdRef.current.value,
-			// };
-			// sendRequest(userDetails);
-
 			dispatch(
 				AuthActions.setStep1Details({
 					name: nameRef.current.value,
@@ -90,13 +78,7 @@ const Step1 = props => {
 					role: roleValue,
 				}),
 			);
-			// dispatch(
-			// 	AuthDataActions.login({
-			// 		idToken: data.accessToken,
-			// 		email: emailRef.current.value,
-			// 		role: data.role,
-			// 	}),
-			// );
+
 			dispatch(RegisterActions.showStep2());
 
 		} else {
