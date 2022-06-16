@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { compare } from 'bcryptjs';
 import { Model } from 'mongoose';
-import { ResponseResult } from 'src/common/types';
+import { ImageType, ResponseResult } from 'src/common/types';
 import { AuctionsService } from 'src/models/auction/auctions.service';
 import { RejectAuctionDto } from 'src/models/auction/dto';
 import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
@@ -11,11 +12,14 @@ import { CategoryService } from 'src/models/category/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/models/category/dto';
 import { ComplaintService } from 'src/models/complaint/complaint.service';
 import { Complaint } from 'src/models/complaint/schema/complaint.schema';
+import { CloudinaryService } from 'src/providers/files-upload/cloudinary.service';
 import { AuctionEmailsService } from 'src/providers/mail';
 import { CreateEmployeeDto } from '../employee/dto';
 import { EmployeeService } from '../employee/employee.service';
 import { EmployeeDocument } from '../employee/schema/employee.schema';
+import { ChangePasswordDto, UserUpdateDto } from '../shared-user/dto';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
+import { User, UserDocument } from '../shared-user/schema/user.schema';
 import { UsersService } from '../shared-user/users.service';
 import {
 	AdminFilterAuctionQueryDto,
@@ -30,15 +34,116 @@ export class AdminService {
 	private logger: Logger = new Logger('admin');
 
 	constructor(
-		@InjectModel(Admin.name)
-		private readonly AdminModel: Model<AdminDocument>,
+		@InjectModel(User.name)
+		private readonly userModel: Model<UserDocument>,
 		private readonly usersService: UsersService,
 		private readonly auctionService: AuctionsService,
 		private readonly categoryService: CategoryService,
 		private readonly employeeService: EmployeeService,
 		private readonly complaintService: ComplaintService,
 		private readonly auctionEmailsService: AuctionEmailsService,
+		private cloudinary: CloudinaryService,
 	) {}
+
+	/* Profile */
+	/**
+	 * Edit admin/employee profile data
+	 * @param userId
+	 * @param updateUserDto
+	 */
+	async editProfile(
+		userId: string,
+		updateUserDto: UserUpdateDto,
+	): Promise<ResponseResult> {
+		//* Check if user upload new image to upload it to cloudinary
+		let image: ImageType;
+		let imageUpdated = false;
+		if (updateUserDto.image) {
+			imageUpdated = true;
+			this.logger.debug('Uploading image to cloudinary...');
+
+			try {
+				// Upload image to cloudinary
+				const savedImage = await this.cloudinary.uploadImage(
+					updateUserDto.image,
+				);
+
+				//* If upload success, save image url and public id to db
+				if (savedImage.url) {
+					this.logger.log('User Image uploaded successfully!');
+
+					image = new ImageType(savedImage.url, savedImage.public_id);
+				}
+			} catch (error) {
+				this.logger.error('Cannot upload user image to cloudinary ❌');
+				throw new BadRequestException('Cannot upload image to cloudinary ❌');
+			}
+
+			//* Override image field to the uploaded image
+			updateUserDto.image = image;
+		}
+
+		//* Find the user and update his data
+		const user = await this.userModel.findById(userId);
+		if (!user) {
+			throw new BadRequestException('No user with that id ❌');
+		}
+
+		//? Remove old image if there was one
+		if (imageUpdated && user.image?.publicId) {
+			//* Remove the image by public id
+			await this.cloudinary.destroyImage(user.image.publicId);
+		}
+
+		//* Update user data
+		const updatesKeys = Object.keys(updateUserDto);
+		updatesKeys.forEach(update => (user[update] = updateUserDto[update]));
+
+		//* Save updated seller
+		await user.save();
+
+		return {
+			success: true,
+			message: 'User data updated successfully ✔✔',
+		};
+	}
+
+	/**
+	 * Change user password
+	 * @param changePasswordDto
+	 * @param userId
+	 */
+	async changePassword(
+		{ oldPassword, newPassword }: ChangePasswordDto,
+		userId: string,
+	): Promise<ResponseResult> {
+		//* Find the user and update his data
+		const user = await this.userModel.findById(userId);
+
+		if (!user) {
+			throw new BadRequestException('No user with that id ❌');
+		}
+
+		//? Check if the password matches or not
+		const isMatch = await compare(oldPassword, user.password);
+		if (!isMatch) {
+			return {
+				success: false,
+				message: 'Old password is incorrect ❌',
+			};
+		}
+
+		//* Update user password
+		user.password = newPassword;
+
+		//* Save user seller
+		await user.save();
+
+		return {
+			success: true,
+			message: 'Password changed successfully ✔✔',
+		};
+	}
 
 	/* Handle Dashboard Functions */
 
