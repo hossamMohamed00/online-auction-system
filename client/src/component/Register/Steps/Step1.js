@@ -32,6 +32,8 @@ const Step1 = props => {
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
 	const validateConfirm = value => value.trim() === password;
+	const validateNationalId = value => value.trim().length >= 14;
+
 
 	const getPasswordValue = value => {
 		password = value;
@@ -63,11 +65,14 @@ const Step1 = props => {
 	// }, [status]);
 
 	const ValidateForm = () => {
+		console.log(roleValue)
 		if (
 			validateText(nameRef.current.value) &&
 			validateEmail(emailRef.current.value) &&
 			validatePassword(passwordRef.current.value) &&
-			validateConfirm(confirmPasswordRef.current.value)
+			validateConfirm(confirmPasswordRef.current.value) &&
+			validateNationalId(nationalIdRef.current.value) &&
+			roleValue
 		) {
 			dispatch(
 				AuthActions.setStep1Details({
@@ -94,8 +99,13 @@ const Step1 = props => {
 	return (
 		<div className={`container ${classes.Steps} `}>
 			<h3> Personal Information</h3>
-			{props.hasError && <p className='text-danger pt-2 fw-bold text-center'> {props.hasError} </p> }
-
+			{props.hasError && <h6 className='text-danger pt-2 fw-bold text-center'> {props.hasError} </h6> }
+			{!isValidForm && (
+				<h6 className={`${classes['alert']} pb-3 pt-0 text-center `}>
+					{' '}
+					Please Enter the Required Information{' '}
+				</h6>
+			)}
 			<Input
 				type="text"
 				placeholder='Name'
@@ -143,7 +153,9 @@ const Step1 = props => {
 				placeholder='National Id'
 				value = {userDetails.nationalID ? userDetails.nationalID : 'National Id'}
 				ref={nationalIdRef}
-				errorMassage="Your confirm password must match with password "
+				errorMassage="National ID must be longer than or equal to 14 characters"
+				validateText={validateNationalId}
+
 			/>
 
 			<div>
@@ -156,12 +168,7 @@ const Step1 = props => {
 				/>
 			</div>
 
-			{!isValidForm && (
-				<p className={`${classes['alert']} p-2 text-center fs-6 `}>
-					{' '}
-					Please Enter the Required Information{' '}
-				</p>
-			)}
+
 
 			<button
 				onClick={submitHandler}
