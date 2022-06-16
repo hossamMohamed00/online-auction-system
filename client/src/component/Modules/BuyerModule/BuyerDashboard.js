@@ -19,11 +19,6 @@ const BuyerDashboardContent = props => {
 			icon: faGavel,
 			path: '/buyer-dashboard/UpdateAccount',
 		},
-		{
-			title: 'Change Password',
-			icon: faGavel,
-			path: '/buyer-dashboard/UpdateAccount',
-		},
 	];
 
 	const dropdownListViewAuctions = [
@@ -69,13 +64,13 @@ const BuyerDashboardContent = props => {
 				chat={{ name: 'Chat', list: dropdownListChat }}
 				payment={{ name: 'Payment', list: dropdownListPayment }}
 			>
-			{contentExist ? (
-				props.children
-			) : (
-				<PageContent>
-					<PageProfile />
-				</PageContent>
-			)}
+				{contentExist ? (
+					props.children
+				) : (
+					<PageContent>
+						<PageProfile />
+					</PageContent>
+				)}
 			</DashboardLayout>
 		</>
 	);
