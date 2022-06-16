@@ -202,11 +202,16 @@ function AuctionFooter({
 				if (modalShow) {
 					setModalShow(false);
 				}
-			}, [5000]);
+			}, [4000]);
 			return () => time.clearTimeOut();
 		});
 		setModalShow(false);
 		setRetreatModalTitle('');
+
+		const time = setTimeout(() => {
+			window.location.reload()
+		}, [4000]);
+		return () => time.clearTimeOut();
 	};
 
 	useEffect(() => {
@@ -246,12 +251,7 @@ function AuctionFooter({
 		}
 	}, [isJoined]);
 
-	useEffect(() => {
-		if (isJoined) {
-			showBids(Math.random());
-			setBidderJoin(Math.random());
-		}
-	}, [isJoined]);
+
 
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = value => {

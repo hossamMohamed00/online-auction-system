@@ -11,7 +11,6 @@ const ViewAuctionDetails = props => {
 	const viewAllAuctionPage = location.pathname === '/auctions';
 	const homePage = location.pathname === '/home-page';
 	const [Data , setData] = useState([])
-	// const AuctionItems = props.AuctionData && props.AuctionData.
 	useEffect(()=>{
 		if(props.AuctionData){
 			setData(
@@ -20,7 +19,6 @@ const ViewAuctionDetails = props => {
 		}
 
 	} , [props.AuctionData])
-	console.log(Data && Data)
 	const getAuctionDetails = (animate) => (
 			Data &&
 			Data.map((item, idx) => (
