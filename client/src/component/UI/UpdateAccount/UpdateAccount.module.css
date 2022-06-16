@@ -31,7 +31,13 @@
 	font-size: 25px;
 }
 .bntstyl {
+	margin-left: 67%;
+	width: 30%;
+	margin-top: 10px ;
+}
+.btnCh {
 	margin-left: 66%;
 	width: 30%;
-	margin-top: 15px;
+	margin-top: 10px !important;
+
 }

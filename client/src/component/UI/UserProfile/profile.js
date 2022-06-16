@@ -103,7 +103,18 @@ const UserProfile = props => {
 						<img src={coverImg} alt="coverImg" />
 						<div className="profile">
 							<div className="profile-Image">
-								<img src={profileImg} alt="imageProfile" />
+								{props.seller && props.seller.image ? (
+									<img
+										src={
+											props.seller.image &&
+											props.seller.image.url &&
+											`${props.seller['image']['url']}`
+										}
+										alt="userImage"
+									/>
+								) : (
+									<img src={profileImg} alt="imageProfile" />
+								)}
 								<h5 className="text-light">{props.name}</h5>
 								<p>{props.role}</p>
 								<h4 className="text-light fw-bold d-inline-block position-absolute bar">

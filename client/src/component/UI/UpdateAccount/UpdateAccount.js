@@ -13,9 +13,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import { getUserId } from '../../../Api/usersApi';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../Loading/LoadingSpinner';
+import ChangePassword from '../ChangePasswordModal/ChangePasswordModal';
 
 
 const UpdateAccountForUsers = () => {
+	const [ShowModal, setShowModal] = useState(false);
+
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
 	const email = useSelector(store => store.AuthData.email);
@@ -76,8 +79,17 @@ const UpdateAccountForUsers = () => {
 				nationalID :nationalIDRef.current.value
 			};
 		}
+		let path ;
+		 if(role === 'admin' || role === 'employee'){
+			path = 'admin/profile'
 
-		sendRequest({ accountData, idToken, path:`${role==='seller' ? 'seller/profile': 'buyer/profile'}`} );
+		}else if(role === 'seller'){
+			path = 'seller/profile'
+		}else{
+			path= 'buyer/profile'
+		}
+
+		sendRequest({ accountData, idToken, path} );
 	};
 
 	React.useEffect(() => {
@@ -98,110 +110,137 @@ const UpdateAccountForUsers = () => {
 	return (
 		<React.Fragment>
 			<PageContent className={classes.PageContentStyle}>
-				{loading && <LoadingSpinner /> }
+				{loading && <LoadingSpinner />}
 				<ToastContainer theme="dark" />
 				<PageHeader text="Edit Your Account" />
-				{ (Object.keys(userData).length !== 0 && statusForGetInfo === 'completed' ) && (
-				<form className="container-fluid" onSubmit={submitHandler}>
-					<section className="header_container position-relative">
-						<div className={`${classes.UpdateAccount} `}>
-							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} alt="userImage" />
-							<button
-								type='button'
-								className={`btn ${classes.btnChangeImage}`}
-								onClick={ChangeImageHandler}
-							>
-								<FontAwesomeIcon icon={faSquarePen} />
-								<input type="file" className="d-none" ref={ImageRef} onChange={(e) => setImageSrc(e.target.files[0])} />
-							</button>
-						</div>
-						{/* E-mail And Role Number */}
-						<div className="row my-4">
-							<div className={'col-6  text-light fw-bold fs-5 py-2'}>
-								<label>E-mail : {email} </label>
-							</div>
-							<div className={'col-6 text-light fw-bold fs-5 py-2 '}>
-								<label> Type : {role} </label>
-							</div>
-						</div>
-						{/* Name And Phone Number */}
-						<div className="row">
-							<div className={`col-lg-6`}>
-								<label
-									htmlFor="UserName"
-									className={'text-light fw-bold fs-5 py-2'}
+				{Object.keys(userData).length !== 0 &&
+					statusForGetInfo === 'completed' && (
+						<form className="container-fluid" onSubmit={submitHandler}>
+							<section className="header_container position-relative">
+								<div className={`${classes.UpdateAccount} `}>
+									<img
+										src={
+											userData.image && userData.image.url
+												? `${userData['image']['url']}`
+												: userImg
+										}
+										className={classes.imageProfile}
+										alt="userImage"
+									/>
+									<button
+										type="button"
+										className={`btn ${classes.btnChangeImage}`}
+										onClick={ChangeImageHandler}
+									>
+										<FontAwesomeIcon icon={faSquarePen} />
+										<input
+											type="file"
+											className="d-none"
+											ref={ImageRef}
+											onChange={e => setImageSrc(e.target.files[0])}
+										/>
+									</button>
+								</div>
+								{/* E-mail And Role Number */}
+								<div className="row my-4">
+									<div className={'col-6  text-light fw-bold fs-5 py-2'}>
+										<label>E-mail : {email} </label>
+									</div>
+									<div className={'col-6 text-light fw-bold fs-5 py-2 '}>
+										<label> Type : {role} </label>
+									</div>
+								</div>
+								{/* Name And Phone Number */}
+								<div className="row">
+									<div className={`col-lg-6`}>
+										<label
+											htmlFor="UserName"
+											className={'text-light fw-bold fs-5 py-2'}
+										>
+											User Name
+										</label>
+										<Input
+											type="text"
+											ref={nameRef}
+											id="UserName"
+											value={userData.name ? userData.name : ''}
+										/>
+									</div>
+									<div className={`col-lg`}>
+										<label
+											htmlFor="PhoneNumber "
+											className={'text-light fw-bold fs-5 py-2'}
+										>
+											Phone Number
+										</label>
+										<Input
+											type="text"
+											ref={phoneNumber}
+											id="PhoneNumber "
+											value={userData.phoneNumber ? userData.phoneNumber : ''}
+										/>
+									</div>
+								</div>
+
+								{/* National Number And Address */}
+								<div className="row">
+									<div className={`col-lg-6 `}>
+										<label
+											htmlFor="Address"
+											className={'text-light fw-bold fs-5 py-2'}
+										>
+											Address
+										</label>
+										<Input
+											type="text"
+											ref={addressRef}
+											inputValue="Product Name"
+											id="Address"
+											value={userData.address && userData.address}
+										/>
+									</div>
+
+									<div className={`col-lg-6`}>
+										<label
+											htmlFor="Birthday"
+											className={'text-light fw-bold fs-5 py-2'}
+										>
+											National ID
+										</label>
+										<Input
+											type="number"
+											placeholder=""
+											ref={nationalIDRef}
+											id="nationalID"
+											value={userData.nationalID && userData.nationalID}
+										/>
+									</div>
+								</div>
+
+								{/* Save Changes Button */}
+								{/* <div className={`${classes.updateBtn}`}> */}
+								<button
+									className={`btn d-inline-block bg-danger text-light fw-bold mt-5 ${classes.bntstyl}`}
 								>
-									User Name
-								</label>
-								<Input
-									type="text"
-									ref={nameRef}
-									id="UserName"
-									value = {userData.name ? userData.name : ''}
+									Save Changes
+								</button>
+								{/* </div> */}
+							</section>
+						</form>
+					)}
+				{(role === 'admin' || role === 'employee') && (
+					<button
+						onClick={() => setShowModal(true)}
+						className={`btn d-inline-block bg-danger text-light fw-bold mt-5  ${classes.btnCh} `}
+					>
+						Change Password
+					</button>
+				)}
 
-								/>
-							</div>
-							<div className={`col-lg`}>
-								<label
-									htmlFor="PhoneNumber "
-									className={'text-light fw-bold fs-5 py-2'}
-								>
-									Phone Number
-								</label>
-								<Input
-									type="text"
-									ref={phoneNumber}
-									id="PhoneNumber "
-									value = {userData.phoneNumber ? userData.phoneNumber : ''}
-								/>
-							</div>
-						</div>
-
-						{/* National Number And Address */}
-						<div className="row">
-							<div className={`col-lg-6 `}>
-								<label htmlFor="Address" className={'text-light fw-bold fs-5 py-2'}>
-									Address
-								</label>
-								<Input
-									type="text"
-									ref={addressRef}
-									inputValue="Product Name"
-									id="Address"
-									value = {userData.address && userData.address}
-
-								/>
-							</div>
-
-							<div className={`col-lg-6`}>
-								<label
-									htmlFor="Birthday"
-									className={'text-light fw-bold fs-5 py-2'}
-								>
-									National ID
-								</label>
-								<Input
-									type="number"
-									placeholder=""
-									ref={nationalIDRef}
-									id="nationalID"
-									value = {userData.nationalID && userData.nationalID}
-
-								/>
-							</div>
-						</div>
-
-						{/* Save Changes Button */}
-						<button className={`btn bg-danger text-light fw-bold mt-5 ${classes.bntstyl}`}>
-							Save Changes
-						</button>
-					</section>
-				</form>
-
-				)
-			}
+				{ShowModal && (
+					<ChangePassword show={ShowModal} onHide={() => setShowModal(false)} />
+				)}
 			</PageContent>
-
 		</React.Fragment>
 	);
 };

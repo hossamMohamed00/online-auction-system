@@ -60,7 +60,15 @@ export const getUserId = async (idToken) => {
 
 // start change Password
 export const ChangePasswordForUsers = async ({idToken , role , oldPassword , newPassword}) => {
-	const response = await fetch(`http://localhost:8000${((role==='seller' && `/seller/profile/change-password` )||(role==='buyer' && `/buyer/profile/change-password`))}` , {
+		let path;
+		if (role === 'admin' || role === 'employee') {
+			path = 'admin/profile/change-password';
+		} else if (role === 'seller') {
+			path = 'seller/profile/change-password';
+		} else {
+			path = 'buyer/profile/change-password';
+		}
+	const response = await fetch(`http://localhost:8000/${path}` , {
 		method : 'PATCH',
 		body: JSON.stringify({
 			oldPassword : oldPassword ,
