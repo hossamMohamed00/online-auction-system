@@ -53,7 +53,7 @@ const ContactDetails = () => {
 
 				<div
 					className={
-						role !== 'admin' || role !== 'employee' ? 'd-block mt-2' : 'd-none'
+						(role === 'admin' || role === 'employee') ? 'd-none' : 'd-block mt-2'
 					}
 				>
 					<FontAwesomeIcon icon={faComment} className={classes.ContactIcon} />

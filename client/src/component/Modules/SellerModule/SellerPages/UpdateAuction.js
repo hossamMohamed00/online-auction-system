@@ -12,8 +12,12 @@ import useHttp from './../../../../CustomHooks/useHttp';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { getSingleAuction } from './../../../../Api/AuctionsApi';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
+
+
 
 const UpdateAuction = () => {
+	const [loading , setLoading] = useState(false)
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	// start validation
@@ -37,7 +41,6 @@ const UpdateAuction = () => {
 			setAuctionData(dataTOGetAuctions);
 		}
 	}, [sendRequestTOGetAuctions, statusTOGetAuctions]);
-	console.log(auctionData && auctionData);
 	const {
 		sendRequest: sendRequestUpdateAuction,
 		status: statusUpdateAuction,
@@ -65,13 +68,16 @@ const UpdateAuction = () => {
 			className="form-select"
 			onChange={e => setCategoryId(e.target.value)}
 		>
-			<option value="none" selected disabled>
+			{/* <option value="none" disabled>
 				{auctionData && auctionData.category.name
 					? auctionData.category.name
 					: 'Select an category'}
+			</option> */}
+			<option value="none" disabled >
+				Select an category
 			</option>
 			{dataCategoryList.map(category => (
-				<option key={category._id} value={category._id}>
+				<option key={category._id} value= {category._id}  >
 					{category.name}
 				</option>
 			))}
@@ -101,6 +107,8 @@ const UpdateAuction = () => {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		setLoading(true)
+
 		const auctionData = {
 			title: TitleRef.current.value,
 			item: {
@@ -114,7 +122,7 @@ const UpdateAuction = () => {
 				status: StatusRef.current.value,
 				images: pictures,
 			},
-			category: CategoryId,
+			category: CategoryId ? CategoryId : dataTOGetAuctions.category._id ,
 			basePrice: BasePriceRef.current.value,
 		};
 		sendRequestUpdateAuction({
@@ -125,8 +133,10 @@ const UpdateAuction = () => {
 	};
 	useEffect(() => {
 		if (statusUpdateAuction === 'completed') {
+			setLoading(false)
 			toast.success('Auction Updated Successfully');
-		} else {
+		} else if(statusUpdateAuction === 'error') {
+			setLoading(false)
 			toast.error(errorUpdateAuction);
 		}
 	}, [statusUpdateAuction, errorUpdateAuction]);
@@ -134,7 +144,9 @@ const UpdateAuction = () => {
 	return (
 		<SellerDashboardContent>
 			<PageContent>
+				{loading && <LoadingSpinner /> }
 				<ToastContainer theme="dark" />
+
 				<PageHeader text="Edit Auction" />
 				<div>
 					{auctionData && (
@@ -274,7 +286,7 @@ const UpdateAuction = () => {
 											className={`form-control ${classes.ProductDetailed}`}
 											id="productDetailsDesc"
 											ref={ProductDetailsDescRef}
-											value={auctionData && auctionData.item.detailedDescription ? auctionData.item.detailedDescription : ''}
+											defaultValue={auctionData && auctionData.item.detailedDescription ? auctionData.item.detailedDescription : ''}
 										></textarea>
 									</div>
 								</div>

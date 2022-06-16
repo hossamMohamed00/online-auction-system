@@ -143,11 +143,6 @@ const Wrapper = props => {
 			list: props.viewAuctions.list,
 			name: props.viewAuctions.name,
 		},
-		payment: {
-			list: props.payment.list,
-			name: props.payment.name,
-			icon: faCreditCardAlt,
-		},
 		SellerChat: {
 			list: props.SellerChat && props.SellerChat.list,
 			name: props.SellerChat && props.SellerChat.name,

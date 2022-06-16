@@ -12,12 +12,14 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { toast, ToastContainer } from 'react-toastify';
 import { getUserId } from '../../../Api/usersApi';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../Loading/LoadingSpinner';
 
 
 const UpdateAccountForUsers = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
 	const email = useSelector(store => store.AuthData.email);
+	const [loading , setLoading] = useState(false)
 
 	const Navigate = useNavigate()
 	const phoneNumber = useRef();
@@ -54,6 +56,7 @@ const UpdateAccountForUsers = () => {
 
 	// start update Account
 	const submitHandler = e => {
+		setLoading(true)
 		e.preventDefault();
 		let accountData
 		if(ImageSrc){
@@ -79,12 +82,14 @@ const UpdateAccountForUsers = () => {
 
 	React.useEffect(() => {
 		if (status === 'completed') {
+			setLoading(false)
 			toast.success('Account Updated Successfully');
 			window.location.reload()
 			const path = role==='seller' ? '/seller-dashboard/': '/buyer-dashboard/'
 			Navigate(path)
 
-		} else {
+		} else if (status === 'error'){
+			setLoading(false)
 			toast.error(error);
 		}
 	}, [status]);
@@ -93,6 +98,7 @@ const UpdateAccountForUsers = () => {
 	return (
 		<React.Fragment>
 			<PageContent className={classes.PageContentStyle}>
+				{loading && <LoadingSpinner /> }
 				<ToastContainer theme="dark" />
 				<PageHeader text="Edit Your Account" />
 				{ (Object.keys(userData).length !== 0 && statusForGetInfo === 'completed' ) && (

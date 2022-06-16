@@ -46,7 +46,7 @@ function Footer() {
 		return '/';
 	};
 
-	const HideContactChat = role === ('admin' || 'employee');
+	const HideContactChat =( role === 'admin' ||  role === 'employee');
 
 	// start footerMoreDetails
 	const FooterMoreDetailsData = [
@@ -104,7 +104,7 @@ function Footer() {
 					<li
 						key={index}
 						className={
-							_link.name === 'Chat now' && HideContactChat
+							(_link.name === 'Chat now' && HideContactChat)
 								? 'd-none'
 								: 'd-block'
 						}

@@ -4,9 +4,10 @@
 
 .SelectStyl select,
 .productImage,
-.ProdulctDetailed {
+.ProdulctDetailed,
+.ProductDetailed {
 	background-color: var(--semiDark-color) !important;
-	color: white !important;
+	color: white!important;
 	border: 0;
 	margin-bottom: 15px;
 }

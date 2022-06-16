@@ -216,10 +216,7 @@ function App() {
 					</>
 				)}
 				{/* end seller routes  */}
-				{/* <Route */}
-				{/* path={`/${expectedResults}/UpdateAccount`}
-					element={<UpdateAccount />}
-				/> */}
+
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</React.Fragment>
