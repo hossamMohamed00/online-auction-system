@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import useTimer from '../../../CustomHooks/useTimer';
@@ -6,8 +7,8 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data }) => {
-	const AuctionDate =
-		data && data.status === 'ongoing' ? data.endDate : data.startDate;
+	const AuctionDate = data && data.status === 'ongoing' ? data.endDate : data.startDate;
+	const role = useSelector(store => store.AuthData.role)
 
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 	return (
@@ -124,7 +125,17 @@ const AuctionDetails = ({ data }) => {
 											{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
 										</span>
 									</div>
-								)}
+							)}
+
+							{/* if auction is denied */}{data &&
+								(data.status === 'denied') && (role==='seller' || role==='admin'  || role==='employee' ) && (
+									<div>
+										<h6 className="fw-bold text-danger pt-3">
+											Auction Denied
+										</h6>
+									</div>
+							)}
+
 						</div>
 
 						{/* start when auction ended */}

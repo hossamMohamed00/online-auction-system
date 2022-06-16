@@ -30,8 +30,6 @@ function AuctionFooter({
 
 	const [modalShow, setModalShow] = useState(false);
 	const [btnSavedValue, setBtnSavedValue] = useState('Save Auction');
-
-	const [auctionDenied, setAuctionDenied] = useState(false);
 	const [RetreatModalTitle, setRetreatModalTitle] = useState('');
 
 
@@ -142,7 +140,11 @@ function AuctionFooter({
 				'content-type': 'application/json',
 			},
 		}).then(res => {
-			if (!res.ok) {
+			if (!res.ok || res.success === false) {
+				toast.error(res.json().message)
+			}
+			else{
+				toast.success(res.json().message)
 			}
 			setModalShow(false);
 		});
@@ -361,11 +363,7 @@ function AuctionFooter({
 						<button
 							className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
 							type="button"
-							onClick={() => (
-								<>
-									{setModalShow(true)} {setAuctionDenied(true)}
-								</>
-							)}
+							onClick={() => setModalShow(true) }
 						>
 							Reject
 						</button>
