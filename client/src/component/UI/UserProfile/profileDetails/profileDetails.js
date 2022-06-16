@@ -10,7 +10,6 @@ import {
 import { CardsContainer } from '../../../AdminModule/AdminDashboard/dashboard_content/card_content/CardsContainer';
 
 const ProfileDetails = props => {
-	console.log(props)
 	const cards = [
 		{
 			name: 'Auctions',

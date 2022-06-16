@@ -14,7 +14,6 @@ const ViewAuctionDetails = props => {
 	// const AuctionItems = props.AuctionData && props.AuctionData.
 	useEffect(()=>{
 		if(props.AuctionData){
-			console.log('render')
 			setData(
 				props.AuctionData.filter(data => data.status !== 'pending' && data.status !== 'denied')
 			)
@@ -22,7 +21,6 @@ const ViewAuctionDetails = props => {
 
 	} , [props.AuctionData])
 
-	console.log(Data)
 	const getAuctionDetails = (animate) => (
 			Data &&
 			Data.map((item, idx) => (
@@ -152,7 +150,7 @@ const ViewAuctionDetails = props => {
 	return (
 		<React.Fragment>
 			{Data &&
-			(	console.log(Data) ,
+			(
 				<div className={classes.CurrentAuctionsContent}>
 					<Row xs={1} sm={2} lg={3} className="g-4 mx-auto">
 						{getAuctionDetails(props.animate)}

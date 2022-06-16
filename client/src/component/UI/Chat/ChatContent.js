@@ -24,7 +24,6 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 
 		// to send message from support to client
 		else{
-			console.log("send message to client" , message , Email)
 			socket.emit('new-message-From-Support', {
 				message: message,
 				receiverEmail: Email,
@@ -72,11 +71,9 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 	useEffect(()=>{
 		if(role === 'buyer' || role === 'seller'){
 			socket.on('new-message-to-Employee', data => {
-				console.log("new-message-to-Employee" , data)
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 			socket.on('new-message-From-Employee', data => {
-				console.log("new-message-From-Employee" , data)
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 		}
@@ -84,12 +81,9 @@ function ChatContent({ socket, getChatWithEmail, className }) {
 		if(role === 'employee'){
 
 			socket.on('new-message-From-Employee', data => {
-				console.log("new-message-From-Employee" , data)
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
 			});
 			socket.on('new-message-to-Employee', data => {
-				console.log("new-message-to-Employee" , data)
-
 					setMessage(prevState => prevState && prevState.length > 0 ?
 						(data.message !== prevState[prevState.length -1].message  ? [...prevState, data] : [...prevState]) : [data]);
 			});

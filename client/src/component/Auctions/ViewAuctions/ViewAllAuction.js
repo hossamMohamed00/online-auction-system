@@ -33,7 +33,6 @@ const ViewAllAuctions = () => {
 						: '?'
 				}${FilterdDetails.AuctionType &&
 					`status=${FilterdDetails.AuctionType}&`}`;
-				console.log(queryParams);
 				sendRequest(queryParams);
 			}
 		}
