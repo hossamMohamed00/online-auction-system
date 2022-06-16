@@ -94,6 +94,12 @@ const Wrapper = props => {
 	};
 	const sidebarAdmin = role === 'admin' && {
 		admin: { name: props.admin.name, path: '/adminDashboard' },
+		profile: {
+			list: props.profile.list,
+			name: props.profile.name,
+			icon: faIdBadge,
+			class:'requests'
+		},
 		employees: {
 			list: props.Employees.list,
 			name: props.Employees.name,
