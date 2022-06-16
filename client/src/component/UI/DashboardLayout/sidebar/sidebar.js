@@ -36,6 +36,7 @@ const Sidebar = props => {
 								userData.image.url &&
 								`${userData['image']['url']}`
 							}
+							alt="userImage"
 						/>
 					) : (
 						<div className={classes.img}>

@@ -89,7 +89,6 @@ export const ConfirmOtp = async ({idToken , verificationCode}) => {
 
 // start send email confirmation
 export const sendConfirmation = async ({idToken, verificationCode , email}) => {
-	console.log(verificationCode)
 	const response = await fetch(ConfirmEmailUrl, {
 		method: 'POST',
 		body: JSON.stringify({

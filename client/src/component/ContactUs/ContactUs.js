@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { SubmitComplaintInSystem } from '../../Api/usersApi';
 import useHttp from '../../CustomHooks/useHttp';
 
@@ -13,8 +12,6 @@ import classes from './ContactUs.module.css';
 
 const ContactUs = () => {
 	// start formIsValid
-	const idToken = useSelector(store => store.AuthData.idToken);
-
 	const { sendRequest, status, error } = useHttp(SubmitComplaintInSystem);
 
 	const SendComplaintHandler = values => {
@@ -49,7 +46,7 @@ const ContactUs = () => {
 			<ToastContainer theme="dark"></ToastContainer>
 			<div className={` ${classes.ContactUs} container-fluid p-0`}>
 				<Row className="h-100 m-0 p-0">
-					{/* start Contact us deatils */}
+					{/* start Contact us details */}
 					<Col lg={3} md={4} sm={12} className="mb-3">
 						<ContactDetails />
 					</Col>

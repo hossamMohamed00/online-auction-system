@@ -12,12 +12,14 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { toast, ToastContainer } from 'react-toastify';
 import { getUserId } from '../../../Api/usersApi';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../Loading/LoadingSpinner';
 
 
 const UpdateAccountForUsers = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
 	const email = useSelector(store => store.AuthData.email);
+	const [loading , setLoading] = useState(false)
 
 	const Navigate = useNavigate()
 	const phoneNumber = useRef();
@@ -54,8 +56,8 @@ const UpdateAccountForUsers = () => {
 
 	// start update Account
 	const submitHandler = e => {
+		setLoading(true)
 		e.preventDefault();
-		console.log(ImageSrc ? ImageSrc : userData.image.url)
 		let accountData
 		if(ImageSrc){
 			accountData = {
@@ -80,28 +82,30 @@ const UpdateAccountForUsers = () => {
 
 	React.useEffect(() => {
 		if (status === 'completed') {
+			setLoading(false)
 			toast.success('Account Updated Successfully');
 			window.location.reload()
 			const path = role==='seller' ? '/seller-dashboard/': '/buyer-dashboard/'
 			Navigate(path)
 
-		} else {
+		} else if (status === 'error'){
+			setLoading(false)
 			toast.error(error);
 		}
 	}, [status]);
 
-	console.log(userData.name , ImageSrc , userData)
 	// end Update Account
 	return (
 		<React.Fragment>
 			<PageContent className={classes.PageContentStyle}>
+				{loading && <LoadingSpinner /> }
 				<ToastContainer theme="dark" />
 				<PageHeader text="Edit Your Account" />
 				{ (Object.keys(userData).length !== 0 && statusForGetInfo === 'completed' ) && (
 				<form className="container-fluid" onSubmit={submitHandler}>
 					<section className="header_container position-relative">
 						<div className={`${classes.UpdateAccount} `}>
-							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} />
+							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} alt="userImage" />
 							<button
 								type='button'
 								className={`btn ${classes.btnChangeImage}`}

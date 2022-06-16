@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import '../Reviews/reviews.css';
 import './details.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

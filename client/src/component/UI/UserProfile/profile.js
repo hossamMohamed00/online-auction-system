@@ -272,6 +272,6 @@ const UserProfile = props => {
 };
 export default UserProfile;
 
-{
+
 	/* <hr className="bg-light profileHr2" /> */
-}
+

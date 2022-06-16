@@ -13,12 +13,14 @@ import { getAllCategories } from '../../../../Api/CategoryApi';
 import useHttp from '../../../../CustomHooks/useHttp';
 
 import { toast, ToastContainer } from 'react-toastify';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner'
 import { isBefore } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
 const AddAuction = () => {
 	const [AddAuction, setAddAuction] = useState('');
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const [loading , setLoading] = useState(false)
 
 	const {
 		sendRequest: sendRequestCategoryList,
@@ -52,8 +54,7 @@ const AddAuction = () => {
 		dataCategoryList &&
 		dataCategoryList.length !== 0;
 
-	const [ProductImageErrorMessage, setProductImageErrorMessage] = useState('');
-
+	let ProductImageErrorMessage = ''
 	// start validation
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
@@ -65,7 +66,7 @@ const AddAuction = () => {
 			className="form-select"
 			onChange={e => setCategoryId(e.target.value)}
 		>
-			<option value="none" selected disabled>
+			<option value="none" disabled selected>
 				Select an category
 			</option>
 			{dataCategoryList.map(category => (
@@ -101,16 +102,14 @@ const AddAuction = () => {
 	let tempArr = [];
 
 	const handleImageUpload = e => {
-		[...e.target.files].map(file => {
-			tempArr.push(file);
-		});
-
+		[...e.target.files].map(file => tempArr.push(file));
 		setPictures(tempArr);
 	};
 
 	// end handle upload image
 	const submitHandler = e => {
 		e.preventDefault();
+		setLoading(true)
 		if (ValidateForm()) {
 			const AuctionDetails = {
 				title: TitleRef.current.value,
@@ -135,6 +134,7 @@ const AddAuction = () => {
 
 	useEffect(() => {
 		if (status === 'completed') {
+			setLoading(false)
 			toast.success('Done, new Auction added successfully 💖🐱‍👤');
 			const timer = setTimeout(()=>{
 				Navigate('/seller-dashboard/viewAllAuctions')
@@ -145,6 +145,7 @@ const AddAuction = () => {
 
 	useEffect(() => {
 		if (error) {
+			setLoading(false)
 			toast.error(error);
 		}
 	}, [error, AddAuction]);
@@ -152,6 +153,7 @@ const AddAuction = () => {
 	return (
 		<SellerDashboardContent>
 			<PageContent>
+				{loading && <LoadingSpinner /> }
 				<ToastContainer theme="dark" />
 				<PageHeader text="Add New Auction" />
 				<div>

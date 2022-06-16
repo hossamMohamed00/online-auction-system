@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Chat from '../../../UI/Chat/Chat';
 
 import SellerDashboardContent from '../SellerModule';

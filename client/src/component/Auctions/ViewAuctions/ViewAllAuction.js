@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import { getAllAuctions, getFilterAuction } from '../../../Api/AuctionsApi';
+import { getAllAuctions } from '../../../Api/AuctionsApi';
 import useHttp from '../../../CustomHooks/useHttp';
 import ViewAuctionDetails from '../../UI/ViewAuctionDetails/ViewAuctionDetails';
 
@@ -17,8 +17,6 @@ import Navbar from '../../HomePage/Header/Navbar';
 
 const ViewAllAuctions = () => {
 	const [showFilter, setShowFilter] = useState(null);
-	const [Data, setData] = useState(null);
-
 	const [FilterAuction, setFilterAuction] = useState(false);
 	const [FilterdDetails, setFilterdDetails] = useState(null);
 
@@ -41,15 +39,15 @@ const ViewAllAuctions = () => {
 		}
 	}, [sendRequest, FilterAuction, FilterdDetails]);
 
-	useEffect(() => {
-		if (status === 'completed') {
-			setData(
-				data.filter(
-					data => data.status !== 'pending' && data.status !== 'denied',
-				),
-			);
-		}
-	}, [status]);
+	// useEffect(() => {
+	// 	if (status === 'completed') {
+	// 		setData(
+	// 			data.filter(
+	// 				data => data.status !== 'pending' && data.status !== 'denied',
+	// 			),
+	// 		);
+	// 	}
+	// }, [status]);
 	const showFilterHandler = () => {
 		setShowFilter(true);
 	};

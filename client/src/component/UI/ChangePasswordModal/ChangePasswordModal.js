@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ChangePasswordForUsers } from '../../../Api/usersApi';
 import useHttp from '../../../CustomHooks/useHttp';
-import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 import Input from '../Input/input';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 
@@ -17,8 +15,6 @@ function ChangePassword({show, onHide }) {
 
 	const idToken = useSelector(store=>store.AuthData.idToken)
 	const role = useSelector(store=>store.AuthData.role)
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
 
 
 	const {
@@ -46,14 +42,6 @@ function ChangePassword({show, onHide }) {
 			);
 			setModalBody('');
 			setModalBtn('');
-
-			// logout and redirect to login page
-			const timer = setTimeout(()=>{
-				onHide()
-				dispatch(AuthDataActions.logout())
-				navigate('/login')
-			},5000)
-			return () => clearTimeout(timer)
 
 		}
 

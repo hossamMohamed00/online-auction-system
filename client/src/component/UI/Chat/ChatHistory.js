@@ -27,12 +27,14 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 
 	useEffect(() => {
 		if (status === 'completed') {
+			let email , lastMessage , lastMessageTime , id
 			data.map(chat => {
-				if (chat.messages.length !== 0) {
-					let email = chat.user1 === ChatEmail ? chat.user2 : chat.user1;
-					let lastMessage = chat.messages[chat.messages.length - 1].message;
-					let lastMessageTime = chat.messages[chat.messages.length - 1].sentAt;
-					let id = chat._id;
+				return(
+				chat.messages.length !== 0 && (
+					email = chat.user1 === ChatEmail ? chat.user2 : chat.user1,
+					lastMessage = chat.messages[chat.messages.length - 1].message,
+					lastMessageTime = chat.messages[chat.messages.length - 1].sentAt,
+					id = chat._id,
 					setChats(prevChats => [
 						...prevChats,
 						{
@@ -41,9 +43,9 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 							lastMessageTime: moment(lastMessageTime).format('LT'),
 							id_: { id },
 						},
-					]);
-				}
-			});
+					])
+				))
+			})
 		}
 	}, [status]);
 
@@ -93,7 +95,7 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 		<>
 			{FilterChats(searchTerm).map((chat, index) => {
 				return (
-					<>
+					<div key={index}>
 						{(chatWithEmail || !chatWithEmail) && (
 							<div
 								className={` ${classes.ChatHistoryContent} ${
@@ -118,7 +120,7 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 								</div>
 							</div>
 						)}
-					</>
+					</div>
 				);
 			})}
 			{/* if no chat history to this user  */}

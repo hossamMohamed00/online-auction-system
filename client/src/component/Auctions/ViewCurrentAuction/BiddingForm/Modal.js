@@ -27,7 +27,6 @@ const ModalUi = props => {
 	const {
 		sendRequest: sendRequestForExtendAuction,
 		status: statusForExtendAuction,
-		data: dataForExtendAuction,
 		error: errorForExtendAuction,
 	} = useHttp(ExtendAuctionAi);
 
@@ -165,7 +164,7 @@ const ModalUi = props => {
 			<Modal.Body className={classes.BiddingModalBody}>
 				<>
 					{/* *********** start for seller ********************  */}
-					{isLoggedIn && role === 'seller' && (
+					{isLoggedIn && role === 'seller' && !props.btnExtendAuction && (
 						<h1 className="text-light text-center">
 							Are you sure to delete this auction
 						</h1>
@@ -376,7 +375,7 @@ const ModalUi = props => {
 					{/* start Admin modal */}
 
 					{/* start seller modal */}
-					{isLoggedIn && role === 'seller' && (
+					{isLoggedIn && role === 'seller' && !props.btnExtendAuction && (
 						<button
 							className={`btn col fw-bold bg-light ${classes.btnLogin}`}
 							type="button"

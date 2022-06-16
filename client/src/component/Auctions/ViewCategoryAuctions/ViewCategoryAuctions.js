@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,6 @@ import useHttp from '../../../CustomHooks/useHttp';
 import { getCategoryAuctions } from '../../../Api/CategoryApi';
 
 import classes from './ViewCategoryAuctions.module.css';
-import { useSelector } from 'react-redux';
 
 const ViewCategoryAuctions = () => {
 	const [changeCategory, setChangeCategory] = useState(false);

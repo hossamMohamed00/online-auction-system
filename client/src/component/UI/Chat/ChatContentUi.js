@@ -10,7 +10,7 @@ import moment from 'moment';
 function ChatContentUi({ Message, sendMessage, className, getChatWithEmail }) {
 	const email = useSelector(store => store.AuthData.email);
 	const [MessageValue, setMessageValue] = useState('');
-	const [isShownEmailAddress, setIsShownEmailAddress] = useState(true);
+	let isShownEmailAddress = true
 
 	const getTime = time => {
 		const Time = moment(time).format('LT');

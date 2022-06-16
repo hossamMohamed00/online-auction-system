@@ -131,7 +131,7 @@ const Step2 = (props) => {
 					getValue={getAcceptantValue}
 					changeValue={phoneNum ? 'Yes' : 'No'}
 				/>
-				<Buttons nxt= "Send" onClick={submitStep2Handler} />
+				<Buttons nxt= "Submit" prev="Step1" onClick={submitStep2Handler} />
 			</div>
 			)
 			: (

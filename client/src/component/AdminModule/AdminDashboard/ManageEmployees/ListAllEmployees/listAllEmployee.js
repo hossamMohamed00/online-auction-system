@@ -16,7 +16,6 @@ import './allEmployees.css';
 
 // font
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ModalUi from './../../../../UI/Modal/modal';
 
@@ -26,15 +25,17 @@ const ListAllEmployees = props => {
 
 	const [ModalShow, setModalShow] = useState(false);
 
-	const [ModalTitle, setModalTitle] = useState(
-		'Are you sure to Delete this employee?',
-	);
-	const [ModalBtn, setModalBtn] = useState('Confirm');
+	// const [ModalTitle, setModalTitle] = useState(
+	// 	'Are you sure to Delete this employee?',
+	// );
+	// const [ModalBtn, setModalBtn] = useState('Confirm');
+	let ModalBtn = 'Confirm'
+	let ModalTitle = 'Are you sure to Delete this employee?'
 	// *******************************************************
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [reloadData, setReloadData] = useState('');
 
-	const { sendRequest, status, data } = useHttp(getEmployees);
+	const { sendRequest, data } = useHttp(getEmployees);
 
 	const {
 		sendRequest: sendRequestForRemove,
@@ -107,7 +108,7 @@ const ListAllEmployees = props => {
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
 
-	const failed = status !== 'completed';
+	// const failed = status !== 'completed';
 
 	return (
 		<React.Fragment>

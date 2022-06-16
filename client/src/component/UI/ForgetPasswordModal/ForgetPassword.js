@@ -20,6 +20,7 @@ function ForgetPassword({ forget, show, onHide }) {
 	const {
 		sendRequest: sendRequestForEmailConf,
 		status: statusForEmailConf,
+		data: dataForEmailConf,
 		error: errorForEmailConf,
 	} = useHttp(ResetPassword);
 	const {
@@ -49,8 +50,8 @@ function ForgetPassword({ forget, show, onHide }) {
 	// start sendConfirmation Api
 	useEffect(() => {
 		if (statusForEmailConf === 'completed' && forget) {
+			toast.success(dataForEmailConf.message)
 			setLoading(false);
-			toast.success('Rest Your Password is Done Successfully ❤️‍🔥 ');
 			setModalTitle('')
 			setModalBody(
 				<div>
@@ -65,7 +66,6 @@ function ForgetPassword({ forget, show, onHide }) {
 		}
 		if (statusForEmailConf === 'error' && forget) {
 			setLoading(false);
-			console.log(errorForEmailConf);
 			toast.error(errorForEmailConf);
 			setModalTitle('')
 			setModalBody(
@@ -200,7 +200,6 @@ function ForgetPassword({ forget, show, onHide }) {
 			);
 			setModalBtn('Send Code');
 		} else if (ModalBtn === 'Send Code') {
-			console.log(EmailRef_inFtPass.current.value);
 			if (EmailRef_inFtPass.current.value && forget) {
 				const email = EmailRef_inFtPass.current.value;
 				setEmail(email);
@@ -230,7 +229,6 @@ function ForgetPassword({ forget, show, onHide }) {
 				const email = userEmail;
 				const verificationCode = userVerificationCode;
 				const password = newPasswordRef.current.value;
-				console.log(email , verificationCode , password)
 				sendRequestForChangeToNewPassword({
 					email,
 					verificationCode,

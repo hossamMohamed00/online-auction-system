@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
@@ -7,7 +7,7 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,10 +31,11 @@ function SellerExtendAuctions() {
 
 	useEffect(() => {
 		if (status === 'completed') {
-			data.map(data => {
-				// const newDate = moment().to(data.extensionTime);
-				// data.extensionTime = newDate;
-				const newExtensionTime =
+			let newExtensionTime ;
+
+			data.map(data =>  {
+			return (
+				newExtensionTime =
 					data.extensionTime.days +
 					' d ' +
 					' - ' +
@@ -44,8 +45,9 @@ function SellerExtendAuctions() {
 					' - ' +
 					data.extensionTime.minutes +
 					'' +
-					' m ';
-				data.extensionTime = { newExtensionTime };
+					' m ',
+				data.extensionTime = { newExtensionTime }
+			)
 			});
 		}
 	}, [status]);

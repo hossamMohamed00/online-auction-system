@@ -27,7 +27,8 @@
 	width: 75%;
 }
 .adminName .username h5 {
-	font-size: 35px !important;
+	font-size: 30px !important;
+	margin-left: 10px;
 }
 .adminName {
 	/* padding-top: 30%; */
@@ -94,5 +95,14 @@
 @media screen and (max-width: 991px) {
 	.sidebar {
 		top: 52px;
+	}
+
+}
+
+@media  screen and (max-width:1400px) {
+	.adminName .username h5 {
+		font-size: 24px !important;
+		margin-left: 10px;
+
 	}
 }

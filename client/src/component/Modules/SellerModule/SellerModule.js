@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DashboardLayout from '../../UI/DashboardLayout/DashboardLayout';
-// import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
 
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import PageContent from '../../UI/DashboardLayout/Pagecontant/pageContent';
-
-// import { faListAlt } from '@fortawesome/free-solid-svg-icons';
 import useHttp from './../../../CustomHooks/useHttp';
 import { getProfileData } from '../../../Api/Admin';
 import PageProfile from '../../UI/PageProfile/PageProfile'
@@ -57,24 +54,6 @@ const SellerDashboardContent = props => {
 		},
 	];
 
-	const dropdownListPayment = [
-		{
-			title: 'Charge Wallet ',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
-			title: 'Recover Money',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-		{
-			title: 'Display Wallet Info',
-			icon: faGavel,
-			path: '/adminDashboard/currentAuctions',
-		},
-	];
-
 	const dropdownListChat = [
 		{
 			title: 'View Chat ',
@@ -90,7 +69,6 @@ const SellerDashboardContent = props => {
 			seller={{ name: `${email}` }}
 			profile={{ name: 'Profile', list: dropdownListProfile }}
 			viewAuctions={{ name: 'Auctions', list: dropdownListAuctions }}
-			payment={{ name: 'Payment', list: dropdownListPayment }}
 			SellerChat={{ name: 'SellerChat', list: dropdownListChat }}
 		>
 			{contentExist ? (

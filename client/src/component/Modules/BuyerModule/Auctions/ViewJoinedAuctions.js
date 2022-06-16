@@ -5,18 +5,14 @@ import useHttp from '../../../../CustomHooks/useHttp';
 import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 
-import classes from './ViewParticipatingAuctions.module.css';
-
 import BuyerDashboardContent from '../BuyerDashboard';
 import { getJoinedAuctions } from '../../../../Api/BuyerApi';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { useSelector } from 'react-redux';
-import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
-
 import moment from 'moment';
 
-const ViewJoinedAuctions_buyer = () => {
+const ViewJoinedAuctionsBuyer = () => {
 	const { sendRequest, status, data , error} = useHttp(getJoinedAuctions);
 
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -110,4 +106,4 @@ return (
 
 };
 
-export default ViewJoinedAuctions_buyer;
+export default ViewJoinedAuctionsBuyer;

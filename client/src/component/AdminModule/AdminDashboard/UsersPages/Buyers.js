@@ -19,7 +19,7 @@ import WarnModal from '../../../UI/Modals/WarnModal';
 import { ToastContainer } from 'react-toastify';
 import './users.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import JoinedAuctionModal from '../../../UI/Modals/ViewJoinedAuctions_buyer';
+import JoinedAuctionModal from '../../../UI/Modals/JoinedAuctionModal';
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
