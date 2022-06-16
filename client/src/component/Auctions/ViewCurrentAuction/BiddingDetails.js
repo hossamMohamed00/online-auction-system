@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import classes from './ViewCurrentAuction.module.css';
 
 const BiddingDetails = ({ roomData }) => {

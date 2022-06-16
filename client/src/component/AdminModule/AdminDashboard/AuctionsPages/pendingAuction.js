@@ -13,7 +13,7 @@ import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 const PendingAuctions = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { sendRequest, status, data, error } = useHttp(getAllAuctions);
+	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
 	// columns
 	const columns = [
@@ -76,10 +76,11 @@ const PendingAuctions = () => {
 	const [pendingData, setPendingData] = useState([]);
 	useEffect(() => {
 		if (status === 'completed') {
-			data.map(data => {
-				const newDate = moment(data.startDate).format(' DD / MM / YYYY');
-				data.startDate = newDate;
-			});
+			let newDate
+			data.map(data => {return (
+				newDate = moment(data.startDate).format(' DD / MM / YYYY'),
+				data.startDate = newDate
+			)});
 			setPendingData(data);
 		}
 	}, [status]);

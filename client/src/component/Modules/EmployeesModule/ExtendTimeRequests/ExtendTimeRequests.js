@@ -22,26 +22,20 @@ import ModalUi from '../../../UI/Modal/modal';
 // start component
 
 const ExtendTimeRequests = () => {
-	const url = 'http://localhost:8000';
-
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownRejectModal, setIsShownRejectModal] = useState(false);
 	const [reload, setReload] = useState('');
-
-	const [rejectReason, setRejectReason] = useState('');
 	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllExtendTimeRequests,
 	);
 	const {
 		sendRequest: sendRequestForReject,
 		status: statusForReject,
-		data: dataForReject,
 		error,
 	} = useHttp(rejectExtend);
 	const {
 		sendRequest: sendRequestFoApprove,
 		status: statusForApprove,
-		data: dataForApprove,
 		error: errorForApprove,
 	} = useHttp(ApproveExtend);
 
@@ -96,22 +90,24 @@ const ExtendTimeRequests = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
+			let newDate , newExtensionTime
 			data.map(data => {
-				const newDate = moment().to(data.endDate);
-				data.endDate = newDate;
-				const newExtensionTime =
-					data.extensionTime.days +
-					' d ' +
-					'' +
-					data.extensionTime.hours +
-					'' +
-					' h' +
-					'' +
-					data.extensionTime.minutes +
-					'' +
-					'm';
-				data.extensionTime = newExtensionTime;
-			});
+				return (
+					newDate = moment().to(data.endDate),
+					data.endDate = newDate,
+					newExtensionTime =
+						data.extensionTime.days +
+						' d ' +
+						'' +
+						data.extensionTime.hours +
+						'' +
+						' h' +
+						'' +
+						data.extensionTime.minutes +
+						'' +
+						'm',
+					data.extensionTime = newExtensionTime
+			)});
 
 			setRequests(data);
 		}

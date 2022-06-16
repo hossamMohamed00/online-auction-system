@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faFilterCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 function FilterdAuctions(props) {
 	const { sendRequest, data } = useHttp(getAllCategories);
 	const idToken = useSelector(store => store.AuthData.idToken);
-	// const [filterData ,setFilerData]  = useState()
 
 	useEffect(() => {
 		sendRequest(idToken);

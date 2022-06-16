@@ -11,7 +11,7 @@ import { getUserId, getUserProfile } from '../../../Api/usersApi';
 import { ToastContainer } from 'react-toastify';
 import ChangePassword from '../ChangePasswordModal/ChangePasswordModal';
 
-const PageProfile = props => {
+const PageProfile = () => {
 	const [ShowModal, setShowModal] = useState(false);
 	const [UserData, setUserData] = useState({});
 
@@ -21,7 +21,7 @@ const PageProfile = props => {
 
 
 	const { data, sendRequest , status } = useHttp(getUserProfile);
-	const { data:dataForGetId, sendRequest: sendRequestForGetId , status: statusForGetId , error: errorForGetId } = useHttp(getUserId);
+	const { data:dataForGetId, sendRequest: sendRequestForGetId , status: statusForGetId} = useHttp(getUserId);
 
 
 	const [isWarned , setIsWarned] = useState(false)
@@ -71,7 +71,7 @@ const PageProfile = props => {
 			<ToastContainer theme="dark"/>
 			<PageHeader  text={role==='seller' ? 'Seller Profile' : 'Buyer Profile'} showLink ={false} />
 			<div className='profilePageContent position-relative'>
-				<img src={(UserData.image && UserData.image.url )? `${UserData['image']['url']}` : buyerImg} />
+				<img src={(UserData.image && UserData.image.url )? `${UserData['image']['url']}` : buyerImg} alt="ImageDescription" />
 
 			</div>
 			<div className='mt-5'>

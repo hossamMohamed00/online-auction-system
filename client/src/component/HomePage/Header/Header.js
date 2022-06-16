@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import Navbar from './Navbar';
 
 import classes from './Header.module.css';

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import {
@@ -13,8 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthDataActions } from '../../../store/slices/RegisterSlices/AuthData';
 
 const DropDownBox = props => {
-	// const {sendRequest , status} = useHttp(Logout)
-
 	const Navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -38,9 +36,6 @@ const DropDownBox = props => {
 		// sendRequest(idToken)
 		Navigate('/login');
 		dispatch(AuthDataActions.logout());
-	};
-	const handleShownWallet = () => {
-		props.showWalletHandler(true);
 	};
 
 	const showAllLinks = (

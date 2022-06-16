@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import PageHeader from '../../../UI/Page Header/pageHeader';
@@ -13,23 +13,22 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import { CardsContainer } from './card_content/CardsContainer';
-const DashboardContent = props => {
-	const { sendRequest, data, error } = useHttp(getDashboardData);
-	const [loading, setLoading] = useState(false);
+// import LoadingSpinner from '../../../UI/Loading/LoadingSpinner'
+
+const DashboardContent = () => {
+	const { sendRequest, data } = useHttp(getDashboardData);
+	// const [loading, setLoading] = useState(false);
 	const {
 		sendRequest: sendRequestForWinners,
 		data: dataForWinners,
-		status,
 	} = useHttp(getWinners);
 	const {
 		sendRequest: sendRequestForAuctions,
 		data: dataForAuctions,
-		status: statusForAuctions,
 	} = useHttp(getTopAuctions);
 	const {
 		sendRequest: sendRequestForProfile,
 		data: dataForProfile,
-		status: statusForProfile,
 	} = useHttp(getProfileData);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
@@ -39,12 +38,13 @@ const DashboardContent = props => {
 		sendRequestForAuctions(idToken);
 		sendRequestForProfile(idToken);
 		setInterval(() => {
-			setLoading(true);
+			// setLoading(true);
 			sendRequest(idToken);
 			sendRequestForWinners(idToken);
 			sendRequestForAuctions(idToken);
 			sendRequestForProfile(idToken);
 		}, 60000);
+
 	}, [
 		sendRequest,
 		sendRequestForWinners,
@@ -141,6 +141,7 @@ const DashboardContent = props => {
 	return (
 		<>
 			<div className="mt-5 ">
+				{/* {loading && <LoadingSpinner />} */}
 				<PageHeader
 					text={`Welcome back ${dataForProfile && dataForProfile.name}`}
 					showLink={false}

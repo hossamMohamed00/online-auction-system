@@ -26,10 +26,8 @@ const AllCompliments = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
 	const [reload, setReload] = useState('');
-	const [Readable, setReadable] = useState(false);
-
 	const [complaintReason, setComplaintReason] = useState('');
-	const { sendRequest, status: statusForGet, data, error } = useHttp(
+	const { sendRequest, status: statusForGet, data} = useHttp(
 		getAllComplaints,
 	);
 
@@ -43,12 +41,15 @@ const AllCompliments = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
+			let newDate
 			data.map(data => {
-				const newDate = moment(data.createdAt).format(
-					' ddd DD / MM [at] hh:mm a',
-				);
-				data.createdAt = newDate;
-			});
+				return (
+					newDate = moment(data.createdAt).format(
+						' ddd DD / MM [at] hh:mm a',
+					),
+					data.createdAt = newDate
+				)}
+			)
 
 			setComplaints(data);
 		}
@@ -63,14 +64,11 @@ const AllCompliments = () => {
 		if (!status) {
 			//* Send request to change read property
 			MarkAsRead(id);
-			// setReload(Math.random());
 		}
-		// setReload(Math.random());
 	};
 
 	// handle read
 	const MarkAsRead = complaintId => {
-		let count = Math.random();
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'PATCH',
 			headers: {

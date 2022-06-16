@@ -55,7 +55,6 @@ const UpdateAccountForUsers = () => {
 	// start update Account
 	const submitHandler = e => {
 		e.preventDefault();
-		console.log(ImageSrc ? ImageSrc : userData.image.url)
 		let accountData
 		if(ImageSrc){
 			accountData = {
@@ -90,7 +89,6 @@ const UpdateAccountForUsers = () => {
 		}
 	}, [status]);
 
-	console.log(userData.name , ImageSrc , userData)
 	// end Update Account
 	return (
 		<React.Fragment>
@@ -101,7 +99,7 @@ const UpdateAccountForUsers = () => {
 				<form className="container-fluid" onSubmit={submitHandler}>
 					<section className="header_container position-relative">
 						<div className={`${classes.UpdateAccount} `}>
-							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} />
+							<img src={(userData.image && userData.image.url ) ? `${userData['image']['url']}` : userImg} className={classes.imageProfile} alt="userImage" />
 							<button
 								type='button'
 								className={`btn ${classes.btnChangeImage}`}

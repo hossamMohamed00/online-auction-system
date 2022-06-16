@@ -8,7 +8,6 @@ import useHttp from '../../../../CustomHooks/useHttp';
 import { getAllCategoriesForAdmin, remove } from './../../../../Api/Admin';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import useFilter from '../../../UI/TableLayout/FilteringTable/filter';
 import DataTable from 'react-data-table-component';
 import ModalUi from '../../../UI/Modal/modal';
@@ -21,7 +20,10 @@ const AllCategories = props => {
 		'Are you sure to Delete this category?',
 	);
 	const [ModalBtn, setModalBtn] = useState('Confirm');
-
+	const [
+		reloadWhenRemoveCategory,
+		setReloadWhenRemoveCategory,
+	] = React.useState('');
 	//! cols name
 	const columns = [
 		{
@@ -67,10 +69,7 @@ const AllCategories = props => {
 		error: errorForRemove,
 	} = useHttp(remove);
 
-	const [
-		reloadWhenRemoveCategory,
-		setReloadWhenRemoveCategory,
-	] = React.useState('');
+
 	// ! handle remove
 	//
 	const showModel = category_Id => {
@@ -89,12 +88,10 @@ const AllCategories = props => {
 		if (statusForRemove === 'completed') {
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setModalShow(false);
-			// setReloadWhenRemoveCategory(Math.random());
 		} else if (statusForRemove === 'error') {
 			toast.error(`${errorForRemove} 💖🐱‍👤`);
 			setModalTitle(errorForRemove);
 			setModalBtn('');
-			// setReloadWhenRemoveCategory(Math.random());
 		}
 	}, [statusForRemove, errorForRemove, reloadWhenRemoveCategory]);
 

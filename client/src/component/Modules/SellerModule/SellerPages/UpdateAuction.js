@@ -8,7 +8,6 @@ import classes from './UpdateAuction.module.css';
 import Input from '../../../UI/Input/input';
 
 import { toast, ToastContainer } from 'react-toastify';
-import { isBefore } from 'date-fns';
 import useHttp from './../../../../CustomHooks/useHttp';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -19,14 +18,12 @@ const UpdateAuction = () => {
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	// start validation
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
-	const ValidateDate = value => isBefore(new Date(), new Date(value));
 
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const {
 		sendRequest: sendRequestTOGetAuctions,
 		status: statusTOGetAuctions,
 		data: dataTOGetAuctions,
-		error: errorToGetAuctions,
 	} = useHttp(getSingleAuction);
 
 	useEffect(() => {
@@ -44,7 +41,6 @@ const UpdateAuction = () => {
 	const {
 		sendRequest: sendRequestUpdateAuction,
 		status: statusUpdateAuction,
-		data: dataUpdateAuction,
 		error: errorUpdateAuction,
 	} = useHttp(UpdateAuctionHandler);
 	// get all categories name
@@ -99,14 +95,11 @@ const UpdateAuction = () => {
 	let tempArr = [];
 
 	const handleImageUpload = e => {
-		[...e.target.files].map(file => {
-			tempArr.push(file);
-		});
-
+		[...e.target.files].map(file => tempArr.push(file));
 		setPictures(tempArr);
 	};
 
-	const submitHandeler = e => {
+	const submitHandler = e => {
 		e.preventDefault();
 		const auctionData = {
 			title: TitleRef.current.value,
@@ -145,7 +138,7 @@ const UpdateAuction = () => {
 				<PageHeader text="Edit Auction" />
 				<div>
 					{auctionData && (
-						<form onSubmit={submitHandeler}>
+						<form onSubmit={submitHandler}>
 							<div className="container">
 								<div className="row">
 									{/* start Product Title */}
@@ -154,13 +147,13 @@ const UpdateAuction = () => {
 											htmlFor="Title"
 											className={'text-light fw-bold fs-6 py-2'}
 										>
-											Titel
+											Title
 										</label>
 										<Input
 											type="text"
 											placeholder=""
 											ref={TitleRef}
-											errorMassage="please enter Prudect Title "
+											errorMassage="please enter Product Title "
 											value={auctionData && auctionData.title}
 											id="Title"
 											// value="title"
@@ -170,7 +163,7 @@ const UpdateAuction = () => {
 									{/* start Product Name */}
 									<div className={`col-lg`}>
 										<label
-											htmlFor="PrudectName"
+											htmlFor="ProductName"
 											className={'text-light fw-bold fs-6 py-2'}
 										>
 											product Name
@@ -180,9 +173,9 @@ const UpdateAuction = () => {
 											placeholder=""
 											validateText={validateText}
 											ref={ProductNameRef}
-											errorMassage="please enter Prudect Name "
+											errorMassage="please enter Product Name "
 											value={auctionData && auctionData.item.name}
-											id="PrudectName"
+											id="ProductName"
 										/>
 									</div>
 								</div>
@@ -201,7 +194,7 @@ const UpdateAuction = () => {
 											placeholder=""
 											validateText={validateText}
 											ref={BrandRef}
-											errorMassage="please enter Prudect Describtion "
+											errorMassage="please enter Product Description "
 											value={auctionData && auctionData.item.brand}
 											id="Brand"
 										/>
@@ -228,7 +221,7 @@ const UpdateAuction = () => {
 											ref={BasePriceRef}
 											errorMassage="please enter Base Price "
 											value={auctionData && auctionData.basePrice}
-											id="prudectPrice"
+											id="productPrice"
 										/>
 									</div>
 									<div className={`${classes.TextArea} col-lg-6`}>
@@ -252,34 +245,34 @@ const UpdateAuction = () => {
 								<div className="row">
 									<div className={`col-lg-6`}>
 										<label
-											htmlFor="prudectDesc"
+											htmlFor="productDesc"
 											className={'text-light fw-bold fs-6 py-2 '}
 										>
-											product short Describtion
+											product short Description
 										</label>
 										<Input
 											type="text"
 											placeholder=""
 											ref={ProductShortDescRef}
-											errorMassage="please enter Prudect Describtion "
-											inputValue=" prudect Describtion"
-											id="prudectDesc"
+											errorMassage="please enter product Description "
+											inputValue=" product Description"
+											id="productDesc"
 											value={auctionData && auctionData.item.shortDescription ? auctionData.item.shortDescription : ''}
 										/>
 									</div>
 
-									{/* start detaild desc */}
+									{/* start details desc */}
 									<div className={`col-lg-6`}>
 										<label
-											htmlFor="prudectDelitelDesc"
+											htmlFor="productDetailsDesc"
 											className={'text-light fw-bold fs-6 py-2 '}
 										>
-											product Detiles Describtion
+											product Details Description
 										</label>
 										<textarea
-											placeholder="type heree..."
-											className={`form-control ${classes.ProdulctDetailed}`}
-											id="prudectDelitelDesc"
+											placeholder="type here..."
+											className={`form-control ${classes.ProductDetailed}`}
+											id="productDetailsDesc"
 											ref={ProductDetailsDescRef}
 											value={auctionData && auctionData.item.detailedDescription ? auctionData.item.detailedDescription : ''}
 										></textarea>

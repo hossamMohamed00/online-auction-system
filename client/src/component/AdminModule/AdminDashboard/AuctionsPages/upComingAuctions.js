@@ -62,12 +62,17 @@ const PendingAuctions = () => {
 	const [upcomingData, setUpcomingData] = useState([]);
 	useEffect(() => {
 		if (status === 'completed') {
+			//*Format dates
+			let newStartDate
+			let newEndDate
 			data.map(data => {
-				const newDate = moment(data.startDate).format(' DD / MM / YYYY');
-				data.startDate = newDate;
-				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
-				data.endDate = newEndDate;
-			});
+				return (
+					newStartDate = moment(data.startDate).format(' DD / MM / YYYY'),
+					newEndDate = moment(data.endDate).format(' DD / MM / YYYY'),
+					data.endDate ? data.endDate = newEndDate : data.endDate = <span>NA</span> ,
+					data.startDate = newStartDate
+				)});
+
 			setUpcomingData(data);
 		}
 	}, [status]);

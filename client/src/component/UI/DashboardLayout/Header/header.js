@@ -67,6 +67,7 @@ const Header = props => {
 								userData.image.url &&
 								`${userData['image']['url']}`
 							}
+							alt ="userImage"
 						/>
 					) : (
 						<FontAwesomeIcon

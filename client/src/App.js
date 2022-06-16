@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // css files
@@ -27,7 +27,7 @@ import ListAllEmployees from './component/AdminModule/AdminDashboard/ManageEmplo
 import SellersPage from './component/AdminModule/AdminDashboard/UsersPages/Sellers';
 import BuyersPage from './component/AdminModule/AdminDashboard/UsersPages/Buyers';
 import AdminPage from './Pages/AdminDashboard';
-import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
+// import ProfilePage from './component/AdminModule/AdminDashboard/ProfilePage/profilePage';
 import CurrentAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/currentAuctions';
 import UpcomingAuctionsPage from './component/AdminModule/AdminDashboard/AuctionsPages/upComingAuctions';
 import PendingAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/pendingAuction';
@@ -39,7 +39,7 @@ import BuyerProfile from './Pages/buyerProilePage';
 // start buyer pages
 import BuyerDashboard from './Pages/BuyerDashboard';
 import SavedAuctions from './component/Modules/BuyerModule/Auctions/SavedAuctions';
-import ViewJoinedAuctions_buyer from './component/Modules/BuyerModule/Auctions/ViewJoinedAuctions';
+import ViewJoinedAuctionsBuyer from './component/Modules/BuyerModule/Auctions/ViewJoinedAuctions';
 // end buyer pages
 
 // start seller pages
@@ -49,7 +49,6 @@ import SellerChat from './component/Modules/SellerModule/SellerPages/SellerChat'
 import BuyerChat from './component/Modules/BuyerModule/BuyerChat';
 import UpdateAccountForSeller from './component/Modules/SellerModule/SellerPages/UpdateAccount';
 import AddAuction from './component/Modules/SellerModule/SellerPages/AddNewAuction';
-import UpdateAccount from './component/UI/UpdateAccount/UpdateAccount';
 import AllAuctions from './component/AdminModule/AdminDashboard/AuctionsPages/AllAuctions';
 import AllCompliments from './component/Modules/EmployeesModule/AllCompliments/AllCompliments';
 import Wallet from './component/Modules/BuyerModule/Payment/Wallet.';
@@ -67,10 +66,10 @@ import UpdateAccountForEmployee from './component/Modules/EmployeesModule/update
 // end seller pages
 
 function App() {
-	const location = useLocation();
-	const pathname = location.pathname;
-	const pathnameParts = pathname.split('/').filter(Boolean);
-	const expectedResults = pathnameParts[0];
+	// const location = useLocation();
+	// const pathname = location.pathname;
+	// const pathnameParts = pathname.split('/').filter(Boolean);
+	// const expectedResults = pathnameParts[0];
 	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const role = useSelector(store => store.AuthData.role);
 
@@ -99,7 +98,7 @@ function App() {
 				{isLoggedIn && role === 'admin' && (
 					<Route path="/adminDashboard" element={<AdminPage />} />
 				)}
-				<Route path="/adminDashboard/adminProfile" element={<ProfilePage />} />
+				{/* <Route path="/adminDashboard/adminProfile" element={<ProfilePage />} /> */}
 				<Route
 					path="/managersDashboard/allAuctions"
 					element={<AllAuctions />}
@@ -164,7 +163,7 @@ function App() {
 						/>
 						<Route
 							path="/buyer-dashboard/joinedAuctions"
-							element={<ViewJoinedAuctions_buyer />}
+							element={<ViewJoinedAuctionsBuyer />}
 						/>
 						{/* end Buyer Auctions */}
 

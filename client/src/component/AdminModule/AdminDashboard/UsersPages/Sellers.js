@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { getUsers } from '../../../../Api/usersApi';
@@ -10,7 +10,7 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
 import { Link } from 'react-router-dom';
 
-const UsersPage = props => {
+const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const columns = [
 		{
@@ -40,7 +40,7 @@ const UsersPage = props => {
 		},
 	];
 
-	const { sendRequest, status, data } = useHttp(getUsers);
+	const { sendRequest, data } = useHttp(getUsers);
 
 	useEffect(() => {
 		sendRequest({
@@ -53,8 +53,6 @@ const UsersPage = props => {
 	const items = data ? data : [];
 	const { filterFun, filteredItems } = useFilter(items, 'name');
 	//end filter
-
-	const failed = status !== 'completed';
 
 	return (
 		<React.Fragment>

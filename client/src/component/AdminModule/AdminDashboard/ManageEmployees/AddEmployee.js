@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 // !for toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,8 +14,9 @@ export default function AddEmployee() {
 	const nameRef = useRef();
 	const passwordRef = useRef();
 	const emailRef = useRef();
-	const [successMessage, setMessage] = useState('');
-	const [failedMessage, setFailedMessage] = useState('');
+	// const [successMessage, setMessage] = useState('');
+	// const [failedMessage, setFailedMessage] = useState('');
+	let successMessage , failedMessage
 	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const validateEmail = value => value.trim().includes('@');

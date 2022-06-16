@@ -52,8 +52,7 @@ const AddAuction = () => {
 		dataCategoryList &&
 		dataCategoryList.length !== 0;
 
-	const [ProductImageErrorMessage, setProductImageErrorMessage] = useState('');
-
+	let ProductImageErrorMessage = ''
 	// start validation
 	const validateText = value => value.trim() !== '' && value.trim().length >= 3;
 	const ValidateDate = value => isBefore(new Date(), new Date(value));
@@ -101,10 +100,7 @@ const AddAuction = () => {
 	let tempArr = [];
 
 	const handleImageUpload = e => {
-		[...e.target.files].map(file => {
-			tempArr.push(file);
-		});
-
+		[...e.target.files].map(file => tempArr.push(file));
 		setPictures(tempArr);
 	};
 

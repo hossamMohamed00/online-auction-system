@@ -27,7 +27,6 @@ const ModalUi = props => {
 	const {
 		sendRequest: sendRequestForExtendAuction,
 		status: statusForExtendAuction,
-		data: dataForExtendAuction,
 		error: errorForExtendAuction,
 	} = useHttp(ExtendAuctionAi);
 

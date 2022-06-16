@@ -8,27 +8,17 @@ import classes from './Buttons.module.css';
 const Buttons = props => {
 	const dispatch = useDispatch();
 
-	// const previousHandeler = () => {
-	// 	if (props.prev === 'Step1') {
-	// 		dispatch(RegisterActions.showStep1());
-	// 	}
-	// 	if (props.prev === 'Step2') {
-	// 		dispatch(RegisterActions.showStep2());
-	// 	}
-	// };
+	const previousHandler = () => {
+		if (props.prev === 'Step1') {
+			dispatch(RegisterActions.showStep1());
+		}
+	};
 
 	const nextHandler = () => {
 		if (props.nxt === 'Step2') {
 			dispatch(RegisterActions.showStep2());
 		}
-		if (props.nxt === 'Step3') {
-			props.onClick && props.onClick();
-			dispatch(RegisterActions.showStep3());
-		}
-		if (props.nxt === 'Step4') {
-			props.onClick && props.onClick();
-		}
-		if(props.nxt ==='Send'){
+		if(props.nxt ==='Submit'){
 			props.onClick && props.onClick();
 
 		}
@@ -36,21 +26,23 @@ const Buttons = props => {
 
 	return (
 		<div className={classes['btn-steps']}>
-			{/* <button
-				onClick={previousHandeler}
-				className="btn text-light"
+			{props.prev && (
+			<button
+				onClick={previousHandler}
+				className={`btn text-light ${classes.btnStep}`}
+
 				type="button"
 			>
 				{' '}
 				Previous
-			</button> */}
+			</button>)}
 			{props.nxt && (
 				<button
 					onClick={nextHandler}
-					className={`btn mx-2 ${classes.btnSubmit}`}
+					className={`btn mx-2 ${classes.btnSubmit} ${props.prev && classes.btnStep} text-light `}
 					type="button"
 				>
-					{props.nxt ==='Send' ? props.nxt : 'Next' }
+					{props.nxt ==='Submit' ? props.nxt : 'Next' }
 				</button>
 			)}
 		</div>

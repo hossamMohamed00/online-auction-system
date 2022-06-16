@@ -14,12 +14,12 @@ export const CardsContainer = props => {
 				</h2>
 			)}
 
-			{props.cards.map(card => {
+			{props.cards.map((card, index) => {
 				return (
-					<>
 						<div
 							className={` col-lg-4 ${props['card-class']}  fw-bolder text-center card_
 							h-100 mb-3`}
+							key={index}
 						>
 							{card.name}
 							<h1 className="text-center text-alert mt-2 fw-border">
@@ -43,7 +43,6 @@ export const CardsContainer = props => {
 								</button>
 							)}
 						</div>
-					</>
 				);
 			})}
 		</div>

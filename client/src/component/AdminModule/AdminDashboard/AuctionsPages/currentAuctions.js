@@ -14,7 +14,7 @@ import PageHeader from '../../../UI/Page Header/pageHeader';
 const CurrentAuctionsPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 
-	const { sendRequest, status: statusForGet, data, error } = useHttp(
+	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllAuctions,
 	);
 	// ! to be removed
@@ -24,15 +24,18 @@ const CurrentAuctionsPage = () => {
 	}, [sendRequest]);
 	const [ongoingAuctions, setOngoingAuctions] = useState([]);
 	useEffect(() => {
-		if (statusForGet === 'completed') {
+		if (statusForGet === 'completed'){
 			//*Format dates
+			let newStartDate
+			let newEndDate
 			data.map(data => {
-				const newStartDate = moment(data.startDate).format(' DD / MM / YYYY');
-				const newEndDate = moment(data.endDate).format(' DD / MM / YYYY');
-				data.endDate = newEndDate;
+				return (
+					newStartDate = moment(data.startDate).format(' DD / MM / YYYY'),
+					newEndDate = moment(data.endDate).format(' DD / MM / YYYY'),
+					data.endDate ? data.endDate = newEndDate : data.endDate = <span>NA</span> ,
+					data.startDate = newStartDate
+				)});
 
-				data.startDate = newStartDate;
-			});
 
 			setOngoingAuctions(data);
 		}

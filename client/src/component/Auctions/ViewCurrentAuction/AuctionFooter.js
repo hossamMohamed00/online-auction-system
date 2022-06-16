@@ -34,6 +34,11 @@ function AuctionFooter({
 	const [auctionDenied, setAuctionDenied] = useState(false);
 	const [RetreatModalTitle, setRetreatModalTitle] = useState('');
 
+
+	const role = useSelector(store => store.AuthData.role);
+	const url = 'http://localhost:8000';
+	const email = useSelector(store => store.AuthData.email);
+
 	// set true when bidder is joined in auction
 	const [isJoined, setIsJoined] = useState(
 		localStorage.getItem('BidderIsJoined'),
@@ -56,7 +61,7 @@ function AuctionFooter({
 	const DeniedStatus = AuctionStatus === 'denied';
 
 	// handle Rejection
-	const { data, sendRequest, status } = useHttp(getSingleAuction);
+	const { sendRequest, status } = useHttp(getSingleAuction);
 	const {
 		sendRequest: sendRequestForJoinAuction,
 		status: statusForJoinAuction,
@@ -67,9 +72,7 @@ function AuctionFooter({
 	// start save auction api
 	const {
 		sendRequest: sendRequestForIfSavedAuction,
-		status: statusForIfSavedAuction,
-		data: dataForIfSavedAuction,
-		error: errorForIfSavedAuction,
+		status: statusForIfSavedAuction
 	} = useHttp(CheckIfAuctionSaved);
 
 	useEffect(() => {
@@ -105,9 +108,6 @@ function AuctionFooter({
 		error: errorForDelete,
 	} = useHttp(DeleteAuctionHandler);
 
-	const role = useSelector(store => store.AuthData.role);
-	const url = 'http://localhost:8000';
-	const email = useSelector(store => store.AuthData.email);
 
 	useEffect(() => {
 		if (status === 'completed') {
@@ -433,6 +433,7 @@ function AuctionFooter({
 				SavedAuctionId={AuctionId}
 				btnRemove={() => DeleteAuction(AuctionId)}
 				btnExtendAuction={ExtendAuctionId}
+
 				// *********** start bidding ************ //
 
 				// start join Auction

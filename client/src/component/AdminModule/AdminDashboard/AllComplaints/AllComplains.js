@@ -26,10 +26,9 @@ const AllComplaintsInSystem = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
 	const [reload, setReload] = useState('');
-	const [Readable, setReadable] = useState(false);
 
 	const [complaintReason, setComplaintReason] = useState('');
-	const { sendRequest, status: statusForGet, data, error } = useHttp(
+	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllComplaintsInSystem,
 	);
 
@@ -40,11 +39,14 @@ const AllComplaintsInSystem = () => {
 	useEffect(() => {
 		if (statusForGet === 'completed') {
 			//*Format dates
+			let newDate
 			data.map(data => {
-				const newDate = moment(data.createdAt).format(
-					' ddd DD / MM [at] hh:mm a',
-				);
-				data.createdAt = newDate;
+				return(
+					newDate = moment(data.createdAt).format(
+						' ddd DD / MM [at] hh:mm a',
+					),
+					data.createdAt = newDate
+				)
 			});
 
 			setComplaints(data);
@@ -67,7 +69,6 @@ const AllComplaintsInSystem = () => {
 
 	// handle read
 	const MarkAsRead = complaintId => {
-		let count = Math.random();
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'PATCH',
 			headers: {
@@ -81,7 +82,6 @@ const AllComplaintsInSystem = () => {
 		});
 	};
 	const deleteComplaint = complaintId => {
-		let count = Math.random();
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'DELETE',
 			headers: {
