@@ -130,25 +130,31 @@ function AuctionFooter({
 		});
 	};
 
-	const rejectHandler = rejectMassage => {
+	const rejectHandler = async (rejectMassage) => {
 		const rejectionMessage = { message: rejectMassage };
-		fetch(`${url}/admin/auction/reject/${AuctionId}`, {
+		const response = await fetch(`${url}/admin/auction/reject/${AuctionId}`, {
 			method: 'POST',
 			body: JSON.stringify(rejectionMessage),
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 				'content-type': 'application/json',
 			},
-		}).then(res => {
-			if (!res.ok || res.success === false) {
-				toast.error(res.json().message)
+		})
+			const data = await response.json()
+			if (!response.ok || data.success === false) {
+				toast.error(data.message)
 			}
 			else{
-				toast.success(res.json().message)
+				toast.success(data.message)
+				const timer = setTimeout(()=>{
+					window.location.reload()
+				},3000)
+				return ()=> clearTimeout(timer)
 			}
+
 			setModalShow(false);
-		});
-	};
+		}
+
 
 	// start join auction handler
 	const joinAuctionHandler = OnGoingStatus => {

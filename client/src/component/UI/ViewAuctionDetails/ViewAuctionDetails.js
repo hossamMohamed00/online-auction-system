@@ -20,7 +20,7 @@ const ViewAuctionDetails = props => {
 		}
 
 	} , [props.AuctionData])
-
+	console.log(Data && Data)
 	const getAuctionDetails = (animate) => (
 			Data &&
 			Data.map((item, idx) => (

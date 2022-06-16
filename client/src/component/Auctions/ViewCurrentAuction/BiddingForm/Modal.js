@@ -9,7 +9,7 @@ import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
 const ModalUi = props => {
-	const [BidValue, setBidValue] = useState();
+	const [BidValue, setBidValue] = useState(props.MinimumBidAllowed && props.MinimumBidAllowed);
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 	const AmountRef = useRef();
@@ -235,10 +235,10 @@ const ModalUi = props => {
 											type="number"
 											className="form-control"
 											min={props.MinimumBidAllowed}
-											value={BidValue}
+											value={BidValue ? BidValue : props.MinimumBidAllowed }
 											onChange={BidValueValidation}
 											ref={AmountRef}
-											placeholder={props.MinimumBidAllowed}
+											// placeholder={props.MinimumBidAllowed}
 										/>
 										<span
 											className={` input-group-text ${classes['input-group-text']} `}

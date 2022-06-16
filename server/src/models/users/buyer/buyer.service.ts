@@ -170,7 +170,7 @@ export class BuyerService {
 		//* First populate incoming field field
 		await buyer.populate({
 			path: populateField,
-			populate: ['category', 'seller'],
+			populate: ['category', 'seller', 'item'],
 		});
 
 		let result;
