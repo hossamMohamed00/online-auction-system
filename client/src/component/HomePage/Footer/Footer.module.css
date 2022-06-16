@@ -68,6 +68,8 @@
 	padding: 10px 40px;
 	border-radius: 5px;
 	margin-left: 10px;
+	border-color: var(--main-color);
+
 }
 
 .SupportLink:hover {

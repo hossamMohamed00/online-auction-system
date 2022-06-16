@@ -20,6 +20,7 @@ function ForgetPassword({ forget, show, onHide }) {
 	const {
 		sendRequest: sendRequestForEmailConf,
 		status: statusForEmailConf,
+		data: dataForEmailConf,
 		error: errorForEmailConf,
 	} = useHttp(ResetPassword);
 	const {
@@ -49,6 +50,7 @@ function ForgetPassword({ forget, show, onHide }) {
 	// start sendConfirmation Api
 	useEffect(() => {
 		if (statusForEmailConf === 'completed' && forget) {
+			toast.success(dataForEmailConf.message)
 			setLoading(false);
 			setModalTitle('')
 			setModalBody(
