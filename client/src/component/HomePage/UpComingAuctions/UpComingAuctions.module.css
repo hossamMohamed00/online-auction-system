@@ -17,14 +17,12 @@
 	margin-left: 8%;
 }
 
-/* .itemImage{position: relative!important} */
+.itemImage{position: relative!important}
 .itemImage > img {
 	width: 100%;
-	/* margin-left: 30%; */
 	height: 350px;
 	border-bottom-left-radius: 15px;
 	border-top-left-radius: 15px;
-	/* position: relative; */
 }
 
 .upGoingAuctionData {
@@ -55,12 +53,14 @@
 
 .UpgoingAuctionBadge {
 	position: absolute;
-	top: 20px;
-	width: 20%;
-	left: -25px;
-	padding: 5px !important;
+	top: 0px;
+	width: 100%!important;
+	/* left: -25px; */
+	padding: 10px !important;
 	background-color: var(--main-color);
-	transform: rotate(-30deg);
+	opacity: 0.9;
+	border-top-left-radius: 10px;
+	/* transform: rotate(-30deg); */
 }
 
 .btnViewDetails {

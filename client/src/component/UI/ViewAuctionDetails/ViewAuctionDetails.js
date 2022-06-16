@@ -59,14 +59,15 @@ const ViewAuctionDetails = props => {
 								{' '}
 								{item['title']}{' '}
 							</Card.Title>
-							<Card.Text className="mt-2">
-								<div className="mt-3">
+							{/* <div className="mt-2"> */}
+								<Card.Text className="mt-3">
 									Description :
 									<span className="fs-6 fw-light text-light ps-2">
 										{item['item']['shortDescription']}
 									</span>
-								</div>
-								<div className="mt-3">
+								</Card.Text>
+
+								<Card.Text className="mt-3">
 									Creator :
 									<Link
 										className={`fs-6 fw-light text-decoration-none text-light ps-2`}
@@ -74,9 +75,9 @@ const ViewAuctionDetails = props => {
 									>
 										{item.seller.name}
 									</Link>
-								</div>
+								</Card.Text>
 								{(viewAllAuctionPage || homePage) && (
-									<div className="mt-3">
+									<Card.Text className="mt-3">
 										Category :
 										<Link
 											to={`/categories?id=${item.category &&
@@ -87,51 +88,51 @@ const ViewAuctionDetails = props => {
 												{item.category && item.category.name}
 											</span>
 										</Link>
-									</div>
+									</Card.Text>
 								)}
 								{(item.status === 'closed' || item.status === 'ongoing') && (
 									<div>
-										<div className="mt-3 text-light fw-bold">
+										<Card.Text className="mt-3 text-light fw-bold">
 											Num Of Bids :
 											<span className="fs-6 fw-light text-light ps-2">
 												{' '}
 												{item['numOfBids'] ? item['numOfBids'] : 0}
 											</span>
-										</div>
+										</Card.Text>
 
-										<div className="mt-3 text-light fw-bold">
+										<Card.Text className="mt-3 text-light fw-bold">
 											Last Bid :
 											<span className="fs-6 fw-light text-light ps-2">
 												{' '}
 												{item['currentBid'] ? item['currentBid'] : 0}{' '}
 											</span>
-										</div>
+										</Card.Text>
 
-										<div className="mt-3 text-alert fw-bold">
+										<Card.Text className="mt-3 text-alert fw-bold">
 											Winner Name :
 											<span className="fs-6 fw-bold text-alert ps-2"> {item['winningBuyer'] ? item['winningBuyer'].name : ' No Winner'} </span>
-										</div>
+										</Card.Text>
 									</div>
 								)}
 								{item.status === 'upcoming' && (
 									<div>
-										<div className="mt-3 text-light fw-bold">
+										<Card.Text className="mt-3 text-light fw-bold">
 											Chair Cost :
 											<span className="fs-6 fw-light text-light ps-2">
 												{' '}
 												{item['chairCost'] ? item['chairCost'] : 0}{' '}
 											</span>
-										</div>
-										<div className="mt-3 text-light fw-bold">
+										</Card.Text>
+										<Card.Text className="mt-3 text-light fw-bold">
 											Base Price :
 											<span className="fs-6 fw-light text-light ps-2">
 												{' '}
 												{item['basePrice'] ? item['basePrice'] : 0}{' '}
 											</span>
-										</div>
+										</Card.Text>
 									</div>
 								)}
-							</Card.Text>
+							{/* </div> */}
 
 							<Link
 								className={`${classes.CardFooter} btn col-6 bg-main `}

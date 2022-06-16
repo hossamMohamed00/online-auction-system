@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 
 const ViewJoinedAuctionsBuyer = () => {
-	const { sendRequest, status, data , error} = useHttp(getJoinedAuctions);
+	const { sendRequest, status, data} = useHttp(getJoinedAuctions);
 
 	const idToken = useSelector(store => store.AuthData.idToken);
 

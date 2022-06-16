@@ -10,10 +10,10 @@
 	color: white!important;
 	border: 0;
 	margin-bottom: 15px;
-}
-.SelectStyl select {
 	box-shadow: none!important;
+
 }
+
 .bntstyl {
 	margin-left: 66%;
 	width: 30%;
