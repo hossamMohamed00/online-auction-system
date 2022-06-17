@@ -65,7 +65,6 @@ const Step1 = props => {
 	// }, [status]);
 
 	const ValidateForm = () => {
-		console.log(roleValue)
 		if (
 			validateText(nameRef.current.value) &&
 			validateEmail(emailRef.current.value) &&

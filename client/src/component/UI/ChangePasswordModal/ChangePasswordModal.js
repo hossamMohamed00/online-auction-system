@@ -99,7 +99,6 @@ function ChangePassword({show, onHide }) {
 				const oldPassword = oldPasswordRef.current.value;
 				const newPassword = newPasswordRef.current.value;
 
-				console.log(idToken , oldPassword , newPassword)
 				sendRequestForChangeToNewPassword({
 					idToken ,
 					role,

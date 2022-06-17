@@ -30,7 +30,6 @@ export const getWalletTransactions = async idToken =>
 			},
 		});
 		const data = await response.json();
-		console.log(data)
 		if (!response.ok) {
 			throw new Error(data.message);
 		}
@@ -54,7 +53,7 @@ export const SaveAuctionApi = async ({ idToken, id }) => {
 
 export const viewSaveAuctionApi = async idToken => {
 	const response = await fetch(
-		`${url}/buyer/auctions?populateField=savedAuctions`,
+		`${url}/buyer/auctions?populateField=savedAuctions&&populate=true`,
 		{
 			method: 'GET',
 			headers: {

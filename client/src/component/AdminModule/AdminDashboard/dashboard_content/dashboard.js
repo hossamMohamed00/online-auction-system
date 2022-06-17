@@ -142,10 +142,13 @@ const DashboardContent = () => {
 		<>
 			<div className="mt-5 ">
 				{/* {loading && <LoadingSpinner />} */}
-				<PageHeader
-					text={`Welcome back ${dataForProfile && dataForProfile.name}`}
-					showLink={false}
-				/>
+				{dataForProfile &&
+					<PageHeader
+						text={`Welcome back ${dataForProfile && dataForProfile.name}`}
+						showLink={false}
+
+					/>
+				}
 			</div>
 
 			<div className="container_">

@@ -30,8 +30,6 @@ function AuctionFooter({
 
 	const [modalShow, setModalShow] = useState(false);
 	const [btnSavedValue, setBtnSavedValue] = useState('Save Auction');
-
-	const [auctionDenied, setAuctionDenied] = useState(false);
 	const [RetreatModalTitle, setRetreatModalTitle] = useState('');
 
 
@@ -132,21 +130,31 @@ function AuctionFooter({
 		});
 	};
 
-	const rejectHandler = rejectMassage => {
+	const rejectHandler = async (rejectMassage) => {
 		const rejectionMessage = { message: rejectMassage };
-		fetch(`${url}/admin/auction/reject/${AuctionId}`, {
+		const response = await fetch(`${url}/admin/auction/reject/${AuctionId}`, {
 			method: 'POST',
 			body: JSON.stringify(rejectionMessage),
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 				'content-type': 'application/json',
 			},
-		}).then(res => {
-			if (!res.ok) {
+		})
+			const data = await response.json()
+			if (!response.ok || data.success === false) {
+				toast.error(data.message)
 			}
+			else{
+				toast.success(data.message)
+				const timer = setTimeout(()=>{
+					window.location.reload()
+				},3000)
+				return ()=> clearTimeout(timer)
+			}
+
 			setModalShow(false);
-		});
-	};
+		}
+
 
 	// start join auction handler
 	const joinAuctionHandler = OnGoingStatus => {
@@ -194,11 +202,16 @@ function AuctionFooter({
 				if (modalShow) {
 					setModalShow(false);
 				}
-			}, [5000]);
+			}, [4000]);
 			return () => time.clearTimeOut();
 		});
 		setModalShow(false);
 		setRetreatModalTitle('');
+
+		const time = setTimeout(() => {
+			window.location.reload()
+		}, [4000]);
+		return () => time.clearTimeOut();
 	};
 
 	useEffect(() => {
@@ -238,12 +251,7 @@ function AuctionFooter({
 		}
 	}, [isJoined]);
 
-	useEffect(() => {
-		if (isJoined) {
-			showBids(Math.random());
-			setBidderJoin(Math.random());
-		}
-	}, [isJoined]);
+
 
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = value => {
@@ -361,11 +369,7 @@ function AuctionFooter({
 						<button
 							className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
 							type="button"
-							onClick={() => (
-								<>
-									{setModalShow(true)} {setAuctionDenied(true)}
-								</>
-							)}
+							onClick={() => setModalShow(true) }
 						>
 							Reject
 						</button>

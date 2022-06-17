@@ -14,7 +14,6 @@ const getAuctions = async url => {
 // closed
 
 export const getAllAuctions = async queryParams => {
-	console.log(`${url}${queryParams ? queryParams : '?'}populate=true`);
 	return getAuctions(`${url}${queryParams ? queryParams : '?'}populate=true`);
 };
 // export const getFilterAuction = async (queryParams) => getAuctions(`${url}${queryParams}populate=true`);
@@ -25,6 +24,8 @@ export const getOnGoingAuctions = async () =>
 	getAuctions(`${url}?status=ongoing&populate=true`);
 export const getSavedAuctions = async () =>
 	getAuctions(`${url}?status=saved&populate=true`);
+// export const getJoinedAuctions = async () =>
+// 	getAuctions(`${url}?status=joinedAuctions&populate=true`);
 // export const getClosedAuctions = async () => getAuctions(`${url}?status=closed&populate=true`)
 export const getSingleAuction = async auctionId =>
 	getAuctions(`${url}/${auctionId}?populate=true`);
@@ -82,7 +83,7 @@ export const UpdateAuctionHandler = async ({
 			body: formData,
 			headers: {
 				Authorization: `Bearer ${idToken}`,
-			
+
 			},
 		},
 	);

@@ -5,7 +5,6 @@ import AdminDashboard from '../../AdminModule/AdminDashboard/home/adminDashboard
 import UpdateAccountForUsers from './../../UI/UpdateAccount/UpdateAccount';
 
 const UpdateAccountForEmployee = () => {
-	console.log('UpdateAccountForEmployee');
 	return (
 		<>
 			<AdminDashboard>

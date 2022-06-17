@@ -333,7 +333,7 @@ const AddAuction = () => {
 								</div>
 							</div>
 
-							<button className={`btn btn-danger ${classes.bntstyl}`}>
+							<button className={`btn bg-danger text-light ${classes.bntstyl}`}>
 								Add Auction
 							</button>
 						</div>

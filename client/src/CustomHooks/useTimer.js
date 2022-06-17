@@ -19,14 +19,14 @@ const useTimer = futureDate => {
 	}, [futureDate]);
 
 	if (isTimeUp) {
-		return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+		return { days: 0, hours: 0, minutes: 0, seconds: 0 , isTimeUp};
 	}
 
 	let { days, hours, minutes, seconds } = intervalToDuration({
 		start: now,
 		end: futureDate,
 	});
-	return { days, hours, minutes, seconds };
+	return { days, hours, minutes, seconds , isTimeUp };
 };
 
 export default useTimer;

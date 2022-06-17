@@ -7,6 +7,7 @@ import NoData from '../../UI/NoData';
 import PageHeader from '../../UI/Page Header/pageHeader';
 
 import classes from './UpComingAuctions.module.css';
+import {ToastContainer} from 'react-toastify'
 
 const UpComingAuctions = () => {
 	const { sendRequest, status, data, error } = useHttp(getUpComingAuctions);
@@ -18,6 +19,7 @@ const UpComingAuctions = () => {
 	return (
 		<Fragment>
 			<div className={` ${classes.UpComingAuctions} container-fluid`}>
+				<ToastContainer theme="dark" />
 				<PageHeader text="UpComing Auctions" showLink={true} />
 				<div className={classes.UpComingAuctionsContent}>
 					{status === 'completed' && data.length > 0 && (
