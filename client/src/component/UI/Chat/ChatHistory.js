@@ -8,7 +8,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
-const ChatHistory = ({ chatWith, className, onShow }) => {
+const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageToChatHistory}) => {
 	const [activeChat, setActiveChat] = useState('');
 
 	const [chats, setChats] = useState([]);
@@ -20,9 +20,8 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 
 	const location = useLocation();
 	const chatWithEmail = new URLSearchParams(location.search).get('email');
-
 	useEffect(() => {
-		sendRequest(idToken);
+		sendRequest(idToken)
 	}, [sendRequest, chatWithEmail]);
 
 	useEffect(() => {
@@ -45,12 +44,13 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 				}
 			});
 		}
+
 	}, [status]);
 
 	const getChat = email => {
 		setActiveChat(email);
-		const EmailOfChat = chatWithEmail === 'Support@email.com';
-		chatWith(email, EmailOfChat);
+		const EmailOfChat = (chatWithEmail === 'Support@email.com') ? chatWithEmail : email;
+		chatWith(EmailOfChat);
 		onShow(false);
 	};
 
@@ -84,11 +84,14 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 
 	useEffect(() => {
 		if (chatWithEmail && checkIfNoChat.length === 0) {
+			noChatHistory(true)
 			getChat(chatWithEmail);
 			setActiveChat(chatWithEmail);
 		}
+		else if(checkIfNoChat.length !== 0) {
+			noChatHistory(false)
+		}
 	}, [getChat]);
-
 	const ChatHistoryContent = (
 		<>
 			{FilterChats(searchTerm).map((chat, index) => {
@@ -138,6 +141,9 @@ const ChatHistory = ({ chatWith, className, onShow }) => {
 				/>
 
 				{ChatHistoryContent}
+				{(chats.length===0 && !chatWithEmail) && <p className='text-danger fw-bold text-center'> No Chat History Now <span role="img" aria-label="no-chat"> 💔 </span> </p>}
+
+
 			</div>
 		</>
 	);

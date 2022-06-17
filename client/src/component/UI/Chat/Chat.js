@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import io from 'socket.io-client';
 
@@ -21,14 +21,27 @@ const Chat = props => {
 	const [ShowModal, setShowModal] = useState(true);
 
 	const [showChatHistory, setShowChatHistory] = useState(true);
+	const [noChatHistory , setNoChatHistory] = useState(false)
+	const [newMessageToChatHistory, setNewMessageToChatHistory] = useState('');
 
+	const [socket , setSocket] = useState(null)
 	const redirectUserToHomePage = useNavigate();
+	useEffect(()=>{
+		setSocket(
+			io('http://localhost:8000/chat', {
+			extraHeaders: {
+				authorization: `Bearer ${idToken}`
+			}})
+		)
+	},[chatWith,, newMessageToChatHistory])
 	// establish socket connection
-	const socket = io('http://localhost:8000/chat', {
-		extraHeaders: {
-			authorization: `Bearer ${idToken}`,
-		},
-	});
+	// const socket = io('http://localhost:8000/chat', {
+	// 	extraHeaders: {
+	// 		authorization: `Bearer ${idToken}`,
+	// 	},
+	// });
+
+
 
 	const getChatWith = email => {
 		setChatWith(email);
@@ -55,8 +68,12 @@ const Chat = props => {
 								} `}
 								onShow={ShowChatHistoryHandler}
 								getChatHistoryWith={props.SellerEmail && props.SellerEmail}
+								noChatHistory = {(value)=> setNoChatHistory(value)}
+								NewMessageToChatHistory = {newMessageToChatHistory}
+
 							/>
 						</Col>
+
 						<Col
 							lg={8}
 							md={6}
@@ -77,12 +94,16 @@ const Chat = props => {
 							<ChatContent
 								socket={socket}
 								getChatWithEmail={chatWith && chatWith}
+								noChatHistory = {noChatHistory}
+								newMessageToChatHistory = {(value) => setNewMessageToChatHistory(value)}
+
 								className={` ${
 									chatWith && !showChatHistory
 										? 'd-block d-xs-block'
 										: 'd-none d-md-block'
 								} `}
 							/>
+
 						</Col>
 					</Row>
 				</PageContent>
