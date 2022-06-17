@@ -1,8 +1,9 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ChatContentUi from './ChatContentUi';
 
-function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
+function ChatContent({ socket, getChatWithEmail, className , noChatHistory , newMessage}) {
 	const role = useSelector(store => store.AuthData.role);
 
 	const [Message, setMessage] = useState([]);
@@ -29,6 +30,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 					receiverEmail: Email,
 				});
 			}
+
 		}
 	};
 
@@ -59,12 +61,14 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 		// start get all chats to [seller or buyer]
 		if(socket) {
 
-		socket.on('new-message-to-client', data => {
-			setMessage(prevState =>
-			prevState && prevState.length > 0 ? [...prevState, data] : [data],
-		);
+			if(role !== 'employee'){
+				socket.on('new-message-to-client', data => {
+					setMessage(prevState =>
+					prevState && prevState.length > 0 ? [...prevState, data] : [data],
+				);
+				});
+			}
 
-		});
 		// get all chat history
 		socket.on('chat-history-to-client', data => {
 			setMessage(data && [...data]);
@@ -72,7 +76,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 
 	}
 
-	}, [socket , role]);
+	}, [socket]);
 
 	useEffect(()=>{
 		if(socket) {
@@ -80,6 +84,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 		if(role === 'buyer' || role === 'seller'){
 			socket.on('new-message-to-Employee', data => {
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
+
 			});
 			socket.on('new-message-From-Employee', data => {
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
@@ -101,6 +106,12 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 	},[socket , role])
 
 
+	useEffect(()=>{
+		if(Message && Message.length > 0){
+			newMessage({email : Message[Message.length - 1].senderEmail , lastMessage : Message[Message.length - 1].message , lastMessageTime : moment(Message[Message.length - 1].sentAt).format('LT')})
+		}
+	}, [Message])
+
 	return (
 		<>
 		{((getChatWithEmail && Message) || noChatHistory ) ?
@@ -111,7 +122,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 				getChatWithEmail={getChatWithEmail}
 				noChatHistory = {noChatHistory}
 			/>
-			: <h5 className='text-danger fw-bold text-center'> No Messages Now <span role="img" aria-label="no-chat"> 💔 </span> </h5>
+			: <h5 className='text-danger fw-bold text-center'> Start Chat Now From Chat History <span role="img" aria-label="no-chat"> 💬👈 </span> </h5>
 		}
 	</>
 	);
