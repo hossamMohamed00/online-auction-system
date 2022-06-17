@@ -234,11 +234,11 @@ input:disabled {
 			margin: 20px 5px ;
 			float: right;
 		}
-		.update_btn {
+		.update_btn , .save_rate_btn {
 			top: 74%!important;
 			left: 65%!important;
 		}
-		.save_rate_btn {
+		.delete_review {
 			left: 90%!important;
 			top: 76%!important;
 		}

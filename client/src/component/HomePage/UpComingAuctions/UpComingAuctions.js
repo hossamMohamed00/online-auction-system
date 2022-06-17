@@ -20,7 +20,7 @@ const UpComingAuctions = () => {
 		<Fragment>
 			<div className={` ${classes.UpComingAuctions} container-fluid`}>
 				<ToastContainer theme="dark" />
-				<PageHeader text="UpComing Auctions" showLink={true} />
+				<PageHeader text="UpComing Auctions" showLink={true} filterText='upcoming' />
 				<div className={classes.UpComingAuctionsContent}>
 					{status === 'completed' && data.length > 0 && (
 						<UpComingCarousel UogoingAuctionData={data} />
