@@ -164,14 +164,17 @@ export class BuyerService {
 	 * @returns List all joined auctions
 	 */
 	async listBidderJoinedAuctions(
-		buyer: BuyerDocument,
-		{ populateField }: ListBidderAuctionsQueryDto,
+		buyerId: string,
+		populateField: BidderAuctionsEnumQuery,
 	): Promise<any> {
-		//* First populate incoming field field
-		await buyer.populate({
+		const buyer = await this.buyerModel.findById(buyerId).populate({
 			path: populateField,
-			populate: ['category', 'seller', 'item'],
+			populate: ['category', 'seller', 'item', 'winningBuyer'],
 		});
+
+		if (!buyer) {
+			throw new BadRequestException('No Bidder With That Id ❌');
+		}
 
 		let result;
 		if (populateField == BidderAuctionsEnumQuery.JoinedAuction) {

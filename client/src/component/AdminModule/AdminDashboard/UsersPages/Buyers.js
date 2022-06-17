@@ -44,18 +44,42 @@ const UsersPage = () => {
 			sortable: true,
 		},
 		{
+			name: 'Image',
+			// selector: row => row.image,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						<img
+							src={props.image.url}
+							className="rounded-3"
+							style={{ width: '75px' }}
+							alt="Buyer Image"
+						></img>
+					</div>
+				);
+			},
+		},
+
+		{
 			name: 'E-mail',
 			selector: row => row.email,
+			sortable: true,
 		},
 		{
-			name: 'Role',
-			selector: row => row.role,
+			name: 'Phone',
+			selector: row => row.phoneNumber,
+			sortable: true,
+		},
+		{
+			name: 'National ID',
+			selector: row => row.nationalID,
+			sortable: true,
 		},
 		{
 			name: 'Actions',
 			selector: row => row.action,
 			cell: props => {
-				console.log(props)
 				return (
 					<div className="text-info btn-actions">
 						<button
@@ -159,7 +183,6 @@ const UsersPage = () => {
 					<PageHeader text="Buyers" showLink={false} />
 					{data && (
 						<DataTable
-							selectableRows
 							columns={columns}
 							data={filteredItems}
 							subHeader
@@ -197,7 +220,7 @@ const UsersPage = () => {
 				{/* start Block modal */}
 				{isShownJoinAuctions && (
 					<JoinedAuctionModal
-						id={userId}
+						buyerId={userId}
 						show={isShownJoinAuctions}
 						onHide={() => setIsShownJoinAuctions(false)}
 					/>

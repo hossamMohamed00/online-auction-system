@@ -79,17 +79,17 @@ export class BuyerController
 	}
 
 	/* Handle Auctions Functions */
-	@Roles(Role.Buyer)
+	@Roles(Role.Buyer, Role.Admin, Role.Employee)
 	@Get('auctions')
 	@Serialize(BuyerDto)
 	listBidderAuctions(
-		@Query() listBidderAuctionsQueryDto: ListBidderAuctionsQueryDto,
-		@GetCurrentUserData()
-		buyer: BuyerDocument,
+		@Query() { buyerId, populateField }: ListBidderAuctionsQueryDto,
 	): Promise<any> {
+		console.log({ buyerId });
+
 		return this.buyerService.listBidderJoinedAuctions(
-			buyer,
-			listBidderAuctionsQueryDto,
+			buyerId.toString(),
+			populateField,
 		);
 	}
 

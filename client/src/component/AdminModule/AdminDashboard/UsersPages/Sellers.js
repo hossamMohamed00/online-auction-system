@@ -19,12 +19,31 @@ const UsersPage = () => {
 			sortable: true,
 		},
 		{
+			name: 'Image',
+			cell: props => {
+				return (
+					<div>
+						<img
+							src={props.image.url}
+							className="rounded-3"
+							style={{ width: '75px' }}
+							alt="Seller Image"
+						></img>
+					</div>
+				);
+			},
+		},
+		{
 			name: 'E-mail',
 			selector: row => row.email,
 		},
 		{
-			name: 'Role',
-			selector: row => row.role,
+			name: 'Phone',
+			selector: row => row.phoneNumber,
+		},
+		{
+			name: 'National ID',
+			selector: row => row.nationalID,
 		},
 		{
 			name: 'Actions',

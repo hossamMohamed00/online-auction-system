@@ -26,4 +26,19 @@ export class UserDto {
 
 	@Expose()
 	address: String;
+
+	@Expose()
+	nationalID: Number;
+
+	@Expose()
+	isBlocked: boolean;
+
+	@Expose()
+	blockReason: string;
+
+	@Expose()
+	isWarned: boolean;
+
+	@Expose()
+	warningMessage: string;
 }
