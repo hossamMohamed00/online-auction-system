@@ -17,11 +17,15 @@ import {
 import { ComplaintModal } from './ComplaintsModal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLocation } from 'react-router-dom';
 
 // start component
 
 const AllCompliments = () => {
 	const url = 'http://localhost:8000';
+	const location = useLocation()
+	const param = new URLSearchParams(location.search).get('notRead');
+	console.log(param)
 
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
@@ -34,7 +38,7 @@ const AllCompliments = () => {
 	useEffect(() => {
 		sendRequest({
 			idToken: idToken,
-			path: 'complaints',
+			path: !param ? 'complaints' : 'complaints?markedAsRead=false',
 		});
 	}, [sendRequest, reload]);
 	const [complaints, setComplaints] = useState([]);

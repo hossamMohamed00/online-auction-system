@@ -63,9 +63,9 @@ const Reviews = props => {
 						);
 					})
 				) : (
-					<div className="mb-0">
-						<NoData text=" No reviews yet " />
-					</div>
+					<h2 className="text-danger text-center mt-4 fw-bold ">
+					No Reviews Right Now
+					</h2>
 				)}
 			</div>
 		</>
