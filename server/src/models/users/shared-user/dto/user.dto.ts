@@ -25,6 +25,12 @@ export class UserDto {
 	phoneNumber: Number;
 
 	@Expose()
+	isPhoneNumberConfirmed: boolean;
+
+	@Expose()
+	isEmailConfirmed: boolean;
+
+	@Expose()
 	address: String;
 
 	@Expose()
