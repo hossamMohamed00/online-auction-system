@@ -45,7 +45,9 @@ const ViewCurrentAuction = React.memo(() => {
 
 	// establish socket connection
 	useEffect(() => {
+		console.log(BidderIsJoined)
 		if (BidderIsJoined && accessToken) {
+			console.log("initial socket")
 			setSocket(
 				io('http://localhost:8000/auction/bidding', {
 					extraHeaders: {
@@ -54,7 +56,7 @@ const ViewCurrentAuction = React.memo(() => {
 				}),
 			);
 		}
-	}, [BidderIsJoined, accessToken]);
+	}, [BidderIsJoined]);
 
 	useEffect(() => {
 		if (!!socket && BidderIsJoined && isLoggedIn) {
@@ -86,12 +88,12 @@ const ViewCurrentAuction = React.memo(() => {
 				} else {
 					setBidderMessage(data.message);
 				}
-
-				const timer = setTimeout(() => {
-					localStorage.removeItem('BidderIsJoined');
-					window.location.reload();
-				}, [3000]);
-				return () => clearTimeout(timer);
+				localStorage.removeItem('BidderIsJoined');
+				// const timer = setTimeout(() => {
+				// 	localStorage.removeItem('BidderIsJoined');
+				// 	window.location.reload();
+				// }, [3000]);
+				// return () => clearTimeout(timer);
 			});
 		}
 	}, [!!socket]);

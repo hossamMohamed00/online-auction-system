@@ -39,12 +39,14 @@ const ModalUi = props => {
 	} = useHttp(SaveAuctionApi);
 
 	const btnSavedHandler = () => {
+		props.loading(true)
 		const id = props.SavedAuctionId;
 		sendRequestForSaveAuction({ idToken, id });
 	};
 
 	useEffect(() => {
 		if (statusForSaveAuction === 'completed') {
+			props.loading(false)
 			toast.success(dataForSaveAuction.message);
 			props.btnSaved('Saved');
 			props.onHide();
@@ -53,6 +55,7 @@ const ModalUi = props => {
 
 	useEffect(() => {
 		if (statusForSaveAuction === 'error') {
+			props.loading(false)
 			toast.error(errorForSaveAuction);
 			props.btnSaved('Save Auction');
 			props.onHide();
@@ -72,6 +75,7 @@ const ModalUi = props => {
 
 	// start btnExtendAuctionHandler in seller
 	const btnExtendAuctionHandler = () => {
+		props.loading(true)
 		const AuctionId = props.btnExtendAuction;
 		const ExtendData = {
 			days: ExtendDay ? parseInt(ExtendDay) : 0,
@@ -83,11 +87,14 @@ const ModalUi = props => {
 
 	useEffect(() => {
 		if (statusForExtendAuction === 'completed') {
+			props.loading(false)
+
 			toast.success(
 				'Time extension request sent and now waiting for approval ✔✔',
 			);
 			props.onHide();
 		} else if (statusForExtendAuction === 'error') {
+			props.loading(false)
 			toast.error(errorForExtendAuction);
 			props.onHide();
 		}
