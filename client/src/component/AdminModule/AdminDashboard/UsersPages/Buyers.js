@@ -55,7 +55,6 @@ const UsersPage = () => {
 			name: 'Actions',
 			selector: row => row.action,
 			cell: props => {
-				console.log(props)
 				return (
 					<div className="text-info btn-actions">
 						<button
@@ -197,7 +196,7 @@ const UsersPage = () => {
 				{/* start Block modal */}
 				{isShownJoinAuctions && (
 					<JoinedAuctionModal
-						id={userId}
+						id={userId && userId}
 						show={isShownJoinAuctions}
 						onHide={() => setIsShownJoinAuctions(false)}
 					/>

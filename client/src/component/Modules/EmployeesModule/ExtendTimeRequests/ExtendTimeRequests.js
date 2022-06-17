@@ -116,8 +116,13 @@ const ExtendTimeRequests = () => {
 	useEffect(() => {
 		if (!errorForApprove && statusForApprove === 'completed') {
 			toast.success('Extend time request approved successfully');
-		} else {
-			toast.error('failed to approve extend time request');
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			} , 3000)
+			return () => clearTimeout(timer)
+		}
+		else if(statusForApprove === 'error') {
+			toast.error(errorForApprove);
 		}
 		setIsShownRejectModal(false);
 	}, [statusForApprove]);
@@ -125,8 +130,14 @@ const ExtendTimeRequests = () => {
 	useEffect(() => {
 		if (!error && statusForReject === 'completed') {
 			toast.success('Extend time request rejected successfully');
-		} else {
-			toast.error('failed to reject extend time request');
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			} , 3000)
+			return () => clearTimeout(timer)
+		}
+		else if(statusForApprove === 'error') {
+			toast.error(errorForApprove);
+
 		}
 		setIsShownRejectModal(false);
 	}, [statusForReject, reload]);
