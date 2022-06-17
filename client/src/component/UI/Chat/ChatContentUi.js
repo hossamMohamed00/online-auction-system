@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import moment from 'moment';
 
-function ChatContentUi({ Message, sendMessage, className, getChatWithEmail }) {
+function ChatContentUi({ Message, sendMessage, className, getChatWithEmail , noChatHistory}) {
 	const email = useSelector(store => store.AuthData.email);
 	const [MessageValue, setMessageValue] = useState('');
 	let isShownEmailAddress = true
@@ -33,7 +33,12 @@ function ChatContentUi({ Message, sendMessage, className, getChatWithEmail }) {
 				>
 					<FontAwesomeIcon
 						icon={faPaperPlane}
-						onClick={() => sendMessage(MessageValue, getChatWithEmail)}
+						onClick={() => (	<>
+
+							{sendMessage(MessageValue, getChatWithEmail)}
+							{noChatHistory && window.location.reload()}
+							</>
+						)}
 					/>
 				</button>
 			</>

@@ -220,7 +220,7 @@ const UsersPage = () => {
 				{/* start Block modal */}
 				{isShownJoinAuctions && (
 					<JoinedAuctionModal
-						buyerId={userId}
+						buyerId={userId && userId}
 						show={isShownJoinAuctions}
 						onHide={() => setIsShownJoinAuctions(false)}
 					/>
