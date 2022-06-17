@@ -282,13 +282,14 @@ function AuctionFooter({
 			setLoading(false)
 			setIsExistErrorWhenJoinAuction(data.message);
 			setModalShow(true);
-			// const time = setTimeout(() => {
-			// 	setIsExistErrorWhenJoinAuction('');
-			// 	if (modalShow) {
-			// 		setModalShow(false);
-			// 	}
-			// }, [3000]);
-			// return () => time.clearTimeOut();
+			const time = setTimeout(() => {
+				setIsExistErrorWhenJoinAuction('');
+				if (modalShow) {
+					window.location.reload()
+					setModalShow(false);
+				}
+			}, [3000]);
+			return () => clearTimeout(time)
 		});
 
 
