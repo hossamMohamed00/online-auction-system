@@ -14,9 +14,7 @@ export default function AddEmployee() {
 	const nameRef = useRef();
 	const passwordRef = useRef();
 	const emailRef = useRef();
-	// const [successMessage, setMessage] = useState('');
-	// const [failedMessage, setFailedMessage] = useState('');
-	let successMessage , failedMessage
+	let successMessage, failedMessage;
 	const idToken = useSelector(store => store.AuthData.idToken);
 
 	const validateEmail = value => value.trim().includes('@');
@@ -72,10 +70,10 @@ export default function AddEmployee() {
 								</label>
 								<Input
 									type="name"
-									placeholder="type your name"
+									placeholder="Type employee name..."
 									validateText={validateName}
 									ref={nameRef}
-									errorMassage="please enter your name"
+									errorMassage="Please enter employee name"
 									inputValue=""
 									id="name"
 								/>
@@ -87,11 +85,11 @@ export default function AddEmployee() {
 								</label>
 								<Input
 									type="password"
-									placeholder="type your Password"
+									placeholder="Type employee new password..."
 									validateText={validatePassword}
 									ref={passwordRef}
 									id="password"
-									errorMassage="please enter your password"
+									errorMassage="Please enter employee new password..."
 								/>
 							</div>
 						</div>
@@ -103,10 +101,10 @@ export default function AddEmployee() {
 								</label>
 								<Input
 									type="E-mail"
-									placeholder="type your email"
+									placeholder="Type employee email..."
 									validateText={validateEmail}
 									ref={emailRef}
-									errorMassage="please enter your email"
+									errorMassage="Please enter employee email"
 									inputValue=""
 									id="email"
 								/>
