@@ -104,8 +104,8 @@
 }
 .btn_chat {
 	left: 73%;
-	top: 125%;
-	width: 15%;
+	top: 130%;
+	width: 20%;
 	border-radius: 25px;
 	-webkit-border-radius: 25px;
 	-moz-border-radius: 25px;
@@ -114,8 +114,8 @@
 }
 .btn_compliment {
 	left: 73%;
-	top: 109%;
-	width: 15%;
+	top: 115%;
+	width: 20%;
 	border-radius: 25px;
 	-webkit-border-radius: 25px;
 	-moz-border-radius: 25px;
@@ -180,29 +180,31 @@
 		margin-top: 10px;
 	}
 	.numOfReviewers {
-		top: 61%;
-		left: 19px;
+		top: 100%;
+		left: 20px;
 		display: block !important;
-		margin-bottom: 15px!important;
+		margin-bottom: 10px!important;
 	}
 	.profile .profile_bar {
 		width: 80%;
-    margin-left: -12px !important;
-    margin-top: 30px;
+    /* margin-left: -12px !important; */
+    margin-top: 12px;
 	}
 	.profile_card > div {
 		width: 100% !important;
 	}
 }
 
-@media screen and (min-width: 567px) and (max-width: 768px) {
+/* @media screen and (min-width: 567px) and (max-width: 768px) {
 	.profile {
 		margin-bottom: 50px !important;
+		position: relative;
+
 	}
 	.profile img {
 		width: 90px !important;
 		height: 90px !important;
-		top: 221px;
+		top: -80px!important;
 		left: 4px;
 	}
 	.profile p,
@@ -217,18 +219,68 @@
 		left: 59.5% !important;
 		margin-top: 5% !important;
 	}
-}
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+
+} */
+
+@media screen and (min-width: 567px) and (max-width: 992px) {
+	.profile{
+		position: relative;
+		padding-bottom: 50px!important;
+	}
+	.profile img {
+		top: 0px!important;
+		left: 0px!important;
+		position: relative!important;
+		margin-top: -80px!important;
+	}
+	.chart-bar {
+		display: inline-block!important;
+		width: 50%!important;
+	}
 	.profile .bar {
-		left: 61.5% !important;
-		margin-top: 2.2% !important;
+		position: relative!important;
+		left: 30% !important;
+		margin-top: 4% !important;
+	}
+	.profile .profile_bar {
+		position: relative;
+		right:0;
+		width: 30%;
+		left: 60%;
 	}
 	.profile p,
 	.profile h5 {
 		left: 30% !important;
+		top: 20%;
+	}
+	.profile p{
+		top: 50%!important;
 	}
 	.numOfReviewers {
-		left: 61.5% !important;
-    margin-top: 1% !important;	}
+		left: 65.5% !important;
+    margin-top: -7% !important
+	}
+}
+
+
+@media  screen and (min-width : 1500px) {
+
+	.profile h5,
+	.profile p {
+		left: 20%!important;
+		font-size: 40px;
+	}
+	.profile .bar {
+    position: absolute;
+    font-size: 25px !important;
+    margin-top: 0.5%;
+		left: 62.5% !important;
+	}
+	.profile p { font-size: 30px!important; top: 110% !important;}
+	.numOfReviewers {
+    font-size: 20px !important;
+		left: 62.5% !important;
+    top: 109%;
+	}
 }

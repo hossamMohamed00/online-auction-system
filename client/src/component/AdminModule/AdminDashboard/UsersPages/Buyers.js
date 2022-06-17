@@ -55,6 +55,7 @@ const UsersPage = () => {
 			name: 'Actions',
 			selector: row => row.action,
 			cell: props => {
+				console.log(props)
 				return (
 					<div className="text-info btn-actions">
 						<button

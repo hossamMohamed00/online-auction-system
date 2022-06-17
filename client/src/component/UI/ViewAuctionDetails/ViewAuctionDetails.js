@@ -32,7 +32,7 @@ const ViewAuctionDetails = props => {
 						<Card.Img
 							className="position-relative"
 							variant="top"
-							src={item.item.images && item.item.images[0].url}
+							src={item.item.images && item.item.images[0] && item.item.images[0].url}
 						/>
 						<div
 							className={`${classes.CardItemCategory} ${
