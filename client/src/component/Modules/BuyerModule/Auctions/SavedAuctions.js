@@ -11,14 +11,27 @@ import BuyerDashboardContent from '../BuyerDashboard';
 
 import classes from './SavedAuction.module.css';
 import { useSelector } from 'react-redux';
+import { getProfileData } from '../../../../Api/Admin';
 
 const SavedAuctions = () => {
-	const { sendRequest, status, data, error } = useHttp(viewSaveAuctionApi);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const { sendRequest, status, data, error } = useHttp(viewSaveAuctionApi);
+	const {
+		data: dataForProfile,
+		sendRequest: sendRequestForProfile,
+		status: statusForProfile,
+		error: errorForProfile,
+	} = useHttp(getProfileData);
+	useEffect(() => {
+		sendRequestForProfile(idToken);
+	}, [sendRequestForProfile]);
 
 	useEffect(() => {
-		sendRequest(idToken);
-	}, [sendRequest]);
+		const buyerId = dataForProfile && dataForProfile._id;
+		if (statusForProfile === 'completed') {
+			sendRequest({ idToken, buyerId: buyerId && buyerId });
+		}
+	}, [sendRequest, statusForProfile]);
 
 	return (
 		<BuyerDashboardContent>

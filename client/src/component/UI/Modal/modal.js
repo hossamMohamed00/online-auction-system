@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import './modal.css';
 
 const ModalUi = props => {
+	console.log(props.body);
 	const btnHandler = () => {
 		if (props.Id) {
 			props.btnHandler(props.Id);

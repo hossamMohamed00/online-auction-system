@@ -200,7 +200,7 @@ export class ReviewService {
 		]);
 
 		//* At default rate and check if there is reviews to update the rate or not
-		let rate: any = 2.5;
+		let rate: any = 3;
 
 		if (reviewsAverage.length !== 0) {
 			//* Extract the rate from the array returned

@@ -5,7 +5,7 @@ export type CategoryDocument = Category & Document;
 
 @Schema()
 export class Category {
-	@Prop({ required: true, trim: true, lowercase: true, unique: true })
+	@Prop({ required: true, trim: true, uppercase: true, unique: true })
 	name: string;
 }
 

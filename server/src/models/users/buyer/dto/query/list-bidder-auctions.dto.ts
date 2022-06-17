@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsMongoId, IsString } from 'class-validator';
 import { BidderAuctionsEnumQuery } from '../../enums';
 
 export class ListBidderAuctionsQueryDto {
@@ -7,4 +7,8 @@ export class ListBidderAuctionsQueryDto {
 	})
 	@IsNotEmpty()
 	populateField: BidderAuctionsEnumQuery;
+
+	@IsString()
+	@IsNotEmpty()
+	buyerId: string;
 }

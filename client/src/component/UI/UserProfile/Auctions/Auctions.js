@@ -2,12 +2,12 @@ import React from 'react';
 import NoData from '../../NoData';
 import ViewAuctionDetails from '../../ViewAuctionDetails/ViewAuctionDetails';
 import '../profile.css';
-
+import '../Reviews/reviews.css';
 const Auctions = props => {
 	return (
 		<section className="profile_content">
 			<div className="profile_table ">
-				<h2 className="text-light mt-4 mb-0 py-5 text-center fw-bold">
+				<h2 className="text-light text-center mt-4 fw-bold reviews_list ">
 					Seller Auctions
 				</h2>
 				<div className="mb-0">
@@ -15,9 +15,9 @@ const Auctions = props => {
 					{props.auctionsData.length !== 0 ? (
 						<ViewAuctionDetails AuctionData={props.auctionsData} lg={4} />
 					) : (
-						<div className="mb-0">
-							<NoData text=" No Auctions yet " />
-						</div>
+						<h2 className="text-danger text-center mt-4 fw-bold  ">
+							No Auctions Right Now
+						</h2>
 					)}
 				</div>
 			</div>

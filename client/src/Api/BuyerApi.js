@@ -20,21 +20,23 @@ export const getWalletBalance = async idToken =>
 export const getWalletTransactions = async idToken =>
 	getAPI(`${url}/wallet/transactions`, idToken);
 
-
-	export const getJoinedAuctions = async (idToken) => {
-		const response = await fetch(`${url}/buyer/auctions?populateField=joinedAuctions`, {
+export const getJoinedAuctions = async ({ idToken, buyerId }) => {
+	const response = await fetch(
+		`${url}/buyer/auctions?populateField=joinedAuctions&buyerId=${buyerId}`,
+		{
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${idToken}`,
 				'Content-Type': 'application/json',
 			},
-		});
-		const data = await response.json();
-		if (!response.ok) {
-			throw new Error(data.message);
-		}
-		return data;
-	};
+		},
+	);
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(data.message);
+	}
+	return data;
+};
 
 export const SaveAuctionApi = async ({ idToken, id }) => {
 	const response = await fetch(`${url}/buyer/auction/save/${id}`, {
@@ -51,9 +53,11 @@ export const SaveAuctionApi = async ({ idToken, id }) => {
 	return data;
 };
 
-export const viewSaveAuctionApi = async idToken => {
+export const viewSaveAuctionApi = async ({ idToken, buyerId }) => {
+	console.log({ idToken });
+	console.log({ buyerId });
 	const response = await fetch(
-		`${url}/buyer/auctions?populateField=savedAuctions&&populate=true`,
+		`${url}/buyer/auctions?populateField=savedAuctions&buyerId=${buyerId}`,
 		{
 			method: 'GET',
 			headers: {

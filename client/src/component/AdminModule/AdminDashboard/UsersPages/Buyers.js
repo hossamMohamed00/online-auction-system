@@ -42,14 +42,64 @@ const UsersPage = () => {
 			name: 'Name',
 			selector: row => row.name,
 			sortable: true,
+			cell: props => {
+				return (
+					<div>
+						{props.image ? (
+							<img
+								src={props.image && props.image.url}
+								className="rounded-circle d-inline-block "
+								style={{ width: '45px', height: '45px', marginRight: '10px' }}
+								// alt="Buyer Image"
+							></img>
+						) : (
+							<p className="text-danger">No img</p>
+						)}
+
+						<span className="text-light">{props.name}</span>
+					</div>
+				);
+			},
 		},
+
 		{
 			name: 'E-mail',
 			selector: row => row.email,
+			sortable: true,
 		},
 		{
-			name: 'Role',
-			selector: row => row.role,
+			name: 'Phone',
+			selector: row => row.phoneNumber,
+			sortable: true,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.phoneNumber ? (
+							<span className="text-light">{props.phoneNumber}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
+		},
+		{
+			name: 'National ID',
+			selector: row => row.nationalID,
+			sortable: true,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.nationalID ? (
+							<span className="text-light">{props.nationalID}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			name: 'Actions',
@@ -158,7 +208,6 @@ const UsersPage = () => {
 					<PageHeader text="Buyers" showLink={false} />
 					{data && (
 						<DataTable
-							selectableRows
 							columns={columns}
 							data={filteredItems}
 							subHeader
@@ -196,7 +245,7 @@ const UsersPage = () => {
 				{/* start Block modal */}
 				{isShownJoinAuctions && (
 					<JoinedAuctionModal
-						id={userId && userId}
+						buyerId={userId && userId}
 						show={isShownJoinAuctions}
 						onHide={() => setIsShownJoinAuctions(false)}
 					/>

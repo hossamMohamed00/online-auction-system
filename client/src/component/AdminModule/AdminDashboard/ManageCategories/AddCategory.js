@@ -61,7 +61,7 @@ const AddCategory = props => {
 							<input
 								type="text"
 								id="add"
-								placeholder="type category name here ..."
+								placeholder="Type unique category name here ..."
 								ref={nameRef}
 								className={`form-control ${classes.addInput}`}
 							/>

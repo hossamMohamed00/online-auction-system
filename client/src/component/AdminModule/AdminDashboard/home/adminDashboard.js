@@ -101,7 +101,7 @@ const AdminDashboard = props => {
 
 	return (
 		<DashboardLayout
-			profile={{ name: 'profile', list: dropdownListProfile }}
+			profile={{ name: 'Manage Profile', list: dropdownListProfile }}
 			admin={{ name: email ? email : 'user' }}
 			Employees={{ name: 'Manage Employees  ', list: dropdownListForEmployees }}
 			users={{ name: 'Manage Users  ', list: dropdownListManageUsers }}
@@ -123,7 +123,7 @@ const AdminDashboard = props => {
 				list: dropdownListForComplaints,
 			}}
 			complaintsInSystem={{
-				name: 'Manage complaints in system',
+				name: 'Manage Complaints in System',
 				list: dropdownListForComplaintsInSystem,
 			}}
 			inquiries={{

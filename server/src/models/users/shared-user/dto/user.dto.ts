@@ -25,5 +25,26 @@ export class UserDto {
 	phoneNumber: Number;
 
 	@Expose()
+	isPhoneNumberConfirmed: boolean;
+
+	@Expose()
+	isEmailConfirmed: boolean;
+
+	@Expose()
 	address: String;
+
+	@Expose()
+	nationalID: Number;
+
+	@Expose()
+	isBlocked: boolean;
+
+	@Expose()
+	blockReason: string;
+
+	@Expose()
+	isWarned: boolean;
+
+	@Expose()
+	warningMessage: string;
 }
