@@ -45,7 +45,7 @@ const ViewAuctionDetails = props => {
 						</div>
 						<div className={classes.Timer}>
 							{(item.status && item.status !== 'closed') ?
-								( item.status==='upcoming' ? <CountDownTimer AuctionDate = {new Date(item.startDate)} /> : <CountDownTimer AuctionDate = {new Date(item.endDate)} /> )
+								( item.status==='upcoming' ? <CountDownTimer AuctionDate = {new Date(item.startDate)} status={item.status} /> : <CountDownTimer AuctionDate = {new Date(item.endDate)}  status={item.status}/> )
 							 : (
 								<div className='mt-4'>
 								</div>

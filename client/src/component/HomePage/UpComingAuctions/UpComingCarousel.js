@@ -67,7 +67,7 @@ const UpComingCarousel = ({ UogoingAuctionData: ongoingAuctionData }) => {
 								<div className="d-inline-block px-0">
 									{' '}
 									{/* {CountDownTimer(new Date(Item.startDate))} */}
-									<CountDownTimer AuctionDate = {new Date(Item.startDate)} />
+									<CountDownTimer status= 'upcoming' AuctionDate = {new Date(Item.startDate)}  />
 								</div>
 							</div>
 						</div>

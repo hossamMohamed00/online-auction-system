@@ -5,13 +5,20 @@ import useTimer from '../../../CustomHooks/useTimer';
 
 import classes from './CountDownTimer.module.css';
 
-const CountDownTimer = ({AuctionDate}) => {
+const CountDownTimer = ({AuctionDate , status}) => {
 	const getDate = useCallback((AuctionDate) => {
 		const timer = useTimer(new Date(AuctionDate));
-		let timeOut
-		if(timer.isTimeUp ){
+		let timeOut , timeOut2
+		if(timer.isTimeUp && status === 'upcoming' ){
 			toast.success(`Auction Will Be UpGoing Now, If You Ready For Bidding , Join Now ❤️‍🔥`)
 			timeOut = setTimeout(()=>{
+				window.location.reload()
+
+			},3000)
+		}
+		if(timer.isTimeUp && status === 'ongoing' ){
+			toast.success(`Auction will Be Closed Now 💔🙃`)
+			timeOut2 = setTimeout(()=>{
 				window.location.reload()
 
 			},3000)
@@ -24,7 +31,9 @@ const CountDownTimer = ({AuctionDate}) => {
 				<span> {timer.hours} h</span>
 				<span> {timer.minutes} m</span>
 				<span> {timer.seconds} s</span>
-				{timer.isTimeUp && (() => clearTimeout(timeOut)) }
+				{(timer.isTimeUp && status === 'upcoming' ) && (() => clearTimeout(timeOut)) }
+				{(timer.isTimeUp && status === 'ongoing' ) && (() => clearTimeout(timeOut2)) }
+
 
 			</>
 
