@@ -92,20 +92,20 @@ const PageProfile = () => {
 					{/* address */}
 					<div className='col-md-6 col-xs-12  mb-4'>
 						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Address : </h4>
-						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.address} </h6>
+						<h6 className='text-secondary d-inline-block fw-bold '> {(UserData && UserData.address) ?  UserData.address : 'Not Selected' } </h6>
 
 					</div>
 
 					{/* phone number */}
 					<div className='col-md-6 col-xs-12  mb-4'>
 						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Phone : </h4>
-						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.phoneNumber} </h6>
+						<h6 className='text-secondary d-inline-block fw-bold '> {(UserData && UserData.phoneNumber) ?  UserData.phoneNumber : 'Not Selected'} </h6>
 
 					</div>
 
 				</div>
 
-				{/* check if user is warned */}
+				{/* check if user is warned */}	
 				{isWarned && isWarnedMessage &&
 					<div className='WarningModal'>
 						<span className='text-warning fw-bold  d-inline-block'>
