@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ChatContentUi from './ChatContentUi';
 
-function ChatContent({ socket, getChatWithEmail, className , noChatHistory , newMessageToChatHistory}) {
+function ChatContent({ socket, getChatWithEmail, className , noChatHistory}) {
 	const role = useSelector(store => store.AuthData.role);
 
 	const [Message, setMessage] = useState([]);
@@ -90,8 +90,6 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory , new
 
 			socket.on('new-message-From-Employee', data => {
 					setMessage(prevState => prevState && prevState.length > 0 ? [...prevState, data] : [data]);
-					newMessageToChatHistory(Math.random())
-
 			});
 			socket.on('new-message-to-Employee', data => {
 					setMessage(prevState => prevState && prevState.length > 0 ?

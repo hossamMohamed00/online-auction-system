@@ -8,9 +8,8 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
-const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageToChatHistory}) => {
+const ChatHistory = ({ chatWith, className, onShow , noChatHistory }) => {
 	const [activeChat, setActiveChat] = useState('');
-	const role = useSelector(store => store.AuthData.role)
 	const [chats, setChats] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 
@@ -96,7 +95,6 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageT
 	const ChatHistoryContent = (
 		<>
 			{FilterChats(searchTerm).map((chat, index) => {
-				console.log(chat)
 				return (
 					<div key={index}>
 						{(chatWithEmail || !chatWithEmail) && (

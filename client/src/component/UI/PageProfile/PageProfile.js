@@ -65,6 +65,7 @@ const PageProfile = () => {
 		}
 	},[status])
 
+	console.log(data && data)
 
 	return (
 		<div className='position-relative'>
@@ -75,15 +76,36 @@ const PageProfile = () => {
 
 			</div>
 			<div className='mt-5'>
+				<div className='row m-0 p-0'>
+					<div className='col-md-6 col-xs-12  mb-4'>
+						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Name : </h4>
+						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.name} </h6>
+					</div>
+					<div className='col-md-6 col-xs-12  mb-4'>
+						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Email : </h4>
+						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.email} </h6>
 
-				<div className='mb-4'>
-					<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Name : </h4>
-					<h4 className='text-light d-inline-block'> {UserData && UserData.name} </h4>
+					</div>
 				</div>
-				<div className='mb-4'>
-					<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Email : </h4>
-					<h4 className='text-light d-inline-block'> {UserData && UserData.email} </h4>
+
+				<div className='row m-0 p-0'>
+					{/* address */}
+					<div className='col-md-6 col-xs-12  mb-4'>
+						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Address : </h4>
+						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.address} </h6>
+
+					</div>
+
+					{/* phone number */}
+					<div className='col-md-6 col-xs-12  mb-4'>
+						<h4 className='text-light fw-bold ps-3 pe-3 d-inline-block'> Phone : </h4>
+						<h6 className='text-secondary d-inline-block fw-bold '> {UserData && UserData.phoneNumber} </h6>
+
+					</div>
+
 				</div>
+
+				{/* check if user is warned */}
 				{isWarned && isWarnedMessage &&
 					<div className='WarningModal'>
 						<span className='text-warning fw-bold  d-inline-block'>
@@ -94,7 +116,7 @@ const PageProfile = () => {
 				}
 			</div>
 
-			<div className='d-flex  pt-5 justify-content-center'>
+			<div className='d-flex  pt-3 justify-content-center'>
 				<Link className={`btn bg-success text-light fw-bold col-md-4 col-xs-12 mx-2 `} to={`${role==='seller' ? '/seller-dashboard/' : '/buyer-dashboard/'}UpdateAccount`} > Update Profile </Link>
 				<button className={`btn bg-danger text-light col-md-4 col-xs-12 mx-2 fw-bold `} onClick={()=> setShowModal(true)} > Change Password </button>
 			</div>
