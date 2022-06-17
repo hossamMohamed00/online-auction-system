@@ -168,9 +168,11 @@ export class ChatService {
 	}
 
 	async findChats(name: string) {
-		const chat = await this.chatModel.find({
-			$or: [{ user1: name }, { user2: name }],
-		});
+		const chat = await this.chatModel
+			.find({
+				$or: [{ user1: name }, { user2: name }],
+			})
+			.sort({ createdAt: -1 });
 		return chat;
 	}
 
@@ -184,16 +186,18 @@ export class ChatService {
 		user1Email: string,
 		user2Email: string,
 	): Promise<ChatDocument | null> {
-		const chat = await this.chatModel.findOne({
-			$and: [
-				{
-					$or: [{ user1: user1Email }, { user1: user2Email }],
-				},
-				{
-					$or: [{ user2: user1Email }, { user2: user2Email }],
-				},
-			],
-		});
+		const chat = await this.chatModel
+			.findOne({
+				$and: [
+					{
+						$or: [{ user1: user1Email }, { user1: user2Email }],
+					},
+					{
+						$or: [{ user2: user1Email }, { user2: user2Email }],
+					},
+				],
+			})
+			.sort({ createdAt: -1 });
 		if (!chat) {
 			return null;
 		}
