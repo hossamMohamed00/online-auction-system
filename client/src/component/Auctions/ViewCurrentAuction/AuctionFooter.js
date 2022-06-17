@@ -10,6 +10,7 @@ import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
 function AuctionFooter({
 	AuctionStatus,
@@ -23,6 +24,7 @@ function AuctionFooter({
 	chairCost,
 	AuctionEndMessage,
 }) {
+	const [loading , setLoading] = useState(false)
 	const location = useLocation();
 	const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
@@ -115,6 +117,7 @@ function AuctionFooter({
 	}, [sendRequest]);
 
 	const approveHandler = () => {
+		setLoading(true)
 		fetch(`${url}/admin/auction/approve/${AuctionId}`, {
 			method: 'POST',
 			headers: {
@@ -123,7 +126,9 @@ function AuctionFooter({
 			},
 		}).then(res => {
 			if (!res.ok) {
+				setLoading(false)
 			} else {
+				setLoading(false)
 				toast.success('Approved Successfully');
 				navigate('/');
 			}
@@ -131,6 +136,7 @@ function AuctionFooter({
 	};
 
 	const rejectHandler = async (rejectMassage) => {
+		setLoading(true)
 		const rejectionMessage = { message: rejectMassage };
 		const response = await fetch(`${url}/admin/auction/reject/${AuctionId}`, {
 			method: 'POST',
@@ -142,9 +148,11 @@ function AuctionFooter({
 		})
 			const data = await response.json()
 			if (!response.ok || data.success === false) {
+				setLoading(false)
 				toast.error(data.message)
 			}
 			else{
+				setLoading(false)
 				toast.success(data.message)
 				const timer = setTimeout(()=>{
 					window.location.reload()
@@ -159,7 +167,9 @@ function AuctionFooter({
 	// start join auction handler
 	const joinAuctionHandler = OnGoingStatus => {
 		setBidderIsBid(false);
-		if (OnGoingStatus && !isJoined && accessToken) {
+		console.log(isJoined)
+		if (OnGoingStatus && !isJoined) {
+			console.log('join' )
 			setModalShow(true);
 			setConfirmJoin(Math.random());
 		}
@@ -185,6 +195,7 @@ function AuctionFooter({
 	};
 
 	const RetreatModelHandler = () => {
+		setLoading(true)
 		socket.emit('leave-auction', {
 			auctionId: AuctionId,
 		});
@@ -197,15 +208,16 @@ function AuctionFooter({
 
 			setIsExistErrorWhenJoinAuction(data.message);
 			setModalShow(true);
-			const time = setTimeout(() => {
-				setIsExistErrorWhenJoinAuction('');
-				if (modalShow) {
-					setModalShow(false);
-				}
-			}, [4000]);
-			return () => time.clearTimeOut();
+			// const time = setTimeout(() => {
+			// 	setIsExistErrorWhenJoinAuction('');
+			// 	if (modalShow) {
+			// 		setModalShow(false);
+			// 	}
+			// }, [4000]);
+			// return () => time.clearTimeOut();
 		});
 		setModalShow(false);
+		setLoading(false)
 		setRetreatModalTitle('');
 
 		const time = setTimeout(() => {
@@ -216,6 +228,7 @@ function AuctionFooter({
 
 	useEffect(() => {
 		if (statusForJoinAuction === 'completed') {
+			setLoading(false)
 			if (role === 'buyer') {
 				setConfirmJoin('');
 				setModalShow(false);
@@ -230,6 +243,7 @@ function AuctionFooter({
 			}
 		}
 		if (statusForJoinAuction === 'error') {
+			setLoading(false)
 			toast.error(errorForJoinAuction);
 			localStorage.removeItem('BidderIsJoined');
 			setIsJoined(false);
@@ -238,6 +252,8 @@ function AuctionFooter({
 
 	// if bidder accept block money from your wallet
 	const btnConfirmationHandler = () => {
+		setLoading(true)
+
 		// start send request to join auction
 		const idToken = accessToken;
 		const id = AuctionId;
@@ -247,7 +263,7 @@ function AuctionFooter({
 	useEffect(() => {
 		if (isJoined && role === 'buyer' && !UpComingStatus) {
 			showBids(Math.random());
-			setBidderJoin(Math.random());
+			setBidderJoin(true);
 		}
 	}, [isJoined]);
 
@@ -255,29 +271,36 @@ function AuctionFooter({
 
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = value => {
+		setLoading(true)
 		socket.emit('place-bid', {
 			auctionId: AuctionId,
 			bidValue: value,
 		});
+
 		// view exception error in modal
 		socket.on('exception', data => {
+			setLoading(false)
 			setIsExistErrorWhenJoinAuction(data.message);
 			setModalShow(true);
 			const time = setTimeout(() => {
 				setIsExistErrorWhenJoinAuction('');
 				if (modalShow) {
+					window.location.reload()
 					setModalShow(false);
 				}
-			}, [2000]);
-			return () => time.clearTimeOut();
+			}, [3000]);
+			return () => clearTimeout(time)
 		});
-		setModalShow(false);
+
+
 	};
 
 	// start new Bid Listener
 	useEffect(() => {
 		if (socket) {
 			socket.on('new-bid', data_ => {
+				setLoading(false)
+				setModalShow(false);
 				toast.success('new Bid is Adding Successfully ❤️‍🔥 ');
 			});
 		}
@@ -312,7 +335,7 @@ function AuctionFooter({
 	return (
 		<>
 			<ToastContainer theme="dark" />
-
+			{loading && <LoadingSpinner /> }
 			{/* start buyer */}
 			{/* start when auction ongoing */}
 			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
@@ -437,6 +460,7 @@ function AuctionFooter({
 				SavedAuctionId={AuctionId}
 				btnRemove={() => DeleteAuction(AuctionId)}
 				btnExtendAuction={ExtendAuctionId}
+				loading = {(value)=> setLoading(value)}
 
 				// *********** start bidding ************ //
 

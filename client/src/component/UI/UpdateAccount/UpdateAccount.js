@@ -28,7 +28,6 @@ const UpdateAccountForUsers = () => {
 	const phoneNumber = useRef();
 	const nameRef = useRef();
 	const addressRef = useRef();
-	const nationalIDRef = useRef();
 
 
 	const ImageRef = useRef();
@@ -67,7 +66,6 @@ const UpdateAccountForUsers = () => {
 				name: nameRef.current.value,
 				phoneNumber: phoneNumber.current.value.trim(),
 				address: addressRef.current.value,
-				nationalID :nationalIDRef.current.value,
 				image: ImageSrc
 			};
 		}
@@ -75,8 +73,7 @@ const UpdateAccountForUsers = () => {
 			accountData = {
 				name: nameRef.current.value,
 				phoneNumber: phoneNumber.current.value.trim(),
-				address: addressRef.current.value,
-				nationalID :nationalIDRef.current.value
+				address: addressRef.current.value
 			};
 		}
 		let path ;
@@ -197,22 +194,6 @@ const UpdateAccountForUsers = () => {
 											inputValue="Product Name"
 											id="Address"
 											value={userData.address && userData.address}
-										/>
-									</div>
-
-									<div className={`col-lg-6`}>
-										<label
-											htmlFor="Birthday"
-											className={'text-light fw-bold fs-5 py-2'}
-										>
-											National ID
-										</label>
-										<Input
-											type="number"
-											placeholder=""
-											ref={nationalIDRef}
-											id="nationalID"
-											value={userData.nationalID && userData.nationalID}
 										/>
 									</div>
 								</div>

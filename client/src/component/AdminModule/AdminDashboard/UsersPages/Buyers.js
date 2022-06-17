@@ -12,6 +12,7 @@ import {
 	faCircleExclamation,
 	faCircleXmark,
 	faGavel,
+	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
 import BlockModal from '../../../UI/Modals/BlockModal';
@@ -53,7 +54,11 @@ const UsersPage = () => {
 								// alt="Buyer Image"
 							></img>
 						) : (
-							<p className="text-danger">No img</p>
+							<span className={`rounded-circle noImage`}
+							style={{ width: '45px', height: '45px', marginRight: '10px' }}
+							>
+								<FontAwesomeIcon icon={faUser}/>
+							</span>
 						)}
 
 						<span className="text-light">{props.name}</span>
@@ -145,15 +150,6 @@ const UsersPage = () => {
 									Block
 								</>
 							)}
-						</button>
-						<br></br>
-						<button
-							type="button"
-							className="btn btn-primary btn-joinAuction mb-2 mt-0 px-3"
-							onClick={() => joinAuctionsHandler(props._id)}
-						>
-							<FontAwesomeIcon icon={faGavel} className="px-2 f-4" />
-							View Joined Auctions
 						</button>
 					</div>
 				);

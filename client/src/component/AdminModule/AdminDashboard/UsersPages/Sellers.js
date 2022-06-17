@@ -9,6 +9,8 @@ import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -28,10 +30,16 @@ const UsersPage = () => {
 								// alt="Buyer Image"
 							></img>
 						) : (
-							<p className="text-danger">No img</p>
+							// <p className="text-danger">No img</p>
+							<span className={`rounded-circle noImage`}
+							style={{ width: '45px', height: '45px', marginRight: '10px' }}
+							>
+								<FontAwesomeIcon icon={faUser}/>
+							</span>
+
 						)}
 
-						<span className="text-light">{props.name}</span>
+						<p className="text-light d-inline-block">{props.name}</p>
 					</div>
 				);
 			},
