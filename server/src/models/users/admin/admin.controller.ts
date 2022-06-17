@@ -10,7 +10,7 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { Roles } from 'src/common/decorators';
+import { GetCurrentUserData, Roles } from 'src/common/decorators';
 import { AdminService } from './admin.service';
 import { Role } from 'src/models/users/shared-user/enums';
 import {
@@ -32,7 +32,7 @@ import { EmployeeDto } from '../employee/dto/employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auction } from 'src/models/auction/schema/auction.schema';
 import { AuctionDto, RejectAuctionDto } from 'src/models/auction/dto';
-import { UserDto } from '../shared-user/dto';
+import { ChangePasswordDto, UserDto, UserUpdateDto } from '../shared-user/dto';
 import { User } from '../shared-user/schema/user.schema';
 import { FilterUsersQueryDto } from '../shared-user/dto/filter-users.dto';
 import { AdminComplaintsBehavior } from './interfaces/manage-complaint.interface';
@@ -51,6 +51,7 @@ import { Complaint } from 'src/models/complaint/schema/complaint.schema';
 import { ResponseResult } from 'src/common/types';
 import { WarningMessagesEnum, BlockUserReasonsEnum } from './enums';
 import { RejectExtendTimeDto } from 'src/models/auction/dto/reject-extend-time-auction.dto';
+import { FormDataRequest } from 'nestjs-form-data';
 
 @ApiTags('Admin')
 @Roles(Role.Admin, Role.Employee)
@@ -65,6 +66,24 @@ export class AdminController
 		AdminComplaintsBehavior
 {
 	constructor(private readonly adminService: AdminService) {}
+
+	/* Profile Behaviors */
+	@Patch('profile')
+	@FormDataRequest() // Comes from NestjsFormDataModule (Used to upload files)
+	editProfile(
+		@Body() userUpdateDto: UserUpdateDto,
+		@GetCurrentUserData('_id') userId: string,
+	): Promise<ResponseResult> {
+		return this.adminService.editProfile(userId, userUpdateDto);
+	}
+
+	@Patch('profile/change-password')
+	changePassword(
+		@Body() changePasswordDto: ChangePasswordDto,
+		@GetCurrentUserData('_id') userId: string,
+	): Promise<ResponseResult> {
+		return this.adminService.changePassword(changePasswordDto, userId);
+	}
 
 	/* Handle Dashboard Behaviors */
 	@Get('dashboard')

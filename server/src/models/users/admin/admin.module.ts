@@ -8,6 +8,8 @@ import { AuctionsModule } from 'src/models/auction/auctions.module';
 import { UsersModule } from '../shared-user/users.module';
 import { ComplaintModule } from 'src/models/complaint/complaint.module';
 import { AuctionEmailsModule } from 'src/providers/mail/email-auction/auction-emails.module';
+import { CloudinaryModule } from 'src/providers/files-upload/cloudinary.module';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
 	imports: [
@@ -15,6 +17,8 @@ import { AuctionEmailsModule } from 'src/providers/mail/email-auction/auction-em
 		AuctionsModule,
 		EmployeeModule,
 		CategoryModule,
+		CloudinaryModule,
+		NestjsFormDataModule,
 		ComplaintModule,
 		AuctionEmailsModule,
 	],

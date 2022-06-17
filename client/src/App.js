@@ -134,7 +134,11 @@ function App() {
 				/>
 				{/* end Admin Routes */}
 				{/* start route Employees */}
-				<Route path="/employeeDashBoard" exact element={<EmployeeDashBoard />} />
+				<Route
+					path="/employeeDashBoard"
+					exact
+					element={<EmployeeDashBoard />}
+				/>
 				<Route
 					path="/managersDashboard/allComplaints"
 					element={<AllCompliments />}
@@ -148,7 +152,14 @@ function App() {
 					path="/employeeDashBoard/extendRequests"
 					element={<ExtendTimeRequests />}
 				/>
-				<Route path="/employeeDashboard/UpdateAccount" element={<UpdateAccountForEmployee/>}/>
+				<Route
+					path="/employeeDashboard/UpdateAccount"
+					element={<UpdateAccountForEmployee />}
+				/>
+				<Route
+					path="/adminDashBoard/UpdateAccount"
+					element={<UpdateAccountForEmployee />}
+				/>
 
 				{/* start buyer routes  */}
 
