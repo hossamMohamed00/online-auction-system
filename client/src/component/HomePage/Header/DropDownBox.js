@@ -49,7 +49,7 @@ const DropDownBox = props => {
 					Profile
 				</Link>
 			</li>
-			{(role === 'seller' || 'buyer') && (
+			{(role === 'seller' || role === 'buyer') && (
 				<li>
 					<Link
 						to={role === 'buyer' ? '/buyer-dashboard/chargeWallet' : '/'}

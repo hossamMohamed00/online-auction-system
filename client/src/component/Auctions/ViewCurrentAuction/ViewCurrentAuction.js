@@ -45,7 +45,7 @@ const ViewCurrentAuction = React.memo(() => {
 
 	// establish socket connection
 	useEffect(() => {
-		console.log(BidderIsJoined)
+		console.log("BidderIsJoined" , BidderIsJoined)
 		if (BidderIsJoined && accessToken) {
 			console.log("initial socket")
 			setSocket(
@@ -57,6 +57,9 @@ const ViewCurrentAuction = React.memo(() => {
 			);
 		}
 	}, [BidderIsJoined]);
+
+		console.log("BidderIsJoined" ,BidderIsJoined)
+
 
 	useEffect(() => {
 		if (!!socket && BidderIsJoined && isLoggedIn) {

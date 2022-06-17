@@ -253,8 +253,8 @@ input:disabled {
 }
 
 @media screen and (min-width: 991px) {
-	/* .save_rate_btn {
-		left: 80%;
-		top: 76%;
-	} */
+	.btn_compliment,
+	.btn_chat {
+		width: 15%!important;
+	}
 }
