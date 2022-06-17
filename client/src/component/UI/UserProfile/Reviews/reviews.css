@@ -110,7 +110,7 @@
 }
 .reviews_card {
 	width: 80% !important;
-	position: relative!important;
+	position: relative !important;
 	margin: 5% 10%;
 	border-radius: 25px;
 	box-shadow: 0px 3px 4px #889090;
@@ -183,68 +183,76 @@ input:disabled {
 	background: none !important;
 }
 
-
-
-@media screen and (max-width : 768px){
+@media screen and (max-width: 768px) {
+		.reviews_list::after,
+	.reviews_list::before {
+		width: 26.5% !important;
+	}
 	.reviews_card {
-		width: 100%!important;
+		width: 100% !important;
 		margin: 20% 0% !important;
-		padding-bottom: 25%!important;
+		padding-bottom: 25% !important;
 	}
 	.card_container_Profile {
-		width: 100%!important;
+		width: 100% !important;
 		margin: 10% 0% 0% !important;
 	}
-	.reviews_card .star_container{
-    right: 15px;
+	.reviews_card .star_container {
+		right: 15px;
 	}
-	.reviews_card .cardDate{
-		right: 14px!important;
-    font-size: 13px!important;
+	.reviews_card .cardDate {
+		right: 14px !important;
+		font-size: 13px !important;
 	}
-		/* start reviews in buyer profile */
-		.btn_compliment , .btn_chat{
-			position: relative!important;
-			left: 0!important;
-			top: 0!important;
-			width: 100%!important;
-			margin: 20px 0px ;
-		}
-		.save_rate_btn {
-			top: 3%;
-			font-size: 12px!important;
-			width: fit-content !important;
-			padding: 3px 16px;
-			left: 62%;
-			margin-left: 15px;
-		}
+	/* start reviews in buyer profile */
+	.btn_compliment,
+	.btn_chat {
+		position: relative !important;
+		left: 0 !important;
+		top: 0 !important;
+		width: 100% !important;
+		margin: 20px 0px;
+	}
+	.save_rate_btn {
+		top: 3%;
+		font-size: 12px !important;
+		width: fit-content !important;
+		padding: 3px 16px;
+		left: 62%;
+		margin-left: 15px;
+	}
 }
 
-@media screen and (min-width : 768px) and (max-width : 991px)  {
-	.reviews_card {padding-bottom: 10%!important;}
-	.reviews_card .star_container{
-    right: 100px;
+@media screen and (min-width: 768px) and (max-width: 991px) {
+	.reviews_card {
+		padding-bottom: 10% !important;
 	}
-		/* start reviews in buyer profile */
-		.btn_compliment , .btn_chat{
-			position: relative!important;
-			left: 0!important;
-			top: 0!important;
-			width: 30%!important;
-			margin: 20px 5px ;
-			float: right;
-		}
-		.update_btn , .save_rate_btn {
-			top: 35%!important;
-			left: 70%!important;
-		}
-		.delete_review {
-			left: 90%!important;
-			top: 76%!important;
-		}
+	.reviews_card .star_container {
+		right: 100px;
+	}
+	/* start reviews in buyer profile */
+	.btn_compliment,
+	.btn_chat {
+		position: relative !important;
+		left: 0 !important;
+		top: 0 !important;
+		width: 30% !important;
+		margin: 20px 5px;
+		float: right;
+	}
+	.update_btn,
+	.save_rate_btn {
+		top: 35% !important;
+		left: 70% !important;
+	}
+	.delete_review {
+		left: 90% !important;
+		top: 76% !important;
+	}
+
 }
 
-@media screen and (min-width:991px) {
+@media screen and (min-width: 991px) {
 	/* .save_rate_btn {
 		left: 80%;
 		top: 76%;

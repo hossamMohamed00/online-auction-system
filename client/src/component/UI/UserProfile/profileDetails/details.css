@@ -38,3 +38,24 @@
 	right: 20px !important;
 	font-size: 20px;
 }
+
+.details_list:before,
+.details_list:after {
+	background-color: white;
+	content: '';
+	display: inline-block;
+	height: 1px;
+	position: relative;
+	vertical-align: middle;
+	width: 28%;
+}
+
+.details_list:before {
+	right: 0.5em;
+	margin-left: -50%;
+}
+
+.details_list:after {
+	left: 0.5em;
+	margin-right: -50%;
+}

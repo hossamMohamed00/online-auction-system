@@ -12,7 +12,8 @@
 	padding: 10px;
 }
 
-.modal-header , .hideBorder {
+.modal-header,
+.hideBorder {
 	border-bottom: 0 !important;
 }
 .modal-header .modal-title {
@@ -63,7 +64,11 @@
 	border-bottom-left-radius: 15px;
 	border-bottom-right-radius: 15px;
 }
-
+/* Style of filter */
+.tnECc {
+	background: none !important;
+}
+/* end style of filter */
 @media screen and (max-width: 991px) {
 	.modal-content {
 		width: 100% !important;
@@ -77,6 +82,6 @@
 		width: 80%;
 	}
 	.modal-footer > button {
-		font-size: 10px!important;
+		font-size: 10px !important;
 	}
 }

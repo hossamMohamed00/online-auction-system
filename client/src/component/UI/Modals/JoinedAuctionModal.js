@@ -114,7 +114,7 @@ const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 
 	// start View Joined Auctions
 	const ViewJoinedAuctions =
-		data && status === 'completed' ? (
+		filteredItems && (
 			<DataTable
 				columns={columns}
 				data={filteredItems}
@@ -123,13 +123,7 @@ const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 				theme="dark"
 				pagination
 			/>
-		) : (
-			// <h6 className='fw-bold text-center text-danger'> No Joined Auctions Now </h6>
-			<h6 className="fw-bold text-center text-danger">
-				{' '}
-				No Joined Auctions Now{' '}
-			</h6>
-		);
+		) 
 
 	// end View Joined Auctions
 

@@ -24,7 +24,7 @@ const ProfileDetails = props => {
 	];
 	return (
 		<>
-			<h2 className="text-light mt-4 text-center fw-bold">
+			<h2 className="text-light text-center mt-4 fw-bold details_list ">
 				Seller personal Details
 			</h2>
 			<div className="card_container_Profile details row">
