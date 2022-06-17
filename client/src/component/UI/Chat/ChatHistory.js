@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageToChatHistory}) => {
 	const [activeChat, setActiveChat] = useState('');
-
+	const role = useSelector(store => store.AuthData.role)
 	const [chats, setChats] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 
@@ -49,8 +49,7 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageT
 
 	const getChat = email => {
 		setActiveChat(email);
-		const EmailOfChat = (chatWithEmail === 'Support@email.com') ? chatWithEmail : email;
-		chatWith(EmailOfChat);
+		chatWith(email);
 		onShow(false);
 	};
 
@@ -84,8 +83,10 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageT
 
 	useEffect(() => {
 		if (chatWithEmail && checkIfNoChat.length === 0) {
+		const EmailOfChat = (chatWithEmail === 'Support@email.com') ? 'Support@email.com' : chatWithEmail
+
 			noChatHistory(true)
-			getChat(chatWithEmail);
+			getChat(EmailOfChat);
 			setActiveChat(chatWithEmail);
 		}
 		else if(checkIfNoChat.length !== 0) {
@@ -95,6 +96,7 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory , NewMessageT
 	const ChatHistoryContent = (
 		<>
 			{FilterChats(searchTerm).map((chat, index) => {
+				console.log(chat)
 				return (
 					<div key={index}>
 						{(chatWithEmail || !chatWithEmail) && (

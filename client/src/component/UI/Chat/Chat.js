@@ -33,15 +33,7 @@ const Chat = props => {
 				authorization: `Bearer ${idToken}`
 			}})
 		)
-	},[chatWith,, newMessageToChatHistory])
-	// establish socket connection
-	// const socket = io('http://localhost:8000/chat', {
-	// 	extraHeaders: {
-	// 		authorization: `Bearer ${idToken}`,
-	// 	},
-	// });
-
-
+	},[chatWith, showChatHistory])
 
 	const getChatWith = email => {
 		setChatWith(email);

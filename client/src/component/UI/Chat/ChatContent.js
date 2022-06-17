@@ -72,7 +72,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory , new
 
 	}
 
-	}, [socket]);
+	}, [socket , role]);
 
 	useEffect(()=>{
 		if(socket) {
