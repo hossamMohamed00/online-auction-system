@@ -89,7 +89,13 @@ function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
 			</div>
 			{/* end with auction header */}
 
-			{isShownDetails && <AuctionDetails data={AuctionData && AuctionData} />}
+			{isShownDetails &&
+				<AuctionDetails
+					data={AuctionData && AuctionData
+					}
+
+				/>
+			}
 			{isShownBids && (
 				<Bids
 					socket={socket}

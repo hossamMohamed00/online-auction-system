@@ -29,7 +29,7 @@ function AuctionFooter({
 	const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	const accessToken = useSelector(store => store.AuthData.idToken);
-
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn)
 	const [modalShow, setModalShow] = useState(false);
 	const [btnSavedValue, setBtnSavedValue] = useState('Save Auction');
 	const [RetreatModalTitle, setRetreatModalTitle] = useState('');
@@ -43,6 +43,7 @@ function AuctionFooter({
 	const [isJoined, setIsJoined] = useState(
 		localStorage.getItem('BidderIsJoined'),
 	);
+
 	// confirmation join auction
 	const [ConfirmJoin, setConfirmJoin] = useState('');
 	const [BidNow, setBidsNow] = useState(false);
@@ -261,11 +262,11 @@ function AuctionFooter({
 	};
 
 	useEffect(() => {
-		if (isJoined && role === 'buyer' && !UpComingStatus) {
+		if (isJoined && role === 'buyer' && OnGoingStatus) {
 			showBids(Math.random());
 			setBidderJoin(Math.random());
 		}
-	}, [isJoined]);
+	}, [isJoined , role , OnGoingStatus]);
 
 
 
@@ -338,7 +339,7 @@ function AuctionFooter({
 			{loading && <LoadingSpinner /> }
 			{/* start buyer */}
 			{/* start when auction ongoing */}
-			{role === 'buyer' && OnGoingStatus && !AuctionEndMessage && (
+			{(role === 'buyer' || !isLoggedIn)&& OnGoingStatus && !AuctionEndMessage && (
 				<div
 					className={`${
 						isJoined ? 'd-flex justify-content-around mt-3' : 'd-block'
