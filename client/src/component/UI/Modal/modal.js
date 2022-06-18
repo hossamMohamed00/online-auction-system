@@ -5,7 +5,6 @@ import DataTable from 'react-data-table-component';
 import './modal.css';
 
 const ModalUi = props => {
-	console.log(props.data.joinedAuctions)
 	const btnHandler = () => {
 		if (props.Id) {
 			props.btnHandler(props.Id);
@@ -26,7 +25,9 @@ const ModalUi = props => {
 			<Modal.Header closeButton>
 				<Modal.Title
 					id="contained-modal-title-vcenter"
-					className={`${(props.body && !props.hideBorder) ? 'hasBorder' : ''} ${props.hideBorder ? 'hideBorder' : '' }`}
+					className={`${props.body && !props.hideBorder ? 'hasBorder' : ''} ${
+						props.hideBorder ? 'hideBorder' : ''
+					}`}
 				>
 					{props.title && props.title}
 				</Modal.Title>
@@ -41,20 +42,20 @@ const ModalUi = props => {
 
 			{/* start Modal Body */}
 			{props.body && <Modal.Body> {props.body} </Modal.Body>}
-			{props.data &&
+			{props.data && (
 				<Modal.Body>
 					{props.data && props.data.joinedAuctions && (
-					<DataTable
-						columns={props.columns}
-						data={props.data.joinedAuctions}
-						// subHeader
-						// subHeaderComponent={filterFun}
-						theme="dark"
-						pagination
-					/>
-					)
-				}
-				</Modal.Body>}
+						<DataTable
+							columns={props.columns}
+							data={props.data.joinedAuctions}
+							// subHeader
+							// subHeaderComponent={filterFun}
+							theme="dark"
+							pagination
+						/>
+					)}
+				</Modal.Body>
+			)}
 			{/* end Modal Body */}
 
 			<Modal.Footer
