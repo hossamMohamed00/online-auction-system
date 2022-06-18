@@ -11,7 +11,6 @@ import {
 	faBan,
 	faCircleExclamation,
 	faCircleXmark,
-	faGavel,
 	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -51,7 +50,7 @@ const UsersPage = () => {
 								src={props.image && props.image.url}
 								className="rounded-circle d-inline-block "
 								style={{ width: '45px', height: '45px', marginRight: '10px' }}
-								// alt="Buyer Image"
+								alt="Buyer"
 							></img>
 						) : (
 							<span className={`rounded-circle noImage`}
@@ -183,10 +182,10 @@ const UsersPage = () => {
 	// end block handler
 
 	// start block handler
-	const joinAuctionsHandler = id => {
-		setUserId(id);
-		setIsShownJoinAuctions(true);
-	};
+	// const joinAuctionsHandler = id => {
+	// 	setUserId(id);
+	// 	setIsShownJoinAuctions(true);
+	// };
 	// end block handler
 
 	//filter

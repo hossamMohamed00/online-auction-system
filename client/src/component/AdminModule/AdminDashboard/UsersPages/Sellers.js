@@ -25,6 +25,7 @@ const UsersPage = () => {
 						{props.image ? (
 							<img
 								src={props.image && props.image.url}
+								alt="sellerImage"
 								className="rounded-circle d-inline-block "
 								style={{ width: '45px', height: '45px', marginRight: '10px' }}
 								// alt="Buyer Image"

@@ -19,12 +19,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import './extend.css';
 import ModalUi from '../../../UI/Modal/modal';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 // start component
 
 const ExtendTimeRequests = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownRejectModal, setIsShownRejectModal] = useState(false);
 	const [reload, setReload] = useState('');
+	const [loading , setLoading] = useState(false)
 	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllExtendTimeRequests,
 	);
@@ -44,6 +46,13 @@ const ExtendTimeRequests = () => {
 		sendRequest(idToken);
 	}, [sendRequest, reload]);
 	const [requests, setRequests] = useState([]);
+
+	useEffect(() => {
+		if(statusForReject==='completed' || statusForReject === 'error' || statusForApprove==='completed' || statusForApprove === 'error'){
+			setLoading(false)	
+		}
+		
+	}, [statusForReject , statusForApprove]);
 
 	//  end get request for all extend time requests
 
@@ -73,10 +82,12 @@ const ExtendTimeRequests = () => {
 
 	// end modal
 	const approveHandler = id => {
+		setLoading(true)	
 		sendRequestFoApprove({ idToken, id });
 		setReload(id);
 	};
 	const rejectHandler = id => {
+		setLoading(true)	
 		const rejectionData = { message: reasonRef.current.value };
 		sendRequestForReject({
 			idToken: idToken,
@@ -222,6 +233,7 @@ const ExtendTimeRequests = () => {
 	return (
 		<React.Fragment>
 			<AdminDashboard>
+			{loading && <LoadingSpinner /> }
 				<PageContent>
 					<ToastContainer theme="dark" />
 					<PageHeader text="Extend Requests" showLink={false} />{' '}

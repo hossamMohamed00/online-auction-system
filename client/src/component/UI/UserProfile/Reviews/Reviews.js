@@ -4,7 +4,6 @@ import './reviews.css';
 import { FaStar } from 'react-icons/fa';
 import { AddReview } from './AddReview';
 import moment from 'moment';
-import NoData from '../../NoData';
 import { getBuyerReview } from '../sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { AddBuyerReview } from './AddBuyerReview';

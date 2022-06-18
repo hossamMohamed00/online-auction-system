@@ -7,15 +7,16 @@ import useHttp from '../../../../CustomHooks/useHttp';
 const SellerProfile = props => {
 	const { data, sendRequest } = useHttp(getProfileData);
 	const [reload, setReload] = useState('');
-
 	useEffect(() => {
 		// sendRequest(props.sellerId);
 		//TODO: To be updated
 		sendRequest(props.sellerId);
 	}, [sendRequest, reload]);
 
+
 	return (
-		<UserProfile
+		<React.Fragment>
+			<UserProfile
 			data={data && data}
 			seller={data && data.seller}
 			name={data && data.seller.name}
@@ -25,6 +26,8 @@ const SellerProfile = props => {
 			img={buyerImg}
 			onReload={value => setReload(value)}
 		/>
+		</React.Fragment>
+		
 	);
 };
 export default SellerProfile;

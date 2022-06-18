@@ -5,7 +5,6 @@ import DataTable from 'react-data-table-component';
 import './modal.css';
 
 const ModalUi = props => {
-	console.log(props.data.joinedAuctions)
 	const btnHandler = () => {
 		if (props.Id) {
 			props.btnHandler(props.Id);

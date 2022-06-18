@@ -18,6 +18,7 @@ import { ComplaintModal } from './ComplaintsModal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLocation } from 'react-router-dom';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 
 // start component
 
@@ -25,7 +26,8 @@ const AllCompliments = () => {
 	const url = 'http://localhost:8000';
 	const location = useLocation()
 	const param = new URLSearchParams(location.search).get('notRead');
-	console.log(param)
+	const [loading , setLoading] = useState(false)
+
 
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const [isShownComplaintModal, setIsShownComplaintModal] = useState(false);
@@ -73,6 +75,8 @@ const AllCompliments = () => {
 
 	// handle read
 	const MarkAsRead = complaintId => {
+		setLoading(true)
+
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'PATCH',
 			headers: {
@@ -81,12 +85,19 @@ const AllCompliments = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)
 				return;
 			}
 		});
+		setLoading(false)
 		setReload(Math.random());
+		const timer = setTimeout(()=>{
+			window.location.reload()
+		},2000)
+		return () => clearTimeout(timer)
 	};
 	const deleteComplaint = complaintId => {
+		setLoading(true)
 		let count = Math.random();
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'DELETE',
@@ -96,10 +107,19 @@ const AllCompliments = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)
 				return;
 			}
+			setLoading(false)
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setReload(count);
+			
+			setReload(Math.random());
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			},2000)
+			return () => clearTimeout(timer)
+			
 		});
 	};
 
@@ -186,6 +206,7 @@ const AllCompliments = () => {
 	return (
 		<React.Fragment>
 			<AdminDashboard>
+				{loading && <LoadingSpinner	 /> }
 				<PageContent>
 					<ToastContainer theme="dark" />
 					<PageHeader text="Complaints" showLink={false} />{' '}

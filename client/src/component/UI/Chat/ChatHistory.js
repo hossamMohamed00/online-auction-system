@@ -8,10 +8,12 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ChatHistory.module.css';
 import { useLocation } from 'react-router-dom';
 
-const ChatHistory = ({ chatWith, className, onShow , noChatHistory }) => {
+const ChatHistory = ({ chatWith, className, onShow , noChatHistory , newMessage}) => {
 	const [activeChat, setActiveChat] = useState('');
 	const [chats, setChats] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
+	// const [newMessageContent, setNewMessageContent] = useState(null);
+
 
 	const { sendRequest, status, data } = useHttp(getChats);
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -45,6 +47,7 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory }) => {
 		}
 
 	}, [status]);
+
 
 	const getChat = email => {
 		setActiveChat(email);
@@ -114,10 +117,23 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory }) => {
 									<h6 className={classes.UserName}>
 										{chat.email.substring(0, chat.email.indexOf('@'))}
 									</h6>
+									{(newMessage && ( ((newMessage.email === ChatEmail) ) || ((newMessage.email === chat.email) && (newMessage.email === activeChat) ) ) && ((chat.email === activeChat)) ) ?
+									(<>
+										<span className={classes.MessageTime}>
+											{newMessage.lastMessageTime}
+										</span>
+										<p className={classes.MessageContent}> {newMessage.lastMessage} </p>
+										</>)
+									:
+									(<>
 									<span className={classes.MessageTime}>
 										{chat.lastMessageTime}
 									</span>
 									<p className={classes.MessageContent}> {chat.lastMessage} </p>
+									</>)
+
+									}
+
 								</div>
 							</div>
 						)}
@@ -128,6 +144,9 @@ const ChatHistory = ({ chatWith, className, onShow , noChatHistory }) => {
 			{checkIfNoChat.length === 0 && noChatHistoryContent}
 		</>
 	);
+
+	console.log(newMessage , chats)
+
 
 	return (
 		<>

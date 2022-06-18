@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StartComponent } from './StartComponent';
 import { useSelector } from 'react-redux';
 import './reviews.css';
@@ -6,6 +6,7 @@ import { AddReviewForSeller } from '../sellerProfileData';
 import useHttp from '../../../../CustomHooks/useHttp';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from '../../Loading/LoadingSpinner';
 
 export const AddReview = props => {
 	const nameInputRef = React.useRef();
@@ -14,11 +15,12 @@ export const AddReview = props => {
 		setRateValue(value);
 	};
 	const idToken = useSelector(store => store.AuthData.idToken);
-
+	const [loading , setLoading] = useState(false)
 	const { status, sendRequest, error } = useHttp(AddReviewForSeller);
 
 	const handleSubmit = e => {
 		e.preventDefault();
+		setLoading(true)	
 		const reviewData = {
 			message: nameInputRef.current.value,
 			review: rateValue,
@@ -29,15 +31,18 @@ export const AddReview = props => {
 
 	React.useEffect(() => {
 		if (status === 'completed') {
+			setLoading(false)	
 			toast.success('Your review has been added successfully 💖🐱‍👤');
 			props.onReload(Math.random());
-		} else {
+		} else if(status === 'error') {
+			setLoading(false)	
 			toast.error(error);
 		}
 	}, [status]);
 	return (
 		<>
 			<ToastContainer theme="dark" />
+			{loading && <LoadingSpinner /> }
 			<form className="row" onSubmit={handleSubmit}>
 				<div className=" addContainer d-inline-block position-relative ">
 					<label className="text-light d-block mt-4 fw-bold fs-6" for="rating">

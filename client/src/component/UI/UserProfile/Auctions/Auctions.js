@@ -1,5 +1,4 @@
 import React from 'react';
-import NoData from '../../NoData';
 import ViewAuctionDetails from '../../ViewAuctionDetails/ViewAuctionDetails';
 import '../profile.css';
 import '../Reviews/reviews.css';
