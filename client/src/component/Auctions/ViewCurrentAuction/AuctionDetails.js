@@ -7,8 +7,9 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data }) => {
-	const AuctionDate = data && data.status === 'ongoing' ? data.endDate : data.startDate;
-	const role = useSelector(store => store.AuthData.role)
+	const AuctionDate =
+		data && data.status === 'ongoing' ? data.endDate : data.startDate;
+	const role = useSelector(store => store.AuthData.role);
 
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 	return (
@@ -92,11 +93,11 @@ const AuctionDetails = ({ data }) => {
 							}
 						>
 							<div>
-								<h6 className="fw-bold text-light px-3"> Base Price </h6>
+								<h6 className="fw-bold text-light px-3"> Chair Cost </h6>
 								<span
 									className={`ps-2 fs-6 fw-bold ${classes.MinimumBidValue}`}
 								>
-									{data.basePrice}
+									{data.chairCost}
 								</span>
 							</div>
 
@@ -125,17 +126,18 @@ const AuctionDetails = ({ data }) => {
 											{`${days} :	${hours}   :   ${minutes}  :  ${seconds} `}
 										</span>
 									</div>
-							)}
+								)}
 
-							{/* if auction is denied */}{data &&
-								(data.status === 'denied') && (role==='seller' || role==='admin'  || role==='employee' ) && (
+							{/* if auction is denied */}
+							{data &&
+								data.status === 'denied' &&
+								(role === 'seller' ||
+									role === 'admin' ||
+									role === 'employee') && (
 									<div>
-										<h6 className="fw-bold text-danger pt-3">
-											Auction Denied
-										</h6>
+										<h6 className="fw-bold text-danger pt-3">Auction Denied</h6>
 									</div>
-							)}
-
+								)}
 						</div>
 
 						{/* start when auction ended */}

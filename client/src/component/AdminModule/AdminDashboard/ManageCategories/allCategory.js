@@ -36,6 +36,7 @@ const AllCategories = props => {
 			name: 'Number of Auctions',
 			selector: row => row.auctionsCount,
 			center: true,
+			sortable: true,
 		},
 
 		{
@@ -68,7 +69,6 @@ const AllCategories = props => {
 		status: statusForRemove,
 		error: errorForRemove,
 	} = useHttp(remove);
-
 
 	// ! handle remove
 	//
