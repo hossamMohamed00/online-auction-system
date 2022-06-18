@@ -22,11 +22,11 @@ function PageHeader({ text, showLink , filterText= ''}) {
 					className={` text-light text-decoration-none px-5 ${classes.btnGetAuctions}`}
 					to={filterText ? `/auctions?status=${filterText}` : '/auctions'}
 				>
-					<h5 className="text-light fw-bold p-3 pb-0 d-inline-block">
+					<h5 className="text-danger fw-bold p-3 pb-0 d-inline-block">
 						{' '}
 						See All Auctions{' '}
 					</h5>
-					<FontAwesomeIcon icon={faCircleArrowRight} />
+					<FontAwesomeIcon icon={faCircleArrowRight} className="text-danger"/>
 				</Link>
 			)}
 		</div>
