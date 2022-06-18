@@ -11,7 +11,6 @@ import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import useHttp from '../../../CustomHooks/useHttp';
 import { toast, ToastContainer } from 'react-toastify';
 import { getUserId } from '../../../Api/usersApi';
-import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 import ChangePassword from '../ChangePasswordModal/ChangePasswordModal';
 
@@ -24,7 +23,6 @@ const UpdateAccountForUsers = () => {
 	const email = useSelector(store => store.AuthData.email);
 	const [loading , setLoading] = useState(false)
 
-	const Navigate = useNavigate()
 	const phoneNumber = useRef();
 	const nameRef = useRef();
 	const addressRef = useRef();
@@ -61,20 +59,29 @@ const UpdateAccountForUsers = () => {
 		setLoading(true)
 		e.preventDefault();
 		let accountData
+		let userData = 
+		{ name: nameRef.current.value,
+			phoneNumber: phoneNumber.current.value.trim(),
+			address: addressRef.current.value.trim()
+		}
+		let updateData = {}
+		Object.entries(userData).map((key)=>{
+			console.log(key[1])
+			if(key[1]){
+				updateData[key[0]] = key[1]
+			} 
+		})
 		if(ImageSrc){
-			accountData = {
-				name: nameRef.current.value,
-				phoneNumber: phoneNumber.current.value.trim(),
-				address: addressRef.current.value,
-				image: ImageSrc
-			};
+			accountData = {...updateData , image: ImageSrc}
+			// accountData = {
+			// 	name: nameRef.current.value,
+			// 	phoneNumber: phoneNumber.current.value.trim(),
+			// 	address: addressRef.current.value.trim(),
+				
+			// };
 		}
 		else{
-			accountData = {
-				name: nameRef.current.value,
-				phoneNumber: phoneNumber.current.value.trim(),
-				address: addressRef.current.value
-			};
+			accountData = {...updateData}
 		}
 		let path ;
 		 if(role === 'admin' || role === 'employee'){
@@ -93,11 +100,15 @@ const UpdateAccountForUsers = () => {
 		if (status === 'completed') {
 			setLoading(false)
 			toast.success('Account Updated Successfully');
-			window.location.reload()
-			const path = role==='seller' ? '/seller-dashboard/': '/buyer-dashboard/'
-			Navigate(path)
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			},2000)
+			return () => clearTimeout(timer)
+			// const path = role ==='seller' ? '/seller-dashboard': '/buyer-dashboard'
+			// Navigate(path)
 
-		} else if (status === 'error'){
+		} 
+		if (status === 'error'){
 			setLoading(false)
 			toast.error(error);
 		}
@@ -197,26 +208,29 @@ const UpdateAccountForUsers = () => {
 										/>
 									</div>
 								</div>
-
 								{/* Save Changes Button */}
-								{/* <div className={`${classes.updateBtn}`}> */}
 								<button
-									className={`btn d-inline-block bg-danger text-light fw-bold mt-5 ${classes.bntstyl}`}
-								>
-									Save Changes
+									className={`btn d-inline-block bg-success text-light fw-bold  ${(role === 'admin' || role === 'employee') ?  ' col-md-5 m-4 col-sm-12' :  'col-4 float-end mx-3 bg-danger' } `}
+									>
+										Save Changes
 								</button>
-								{/* </div> */}
-							</section>
-						</form>
-					)}
-				{(role === 'admin' || role === 'employee') && (
-					<button
-						onClick={() => setShowModal(true)}
-						className={`btn d-inline-block bg-danger text-light fw-bold mt-5  ${classes.btnCh} `}
-					>
-						Change Password
-					</button>
-				)}
+
+								{/* Change password when role admin or employee */}
+
+								{(role === 'admin' || role === 'employee') && (
+									<button
+									type='button'
+										onClick={() => setShowModal(true)}
+										className={`btn d-inline-block bg-danger text-light fw-bold col-md-5 m-4 col-sm-12  `}
+									>
+										Change Password
+									</button>
+								)}
+									
+					</section>
+				</form>
+			)}
+					
 
 				{ShowModal && (
 					<ChangePassword show={ShowModal} onHide={() => setShowModal(false)} />

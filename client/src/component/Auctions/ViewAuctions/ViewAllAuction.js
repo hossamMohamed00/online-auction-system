@@ -14,19 +14,31 @@ import NoData from '../../UI/NoData';
 import classes from './ViewAllAuctions.module.css';
 import FilterdAuctions from './FilterdAuction';
 import Navbar from '../../HomePage/Header/Navbar';
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner';
 
-const ViewAllAuctions = () => {
+const ViewAllAuctions = ({AuctionStatus}) => {
 	const [showFilter, setShowFilter] = useState(null);
 	const [FilterAuction, setFilterAuction] = useState(false);
 	const [FilterdDetails, setFilterdDetails] = useState(null);
+
+	const [loading , setLoading] = useState(false)
 
 	const { sendRequest, status, data } = useHttp(getAllAuctions);
 
 	useEffect(() => {
 		if (!FilterAuction) {
-			sendRequest();
+			if(AuctionStatus) {
+				// setLoading(true)
+				sendRequest(`?status=${AuctionStatus}&`);
+			}
+			else{
+				// setLoading(true)
+				sendRequest();
+			}
 		} else {
 			if (FilterdDetails.AuctionType || FilterdDetails.AuctionCategory) {
+				// setLoading(true)
+				
 				const queryParams = `${
 					FilterdDetails.AuctionCategory
 						? `?category=${FilterdDetails.AuctionCategory}&`
@@ -34,19 +46,12 @@ const ViewAllAuctions = () => {
 				}${FilterdDetails.AuctionType &&
 					`status=${FilterdDetails.AuctionType}&`}`;
 				sendRequest(queryParams);
+
 			}
 		}
+
 	}, [sendRequest, FilterAuction, FilterdDetails]);
 
-	// useEffect(() => {
-	// 	if (status === 'completed') {
-	// 		setData(
-	// 			data.filter(
-	// 				data => data.status !== 'pending' && data.status !== 'denied',
-	// 			),
-	// 		);
-	// 	}
-	// }, [status]);
 	const showFilterHandler = () => {
 		setShowFilter(true);
 	};
@@ -59,13 +64,24 @@ const ViewAllAuctions = () => {
 		if (values) {
 			setFilterAuction(true);
 			setFilterdDetails(values);
+
 		} else {
+			// setLoading(false)
 			setFilterAuction(false);
 		}
 	};
 
+	useEffect(()=>{
+		if(status === 'completed'){
+			setLoading(false)
+		}
+		else if(status === 'error'){
+			setLoading(false)
+		}
+	} , [status])
 	return (
 		<div className={classes.ViewAllAuctions}>
+			{loading && <LoadingSpinner /> }
 			<Navbar />
 			<Row className="m-0 p-0">
 				<Col md={4} lg={2} className="m-0 p-0">

@@ -17,6 +17,7 @@ import {
 import { ComplaintModal } from './ComplaintsModal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 
 // start component
 
@@ -28,6 +29,7 @@ const AllComplaintsInSystem = () => {
 	const [reload, setReload] = useState('');
 
 	const [complaintReason, setComplaintReason] = useState('');
+	const [loading , setLoading] = useState(false)
 	const { sendRequest, status: statusForGet, data } = useHttp(
 		getAllComplaintsInSystem,
 	);
@@ -69,6 +71,7 @@ const AllComplaintsInSystem = () => {
 
 	// handle read
 	const MarkAsRead = complaintId => {
+		setLoading(true)	
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'PATCH',
 			headers: {
@@ -77,11 +80,20 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)	
 				return;
 			}
+			toast.success('New complaint marked as read by admin ✔✔')
+			setLoading(false)	
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			},2000)
+			return () => clearTimeout(timer)
 		});
 	};
 	const deleteComplaint = complaintId => {
+		setLoading(true)	
+
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'DELETE',
 			headers: {
@@ -90,10 +102,16 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)	
 				return;
 			}
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setReload(Math.random());
+			setLoading(false)	
+			const timer = setTimeout(()=>{
+				window.location.reload()
+			},2000)
+			return () => clearTimeout(timer)
 		});
 	};
 
@@ -176,6 +194,7 @@ const AllComplaintsInSystem = () => {
 		<React.Fragment>
 			<AdminDashboard>
 				<PageContent>
+				{loading && <LoadingSpinner /> }
 					<ToastContainer theme="dark" />
 					<PageHeader text="Complaints" showLink={false} />{' '}
 					<DataTable

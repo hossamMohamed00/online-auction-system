@@ -14,7 +14,7 @@ export const UpdateAccount = async ({ accountData, idToken, path }) => {
 	});
 	const data = await response.json();
 
-	if (!response.ok) {
+	if (!response.ok || data.success === false) {
 		throw new Error(data.message);
 	}
 };

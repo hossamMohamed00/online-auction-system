@@ -22,6 +22,7 @@ const Chat = props => {
 
 	const [showChatHistory, setShowChatHistory] = useState(true);
 	const [noChatHistory , setNoChatHistory] = useState(false)
+	const [newMessage , setNewMessage] = useState(null)
 
 	const [socket , setSocket] = useState(null)
 	const redirectUserToHomePage = useNavigate();
@@ -60,6 +61,7 @@ const Chat = props => {
 								onShow={ShowChatHistoryHandler}
 								getChatHistoryWith={props.SellerEmail && props.SellerEmail}
 								noChatHistory = {(value)=> setNoChatHistory(value)}
+								newMessage = {newMessage}
 
 							/>
 						</Col>
@@ -85,7 +87,7 @@ const Chat = props => {
 								socket={socket}
 								getChatWithEmail={chatWith && chatWith}
 								noChatHistory = {noChatHistory}
-
+								newMessage = {(value) => setNewMessage(value) }
 								className={` ${
 									chatWith && !showChatHistory
 										? 'd-block d-xs-block'

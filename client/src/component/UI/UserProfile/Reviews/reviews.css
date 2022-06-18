@@ -131,7 +131,7 @@
 }
 .reviews_card p {
 	top: 37px;
-	left: 97px;
+	left: 187px;
 }
 .reviews_card .star_container {
 	top: 45px;
@@ -221,6 +221,16 @@ input:disabled {
 		left: 62%;
 		margin-left: 15px;
 	}
+	.update_btn{
+		position: absolute;
+    top: 114%;
+    left: 0%;
+    width: 60%;
+    border-radius: 15px;
+	}
+	.delete_review {
+		top: 118%;
+	}
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -240,10 +250,13 @@ input:disabled {
 		margin: 20px 5px;
 		float: right;
 	}
-	.update_btn,
 	.save_rate_btn {
 		top: 35% !important;
 		left: 70% !important;
+	}
+	.update_btn {
+		top: 75% !important;
+    left: 67% !important;
 	}
 	.delete_review {
 		left: 90% !important;
@@ -256,5 +269,7 @@ input:disabled {
 	.btn_compliment,
 	.btn_chat {
 		width: 15%!important;
+		
 	}
+	.delete_review {left: 78%;}
 }

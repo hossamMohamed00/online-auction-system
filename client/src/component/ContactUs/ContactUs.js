@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { SubmitComplaintInSystem } from '../../Api/usersApi';
 import useHttp from '../../CustomHooks/useHttp';
@@ -9,12 +9,16 @@ import ContactForm from './ContactForm';
 import { toast, ToastContainer } from 'react-toastify';
 // import style of Contact us
 import classes from './ContactUs.module.css';
+import LoadingSpinner from '../UI/Loading/LoadingSpinner';
 
 const ContactUs = () => {
 	// start formIsValid
 	const { sendRequest, status, error } = useHttp(SubmitComplaintInSystem);
+	const [loading , setLoading] = useState(false)
 
 	const SendComplaintHandler = values => {
+		setLoading(true)
+
 		if (values) {
 			const CompliantDetails = {
 				reason: values.message,
@@ -30,12 +34,14 @@ const ContactUs = () => {
 
 	useEffect(() => {
 		if (status === 'completed') {
+			setLoading(false)
 			toast.success('You complaint submitted successfully to our team 🎉');
 		}
 	}, [status]);
 
 	useEffect(() => {
 		if (status === 'error') {
+			setLoading(false)
 			toast.error(error);
 		}
 	}, [status]);
@@ -43,6 +49,7 @@ const ContactUs = () => {
 	return (
 		<React.Fragment>
 			<Navbar />
+			{loading && <LoadingSpinner/>}
 			<ToastContainer theme="dark"></ToastContainer>
 			<div className={` ${classes.ContactUs} container-fluid p-0`}>
 				<Row className="h-100 m-0 p-0">

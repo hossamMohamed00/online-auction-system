@@ -52,8 +52,10 @@ function ChatContentUi({ Message, sendMessage, className, getChatWithEmail , noC
 								className={
 									message.senderEmail === email
 										? classes.messageFromMe
-										: classes.messageFromOther
-								}
+										// : (((message.senderEmail === getChatWithEmail) || getChatWithEmail === 'Support@email.com') ? classes.messageFromOther : 'd-none')
+										: ((message.senderEmail === getChatWithEmail || getChatWithEmail === 'Support@email.com') ? classes.messageFromOther : 'd-none')
+
+									}
 							>
 								<p className={classes.Email}>
 									{message.senderEmail.substring(0, 1).toUpperCase()}{' '}
@@ -76,7 +78,10 @@ function ChatContentUi({ Message, sendMessage, className, getChatWithEmail , noC
 							</div>
 							<p
 								className={`${classes.MessageTime} ${
-									message.senderEmail === email ? 'text-end' : 'text-start'
+									message.senderEmail === email
+									? 'text-end'
+									: ((message.senderEmail === getChatWithEmail || getChatWithEmail === 'Support@email.com') ? classes.messageFromOther : 'd-none')
+							}
 								}`}
 							>
 								{getTime(message.sentAt)}

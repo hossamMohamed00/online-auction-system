@@ -50,8 +50,11 @@ export const MakeAComplaintModal = props => {
 			}
 			setLoading(false);
 			toast.success('Done, your complaint added successfully 💖🐱‍👤');
+			const timer = setTimeout(()=>{
+				props.onHide();
 
-			// props.onHide();
+			},3000)
+			return () => clearTimeout(timer)
 
 			props.onReload(count);
 		});
