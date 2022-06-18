@@ -10,6 +10,7 @@ import classes from './Modal.module.css';
 
 const ModalUi = props => {
 	const [BidValue, setBidValue] = useState(props.MinimumBidAllowed && props.MinimumBidAllowed);
+	console.log(props.MinimumBidAllowed &&  props.MinimumBidAllowed)
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
 	const AmountRef = useRef();
