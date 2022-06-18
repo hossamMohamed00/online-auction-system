@@ -7,9 +7,8 @@ import useTimer from '../../../CustomHooks/useTimer';
 import classes from './AuctionDetails.module.css';
 
 const AuctionDetails = ({ data }) => {
-	const AuctionDate = data && data.status === 'ongoing' ? data.endDate : data.startDate;
+	const AuctionDate =( data && (data.status === 'ongoing' && data.status !== 'closed') ) ? data.endDate : data.startDate;
 	const role = useSelector(store => store.AuthData.role);
-
 	const { days, hours, minutes, seconds } = useTimer(new Date(AuctionDate));
 	return (
 		<Fragment>

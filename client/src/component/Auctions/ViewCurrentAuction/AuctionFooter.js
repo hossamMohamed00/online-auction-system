@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { getSingleAuction } from '../../../Api/Admin';
+import { getProfileData, getSingleAuction } from '../../../Api/Admin';
 import { DeleteAuctionHandler } from '../../../Api/AuctionsApi';
 import ModalUi from './BiddingForm/Modal';
 import useHttp from '../../../CustomHooks/useHttp';
@@ -9,7 +9,7 @@ import useHttp from '../../../CustomHooks/useHttp';
 import classes from './ViewCurrentAuction.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CheckIfAuctionSaved, joinAuctionApi } from '../../../Api/BuyerApi';
+import { CheckIfAuctionSaved, getJoinedAuctions, joinAuctionApi } from '../../../Api/BuyerApi';
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
 function AuctionFooter({
@@ -60,6 +60,52 @@ function AuctionFooter({
 	const OnGoingStatus = AuctionStatus === 'ongoing';
 	const PendingStatus = AuctionStatus === 'pending';
 	const DeniedStatus = AuctionStatus === 'denied';
+	const idToken = useSelector(store => store.AuthData.idToken);
+
+
+	// check if Buyer Joined in this auction or not
+	const { sendRequest : sendRequestForJoinedAuctions, status:statusForJoinedAuctions, data:dataForJoinedAuctions } = useHttp(getJoinedAuctions);
+	const { data: dataForProfile, sendRequest: sendRequestForProfile, status: statusForProfile} = useHttp(getProfileData);
+	useEffect(() => {
+		sendRequestForProfile(idToken);
+	}, [sendRequestForProfile , AuctionId]);
+
+	useEffect(() => {
+		const buyerId = dataForProfile && dataForProfile._id;
+		if (statusForProfile === 'completed') {
+			sendRequestForJoinedAuctions({ idToken, buyerId: buyerId && buyerId });
+		}
+	}, [sendRequestForJoinedAuctions, statusForProfile]);
+
+	useEffect(()=> {
+		if(statusForJoinedAuctions==='completed'){
+			const joinedAuctions = dataForJoinedAuctions && [...dataForJoinedAuctions.joinedAuctions]
+			console.log(joinedAuctions.filter((data)=> data._id === AuctionId && data.status) )
+			const checkIfJoined = joinedAuctions.length > 0 && joinedAuctions.filter((data)=> data._id === AuctionId && data.status)
+			console.log(checkIfJoined )
+
+			if( checkIfJoined && checkIfJoined.length > 0  ) {
+				console.log('join')
+				if(!localStorage.getItem('BidderIsJoined')){
+					localStorage.setItem('BidderIsJoined' , true)
+					setIsJoined(true)
+					setBidderJoin(true)
+				}
+			}
+			else{
+				console.log('not join')
+
+				localStorage.removeItem('BidderIsJoined')
+				setIsJoined(false)
+				setBidderJoin(false)
+
+
+			}
+		}
+
+	},[statusForJoinedAuctions])
+	// check if Buyer Joined in this auction or not
+
 
 	// handle Rejection
 	const { sendRequest, status } = useHttp(getSingleAuction);
@@ -173,13 +219,15 @@ function AuctionFooter({
 			console.log('join' )
 			setModalShow(true);
 			setConfirmJoin(Math.random());
+
 		}
 		// start to place bid
 		if (isJoined && OnGoingStatus) {
+			console.log('bid')
 			setRetreatModalTitle('');
 			setConfirmJoin('');
 
-			setBidderIsBid(true);
+			setBidderIsBid(Math.random());
 			setBidsNow(true);
 			setModalShow(true);
 		} else {
@@ -237,7 +285,9 @@ function AuctionFooter({
 				localStorage.setItem('BidderIsJoined', dataForJoinAuction.success);
 
 				setIsJoined(localStorage.getItem('BidderIsJoined'));
+				setBidderJoin(localStorage.getItem('BidderIsJoined'))
 				showBids(Math.random());
+				window.location.reload()
 			} else {
 				localStorage.removeItem('BidderIsJoined');
 				setIsJoined(false);
@@ -264,7 +314,10 @@ function AuctionFooter({
 	useEffect(() => {
 		if (isJoined && role === 'buyer' && OnGoingStatus) {
 			showBids(Math.random());
-			setBidderJoin(Math.random());
+			setBidderIsBid(true);
+		}
+		else{
+			setBidderIsBid(false);
 		}
 	}, [isJoined , role , OnGoingStatus]);
 
@@ -273,6 +326,7 @@ function AuctionFooter({
 	// start get bidding amount from modal and send to bid
 	const btnBiddingHandler = value => {
 		setLoading(true)
+		setBidderJoin(true)
 		socket.emit('place-bid', {
 			auctionId: AuctionId,
 			bidValue: value,
@@ -302,6 +356,8 @@ function AuctionFooter({
 			socket.on('new-bid', data_ => {
 				setLoading(false)
 				setModalShow(false);
+				setBidderJoin(true)
+
 				toast.success('new Bid is Adding Successfully ❤️‍🔥 ');
 			});
 		}
@@ -402,7 +458,7 @@ function AuctionFooter({
 
 			{/* ******************** start seller Actions ******************** */}
 			{/*  start update Auction  */}
-			{(role === 'seller' && email === sellerEmail && !OnGoingStatus )&& (
+			{(role === 'seller' && email === sellerEmail && !OnGoingStatus && isLoggedIn ) && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
 						className={`btn w-100 fw-bold btn-success text-light`}
