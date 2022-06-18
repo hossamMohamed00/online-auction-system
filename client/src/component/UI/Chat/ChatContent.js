@@ -61,14 +61,12 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory , new
 		// start get all chats to [seller or buyer]
 		if(socket) {
 
-			if(role !== 'employee'){
-				socket.on('new-message-to-client', data => {
-					setMessage(prevState =>
-					prevState && prevState.length > 0 ? [...prevState, data] : [data],
-				);
-				});
-			}
+		socket.on('new-message-to-client', data => {
+			setMessage(prevState =>
+			prevState && prevState.length > 0 ? [...prevState, data] : [data],
+		);
 
+		});
 		// get all chat history
 		socket.on('chat-history-to-client', data => {
 			setMessage(data && [...data]);
@@ -76,7 +74,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory , new
 
 	}
 
-	}, [socket]);
+	}, [socket , role]);
 
 	useEffect(()=>{
 		if(socket) {
@@ -111,6 +109,7 @@ function ChatContent({ socket, getChatWithEmail, className , noChatHistory , new
 			newMessage({email : Message[Message.length - 1].senderEmail , lastMessage : Message[Message.length - 1].message , lastMessageTime : moment(Message[Message.length - 1].sentAt).format('LT')})
 		}
 	}, [Message])
+
 
 	return (
 		<>

@@ -16,10 +16,12 @@ import googleImg from '../../assets/google-logo-9808.png';
 import twitterImg from '../../assets/twitter.png';
 import { toast, ToastContainer } from 'react-toastify';
 import ForgetPassword from '../UI/ForgetPasswordModal/ForgetPassword';
+import LoadingSpinner from '../UI/Loading/LoadingSpinner';
 
 const LoginForm = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [loading , setLoading] = useState(false)
 
 	const { sendRequest, status, data, error } = useHttp(Login);
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -35,6 +37,7 @@ const LoginForm = () => {
 	// start submit Login
 	useEffect(() => {
 			if (status === 'completed') {
+				setLoading(false)
 				const email = nameRef.current.value;
 				dispatch(
 					AuthDataActions.login({
@@ -63,6 +66,7 @@ const LoginForm = () => {
 
 	const submitHandler = e => {
 			e.preventDefault();
+			setLoading(true)
 			const userDetails = {
 				email: nameRef.current.value,
 				password: passwordRef.current.value,
@@ -72,6 +76,7 @@ const LoginForm = () => {
 	};
 	useEffect(() => {
 		if (status === 'error') {
+			setLoading(false)
 			toast.error(error);
 		}
 	}, [status]);
@@ -81,6 +86,7 @@ const LoginForm = () => {
 	return (
 		<div className={classes['form-container']}>
 			<ToastContainer theme="dark" />
+			{loading && <LoadingSpinner />}
 			<Card className={'loginCard'}>
 				<form onSubmit={submitHandler}>
 					<Input

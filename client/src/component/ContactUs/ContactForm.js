@@ -46,6 +46,7 @@ const ContactForm = props => {
 			isValid = false;
 		}
 		props.SendComplaint(isValid ? values : null);
+
 	};
 	const FormControlStyle = `form-control ${classes['formControl']}`;
 

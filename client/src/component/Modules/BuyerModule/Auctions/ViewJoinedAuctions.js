@@ -20,9 +20,8 @@ const ViewJoinedAuctionsBuyer = () => {
 	const {
 		data: dataForProfile,
 		sendRequest: sendRequestForProfile,
-		status: statusForProfile,
-		error: errorForProfile,
-	} = useHttp(getProfileData);
+		status: statusForProfile
+		} = useHttp(getProfileData);
 	useEffect(() => {
 		sendRequestForProfile(idToken);
 	}, [sendRequestForProfile]);

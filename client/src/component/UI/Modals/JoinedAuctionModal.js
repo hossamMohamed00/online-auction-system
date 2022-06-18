@@ -8,9 +8,7 @@ import ModalUi from '../Modal/modal';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 import './WarnModal.css';
 import { getJoinedAuctions } from '../../../Api/BuyerApi';
-import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
-import useFilter from '../TableLayout/FilteringTable/filter';
 
 const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 	const idToken = useSelector(store => store.AuthData.idToken);

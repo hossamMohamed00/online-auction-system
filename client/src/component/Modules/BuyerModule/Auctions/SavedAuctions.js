@@ -19,8 +19,7 @@ const SavedAuctions = () => {
 	const {
 		data: dataForProfile,
 		sendRequest: sendRequestForProfile,
-		status: statusForProfile,
-		error: errorForProfile,
+		status: statusForProfile
 	} = useHttp(getProfileData);
 	useEffect(() => {
 		sendRequestForProfile(idToken);
