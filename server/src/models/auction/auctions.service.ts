@@ -1159,7 +1159,7 @@ export class AuctionsService
 		const auctionDetails = await this.auctionModel
 			.findById(auctionId)
 			.select(
-				'basePrice numOfBids currentBid bidIncrement minimumBidAllowed winningBuyer',
+				'basePrice numOfBids currentBid bidIncrement minimumBidAllowed winningBuyer endDate',
 			)
 			.populate('winningBuyer');
 
