@@ -220,8 +220,9 @@ function ForgetPassword({ forget, show, onHide }) {
 					`${codeNum1ref.current.value}${codeNum2ref.current.value}${codeNum3ref.current.value}${codeNum4ref.current.value}${codeNum5ref.current.value}`,
 				);
 				setVerificationCode(verificationCode);
-
 				sendRequestForConfCode({ verificationCode, email });
+				setLoading(true);
+
 			}
 		}
 		if (ModalBtn === 'Change Password') {
@@ -235,6 +236,8 @@ function ForgetPassword({ forget, show, onHide }) {
 					password,
 				});
 				setReload(Math.random())
+				setLoading(true);
+
 			}
 		}
 	};

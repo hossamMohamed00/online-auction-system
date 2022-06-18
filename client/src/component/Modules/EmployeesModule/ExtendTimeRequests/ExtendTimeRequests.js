@@ -49,9 +49,9 @@ const ExtendTimeRequests = () => {
 
 	useEffect(() => {
 		if(statusForReject==='completed' || statusForReject === 'error' || statusForApprove==='completed' || statusForApprove === 'error'){
-			setLoading(false)	
+			setLoading(false)
 		}
-		
+
 	}, [statusForReject , statusForApprove]);
 
 	//  end get request for all extend time requests
@@ -82,12 +82,12 @@ const ExtendTimeRequests = () => {
 
 	// end modal
 	const approveHandler = id => {
-		setLoading(true)	
+		setLoading(true)
 		sendRequestFoApprove({ idToken, id });
 		setReload(id);
 	};
 	const rejectHandler = id => {
-		setLoading(true)	
+		setLoading(true)
 		const rejectionData = { message: reasonRef.current.value };
 		sendRequestForReject({
 			idToken: idToken,
@@ -213,7 +213,7 @@ const ExtendTimeRequests = () => {
 							<FontAwesomeIcon icon={faCheck} />
 						</button>
 						<button
-							className="btn btn-danger  "
+							className="btn bg-danger  "
 							onClick={() => {
 								return showRejectModal(props._id);
 							}}

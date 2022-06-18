@@ -307,7 +307,7 @@ const UpdateAuction = () => {
 									</div>
 								</div>
 
-								<button className={`btn btn-danger ${classes.bntstyl}`}>
+								<button className={`btn bg-danger ${classes.bntstyl}`}>
 									Save Changes
 								</button>
 							</div>

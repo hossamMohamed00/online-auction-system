@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner';
 import classes from './add.module.css';
 
 // start component
 
 const AddCategory = props => {
 	const [showAddCategoryForm, setShowAddCategory] = useState(false);
+	const [loading , setLoading] = useState(false)
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const url = 'http://localhost:8000';
 	const nameRef = useRef();
@@ -17,6 +19,7 @@ const AddCategory = props => {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		setLoading(true)
 		let count = Math.random();
 		fetch(`${url}/admin/category/`, {
 			method: 'POST',
@@ -27,12 +30,13 @@ const AddCategory = props => {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)
 				toast.error('Category with that name already exists ❌');
 				setShowAddCategory(false);
 				return;
 			}
 			nameRef.current.value = '';
-
+			setLoading(false)
 			setShowAddCategory(false);
 			props.onReload(count);
 			toast.success('Done, new category added successfully 💖🐱‍👤');
@@ -42,8 +46,9 @@ const AddCategory = props => {
 	return (
 		<>
 			<div className={`${classes.container1}`}>
+			{loading && <LoadingSpinner /> }
 				<button
-					className="btn btn-danger text-center mb-4 mt-4 w-100 fw-bolder"
+					className="btn bg-danger text-center text-light mb-4 mt-4 w-100 fw-bolder"
 					onClick={toggleHandler}
 				>
 					Add Category
@@ -66,7 +71,7 @@ const AddCategory = props => {
 								className={`form-control ${classes.addInput}`}
 							/>
 							<button
-								className={`btn btn-danger text-center mb-4 mt-4  ${classes.submit}`}
+								className={`btn bg-danger text-light text-center mb-4 mt-4  ${classes.submit}`}
 							>
 								Submit
 							</button>

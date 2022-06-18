@@ -54,9 +54,9 @@ export const MakeAComplaintModal = props => {
 				props.onHide();
 
 			},3000)
+			props.onReload(count);
 			return () => clearTimeout(timer)
 
-			props.onReload(count);
 		});
 	};
 
