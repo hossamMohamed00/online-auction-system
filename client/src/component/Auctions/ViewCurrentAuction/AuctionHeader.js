@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import AuctionDetails from './AuctionDetails';
 import Bidders from './Bidders';
 import Bids from './Bids';
@@ -9,6 +10,10 @@ function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 	const [isShownBidders, setIsShownBidders] = useState(false);
+
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn)
+	const role = useSelector(store => store.AuthData.role)
+
 
 	const btnDetailsHandler = () => {
 		setIsShownDetails(true);
@@ -89,29 +94,39 @@ function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
 			</div>
 			{/* end with auction header */}
 
-			{isShownDetails &&
+			{(isShownDetails && (roomData || AuctionData) ) &&
 				<AuctionDetails
-					data={AuctionData && AuctionData
-					}
+					// data= {((!isLoggedIn || role!=='buyer') && !roomData ) ? (AuctionData && AuctionData) : ( roomData && roomData.auctionDetails) }
+					data = {AuctionData && AuctionData}
+					// roomData = {(roomData && roomData) ? roomData : AuctionData}
 
 				/>
 			}
 			{isShownBids && (
 				<Bids
 					socket={socket}
-					roomData={
-						AuctionData && AuctionData['status'] !== 'ongoing'
-							? AuctionData
-							: roomData
+					roomData ={
+						(AuctionData && AuctionData['status'] !== 'ongoing' ) ? AuctionData :
+						((AuctionData && AuctionData['status'] === 'ongoing' && AuctionData['status'] !== 'upcoming' && ( !isLoggedIn || role !== 'buyer') ) ? AuctionData : ((roomData && roomData) ? roomData : AuctionData) )
+
 					}
+					// roomData={
+					// 	AuctionData && AuctionData['status'] !== 'ongoing'
+					// 		? AuctionData
+					// 		: roomData
+					// }
 				/>
 			)}
 			{isShownBidders && (
 				<Bidders
-					roomData={
-						AuctionData && AuctionData['status'] !== 'ongoing'
-							? AuctionData
-							: roomData
+					// roomData={
+					// 	AuctionData && AuctionData['status'] !== 'ongoing'
+					// 		? AuctionData
+					// 		: roomData
+					// }
+					roomData ={
+						(AuctionData && AuctionData['status'] !== 'ongoing' ) ? AuctionData :
+						((AuctionData && AuctionData['status'] === 'ongoing' && AuctionData['status'] !== 'upcoming' && ( !isLoggedIn || role !== 'buyer') ) ? AuctionData : ((roomData && roomData) ? roomData : AuctionData) )
 					}
 				/>
 			)}
