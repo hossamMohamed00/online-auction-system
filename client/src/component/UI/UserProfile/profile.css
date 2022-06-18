@@ -140,6 +140,7 @@
 }
 
 @media screen and (max-width: 576px) {
+
 	.header img {
 		width: 100% !important;
 		margin: 0;
@@ -174,8 +175,7 @@
 	}
 
 	.profile .profile_bar,
-	.profile .bar
-	 {
+	.profile .bar {
 		margin-left: 0px !important;
 		margin-top: 10px;
 	}
@@ -183,12 +183,12 @@
 		top: 100%;
 		left: 20px;
 		display: block !important;
-		margin-bottom: 10px!important;
+		margin-bottom: 10px !important;
 	}
 	.profile .profile_bar {
 		width: 80%;
-    /* margin-left: -12px !important; */
-    margin-top: 12px;
+		/* margin-left: -12px !important; */
+		margin-top: 12px;
 	}
 	.profile_card > div {
 		width: 100% !important;
@@ -224,28 +224,28 @@
 } */
 
 @media screen and (min-width: 567px) and (max-width: 992px) {
-	.profile{
+	.profile {
 		position: relative;
-		padding-bottom: 50px!important;
+		padding-bottom: 50px !important;
 	}
 	.profile img {
-		top: 0px!important;
-		left: 0px!important;
-		position: relative!important;
-		margin-top: -80px!important;
+		top: 0px !important;
+		left: 0px !important;
+		position: relative !important;
+		margin-top: -80px !important;
 	}
 	.chart-bar {
-		display: inline-block!important;
-		width: 50%!important;
+		display: inline-block !important;
+		width: 50% !important;
 	}
 	.profile .bar {
-		position: relative!important;
+		position: relative !important;
 		left: 30% !important;
 		margin-top: 4% !important;
 	}
 	.profile .profile_bar {
 		position: relative;
-		right:0;
+		right: 0;
 		width: 30%;
 		left: 60%;
 	}
@@ -254,33 +254,34 @@
 		left: 30% !important;
 		top: 20%;
 	}
-	.profile p{
-		top: 50%!important;
+	.profile p {
+		top: 50% !important;
 	}
 	.numOfReviewers {
-		left: 65.5% !important;
-    margin-top: -7% !important
+		left: 66% !important;
+		margin-top: -7% !important;
 	}
 }
 
-
-@media  screen and (min-width : 1500px) {
-
+@media screen and (min-width: 1500px) {
 	.profile h5,
 	.profile p {
-		left: 20%!important;
-		font-size: 40px;
+		left: 20% !important;
+		font-size: 30px;
 	}
 	.profile .bar {
-    position: absolute;
-    font-size: 25px !important;
-    margin-top: 0.5%;
-		left: 62.5% !important;
+		position: absolute;
+		font-size: 17px !important;
+		/* margin-top: 0.5%; */
+		left: 63% !important;
 	}
-	.profile p { font-size: 30px!important; top: 110% !important;}
+	.profile p {
+		font-size: 30px !important;
+		top: 107% !important;
+	}
 	.numOfReviewers {
-    font-size: 20px !important;
-		left: 62.5% !important;
-    top: 109%;
+		font-size: 17px !important;
+		left: 63% !important;
+		top: 109%;
 	}
 }

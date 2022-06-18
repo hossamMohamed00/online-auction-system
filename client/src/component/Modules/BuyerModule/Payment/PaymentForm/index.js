@@ -27,7 +27,7 @@ const PaymentForm = props => {
 	const handleSubmitValidation = e => {
 		e.preventDefault();
 		if (validateAmount(AmountRef.current.value)) {
-			handleSubmit(e, AmountRef.current.value);
+				handleSubmit(e, AmountRef.current.value);
 		} else {
 			setAmountErrorMessage("Amount must'nt be less than 100 ❌");
 			toast.error(

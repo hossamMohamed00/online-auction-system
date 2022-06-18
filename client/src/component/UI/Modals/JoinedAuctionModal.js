@@ -32,10 +32,11 @@ const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 		}
 	}, [status]);
 
-	const [joinedAuctions, setJoinedAuctions] = useState([]);
+	const [joinedAuctions, setJoinedAuctions] = useState({});
+
 	useEffect(() => {
-		if (data && status === 'completed') {
-			setJoinedAuctions(data && data.joinedAuctions);
+		if (status === 'completed') {
+			setJoinedAuctions(data);
 			setLoading(false);
 		}
 	}, [status]);
@@ -97,6 +98,7 @@ const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 		{
 			name: 'View Details',
 			cell: props => {
+				console.log(props)
 				return (
 					<span className="text-info ">
 						<Link to={`/auctions?id=${props._id && props._id}`}>
@@ -108,43 +110,32 @@ const JoinedAuctionModal = ({ buyerId, show, onHide }) => {
 		},
 	];
 
-	const items = joinedAuctions && joinedAuctions ? joinedAuctions : [];
-	console.log(items);
-	const { filterFun, filteredItems } = useFilter(items, 'title');
+	// const items = joinedAuctions && joinedAuctions ? joinedAuctions : [];
+	// console.log(items);
+	// const { filterFun, filteredItems } = useFilter(items, 'title');
+	// console.log(joinedAuctions)
+	const items = (joinedAuctions && status==='completed') ? joinedAuctions : {};
 
-	// start View Joined Auctions
-	const ViewJoinedAuctions =
-		data && status === 'completed' ? (
-			<DataTable
-				columns={columns}
-				data={filteredItems}
-				subHeader
-				subHeaderComponent={filterFun}
-				theme="dark"
-				pagination
-			/>
-		) : (
-			// <h6 className='fw-bold text-center text-danger'> No Joined Auctions Now </h6>
-			<h6 className="fw-bold text-center text-danger">
-				{' '}
-				No Joined Auctions Now{' '}
-			</h6>
-		);
+	// // start View Joined Auctions
+	// const ViewJoinedAuctions =
 
-	// end View Joined Auctions
+	// // end View Joined Auctions
 
 	return (
 		<>
 			{loading && <LoadingSpinner />}
 
-			<ModalUi
+			{(items && status==='completed' && Object.keys(items).length!==0) &&
+			(<ModalUi
 				show={show}
 				onHide={onHide}
 				title={ModalTitle}
-				body={ViewJoinedAuctions}
+				data = {items}
+				columns = {columns}
 				btnName=""
 				className="JoinedAuctionModal"
-			/>
+			/>)
+			}
 		</>
 	);
 };

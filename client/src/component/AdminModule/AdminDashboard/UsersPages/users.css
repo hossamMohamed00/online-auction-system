@@ -23,3 +23,15 @@ span a {
 .btn-joinAuction {
 	font-size: 12px;
 }
+
+.noImage {
+	color:#07b2ef;
+	background-color: white;
+	display: inline-flex!important;
+	justify-content: center!important;
+	align-items: center!important;
+}
+
+.noImage > svg{
+	font-size: 24px!important;
+}

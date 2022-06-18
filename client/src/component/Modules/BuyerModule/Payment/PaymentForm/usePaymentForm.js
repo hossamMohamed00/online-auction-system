@@ -44,6 +44,8 @@ const usePaymentForm = onReload => {
 		});
 
 		if (stripeError || !paymentMethod) {
+			setLoading(false);
+
 			toast.error(stripeError.message);
 			return;
 		}
@@ -66,14 +68,16 @@ const usePaymentForm = onReload => {
 		).then(res => res.json());
 
 		if (success === false) {
+			setLoading(false);
 			toast.error({ message });
 			return;
 		}
 
 		if (success === true) {
+			setLoading(false);
 			setPaymentIntentId(data.paymentIntentId);
 			onReload(Math.random());
-			setLoading(false);
+			// setLoading(false);
 		}
 
 		toast.success('You wallet balance updated ✔✔');

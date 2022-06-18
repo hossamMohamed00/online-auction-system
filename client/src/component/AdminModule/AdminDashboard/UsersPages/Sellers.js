@@ -9,6 +9,8 @@ import PageContent from '../../../UI/DashboardLayout/Pagecontant/pageContent';
 import PageHeader from '../../../UI/Page Header/pageHeader';
 import './users.css';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const UsersPage = () => {
 	const idToken = useSelector(store => store.AuthData.idToken);
@@ -17,22 +19,32 @@ const UsersPage = () => {
 			name: 'Name',
 			selector: row => row.name,
 			sortable: true,
-		},
-		{
-			name: 'Image',
 			cell: props => {
 				return (
 					<div>
-						<img
-							src={props.image.url}
-							className="rounded-3"
-							style={{ width: '75px' }}
-							alt="Seller Image"
-						></img>
+						{props.image ? (
+							<img
+								src={props.image && props.image.url}
+								className="rounded-circle d-inline-block "
+								style={{ width: '45px', height: '45px', marginRight: '10px' }}
+								// alt="Buyer Image"
+							></img>
+						) : (
+							// <p className="text-danger">No img</p>
+							<span className={`rounded-circle noImage`}
+							style={{ width: '45px', height: '45px', marginRight: '10px' }}
+							>
+								<FontAwesomeIcon icon={faUser}/>
+							</span>
+
+						)}
+
+						<p className="text-light d-inline-block">{props.name}</p>
 					</div>
 				);
 			},
 		},
+
 		{
 			name: 'E-mail',
 			selector: row => row.email,
@@ -40,10 +52,34 @@ const UsersPage = () => {
 		{
 			name: 'Phone',
 			selector: row => row.phoneNumber,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.phoneNumber ? (
+							<span className="text-light">{props.phoneNumber}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			name: 'National ID',
 			selector: row => row.nationalID,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.nationalID ? (
+							<span className="text-light">{props.nationalID}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			name: 'Actions',

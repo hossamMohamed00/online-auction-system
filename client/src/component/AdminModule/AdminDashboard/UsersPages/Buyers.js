@@ -12,6 +12,7 @@ import {
 	faCircleExclamation,
 	faCircleXmark,
 	faGavel,
+	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
 import BlockModal from '../../../UI/Modals/BlockModal';
@@ -42,20 +43,25 @@ const UsersPage = () => {
 			name: 'Name',
 			selector: row => row.name,
 			sortable: true,
-		},
-		{
-			name: 'Image',
-			// selector: row => row.image,
-			center: true,
 			cell: props => {
 				return (
 					<div>
-						<img
-							src={props.image.url}
-							className="rounded-3"
-							style={{ width: '75px' }}
-							alt="Buyer Image"
-						></img>
+						{props.image ? (
+							<img
+								src={props.image && props.image.url}
+								className="rounded-circle d-inline-block "
+								style={{ width: '45px', height: '45px', marginRight: '10px' }}
+								// alt="Buyer Image"
+							></img>
+						) : (
+							<span className={`rounded-circle noImage`}
+							style={{ width: '45px', height: '45px', marginRight: '10px' }}
+							>
+								<FontAwesomeIcon icon={faUser}/>
+							</span>
+						)}
+
+						<span className="text-light">{props.name}</span>
 					</div>
 				);
 			},
@@ -70,11 +76,35 @@ const UsersPage = () => {
 			name: 'Phone',
 			selector: row => row.phoneNumber,
 			sortable: true,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.phoneNumber ? (
+							<span className="text-light">{props.phoneNumber}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			name: 'National ID',
 			selector: row => row.nationalID,
 			sortable: true,
+			center: true,
+			cell: props => {
+				return (
+					<div>
+						{props.nationalID ? (
+							<span className="text-light">{props.nationalID}</span>
+						) : (
+							<span className="text-light">NA</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			name: 'Actions',
@@ -120,15 +150,6 @@ const UsersPage = () => {
 									Block
 								</>
 							)}
-						</button>
-						<br></br>
-						<button
-							type="button"
-							className="btn btn-primary btn-joinAuction mb-2 mt-0 px-3"
-							onClick={() => joinAuctionsHandler(props._id)}
-						>
-							<FontAwesomeIcon icon={faGavel} className="px-2 f-4" />
-							View Joined Auctions
 						</button>
 					</div>
 				);

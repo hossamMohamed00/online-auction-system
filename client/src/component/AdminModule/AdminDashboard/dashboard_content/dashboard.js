@@ -95,7 +95,7 @@ const DashboardContent = () => {
 		{
 			name: 'Not read',
 			number: data && data.complaints.notReadYet,
-			path: '/managersDashboard/notRead',
+			path: '/managersDashboard/allComplaints?notRead=true',
 		},
 	];
 	const columns = [
