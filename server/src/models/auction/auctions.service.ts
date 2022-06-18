@@ -411,6 +411,14 @@ export class AuctionsService
 			{ new: true },
 		);
 
+		//* Remove current cron job and create new one for the new end date
+		this.auctionSchedulingService.deleteCron(auctionId);
+
+		this.auctionSchedulingService.addCronJobForEndAuction(
+			auctionId,
+			newEndDate,
+		);
+
 		if (!updatedAuction) {
 			return {
 				success: false,
