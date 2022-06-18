@@ -71,7 +71,7 @@ const AllComplaintsInSystem = () => {
 
 	// handle read
 	const MarkAsRead = complaintId => {
-		setLoading(true)	
+		setLoading(true)
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'PATCH',
 			headers: {
@@ -80,11 +80,11 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				setLoading(false)	
+				setLoading(false)
 				return;
 			}
 			toast.success('New complaint marked as read by admin ✔✔')
-			setLoading(false)	
+			setLoading(false)
 			const timer = setTimeout(()=>{
 				window.location.reload()
 			},2000)
@@ -92,7 +92,7 @@ const AllComplaintsInSystem = () => {
 		});
 	};
 	const deleteComplaint = complaintId => {
-		setLoading(true)	
+		setLoading(true)
 
 		fetch(`${url}/admin/complaints/${complaintId}`, {
 			method: 'DELETE',
@@ -102,12 +102,12 @@ const AllComplaintsInSystem = () => {
 			},
 		}).then(response => {
 			if (!response.ok) {
-				setLoading(false)	
+				setLoading(false)
 				return;
 			}
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setReload(Math.random());
-			setLoading(false)	
+			setLoading(false)
 			const timer = setTimeout(()=>{
 				window.location.reload()
 			},2000)
@@ -175,7 +175,7 @@ const AllComplaintsInSystem = () => {
 				return (
 					<>
 						<button
-							className="btn btn-danger my-2 "
+							className="btn bg-danger my-2 "
 							onClick={() => deleteComplaint(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />

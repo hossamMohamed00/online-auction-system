@@ -25,6 +25,7 @@ const LoginForm = () => {
 
 	const { sendRequest, status, data, error } = useHttp(Login);
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const [load , setLoad] = useState(false)
 
 	const nameRef = useRef();
 	const passwordRef = useRef();
@@ -32,37 +33,7 @@ const LoginForm = () => {
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
 
-	const [ShowModal, setShowModal] = useState(false);
-
-	// start submit Login
-	useEffect(() => {
-			if (status === 'completed') {
-				setLoading(false)
-				const email = nameRef.current.value;
-				dispatch(
-					AuthDataActions.login({
-						idToken: data.accessToken,
-						role: data.role,
-						email: email,
-					}),
-				);
-				toast.success('Login Successfully ❤️‍🔥 ');
-				const timer = setTimeout(() => {
-					if (data.role === 'buyer') {
-						navigate('/home-page');
-					} else if (data.role === 'admin') {
-						navigate('/adminDashboard');
-					} else if (data && data.role === 'seller') {
-						navigate('/seller-dashboard');
-					}
-					if (data && data.role === 'employee') {
-						navigate('/employeeDashboard');
-					}
-				}, 1000);
-
-				return () => clearTimeout(timer);
-			}
-	}, [status]);
+	const [ShowModal, setShowModal] = useState('');
 
 	const submitHandler = e => {
 			e.preventDefault();
@@ -73,14 +44,44 @@ const LoginForm = () => {
 				idToken,
 			};
 			sendRequest(userDetails);
+			setLoad(Math.random())
+
 	};
+
+	// start submit Login
 	useEffect(() => {
-		if (status === 'error') {
+		if (status === 'completed') {
 			setLoading(false)
+			const email = nameRef.current.value;
+			dispatch(
+				AuthDataActions.login({
+					idToken: data.accessToken,
+					role: data.role,
+					email: email,
+				}),
+			);
+			toast.success('Login Successfully ❤️‍🔥 ');
+			const timer = setTimeout(() => {
+				if (data.role === 'buyer') {
+					navigate('/home-page');
+				} else if (data.role === 'admin') {
+					navigate('/adminDashboard');
+				} else if (data && data.role === 'seller') {
+					navigate('/seller-dashboard');
+				}
+				if (data && data.role === 'employee') {
+					navigate('/employeeDashboard');
+				}
+			}, 1000);
+
+			return () => clearTimeout(timer);
+		}
+		if (status === 'error' || error) {
+			setLoading(false)
+			console.log('error')
 			toast.error(error);
 		}
-	}, [status]);
-	// end submit Login
+}, [status , load]);
 
 
 	return (

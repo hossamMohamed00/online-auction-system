@@ -24,6 +24,7 @@ const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
 	const role = useSelector(store => store.AuthData.role);
+	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const email = useSelector(store => store.AuthData.email);
 
 	// show all bids when bidder is joined
@@ -38,7 +39,6 @@ const ViewCurrentAuction = React.memo(() => {
 
 	// start join auction
 	const accessToken = useSelector(store => store.AuthData.idToken);
-	const isLoggedIn = useSelector(store => store.AuthData.isLoggedIn);
 	const [AuctionEndMessage, setAuctionEndMessage] = useState('');
 	const [BidderWinner, setBidderWinner] = useState('');
 	const [BidderMessage, setBidderMessage] = useState();
@@ -158,7 +158,7 @@ const ViewCurrentAuction = React.memo(() => {
 									BidderWinner={BidderWinner}
 								/>
 							}
-							{(!ClosedAuction || role==='seller') && (
+							{(!ClosedAuction || role==='seller' || !isLoggedIn) && (
 								<AuctionFooter
 									AuctionStatus={AuctionData && AuctionData.status}
 									sellerEmail={AuctionData && AuctionData.seller.email}

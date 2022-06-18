@@ -113,13 +113,13 @@ const AllCompliments = () => {
 			setLoading(false)
 			toast.success('Deleted Successfully 💖🐱‍👤');
 			setReload(count);
-			
+
 			setReload(Math.random());
 			const timer = setTimeout(()=>{
 				window.location.reload()
 			},2000)
 			return () => clearTimeout(timer)
-			
+
 		});
 	};
 
@@ -188,7 +188,7 @@ const AllCompliments = () => {
 				return (
 					<>
 						<button
-							className="btn btn-danger my-2 "
+							className="btn bg-danger my-2 "
 							onClick={() => deleteComplaint(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />

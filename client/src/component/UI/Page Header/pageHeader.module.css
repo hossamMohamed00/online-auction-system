@@ -11,7 +11,7 @@
 .btnGetAuctions > h5,
 .btnGetAuctions {
 	transition: all 0.5s;
-	color: var(--alert-color) !important;
+	/* color: var(--alert-color) !important; */
 }
 
 @media screen and (max-width: 768px) {

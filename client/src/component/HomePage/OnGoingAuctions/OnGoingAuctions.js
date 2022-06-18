@@ -19,8 +19,8 @@ const OnGoingAuctions = () => {
 
 	return (
 		<Fragment>
-			<div className={`${classes.CurrentAuctions} container-fluied`}>
-				<PageHeader text="OnGoing  Auctions" showLink={true} />
+			<div className={`${classes.CurrentAuctions} container-fluid`}>
+				<PageHeader text="OnGoing  Auctions" showLink={true} filterText='ongoing'/>
 				{data && status === 'completed' && data.length > 0 && (
 					<ViewAuctionDetails AuctionData={FirstThreeItems} />
 				)}

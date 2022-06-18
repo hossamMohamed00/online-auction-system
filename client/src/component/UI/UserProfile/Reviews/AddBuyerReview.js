@@ -114,7 +114,7 @@ export const AddBuyerReview = props => {
 						Update Review
 					</button>
 					<button
-						className="btn btn-danger save_rate_btn delete_review"
+						className="btn bg-danger save_rate_btn delete_review"
 						onClick={deleteReview}
 					>
 						<FontAwesomeIcon icon={faXmark} />

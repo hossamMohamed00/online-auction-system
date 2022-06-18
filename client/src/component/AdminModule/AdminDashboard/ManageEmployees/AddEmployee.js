@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 // !for toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import AdminDashboard from '../home/adminDashboard';
 import Input from '../../../UI/Input/input';
 import classes from './addEmployee.module.css';
 import PageHeader from '../../../UI/Page Header/pageHeader';
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner'
 
 export default function AddEmployee() {
 	const nameRef = useRef();
@@ -16,6 +17,7 @@ export default function AddEmployee() {
 	const emailRef = useRef();
 	let successMessage, failedMessage;
 	const idToken = useSelector(store => store.AuthData.idToken);
+	const [loading , setLoading] = useState(false)
 
 	const validateEmail = value => value.trim().includes('@');
 	const validatePassword = value => value.trim().length > 4;
@@ -24,6 +26,7 @@ export default function AddEmployee() {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		setLoading(true)
 		const employeeData = {
 			name: nameRef.current.value,
 			email: emailRef.current.value,
@@ -39,10 +42,12 @@ export default function AddEmployee() {
 			},
 		}).then(response => {
 			if (!response.ok) {
+				setLoading(false)
 				toast.error('Employee with that name already exists ❌');
 
 				return;
 			}
+			setLoading(false)
 			nameRef.current.value = '';
 			emailRef.current.value = '';
 			passwordRef.current.value = '';
@@ -56,6 +61,7 @@ export default function AddEmployee() {
 			<PageContent>
 				{/*! to show toast */}
 				<ToastContainer theme="dark" />
+				{loading && <LoadingSpinner />}
 				<PageHeader text="Add employee" showLink={false} />
 				<h3 className={`text-center ${messageClasses} mt-4 fw-bold`}>
 					{successMessage ? successMessage : failedMessage}
@@ -110,7 +116,7 @@ export default function AddEmployee() {
 								/>
 							</div>
 						</div>
-						<button className={`btn btn-danger ${classes.btnSave}`}>
+						<button className={`btn bg-danger text-light ${classes.btnSave}`}>
 							Save Information
 						</button>
 					</form>
