@@ -263,7 +263,7 @@ function AuctionFooter({
 	useEffect(() => {
 		if (isJoined && role === 'buyer' && !UpComingStatus) {
 			showBids(Math.random());
-			setBidderJoin(true);
+			setBidderJoin(Math.random());
 		}
 	}, [isJoined]);
 

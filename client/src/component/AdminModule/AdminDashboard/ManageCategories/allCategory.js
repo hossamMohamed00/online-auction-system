@@ -47,7 +47,7 @@ const AllCategories = props => {
 				return (
 					<>
 						<button
-							className="btn btn-danger my-2 "
+							className="btn bg-danger text-light my-2 "
 							onClick={() => showModel(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />

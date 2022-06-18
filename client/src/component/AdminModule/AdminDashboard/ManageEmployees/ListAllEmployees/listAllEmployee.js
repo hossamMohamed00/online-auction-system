@@ -87,7 +87,7 @@ const ListAllEmployees = props => {
 				return (
 					<>
 						<button
-							className="btn btn-danger my-2 "
+							className="btn bg-danger my-2 "
 							onClick={() => showModel(props._id)}
 						>
 							<FontAwesomeIcon icon={faXmark} />

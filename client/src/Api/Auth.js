@@ -41,7 +41,8 @@ export const Login = async userDetails => {
 		},
 	});
 	const data = await response.json();
-	if (!response.ok) {
+	if (!response.ok || data.success === false) {
+		console.log(data.message , data)
 		throw new Error(data.message);
 	}
 

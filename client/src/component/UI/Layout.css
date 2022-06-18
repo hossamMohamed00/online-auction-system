@@ -107,6 +107,7 @@ html {
 .alert-danger .btn-danger {
 	background-color: var(--alert-color) !important;
 	border-color: var(--alert-color) !important;
+	color: white!important;
 }
 .btn-primary {
 	background-color: var(--main-color) !important ;
