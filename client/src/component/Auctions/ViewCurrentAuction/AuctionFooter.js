@@ -429,14 +429,14 @@ function AuctionFooter({
 				AuctionStatus === 'pending' && (
 					<div className="d-flex justify-content-evenly mt-3">
 						<button
-							className={`btn w-100 fw-bold btn-success ${classes.btnPlaceBid_}`}
+							className={`btn w-100 fw-bold btn-success ${classes.btnReject}`}
 							type="button"
 							onClick={approveHandler}
 						>
 							Approve
 						</button>
 						<button
-							className={`btn w-100 mx-2 fw-bold bg-danger ${classes.btnPlaceBid_}`}
+							className={`btn w-100 mx-2 fw-bold bg-danger ${classes.btnReject}`}
 							type="button"
 							onClick={() => setModalShow(true) }
 						>
@@ -524,7 +524,7 @@ function AuctionFooter({
 				errorWhenJoinAuction={
 					isExistErrorWhenJoinAuction && isExistErrorWhenJoinAuction
 				}
-				MinimumBidAllowed={MinimumBidAllowed}
+				MinimumBidAllowed={MinimumBidAllowed && MinimumBidAllowed}
 				chairCost={chairCost}
 				// start RetreatModal
 				RetreatModalTitle={RetreatModalTitle}

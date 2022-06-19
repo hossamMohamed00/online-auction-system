@@ -76,7 +76,8 @@
 
 /* start btns in footer */
 .btnPlaceBid,
-.btnPlaceBid_ {
+.btnPlaceBid_,
+.btnReject {
 	background-color: #244273;
 	color: white;
 	position: absolute;

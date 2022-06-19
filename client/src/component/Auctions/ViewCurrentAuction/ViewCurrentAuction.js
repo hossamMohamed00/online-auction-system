@@ -101,11 +101,7 @@ const ViewCurrentAuction = React.memo(() => {
 					setBidderMessage(data.message);
 				}
 				localStorage.removeItem('BidderIsJoined');
-				// const timer = setTimeout(() => {
-				// 	localStorage.removeItem('BidderIsJoined');
-				// 	window.location.reload();
-				// }, [3000]);
-				// return () => clearTimeout(timer);
+
 			});
 		}
 	}, [!!socket]);
@@ -132,7 +128,6 @@ const ViewCurrentAuction = React.memo(() => {
 							{AuctionData &&
 								(AuctionData.status === 'ongoing' || AuctionData.status === 'closed') && (
 									<BiddingDetails
-										// roomData= {(!isLoggedIn || role!=='buyer') ? AuctionData : roomData.auctionDetails }
 											roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
 											isShowBids={isShowBids}
 									/>
@@ -155,7 +150,6 @@ const ViewCurrentAuction = React.memo(() => {
 							{
 								<AuctionHeader
 									AuctionData={AuctionData}
-									// roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
 									isShownBidsProp={isShowBids}
 									BidderIsJoined={BidderIsJoined}
 									roomData={roomData ? roomData : AuctionData}
@@ -170,12 +164,7 @@ const ViewCurrentAuction = React.memo(() => {
 									socket={socket}
 									setBidderJoin={value => setBidderIsJoined(value)}
 									// setBidderIsBid={value => setBidderIsBid(value)}
-									// MinimumBidAllowed= {(!isLoggedIn || role!=='buyer') ? (AuctionData.minimumBidAllowed) : (roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']) }
-
-									MinimumBidAllowed={
-										roomData && roomData.auctionDetails ?
-										roomData.auctionDetails['minimumBidAllowed'] : (AuctionData && AuctionData['minimumBidAllowed'])
-									}
+									MinimumBidAllowed= { (roomData && roomData.auctionDetails) ?  (roomData.auctionDetails['minimumBidAllowed']) : AuctionData['minimumBidAllowed']}
 									chairCost={AuctionData && AuctionData.chairCost}
 									AuctionEndMessage={!!AuctionEndMessage}
 									RejectionMessage={AuctionData && AuctionData.rejectionMessage}
