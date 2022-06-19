@@ -1,4 +1,8 @@
-import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import {
+	faDollarSign,
+	faUsers,
+	faHeartCircleBolt,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
@@ -8,22 +12,22 @@ import classes from './Services.module.css';
 function Services() {
 	const servicesData = [
 		{
-			icon: faDollarSign,
-			heading: 'Live Bidding',
+			icon: faHeartCircleBolt,
+			heading: 'Convenience',
 			text:
-				'Some quick example text to build on the card title and make up the bulk of the content.',
+				'Online auctions provide every individual with the convenience they are looking for. Buyers can take part in multiple auctions conducted in different places around the world on the same day. You can also buy your favorite items from the same place you bid on.',
 		},
 		{
 			icon: faDollarSign,
-			heading: 'Live Bidding',
+			heading: 'Cost-saving',
 			text:
-				'Some quick example text to build on the card title and make up the bulk of the content.',
+				'As every item is pictured, sold, and picked up from the same location, there is no need to keep an inventory of all the items. You will be able to save a huge amount of money that you might have to spend on the security of the items, shipping the items, or inventorying the items.',
 		},
 		{
-			icon: faDollarSign,
-			heading: 'Live Bidding',
+			icon: faUsers,
+			heading: 'More Bidders',
 			text:
-				'Some quick example text to build on the card title and make up the bulk of the content.',
+				'Online auctions make it easy to reach bidders from around the world. There are plenty of younger bidders, people who only want one item, or even stay-at-home bidders who take part in online auctions. As there are many buyers in an online auction, you can expect better results for the items you put up.',
 		},
 	];
 

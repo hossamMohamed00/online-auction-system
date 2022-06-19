@@ -676,8 +676,10 @@ export class AuctionsService
 		//* Get all auctions with status 'closed'
 		const closedAuctions = await this.auctionModel
 			.find({
-				status: AuctionStatus.Closed,
-				winningBuyer: { $exists: true },
+				$and: [
+					{ status: AuctionStatus.Closed },
+					{ winningBuyer: { $ne: null } },
+				],
 			})
 			.populate('winningBuyer')
 			.sort({ startDate: -1 });
@@ -709,7 +711,10 @@ export class AuctionsService
 	async getTopAuctionsForDashboard(top?: number): Promise<Auction[]> {
 		const topAuctions = await this.auctionModel
 			.find({
-				status: AuctionStatus.OnGoing,
+				$and: [
+					{ status: AuctionStatus.OnGoing },
+					{ numberOfBids: { $gte: 3 } },
+				],
 			})
 			.populate('category')
 			.limit(top || 5)
