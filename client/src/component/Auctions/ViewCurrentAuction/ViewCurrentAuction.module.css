@@ -80,7 +80,7 @@
 	background-color: #244273;
 	color: white;
 	position: absolute;
-	bottom: 10px;
+	bottom: 0px;
 	width: 90% !important;
 	margin-left: 3%;
 	left: 15px;
@@ -91,6 +91,7 @@
 
 .btnPlaceBid_ {
 	width: 45% !important;
+
 }
 .btnJoinActive {
 	width: 90% !important;
@@ -101,7 +102,7 @@
 	right: 15px;
 	font-size: 20px;
 	transition: all 0.5s;
-	bottom: 10px;
+	bottom: 0px;
 	box-shadow: none !important;
 	background-color: #244273;
 	width: 45% !important;

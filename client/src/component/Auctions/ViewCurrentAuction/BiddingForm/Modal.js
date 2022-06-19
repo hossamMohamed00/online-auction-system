@@ -9,7 +9,7 @@ import useHttp from '../../../../CustomHooks/useHttp';
 import classes from './Modal.module.css';
 
 const ModalUi = props => {
-	const [BidValue, setBidValue] = useState(props.MinimumBidAllowed && props.MinimumBidAllowed);
+	const [BidValue, setBidValue] = useState();
 	console.log(props.MinimumBidAllowed &&  props.MinimumBidAllowed)
 	const [isBidValid, setIsBidValid] = useState(true);
 	const rejectRef = useRef();
