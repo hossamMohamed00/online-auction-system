@@ -18,18 +18,16 @@ import { CardsContainer } from './card_content/CardsContainer';
 const DashboardContent = () => {
 	const { sendRequest, data } = useHttp(getDashboardData);
 	// const [loading, setLoading] = useState(false);
-	const {
-		sendRequest: sendRequestForWinners,
-		data: dataForWinners,
-	} = useHttp(getWinners);
+	const { sendRequest: sendRequestForWinners, data: dataForWinners } = useHttp(
+		getWinners,
+	);
 	const {
 		sendRequest: sendRequestForAuctions,
 		data: dataForAuctions,
 	} = useHttp(getTopAuctions);
-	const {
-		sendRequest: sendRequestForProfile,
-		data: dataForProfile,
-	} = useHttp(getProfileData);
+	const { sendRequest: sendRequestForProfile, data: dataForProfile } = useHttp(
+		getProfileData,
+	);
 	const idToken = useSelector(store => store.AuthData.idToken);
 	const role = useSelector(store => store.AuthData.role);
 	useEffect(() => {
@@ -44,7 +42,6 @@ const DashboardContent = () => {
 			sendRequestForAuctions(idToken);
 			sendRequestForProfile(idToken);
 		}, 60000);
-
 	}, [
 		sendRequest,
 		sendRequestForWinners,
@@ -118,13 +115,11 @@ const DashboardContent = () => {
 			name: 'WinnerEmail',
 			selector: row => row.winningBuyer.email,
 			center: true,
-			hyperlink: true,
+			hyperlink: false,
 			cell: props => {
 				return (
 					<span className="text-decoration-none fw-bold">
-						<Link to={`/buyers?id=${props.auction._id}`}>
-							{props.winningBuyer.email}
-						</Link>
+						<Link to={`#`}>{props.winningBuyer.email}</Link>
 					</span>
 				);
 			},
@@ -142,13 +137,12 @@ const DashboardContent = () => {
 		<>
 			<div className="mt-5 ">
 				{/* {loading && <LoadingSpinner />} */}
-				{dataForProfile &&
+				{dataForProfile && (
 					<PageHeader
 						text={`Welcome back ${dataForProfile && dataForProfile.name}`}
 						showLink={false}
-
 					/>
-				}
+				)}
 			</div>
 
 			<div className="container_">
@@ -170,8 +164,8 @@ const DashboardContent = () => {
 												</div>
 												<h4 className="d-inline-block ms-2 ">{item.title}</h4>
 												<div className="bidders">
-													Number of bidders :{' '}
-													<span className="text-light">{item.__v}</span>
+													Number of Bids :{' '}
+													<span className="text-light">{item.numOfBids}</span>
 												</div>
 											</div>
 										</div>

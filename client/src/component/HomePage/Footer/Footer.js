@@ -46,7 +46,7 @@ function Footer() {
 		return '/';
 	};
 
-	const HideContactChat =( role === 'admin' ||  role === 'employee');
+	const HideContactChat = role === 'admin' || role === 'employee';
 
 	// start footerMoreDetails
 	const FooterMoreDetailsData = [
@@ -55,16 +55,16 @@ function Footer() {
 			links: [
 				{ name: 'Home Page', path: '/' },
 				{ name: 'Auctions', path: '/auctions' },
-				{ name: 'How Bid', path: '/how-bid' },
-				{ name: 'Categories', path: '/' },
+				{ name: 'How Bid', path: '#' },
+				{ name: 'Categories', path: '/auctions' },
 			],
 		},
 		{
 			text: 'Buy',
 			links: [
 				{ name: 'Registration', path: '/register' },
-				{ name: 'Charge Wallet', path: '/auctions' },
-				{ name: 'Bidding', path: '/' },
+				{ name: 'Charge Wallet', path: '#' },
+				{ name: 'Bidding', path: '#' },
 			],
 		},
 		{
@@ -104,7 +104,7 @@ function Footer() {
 					<li
 						key={index}
 						className={
-							(_link.name === 'Chat now' && HideContactChat)
+							_link.name === 'Chat now' && HideContactChat
 								? 'd-none'
 								: 'd-block'
 						}
