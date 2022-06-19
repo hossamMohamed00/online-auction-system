@@ -26,7 +26,7 @@ export class Auction {
 		type: Types.ObjectId,
 		ref: Item.name,
 	})
-	item: Types.ObjectId;
+	item: Item;
 
 	@Prop({ required: true, min: 0 })
 	basePrice: number; //? Auction starting price

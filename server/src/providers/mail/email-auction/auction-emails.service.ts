@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ResponseResult } from 'src/common/types';
 import { Auction } from 'src/models/auction/schema/auction.schema';
+import { Buyer } from 'src/models/users/buyer/schema/buyer.schema';
 import { UserDocument } from 'src/models/users/shared-user/schema/user.schema';
 import { UsersService } from 'src/models/users/shared-user/users.service';
 import EmailService from 'src/providers/mail/email.service';
 import { getBlockUserEmailContent } from './content/block-user-content';
+import { getEmailAuctionWinnerContent } from './content/email-auction-winner-content';
 import { getNotifyAuctionStartContent } from './content/notify-auction-start-content';
 import { getWarnUserEmailContent } from './content/warn-user-content';
 
@@ -40,6 +42,33 @@ export class AuctionEmailsService {
 		} else {
 			this.logger.log(
 				'Cannot sent notification email right now right now ❌😢',
+			);
+			return false;
+		}
+	}
+
+	/**
+	 * Send email to auction's winner
+	 * @param auction: Auction details
+	 * @param winnerBidder: Bidder object
+	 */
+	async sendToWinnerBidder(auction: Auction, winnerBidder: Buyer) {
+		//? Get the email content
+		const emailText = getEmailAuctionWinnerContent(auction, winnerBidder);
+
+		//? Send the email
+		const emailStatus: boolean = await this.emailService.sendMail({
+			to: winnerBidder.email,
+			subject: 'Online Auction - Auction Winner 🎉',
+			html: emailText,
+		});
+
+		if (emailStatus) {
+			this.logger.log(`Email has been sent auction's winner 📧`);
+			return true;
+		} else {
+			this.logger.log(
+				"Cannot sent email to auction's winner right now right now ❌😢",
 			);
 			return false;
 		}

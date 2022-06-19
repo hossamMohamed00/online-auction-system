@@ -795,7 +795,23 @@ export class AuctionsService
 		// Recover all joined bidders auction assurance (except winner bidder)
 		await this.recoverAuctionAssurance(auctionId);
 
+		await this.sendEmailToWinner(auctionId);
+
 		return true;
+	}
+
+	/**
+	 * Send email to the auction's winner bidder
+	 */
+	async sendEmailToWinner(auctionId: string): Promise<void> {
+		const auction = await this.auctionModel
+			.findById(auctionId)
+			.populate('winningBuyer seller item category');
+
+		await this.auctionEmailsService.sendToWinnerBidder(
+			auction,
+			auction.winningBuyer,
+		);
 	}
 
 	/**
