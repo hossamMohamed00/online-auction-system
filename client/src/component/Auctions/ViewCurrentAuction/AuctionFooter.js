@@ -19,12 +19,13 @@ function AuctionFooter({
 	showBids,
 	socket,
 	setBidderJoin,
-	setBidderIsBid,
+	// setBidderIsBid,
 	MinimumBidAllowed,
 	chairCost,
 	AuctionEndMessage,
 }) {
 	const [loading , setLoading] = useState(false)
+
 	const location = useLocation();
 	const navigate = useNavigate();
 	const AuctionId = new URLSearchParams(location.search).get('id');
@@ -90,16 +91,14 @@ function AuctionFooter({
 					localStorage.setItem('BidderIsJoined' , true)
 					setIsJoined(true)
 					setBidderJoin(true)
+					window.location.reload()
 				}
 			}
 			else{
 				console.log('not join')
-
 				localStorage.removeItem('BidderIsJoined')
 				setIsJoined(false)
 				setBidderJoin(false)
-
-
 			}
 		}
 
@@ -159,7 +158,6 @@ function AuctionFooter({
 	useEffect(() => {
 		if (status === 'completed') {
 			sendRequest({ AuctionId: AuctionId, idToken: accessToken });
-			window.reload();
 		}
 	}, [sendRequest]);
 
@@ -213,7 +211,7 @@ function AuctionFooter({
 
 	// start join auction handler
 	const joinAuctionHandler = OnGoingStatus => {
-		setBidderIsBid(false);
+		// setBidderIsBid(false);
 		console.log(isJoined)
 		if (OnGoingStatus && !isJoined) {
 			console.log('join' )
@@ -227,7 +225,7 @@ function AuctionFooter({
 			setRetreatModalTitle('');
 			setConfirmJoin('');
 
-			setBidderIsBid(Math.random());
+			setBidderJoin(true)
 			setBidsNow(true);
 			setModalShow(true);
 		} else {
@@ -257,13 +255,6 @@ function AuctionFooter({
 
 			setIsExistErrorWhenJoinAuction(data.message);
 			setModalShow(true);
-			// const time = setTimeout(() => {
-			// 	setIsExistErrorWhenJoinAuction('');
-			// 	if (modalShow) {
-			// 		setModalShow(false);
-			// 	}
-			// }, [4000]);
-			// return () => time.clearTimeOut();
 		});
 		setModalShow(false);
 		setLoading(false)
@@ -313,11 +304,8 @@ function AuctionFooter({
 
 	useEffect(() => {
 		if (isJoined && role === 'buyer' && OnGoingStatus) {
+			setBidderJoin(true)
 			showBids(Math.random());
-			setBidderIsBid(true);
-		}
-		else{
-			setBidderIsBid(false);
 		}
 	}, [isJoined , role , OnGoingStatus]);
 
@@ -357,11 +345,12 @@ function AuctionFooter({
 				setLoading(false)
 				setModalShow(false);
 				setBidderJoin(true)
-
 				toast.success('new Bid is Adding Successfully ❤️‍🔥 ');
 			});
 		}
+
 	}, [socket]);
+
 	// end new Bid Listener
 	// end join auction handler
 
@@ -440,14 +429,14 @@ function AuctionFooter({
 				AuctionStatus === 'pending' && (
 					<div className="d-flex justify-content-evenly mt-3">
 						<button
-							className={`btn w-100 fw-bold btn-success`}
+							className={`btn w-100 fw-bold btn-success ${classes.btnPlaceBid_}`}
 							type="button"
 							onClick={approveHandler}
 						>
 							Approve
 						</button>
 						<button
-							className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+							className={`btn w-100 mx-2 fw-bold bg-danger ${classes.btnPlaceBid_}`}
 							type="button"
 							onClick={() => setModalShow(true) }
 						>
@@ -461,7 +450,7 @@ function AuctionFooter({
 			{(role === 'seller' && email === sellerEmail && !OnGoingStatus && isLoggedIn ) && (
 				<div className="d-flex justify-content-evenly mt-3">
 					<button
-						className={`btn w-100 fw-bold btn-success text-light`}
+						className={`btn w-100 fw-bold bg-success text-light ${classes.btnReject} `}
 						type="button"
 					>
 						<Link
@@ -472,7 +461,7 @@ function AuctionFooter({
 						</Link>
 					</button>
 					<button
-						className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+						className={`btn w-100 mx-2 fw-bold bg-danger  ${classes.btnReject}`}
 						type="button"
 						onClick={() => setModalShow(true)}
 					>
@@ -498,7 +487,7 @@ function AuctionFooter({
 				OnGoingStatus && (
 					<div className="d-flex justify-content-evenly mt-3">
 						<button
-							className={`btn w-100 mx-2 fw-bold ${classes.btnReject}`}
+							className={`btn w-100 mx-2 fw-bold bg-danger ${classes.btnPlaceBid}`}
 							type="button"
 							onClick={() => ExtendAuctionTimeModalHandler(AuctionId)}
 						>

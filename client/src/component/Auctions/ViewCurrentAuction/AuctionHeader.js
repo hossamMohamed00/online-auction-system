@@ -6,7 +6,7 @@ import Bids from './Bids';
 
 import classes from './ViewCurrentAuction.module.css';
 
-function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
+function AuctionHeader({ AuctionData, isShownBidsProp, BidderIsJoined ,  roomData , messageToClient }) {
 	const [isShownDetails, setIsShownDetails] = useState(true);
 	const [isShownBids, setIsShownBids] = useState(false);
 	const [isShownBidders, setIsShownBidders] = useState(false);
@@ -104,17 +104,13 @@ function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
 			}
 			{isShownBids && (
 				<Bids
-					socket={socket}
+					// roomData = {(roomData && roomData)  ? roomData : AuctionData}
+					messageToClient = {messageToClient && messageToClient}
 					roomData ={
-						(AuctionData && AuctionData['status'] !== 'ongoing' ) ? AuctionData :
+						(AuctionData && AuctionData['status'] !== 'ongoing' || (!BidderIsJoined && role==='buyer')) ? AuctionData :
 						((AuctionData && AuctionData['status'] === 'ongoing' && AuctionData['status'] !== 'upcoming' && ( !isLoggedIn || role !== 'buyer') ) ? AuctionData : ((roomData && roomData) ? roomData : AuctionData) )
-
 					}
-					// roomData={
-					// 	AuctionData && AuctionData['status'] !== 'ongoing'
-					// 		? AuctionData
-					// 		: roomData
-					// }
+
 				/>
 			)}
 			{isShownBidders && (
@@ -125,7 +121,7 @@ function AuctionHeader({ AuctionData, isShownBidsProp, socket, roomData }) {
 					// 		: roomData
 					// }
 					roomData ={
-						(AuctionData && AuctionData['status'] !== 'ongoing' ) ? AuctionData :
+						(AuctionData && AuctionData['status'] !== 'ongoing' || (!BidderIsJoined && role==='buyer')) ? AuctionData :
 						((AuctionData && AuctionData['status'] === 'ongoing' && AuctionData['status'] !== 'upcoming' && ( !isLoggedIn || role !== 'buyer') ) ? AuctionData : ((roomData && roomData) ? roomData : AuctionData) )
 					}
 				/>

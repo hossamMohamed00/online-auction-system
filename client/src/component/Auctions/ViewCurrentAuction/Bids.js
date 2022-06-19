@@ -7,22 +7,9 @@ import classes from './Bids.module.css';
 import scrollbarStyle from '../../UI/ScrollBar.module.css';
 import moment from 'moment';
 
-const Bids = ({ socket, roomData }) => {
-	const [messageToClient, setMessageToClient] = useState('');
-	const [status , setStatus] = useState()
-	useEffect(() => {
-		if (socket) {
-			setStatus('ongoing')
-			socket.on('message-to-client', data => {
-				setMessageToClient(data.message);
-			});
-		}
-		else{
-			setStatus('closed')
-		}
-	}, [socket]);
-
-	const showRoomData = roomData.bids  && (
+const Bids = ({roomData , messageToClient , status}) => {
+	console.log(roomData && roomData)
+	const showRoomData = roomData && roomData.bids  && (
 		roomData.bids.map((bidDetails, index) => (
 			<div
 				className={`${classes.BidsContent} toast d-block mb-3 w-100`}

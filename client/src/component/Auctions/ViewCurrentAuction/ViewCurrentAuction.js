@@ -29,8 +29,8 @@ const ViewCurrentAuction = React.memo(() => {
 
 	// show all bids when bidder is joined
 	const [isShowBids, setIsShowBids] = useState('');
-	const [BidderIsJoined, setBidderIsJoined] = useState(true);
-	const [BidderIsBid, setBidderIsBid] = useState(true);
+	const [BidderIsJoined, setBidderIsJoined] = useState('');
+	// const [BidderIsBid, setBidderIsBid] = useState(true);
 
 	const [socket, setSocket] = useState(null);
 	const [roomData, setRoomData] = useState([]);
@@ -42,6 +42,8 @@ const ViewCurrentAuction = React.memo(() => {
 	const [AuctionEndMessage, setAuctionEndMessage] = useState('');
 	const [BidderWinner, setBidderWinner] = useState('');
 	const [BidderMessage, setBidderMessage] = useState();
+	const [messageToClient, setMessageToClient] = useState('');
+
 
 	// establish socket connection
 	useEffect(() => {
@@ -59,6 +61,13 @@ const ViewCurrentAuction = React.memo(() => {
 	}, [BidderIsJoined]);
 
 		console.log("BidderIsJoined" ,BidderIsJoined)
+		useEffect(() => {
+			if (socket) {
+				socket.on('message-to-client', data => {
+					setMessageToClient(data.message);
+				});
+			}
+		}, [socket]);
 
 
 	useEffect(() => {
@@ -126,7 +135,6 @@ const ViewCurrentAuction = React.memo(() => {
 										// roomData= {(!isLoggedIn || role!=='buyer') ? AuctionData : roomData.auctionDetails }
 											roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
 											isShowBids={isShowBids}
-											BidderIsBid={BidderIsBid}
 									/>
 								)}
 							{/* end Bidding Details */}
@@ -147,13 +155,11 @@ const ViewCurrentAuction = React.memo(() => {
 							{
 								<AuctionHeader
 									AuctionData={AuctionData}
-									roomData= {(!isLoggedIn || role!=='buyer') ? AuctionData : roomData }
+									// roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
 									isShownBidsProp={isShowBids}
-									socket={socket}
 									BidderIsJoined={BidderIsJoined}
-									BidderIsBid={BidderIsBid}
-									// roomData={roomData ? roomData : AuctionData}
-									BidderWinner={BidderWinner}
+									roomData={roomData ? roomData : AuctionData}
+									messageToClient = {messageToClient && messageToClient}
 								/>
 							}
 							{(!ClosedAuction || role==='seller' || !isLoggedIn) && (
@@ -163,7 +169,7 @@ const ViewCurrentAuction = React.memo(() => {
 									showBids={value => setIsShowBids(value)}
 									socket={socket}
 									setBidderJoin={value => setBidderIsJoined(value)}
-									setBidderIsBid={value => setBidderIsBid(value)}
+									// setBidderIsBid={value => setBidderIsBid(value)}
 									// MinimumBidAllowed= {(!isLoggedIn || role!=='buyer') ? (AuctionData.minimumBidAllowed) : (roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']) }
 
 									MinimumBidAllowed={
