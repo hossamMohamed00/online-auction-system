@@ -12,7 +12,7 @@ const Bids = ({roomData , messageToClient , status}) => {
 	const showRoomData = roomData && roomData.bids  && (
 		roomData.bids.map((bidDetails, index) => (
 			<div
-				className={`${classes.BidsContent} toast d-block mb-3 w-100`}
+				className={`${classes.BidsContent} toast d-block mb-2 w-100`}
 				role="alert"
 				key={index}
 			>

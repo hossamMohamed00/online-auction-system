@@ -20,6 +20,11 @@ import { toast } from 'react-toastify';
 import ModalUi from '../../UI/Modal/modal';
 import NoData from '../../UI/NoData';
 
+import WinnerAudio_ from '../../../assets/Audio/win.mp3'
+import EndAuctionAudio_ from '../../../assets/Audio/finished.mp3'
+
+
+
 const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
@@ -44,12 +49,14 @@ const ViewCurrentAuction = React.memo(() => {
 	const [BidderMessage, setBidderMessage] = useState();
 	const [messageToClient, setMessageToClient] = useState('');
 
+	// start audio
+	const WinnerAudio = new Audio(WinnerAudio_)
+	const EndAuctionAudio = new Audio(EndAuctionAudio_)
+
 
 	// establish socket connection
 	useEffect(() => {
-		console.log("BidderIsJoined" , BidderIsJoined)
 		if (BidderIsJoined && accessToken) {
-			console.log("initial socket")
 			setSocket(
 				io('http://localhost:8000/auction/bidding', {
 					extraHeaders: {
@@ -60,7 +67,6 @@ const ViewCurrentAuction = React.memo(() => {
 		}
 	}, [BidderIsJoined]);
 
-		console.log("BidderIsJoined" ,BidderIsJoined)
 		useEffect(() => {
 			if (socket) {
 				socket.on('message-to-client', data => {
@@ -87,6 +93,7 @@ const ViewCurrentAuction = React.memo(() => {
 				});
 				setIsShowBids(false);
 				toast.success(data.message);
+
 			});
 		}
 	}, [!!socket]);
@@ -97,10 +104,26 @@ const ViewCurrentAuction = React.memo(() => {
 				setBidderWinner(true);
 				if (data.winnerEmail === email) {
 					setBidderMessage(data.winnerMessage);
+					WinnerAudio.play()
+
+					const time = setTimeout(() => {
+						WinnerAudio.pause();
+						localStorage.removeItem('BidderIsJoined');
+						window.location.reload()
+
+					}, 3000);
+					return () => time.clearTimeOut();
 				} else {
 					setBidderMessage(data.message);
+					EndAuctionAudio.play()
+
+					const time = setTimeout(() => {
+						EndAuctionAudio.pause();
+						window.location.reload()
+					}, 4000);
+					return () => time.clearTimeOut();
 				}
-				localStorage.removeItem('BidderIsJoined');
+
 
 			});
 		}
@@ -128,8 +151,8 @@ const ViewCurrentAuction = React.memo(() => {
 							{AuctionData &&
 								(AuctionData.status === 'ongoing' || AuctionData.status === 'closed') && (
 									<BiddingDetails
-											roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
-											isShowBids={isShowBids}
+										roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
+										isShowBids={isShowBids}
 									/>
 								)}
 							{/* end Bidding Details */}

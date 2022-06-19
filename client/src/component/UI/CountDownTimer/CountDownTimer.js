@@ -4,13 +4,16 @@ import { toast } from 'react-toastify';
 import useTimer from '../../../CustomHooks/useTimer';
 
 import classes from './CountDownTimer.module.css';
-import StartAuctionAudio from '../../../assets/Audio/DEX8Q55-japanese-ready-ding.mp3'
+import StartAuctionAudio_ from '../../../assets/Audio/start.mp3'
+import EndAuctionAudio_ from '../../../assets/Audio/finished.mp3'
+
 
 const CountDownTimer = ({AuctionDate , status}) => {
 
 	// initialize audio
-	const StartAuctionAudion = new Audio(StartAuctionAudio)
-	// const [playStartAuctionAudion , setPlayStartAuctionAudion] = useState(false)
+	const StartAuctionAudio = new Audio(StartAuctionAudio_)
+	const EndAuctionAudio = new Audio(EndAuctionAudio_)
+
 
 	const getDate = useCallback((AuctionDate) => {
 		const timer = useTimer(new Date(AuctionDate));
@@ -25,7 +28,11 @@ const CountDownTimer = ({AuctionDate , status}) => {
 		}
 		if(timer.isTimeUp && status === 'ongoing' ){
 			toast.success(`Auction will Be Closed Now 💔🙃`)
+			EndAuctionAudio.play()
+
 			timeOut2 = setTimeout(()=>{
+				EndAuctionAudio.pause()
+
 				window.location.reload()
 
 			},3000)

@@ -81,7 +81,7 @@ const LoginForm = () => {
 			console.log('error')
 			toast.error(error);
 		}
-}, [status , load]);
+}, [status]);
 
 
 	return (

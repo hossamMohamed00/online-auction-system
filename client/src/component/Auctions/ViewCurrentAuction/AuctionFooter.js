@@ -12,6 +12,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CheckIfAuctionSaved, getJoinedAuctions, joinAuctionApi } from '../../../Api/BuyerApi';
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
+
+// start audio url
+import StartAuctionAudio_ from '../../../assets/Audio/start.mp3'
+import EndAuctionAudio_ from '../../../assets/Audio/finished.mp3'
+import NewBidAudio_ from '../../../assets/Audio/add-new-bid.mp3'
+
 function AuctionFooter({
 	AuctionStatus,
 	sellerEmail,
@@ -19,7 +25,6 @@ function AuctionFooter({
 	showBids,
 	socket,
 	setBidderJoin,
-	// setBidderIsBid,
 	MinimumBidAllowed,
 	chairCost,
 	AuctionEndMessage,
@@ -34,6 +39,13 @@ function AuctionFooter({
 	const [modalShow, setModalShow] = useState(false);
 	const [btnSavedValue, setBtnSavedValue] = useState('Save Auction');
 	const [RetreatModalTitle, setRetreatModalTitle] = useState('');
+
+	// start sounds
+	const StartAuctionAudio = new Audio(StartAuctionAudio_)
+	const NewBidAudio = new Audio(NewBidAudio_)
+	const EndAuctionAudio = new Audio(EndAuctionAudio_)
+
+	// end sounds
 
 
 	const role = useSelector(store => store.AuthData.role);
@@ -83,19 +95,24 @@ function AuctionFooter({
 			const joinedAuctions = dataForJoinedAuctions && [...dataForJoinedAuctions.joinedAuctions]
 			console.log(joinedAuctions.filter((data)=> data._id === AuctionId && data.status) )
 			const checkIfJoined = joinedAuctions.length > 0 && joinedAuctions.filter((data)=> data._id === AuctionId && data.status)
-			console.log(checkIfJoined )
 
 			if( checkIfJoined && checkIfJoined.length > 0  ) {
-				console.log('join')
 				if(!localStorage.getItem('BidderIsJoined')){
 					localStorage.setItem('BidderIsJoined' , true)
 					setIsJoined(true)
 					setBidderJoin(true)
 					window.location.reload()
+
+					StartAuctionAudio.play()
+					const timer = setTimeout(()=>{
+					StartAuctionAudio.pause();
+						window.location.reload()
+
+					},2000)
+					return ()=> clearTimeout(timer)
 				}
 			}
 			else{
-				console.log('not join')
 				localStorage.removeItem('BidderIsJoined')
 				setIsJoined(false)
 				setBidderJoin(false)
@@ -211,8 +228,6 @@ function AuctionFooter({
 
 	// start join auction handler
 	const joinAuctionHandler = OnGoingStatus => {
-		// setBidderIsBid(false);
-		console.log(isJoined)
 		if (OnGoingStatus && !isJoined) {
 			console.log('join' )
 			setModalShow(true);
@@ -232,7 +247,41 @@ function AuctionFooter({
 			setModalShow(true);
 		}
 	};
+		// start join
+		useEffect(() => {
+			if (statusForJoinAuction === 'completed') {
+				setLoading(false)
+				if (role === 'buyer') {
+					setConfirmJoin('');
+					setModalShow(false);
+					toast.success(dataForJoinAuction.message);
+					localStorage.setItem('BidderIsJoined', dataForJoinAuction.success);
 
+					setIsJoined(localStorage.getItem('BidderIsJoined'));
+					setBidderJoin(localStorage.getItem('BidderIsJoined'))
+					showBids(Math.random());
+
+					StartAuctionAudio.play()
+					const timer = setTimeout(()=>{
+					StartAuctionAudio.pause();
+						window.location.reload()
+
+					},2000)
+					return ()=> clearTimeout(timer)
+				} else {
+					localStorage.removeItem('BidderIsJoined');
+					setIsJoined(false);
+				}
+			}
+			if (statusForJoinAuction === 'error') {
+				setLoading(false)
+				toast.error(errorForJoinAuction);
+				localStorage.removeItem('BidderIsJoined');
+				setIsJoined(false);
+			}
+		}, [statusForJoinAuction]);
+
+	// start leave auction
 	const LeaveAuctionHandler = () => {
 		setBidsNow(false);
 		setModalShow(true);
@@ -256,46 +305,17 @@ function AuctionFooter({
 			setIsExistErrorWhenJoinAuction(data.message);
 			setModalShow(true);
 		});
+
 		setModalShow(false);
 		setLoading(false)
 		setRetreatModalTitle('');
-
-		const time = setTimeout(() => {
-			window.location.reload()
-		}, [4000]);
-		return () => time.clearTimeOut();
 	};
 
-	useEffect(() => {
-		if (statusForJoinAuction === 'completed') {
-			setLoading(false)
-			if (role === 'buyer') {
-				setConfirmJoin('');
-				setModalShow(false);
-				toast.success(dataForJoinAuction.message);
-				localStorage.setItem('BidderIsJoined', dataForJoinAuction.success);
 
-				setIsJoined(localStorage.getItem('BidderIsJoined'));
-				setBidderJoin(localStorage.getItem('BidderIsJoined'))
-				showBids(Math.random());
-				window.location.reload()
-			} else {
-				localStorage.removeItem('BidderIsJoined');
-				setIsJoined(false);
-			}
-		}
-		if (statusForJoinAuction === 'error') {
-			setLoading(false)
-			toast.error(errorForJoinAuction);
-			localStorage.removeItem('BidderIsJoined');
-			setIsJoined(false);
-		}
-	}, [statusForJoinAuction]);
 
 	// if bidder accept block money from your wallet
 	const btnConfirmationHandler = () => {
 		setLoading(true)
-
 		// start send request to join auction
 		const idToken = accessToken;
 		const id = AuctionId;
@@ -344,8 +364,14 @@ function AuctionFooter({
 			socket.on('new-bid', data_ => {
 				setLoading(false)
 				setModalShow(false);
-				setBidderJoin(true)
+				setBidderJoin(true);
 				toast.success('new Bid is Adding Successfully ❤️‍🔥 ');
+				NewBidAudio.play()
+				const timer = setTimeout(()=>{
+					NewBidAudio.pause();
+				},3000)
+
+				return ()=> clearTimeout(timer)
 			});
 		}
 
@@ -429,7 +455,7 @@ function AuctionFooter({
 				AuctionStatus === 'pending' && (
 					<div className="d-flex justify-content-evenly mt-3">
 						<button
-							className={`btn w-100 fw-bold btn-success ${classes.btnReject}`}
+							className={`btn w-100 fw-bold bg-success ${classes.btnReject}`}
 							type="button"
 							onClick={approveHandler}
 						>
