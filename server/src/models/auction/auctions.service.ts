@@ -676,8 +676,10 @@ export class AuctionsService
 		//* Get all auctions with status 'closed'
 		const closedAuctions = await this.auctionModel
 			.find({
-				status: AuctionStatus.Closed,
-				winningBuyer: { $exists: true },
+				$and: [
+					{ status: AuctionStatus.Closed },
+					{ winningBuyer: { $ne: null } },
+				],
 			})
 			.populate('winningBuyer')
 			.sort({ startDate: -1 });
