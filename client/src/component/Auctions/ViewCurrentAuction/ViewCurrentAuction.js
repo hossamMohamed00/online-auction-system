@@ -20,6 +20,11 @@ import { toast } from 'react-toastify';
 import ModalUi from '../../UI/Modal/modal';
 import NoData from '../../UI/NoData';
 
+import WinnerAudio_ from '../../../assets/Audio/win.mp3'
+import EndAuctionAudio_ from '../../../assets/Audio/finished.mp3'
+
+
+
 const ViewCurrentAuction = React.memo(() => {
 	const location = useLocation();
 	const AuctionId = new URLSearchParams(location.search).get('id');
@@ -29,8 +34,8 @@ const ViewCurrentAuction = React.memo(() => {
 
 	// show all bids when bidder is joined
 	const [isShowBids, setIsShowBids] = useState('');
-	const [BidderIsJoined, setBidderIsJoined] = useState(true);
-	const [BidderIsBid, setBidderIsBid] = useState(true);
+	const [BidderIsJoined, setBidderIsJoined] = useState('');
+	// const [BidderIsBid, setBidderIsBid] = useState(true);
 
 	const [socket, setSocket] = useState(null);
 	const [roomData, setRoomData] = useState([]);
@@ -42,12 +47,16 @@ const ViewCurrentAuction = React.memo(() => {
 	const [AuctionEndMessage, setAuctionEndMessage] = useState('');
 	const [BidderWinner, setBidderWinner] = useState('');
 	const [BidderMessage, setBidderMessage] = useState();
+	const [messageToClient, setMessageToClient] = useState('');
+
+	// start audio
+	const WinnerAudio = new Audio(WinnerAudio_)
+	const EndAuctionAudio = new Audio(EndAuctionAudio_)
+
 
 	// establish socket connection
 	useEffect(() => {
-		console.log("BidderIsJoined" , BidderIsJoined)
 		if (BidderIsJoined && accessToken) {
-			console.log("initial socket")
 			setSocket(
 				io('http://localhost:8000/auction/bidding', {
 					extraHeaders: {
@@ -58,7 +67,13 @@ const ViewCurrentAuction = React.memo(() => {
 		}
 	}, [BidderIsJoined]);
 
-		console.log("BidderIsJoined" ,BidderIsJoined)
+		useEffect(() => {
+			if (socket) {
+				socket.on('message-to-client', data => {
+					setMessageToClient(data.message);
+				});
+			}
+		}, [socket]);
 
 
 	useEffect(() => {
@@ -78,6 +93,7 @@ const ViewCurrentAuction = React.memo(() => {
 				});
 				setIsShowBids(false);
 				toast.success(data.message);
+
 			});
 		}
 	}, [!!socket]);
@@ -88,15 +104,27 @@ const ViewCurrentAuction = React.memo(() => {
 				setBidderWinner(true);
 				if (data.winnerEmail === email) {
 					setBidderMessage(data.winnerMessage);
+					WinnerAudio.play()
+
+					const time = setTimeout(() => {
+						WinnerAudio.pause();
+						localStorage.removeItem('BidderIsJoined');
+						window.location.reload()
+
+					}, 3000);
+					return () => time.clearTimeOut();
 				} else {
 					setBidderMessage(data.message);
+					EndAuctionAudio.play()
+
+					const time = setTimeout(() => {
+						EndAuctionAudio.pause();
+						window.location.reload()
+					}, 4000);
+					return () => time.clearTimeOut();
 				}
-				localStorage.removeItem('BidderIsJoined');
-				// const timer = setTimeout(() => {
-				// 	localStorage.removeItem('BidderIsJoined');
-				// 	window.location.reload();
-				// }, [3000]);
-				// return () => clearTimeout(timer);
+
+
 			});
 		}
 	}, [!!socket]);
@@ -123,10 +151,8 @@ const ViewCurrentAuction = React.memo(() => {
 							{AuctionData &&
 								(AuctionData.status === 'ongoing' || AuctionData.status === 'closed') && (
 									<BiddingDetails
-										// roomData= {(!isLoggedIn || role!=='buyer') ? AuctionData : roomData.auctionDetails }
-											roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
-											isShowBids={isShowBids}
-											BidderIsBid={BidderIsBid}
+										roomData= { roomData.auctionDetails ? roomData.auctionDetails : AuctionData }
+										isShowBids={isShowBids}
 									/>
 								)}
 							{/* end Bidding Details */}
@@ -147,13 +173,10 @@ const ViewCurrentAuction = React.memo(() => {
 							{
 								<AuctionHeader
 									AuctionData={AuctionData}
-									roomData= {(!isLoggedIn || role!=='buyer') ? AuctionData : roomData }
 									isShownBidsProp={isShowBids}
-									socket={socket}
 									BidderIsJoined={BidderIsJoined}
-									BidderIsBid={BidderIsBid}
-									// roomData={roomData ? roomData : AuctionData}
-									BidderWinner={BidderWinner}
+									roomData={roomData ? roomData : AuctionData}
+									messageToClient = {messageToClient && messageToClient}
 								/>
 							}
 							{(!ClosedAuction || role==='seller' || !isLoggedIn) && (
@@ -163,13 +186,8 @@ const ViewCurrentAuction = React.memo(() => {
 									showBids={value => setIsShowBids(value)}
 									socket={socket}
 									setBidderJoin={value => setBidderIsJoined(value)}
-									setBidderIsBid={value => setBidderIsBid(value)}
-									// MinimumBidAllowed= {(!isLoggedIn || role!=='buyer') ? (AuctionData.minimumBidAllowed) : (roomData.auctionDetails && roomData.auctionDetails['minimumBidAllowed']) }
-
-									MinimumBidAllowed={
-										roomData && roomData.auctionDetails ?
-										roomData.auctionDetails['minimumBidAllowed'] : (AuctionData && AuctionData['minimumBidAllowed'])
-									}
+									// setBidderIsBid={value => setBidderIsBid(value)}
+									MinimumBidAllowed= { (roomData && roomData.auctionDetails) ?  (roomData.auctionDetails['minimumBidAllowed']) : AuctionData['minimumBidAllowed']}
 									chairCost={AuctionData && AuctionData.chairCost}
 									AuctionEndMessage={!!AuctionEndMessage}
 									RejectionMessage={AuctionData && AuctionData.rejectionMessage}
