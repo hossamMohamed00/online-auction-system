@@ -30,6 +30,57 @@ Online Auction System, a website where users could exchange goods in auctions ma
 $ npm install
 ```
 
+### Add envirounment variables
+```bash
+# App related varaiables
+APP_NAME=Online Auction System
+PORT=8000
+
+# DB related varaiables
+
+# Docker Monog Service
+# DATABASE_CONNECTION_STRING=mongodb://mongodb-service:27017/auctions-system
+# Local mongod server
+DATABASE_CONNECTION_STRING=mongodb://0.0.0.0:27017/auctions-system
+
+#Authentication relatede varaiable
+ACCESS_TOKEN_SECRET
+ACCESS_TOKEN_EXPIRATION
+
+REFRESH_TOKEN_SECRET
+REFRESH_TOKEN_EXPIRATION
+
+# Email service related varaiables
+EMAIL_HOST =smtp.gmail.com
+EMAIL_SERVICE=gmail
+EMAIL_USER
+EMAIL_PASSWORD
+
+# Confirm user email related varaiables
+JWT_VERIFICATION_TOKEN_SECRET
+JWT_VERIFICATION_TOKEN_EXPIRATION_TIME
+EMAIL_CONFIRMATION_URL=http://localhost:8000/auth/confirm-email
+
+# Google Auth 2.0 related varaiables
+GOOGLE_AUTH_CLIENT_ID
+GOOGLE_AUTH_CLIENT_SECRET
+
+# Stripe related varaiables
+STRIPE_SECRET_KEY
+STRIPE_CURRENCY=usd
+FRONTEND_URL=http://localhost:3000
+
+# Cloudinary for file upload
+CLOUD_NAME=auctions-files
+API_KEY
+API_SECRET
+
+# Twilio mobile OTP related varaiables
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_VERIFICATION_SERVICE_SID
+```
+
 ## Running the app
 
 ```bash
